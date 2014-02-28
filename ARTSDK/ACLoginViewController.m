@@ -824,7 +824,7 @@
     loginLabel.backgroundColor = [UIColor clearColor];
     
     // Facebook Button Icon
-    UIImageView *facebookIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"ArtAPI.bundle/iconFacebook.png"]];
+    UIImageView *facebookIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: ARTImage(@"iconFacebook.png")]];
     facebookIconImageView.frame = CGRectMake(70,5,26,27);
     
     // Facebook Button

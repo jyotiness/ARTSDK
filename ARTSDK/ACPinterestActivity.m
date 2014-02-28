@@ -8,6 +8,7 @@
 
 #import "ACPinterestActivity.h"
 #import "Pinterest.h"
+#import "ACConstants.h"
 
 @interface ACPinterestActivity ()
 
@@ -42,7 +43,7 @@
 
 // Return the image that will be displayed  as an icon in the sharing menu
 - (UIImage *)activityImage {
-    return [UIImage imageNamed: @"ArtAPI.bundle/icon_pinterest"];
+    return [UIImage imageNamed: ARTImage(@"icon_pinterest")];
 }
 
 // allow this activity to be performed with any activity items

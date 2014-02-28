@@ -226,7 +226,7 @@
     
     UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [infoButton setFrame:CGRectMake(4.0, 4.0f, 24.0f, 24.0f)];
-    [infoButton setImage:[UIImage imageNamed:@"ArtAPI.bundle/InfoButton23"] forState:UIControlStateNormal];
+    [infoButton setImage:[UIImage imageNamed:ARTImage(@"InfoButton23")] forState:UIControlStateNormal];
     [infoButton addTarget:self action:@selector(iButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];

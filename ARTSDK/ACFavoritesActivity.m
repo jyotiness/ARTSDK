@@ -32,7 +32,7 @@
 
 // Return the image that will be displayed  as an icon in the sharing menu
 - (UIImage *)activityImage {
-    return [UIImage imageNamed: @"ArtAPI.bundle/icon_save_selected"];
+    return [UIImage imageNamed: ARTImage(@"icon_save_selected")];
 }
 
 // allow this activity to be performed with any activity items

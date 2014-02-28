@@ -359,7 +359,7 @@
     
     UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [infoButton setFrame:CGRectMake(4.0, 4.0f, 24.0f, 24.0f)];
-    [infoButton setImage:[UIImage imageNamed:@"ArtAPI.bundle/InfoButton23"] forState:UIControlStateNormal];
+    [infoButton setImage:[UIImage imageNamed:ARTImage(@"InfoButton23")] forState:UIControlStateNormal];
     [infoButton addTarget:self action:@selector(infoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
@@ -852,7 +852,7 @@
         UIButton *buttonText = [UIButton buttonWithType:UIButtonTypeCustom];
         UIImage *scanCamera;
         
-        scanCamera = [UIImage imageNamed:@"ArtAPI.bundle/CameraButton25"];
+        scanCamera = [UIImage imageNamed:ARTImage(@"CameraButton25")];
 
         [buttonImage setBackgroundImage:scanCamera forState:UIControlStateNormal];
 
@@ -906,11 +906,11 @@
         
         if(AppLocationFrench == currAppLoc)
         {
-            myImage = [UIImage imageNamed:@"ArtAPI.bundle/icon_creditCardsFR"];
+            myImage = [UIImage imageNamed:ARTImage(@"icon_creditCardsFR")];
         }
         else if(AppLocationGerman == currAppLoc)
         {
-            myImage = [UIImage imageNamed:@"ArtAPI.bundle/icon_creditCardsEuro"];
+            myImage = [UIImage imageNamed:ARTImage(@"icon_creditCardsEuro")];
         }
         else
         {
@@ -919,9 +919,9 @@
             
             //NSLog(@"Currently used locale is %@",currentlyUsedLocale);
             if([[currentlyUsedLocale lowercaseString] isEqualToString:@"gb"]){
-                myImage = [UIImage imageNamed:@"ArtAPI.bundle/icon_creditCardsGB"];
+                myImage = [UIImage imageNamed:ARTImage(@"icon_creditCardsGB")];
             }else{
-                myImage = [UIImage imageNamed:@"ArtAPI.bundle/icon_creditCards"];
+                myImage = [UIImage imageNamed:ARTImage(@"icon_creditCards")];
             }
         }
         

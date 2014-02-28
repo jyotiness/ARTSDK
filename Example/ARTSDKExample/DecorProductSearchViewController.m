@@ -226,8 +226,8 @@
         // Add Cancel Button
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         cancelButton.frame = CGRectMake(0, 0, 60, 32);
-        [cancelButton setBackgroundImage:[UIImage imageNamed:@"ArtAPI.bundle/TOP_NAV_BUTTONS.png"] forState:UIControlStateNormal];
-        [cancelButton setBackgroundImage:[UIImage imageNamed:@"ArtAPI.bundle/TOP_NAV_BUTTONS_SELECTED.png"] forState:UIControlStateHighlighted];
+        [cancelButton setBackgroundImage:[UIImage imageNamed:ARTImage(@"TOP_NAV_BUTTONS.png")] forState:UIControlStateNormal];
+        [cancelButton setBackgroundImage:[UIImage imageNamed:ARTImage(@"TOP_NAV_BUTTONS_SELECTED.png")] forState:UIControlStateHighlighted];
         [cancelButton setTitle:@"Close" forState:UIControlStateNormal];
         UIFont *buttonFont = [UIFont fontWithName:kACStandardFont size:23.0f];
         [cancelButton.titleLabel setFont:buttonFont];

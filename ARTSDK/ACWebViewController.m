@@ -254,7 +254,7 @@
     [self.activitySpinner startAnimating];
     
     
-    UIImage* backIcon = [UIImage imageNamed:@"ArtAPI.bundle/backIcon.png"];
+    UIImage* backIcon = [UIImage imageNamed:ARTImage(@"backIcon.png")];
     
     self.backButton =
     [[UIBarButtonItem alloc] initWithImage:backIcon
@@ -264,7 +264,7 @@
     self.backButton.tag = 2;
     self.backButton.enabled = NO;
     
-    UIImage* forwardIcon = [UIImage imageNamed:@"ArtAPI.bundle/forwardIcon.png"];
+    UIImage* forwardIcon = [UIImage imageNamed:ARTImage(@"forwardIcon.png")];
 
     
     self.forwardButton =

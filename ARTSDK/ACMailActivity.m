@@ -36,7 +36,7 @@
 
 // Return the image that will be displayed  as an icon in the sharing menu
 - (UIImage *)activityImage {
-    return [UIImage imageNamed: @"ArtAPI.bundle/icon_mail"];
+    return [UIImage imageNamed: ARTImage(@"icon_mail")];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {

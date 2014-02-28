@@ -110,7 +110,7 @@
             if((currAppLoc == AppLocationFrench) || (currAppLoc == AppLocationGerman)){
                 [self.backgroundImageView setImage:[UIImage imageNamed:@"apc_checkout_iPhone5"]];
             }else{
-                [self.backgroundImageView setImage:[UIImage imageNamed:@"ArtAPI.bundle/checkout_iPhone5"]];
+                [self.backgroundImageView setImage:[UIImage imageNamed:ARTImage(@"checkout_iPhone5")]];
             }
         }
     }
@@ -154,7 +154,7 @@
     
     UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [infoButton setFrame:CGRectMake(4.0, 4.0f, 24.0f, 24.0f)];
-    [infoButton setImage:[UIImage imageNamed:@"ArtAPI.bundle/InfoButton23"] forState:UIControlStateNormal];
+    [infoButton setImage:[UIImage imageNamed:ARTImage(@"InfoButton23")] forState:UIControlStateNormal];
     [infoButton addTarget:self action:@selector(confirmIButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     //[_headerView addSubview:infoButton];
     //mkl info button in nav bar now

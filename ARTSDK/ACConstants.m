@@ -149,19 +149,19 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     
     switch (currAppLoc) {
         case AppLocationDefault:{
-            normalBackground = [[UIImage imageNamed:@"ArtAPI.bundle/chevronBlue40"] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         case AppLocationFrench:{
-            normalBackground = [[UIImage imageNamed:@"ArtAPI.bundle/chevronBlue40"] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         case AppLocationGerman:{
-            normalBackground = [[UIImage imageNamed:@"ArtAPI.bundle/chevronBlue40"] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         default:
-            normalBackground = [[UIImage imageNamed:@"ArtAPI.bundle/chevronBlue40"] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
     }
     
@@ -198,19 +198,19 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     
     switch (currAppLoc) {
         case AppLocationDefault:{
-            normalBackground = [[UIImage imageNamed:@"ArtAPI.bundle/chevronBlueRight40"] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlueRight40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         case AppLocationFrench:{
-            normalBackground = [[UIImage imageNamed:@"ArtAPI.bundle/chevronBlueRight40"] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlueRight40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         case AppLocationGerman:{
-            normalBackground = [[UIImage imageNamed:@"ArtAPI.bundle/chevronBlueRight40"] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlueRight40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         default:
-            normalBackground = [[UIImage imageNamed:@"ArtAPI.bundle/chevronBlueRight40"] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlueRight40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
     }
     
@@ -245,16 +245,16 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     
     switch (currAppLoc) {
         case AppLocationDefault:{
-            return [UIImage imageNamed:@"ArtAPI.bundle/CartSmallBlue.png"];
+            return [UIImage imageNamed:ARTImage(@"CartSmallBlue.png")];
         }
         case AppLocationFrench:{
-            return [UIImage imageNamed:@"ArtAPI.bundle/CartSmallBlue.png"];
+            return [UIImage imageNamed:ARTImage(@"CartSmallBlue.png")];
         }
         case AppLocationGerman:{
-            return [UIImage imageNamed:@"ArtAPI.bundle/CartSmallBlue.png"];
+            return [UIImage imageNamed:ARTImage(@"CartSmallBlue.png")];
         }
         default:
-            return [UIImage imageNamed:@"ArtAPI.bundle/CartSmallBlue.png"];
+            return [UIImage imageNamed:ARTImage(@"CartSmallBlue.png")];
     }
     
 }
@@ -403,15 +403,15 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     UIImage *appLogoImage = nil;
     switch (currAppLoc) {
         case AppLocationDefault:{
-            appLogoImage = [UIImage imageNamed:@"ArtAPI.bundle/P2AHorizontalLogo"]; //PhotosToArt Logo
+            appLogoImage = [UIImage imageNamed:ARTImage(@"P2AHorizontalLogo")]; //PhotosToArt Logo
             break;
         }
         case AppLocationFrench:{
-            appLogoImage = [UIImage imageNamed:@"ArtAPI.bundle/MesPhotosHorizontalLogo"]; //MesPhotos Logo
+            appLogoImage = [UIImage imageNamed:ARTImage(@"MesPhotosHorizontalLogo")]; //MesPhotos Logo
             break;
         }
         case AppLocationGerman:{
-            appLogoImage = [UIImage imageNamed:@"ArtAPI.bundle/MyPhotosHorizontalLogo"]; //MyPhotos Logo
+            appLogoImage = [UIImage imageNamed:ARTImage(@"MyPhotosHorizontalLogo")]; //MyPhotos Logo
             break;
         }
         //Add more cases if needed in future

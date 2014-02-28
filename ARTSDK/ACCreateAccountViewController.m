@@ -74,7 +74,7 @@
     if (n >= 0) {
         // Override Button
         //self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        //[self.backButton setBackgroundImage:[UIImage imageNamed:@"ArtAPI.bundle/TOP_NAV_BUTTONS.png"] forState:UIControlStateNormal];
+        //[self.backButton setBackgroundImage:[UIImage imageNamed:ARTImage(@"TOP_NAV_BUTTONS.png"] forState:UIControlStateNormal];
         //[self.backButton addTarget:self action:@selector(backButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         //[self.backButton setTitle:ACLocalizedString(@"BACK", @"BACK")  forState:UIControlStateNormal];
         //[self.backButton.titleLabel setFont:[UIFont fontWithName:kACStandardFont size:23.0f]];
@@ -629,7 +629,7 @@
     loginLabel.backgroundColor = [UIColor clearColor];
     
     // Facebook Button Icon
-    UIImageView *facebookIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"ArtAPI.bundle/iconFacebook.png"]];
+    UIImageView *facebookIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: ARTImage(@"iconFacebook.png")]];
     facebookIconImageView.frame = CGRectMake(70,5,26,27);
     
     // Facebook Button

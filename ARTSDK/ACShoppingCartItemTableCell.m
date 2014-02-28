@@ -29,10 +29,10 @@
     [super setHighlighted:highlighted animated:animated];
     if (highlighted) {
         // [self.accessoryView removeFromSuperview];
-        [(UIImageView *) self.accessoryView setImage:[UIImage imageNamed:@"ArtAPI.bundle/icon_browseArrow_h"]];
+        [(UIImageView *) self.accessoryView setImage:[UIImage imageNamed:ARTImage(@"icon_browseArrow_h"]];
     }
     else {
-        [(UIImageView *) self.accessoryView setImage:[UIImage imageNamed:@"ArtAPI.bundle/icon_browseArrow_n"]];
+        [(UIImageView *) self.accessoryView setImage:[UIImage imageNamed:ARTImage(@"icon_browseArrow_n"]];
     }
 }
 

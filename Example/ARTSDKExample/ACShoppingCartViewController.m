@@ -189,7 +189,7 @@
     //self.navigationItem.leftBarButtonItem = [UIBarButtonItem customButtonWithTitle:NSLocalizedString(@"Done", nil) target:self action:@selector(doneEditingButtonPressed:)];
     UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
     done.frame = CGRectMake(0, 0, 67, 36);
-    [done setImage:[UIImage imageNamed:@"ArtAPI.bundle/done-button.png"] forState:UIControlStateNormal];
+    [done setImage:[UIImage imageNamed:ARTImage(@"done-button.png")] forState:UIControlStateNormal];
     [done addTarget:self action:@selector(doneEditingButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:done];
     isEdit = YES;
@@ -253,7 +253,7 @@
         UIButton *checkout = [UIButton buttonWithType:UIButtonTypeCustom];
         checkout.frame = CGRectMake(0, 0, 83, 32);
         //[checkout setTitle:@"Checkout" forState:UIControlStateNormal];
-        [checkout setImage:[UIImage imageNamed:@"ArtAPI.bundle/btn-cart-checkout.png"] forState:UIControlStateNormal];
+        [checkout setImage:[UIImage imageNamed:ARTImage(@"btn-cart-checkout.png")] forState:UIControlStateNormal];
         [checkout addTarget:self action:@selector(checkoutButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:checkout];
         
@@ -263,7 +263,7 @@
             UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
             done.frame = CGRectMake(0, 0, 63, 32);
             //[done setTitle:@"Done" forState:UIControlStateNormal];
-            [done setImage:[UIImage imageNamed:@"ArtAPI.bundle/done-button.png"] forState:UIControlStateNormal];
+            [done setImage:[UIImage imageNamed:ARTImage(@"done-button.png")] forState:UIControlStateNormal];
             [done addTarget:self action:@selector(doneEditingButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:done];
         } else {
@@ -272,7 +272,7 @@
             UIButton *edit = [UIButton buttonWithType:UIButtonTypeCustom];
             edit.frame = CGRectMake(0, 0, 63, 32);
             //[edit setTitle:@"Edit" forState:UIControlStateNormal];
-            [edit setImage:[UIImage imageNamed:@"ArtAPI.bundle/btn-cart-edit.png"] forState:UIControlStateNormal];
+            [edit setImage:[UIImage imageNamed:ARTImage(@"btn-cart-edit.png")] forState:UIControlStateNormal];
             [edit addTarget:self action:@selector(editButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:edit];
         }
@@ -396,7 +396,7 @@
     
     UIButton *checkout = [UIButton buttonWithType:UIButtonTypeCustom];
     checkout.frame = CGRectMake(0, 0, 83, 32);
-    [checkout setImage:[UIImage imageNamed:@"ArtAPI.bundle/btn-cart-checkout.png"] forState:UIControlStateNormal];
+    [checkout setImage:[UIImage imageNamed:ARTImage(@"btn-cart-checkout.png")] forState:UIControlStateNormal];
     [checkout addTarget:self action:@selector(checkoutButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     infoView.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:checkout];
