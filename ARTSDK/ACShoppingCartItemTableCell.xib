@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ACShoppingCartItemTableCell">
+            <connections>
+                <outlet property="tmpCell" destination="3" id="13"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" id="3" userLabel="Artster Cart Item Table Cell" customClass="ACShoppingCartItemTableCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3" id="dBJ-iX-TK1">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="89"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="4" userLabel="UIImage" customClass="NINetworkImageView">
+                        <rect key="frame" x="10" y="9" width="90" height="72"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="72" id="3p4-aQ-Fug"/>
+                            <constraint firstAttribute="width" constant="90" id="cnF-0q-CSh"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Woman Holding a Balance" lineBreakMode="tailTruncation" baselineAdjustment="none" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
+                        <rect key="frame" x="110" y="4" width="168" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="peV-4T-aoE"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
+                        <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="30 x 36 in" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="21">
+                        <rect key="frame" x="110" y="22" width="138" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="auo-OP-L2t"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                        <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="$120" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="7">
+                        <rect key="frame" x="110" y="36" width="138" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="bKw-4g-iuR"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="13"/>
+                        <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Usually ships in 1-2 days" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="168" translatesAutoresizingMaskIntoConstraints="NO" id="20">
+                        <rect key="frame" x="110" y="51" width="168" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="eXF-6B-QdP"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                        <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="35">
+                        <rect key="frame" x="248" y="30" width="30" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="1y9-zl-ON5"/>
+                            <constraint firstAttribute="height" constant="30" id="Pob-sK-7hg"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="12"/>
+                        <state key="normal">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" backgroundImage="bg_quantityField.png"/>
+                        <state key="highlighted" backgroundImage="bg_quantityField.png">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="quantityButtonPressed:" destination="-1" eventType="touchUpInside" id="38"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="20" firstAttribute="top" secondItem="7" secondAttribute="bottom" constant="-3" id="1ct-OC-cEW"/>
+                    <constraint firstItem="35" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="8" symbolic="YES" id="39o-IL-etI"/>
+                    <constraint firstItem="20" firstAttribute="leading" secondItem="dBJ-iX-TK1" secondAttribute="leading" constant="110" id="74G-wx-lWV"/>
+                    <constraint firstAttribute="trailing" secondItem="35" secondAttribute="trailing" constant="9" id="9Db-d9-DNx"/>
+                    <constraint firstItem="7" firstAttribute="top" secondItem="21" secondAttribute="bottom" constant="-2" id="DWp-q3-wYl"/>
+                    <constraint firstItem="35" firstAttribute="leading" secondItem="7" secondAttribute="trailing" id="Dv9-tC-YDB"/>
+                    <constraint firstItem="21" firstAttribute="top" secondItem="5" secondAttribute="bottom" id="ICb-25-9IR"/>
+                    <constraint firstItem="7" firstAttribute="leading" secondItem="dBJ-iX-TK1" secondAttribute="leading" constant="110" id="IJq-lX-2ob"/>
+                    <constraint firstAttribute="centerY" secondItem="35" secondAttribute="centerY" id="MGY-X6-01c"/>
+                    <constraint firstItem="4" firstAttribute="top" secondItem="dBJ-iX-TK1" secondAttribute="top" constant="9" id="PeH-1O-2I1"/>
+                    <constraint firstItem="5" firstAttribute="leading" secondItem="dBJ-iX-TK1" secondAttribute="leading" constant="110" id="SXS-4t-i6M"/>
+                    <constraint firstItem="4" firstAttribute="leading" secondItem="dBJ-iX-TK1" secondAttribute="leading" constant="10" id="Z64-74-Of8"/>
+                    <constraint firstItem="21" firstAttribute="leading" secondItem="dBJ-iX-TK1" secondAttribute="leading" constant="110" id="bt4-iB-Ajj"/>
+                    <constraint firstItem="20" firstAttribute="trailing" secondItem="35" secondAttribute="trailing" id="tEV-YU-sQY"/>
+                    <constraint firstItem="5" firstAttribute="trailing" secondItem="35" secondAttribute="trailing" id="tOc-i2-Kcy"/>
+                    <constraint firstItem="7" firstAttribute="trailing" secondItem="21" secondAttribute="trailing" id="ymO-1S-Fz5"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="dimensions" destination="21" id="29"/>
+                <outlet property="info" destination="20" id="30"/>
+                <outlet property="name" destination="5" id="9"/>
+                <outlet property="photo" destination="4" id="14"/>
+                <outlet property="price" destination="7" id="11"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="bg_quantityField.png" width="24" height="23"/>
+    </resources>
+</document>

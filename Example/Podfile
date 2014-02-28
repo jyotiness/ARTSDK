@@ -1,0 +1,14 @@
+platform :ios, '7.0'
+
+
+#xcodeproj 'ARTSDK/ARTSDK.xcodeproj'
+
+#link_with 'ARTSDK', 'ARTSDKTests'
+#pod 'AFNetworking', '~> 2.1.0'
+pod 'AFNetworking', '~> 1.1.0'
+pod 'CardIO', '~> 3.4.4'
+pod 'GoogleAnalytics-iOS-SDK', '~> 3.0.3'
+pod 'SFHFKeychainUtils', '~> 0.0.1'
+pod 'SVProgressHUD', '~> 1.0'
+pod 'Facebook-iOS-SDK', '~> 3.12.0'
+pod 'Pinterest-iOS', '~> 2.3'

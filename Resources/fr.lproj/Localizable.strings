@@ -1,0 +1,223 @@
+/* 
+  Localizable.strings
+  ArtAPI
+
+  Created by Doug Diego on 3/8/13.
+  Copyright (c) 2013 Doug Diego. All rights reserved.
+ ACLocalizedString(@"Please enter a password", @"Please enter a password");
+*/
+
+// General
+"OK" = "OK";
+"CANCEL" = "Annuler";
+"BACK" = "Retour";
+"BACK_LOWER" = "Retour";
+"CONTINUE" = "Continuer";
+"CONTINUE_CAPS" = "CONTINUER";
+"PREVIOUS" = "Précédent";
+"NEXT" = "Suivant";
+"DONE" = "Terminé ";
+"ERROR" = "Erreur";
+"SUBMIT" = "Submit";
+
+"ABOUT_TITLE_PHOTOSTOART" = "À propos d'Art.com";
+"ABOUT_TITLE_MESPHOTOS" = "AllPosters.fr";
+"ABOUT_TITLE_MYPHOTOS" = "AllPosters.de";
+
+//URLs
+"ABOUT_URL_PHOTOSTOART" = "http://cache1.artprintimages.com/images/photostoart/mobile/index.html";
+"ABOUT_URL_MESPHOTOS" = "http://cache1.allpostersimages.com/images/photostoart/mobile/mesphotos/index.html";
+"ABOUT_URL_MYPHOTOS" = "http://cache1.allpostersimages.com/images/photostoart/mobile/myphotos/index.html";
+
+"SHIPPING_DETAILS_URL_PHOTOSTOART" = "http://www.art.com/asp/customerservice/shipping-asp/_/posters.htm";
+"SHIPPING_DETAILS_URL_MYPHOTOS" = "http://www.allposters.de/help/shipping.html";
+"SHIPPING_DETAILS_URL_MESPHOTOS" = "http://www.allposters.fr/help/shipping.html";
+
+"SHARE_LANDING_URL_PHOTOSTOART" = "http://www.art.com/mp2a/sms-landing.html?photourl=";
+"SHARE_LANDING_URL_MYPHOTOS" = "http://www.art.com/myphotos/sms-landing.html?photourl=";
+"SHARE_LANDING_URL_MESPHOTOS" = "http://www.art.com/mesphotos/sms-landing.html?photourl=";
+
+"TERMS_OF_USE_URL_PHOTOSTOART" = "http://www.art.com/asp/customerservice/photostoart_termsofuse-asp/_/posters.htm";
+"TERMS_OF_USE_URL_MESPHOTOS" = "http://www.allposters.fr/help/mptermsofuse.html";
+"TERMS_OF_USE_URL_MYPHOTOS" = "http://www.allposters.de/help/mptermsofuse.html";
+
+// Checkout
+"SELECT_COUNTRY" = "Sélectionnez un pays";
+"SELECT_STATE" = "Sélectionnez un état";
+"SELECT_CARD_TYPE" = "Sélectionnez une carte de crédit";
+"UNITED_STATES" = "États-Unis";
+"ZIP_POSTAL_CODE" = "Code postal";
+"CHECKOUT" = "Passer commande";
+"SHIPPING_ADDRESS" = "ADRESSE DE LIVRAISON";
+"LOADING_COUNTRIES" = "Chargement des pays en cours";
+"LOADING_STATES" = "Chargement des états en cours...";
+"SEND_RECEIPT_TO" = "ENVOYER UN REÇU";
+"FIRST_NAME" = "Prénom";
+"LAST_NAME" = "Nom";
+"COMPANY" = "Entreprise";
+"OPTIONAL" = "Optionnel";
+"ADDRESS" = "Adresse";
+"ADDRESS_LINE_2" = "Adresse (suite)";
+"PHONE" = "Téléphone";
+"CITY" = "Ville";
+"STATE" = "État";
+"CHOOSE_CONTACT" = "Choisir un contact";
+"CHOOSE_EMAIL" = "Choisir un e-mail";
+"UPDATING_SHIPPING_ADDRESS" = "Mise à jour de l'adresse de livraison";
+"CHOOSE_AN_ADDRESS_FOR_SHIPMENT" = "Choisir une adresse de livraison";
+"EMAIL_NOT_FOUND" = "E-mail introuvable";
+"CHOOSE_AN_EMAIL" = "Choisir un e-mail";
+"ZIP" = "Code postal";
+"POSTAL_CODE" = "Code postal";
+"FETCHING_DETAILS" = "Recherche des informations en cours";
+"CHOOSE_YOUR_CITY" = "Choisissez votre ville";
+"SUBMITTING_ORDER" = "Enregistrement de la commande en cours...";
+"CARD_NUMBER" = "Numéro de la carte";
+"EXP_DATE" = "Date d'exp. ";
+"MONTH_YEAR" = "Mois/Année";
+"SECURITY_CODE_CVV" = "Cryptogramme visuel";
+"SAME_AS_SHIPPING_ADDRESS" = "Identique à l'adresse de livraison";
+"FREE" = "GRATUIT";
+"FREESHIP" = "GRATUIT";
+"CREDIT_CARD" = "CARTE DE CRÉDIT";
+"BILLING_ADDRESS" = "ADRESSE DE FACTURATION";
+"CREDIT_CARD_DETAILS" = "Coordonnées bancaires";
+"SHIPPING_ADDRESS_DETAILS" = "Détails de l'adresse de livraison";
+"AMERICAN_EXPRESS" = "American_Express";
+"DISCOVER" = "Discover";
+"MASTERCARD" = "MasterCard";
+"VISA" = "Visa";
+"LOADING_CARD_SCANNER" = "Loading Card Scanner";
+
+"PHOTOSTOART_COUPON" = "CODE DE RÉDUCTION ART.COM";
+"MYPHOTOS_COUPON" = "CODE DE RÉDUCTION ALLPOSTERS.DE";
+"MESPHOTOS_COUPON" = "CODE DE RÉDUCTION ALLPOSTERS.FR";
+
+"COUPON_CODE" = "Code de réduction";
+"UPDATING_PRIORITY" = "Mise à jour d'expédition";
+"ENTER_COUPON_CODE_ABOVE" = "Merci d'entrer un code promo ci-dessus";
+"APPLYING_COUPON" = "Application de la réduction en cours";
+"PLEASE_ENTER_COUPON_CODE" = "Merci d'entrer un code promo valide";
+"REMOVING_COUPON" = "Annulation de code promo en cours";
+"EMAIL_SENT" = "E-mail envoyé";
+
+"YOUR_MESSAGE_HAS_BEEN_SENT_PHOTOSTOART" = "Votre message a bien été envoyé à Art.com. Merci.";
+"YOUR_MESSAGE_HAS_BEEN_SENT_MYPHOTOS" = "Votre message a bien été envoyé à AllPosters.de. Merci.";
+"YOUR_MESSAGE_HAS_BEEN_SENT_MESPHOTOS" = "Votre message a bien été envoyé à AllPosters.fr. Merci.";
+
+"MAIL_SUBJECT_PHOTOSTOART" = "Photos To Art";
+"MAIL_SUBJECT_MYPHOTOS" = "My Photos™";
+"MAIL_SUBJECT_MESPHOTOS" = "Mes Photos";
+
+"PHOTOSTOART_SUPPORT" = "AIDE SUR ART.COM";
+"MYPHOTOS_SUPPORT" = "AIDE SUR ALLPOSTERS.DE";
+"MESPHOTOS_SUPPORT" = "AIDE SUR ALLPOSTERS.FR";
+
+"SUPPORT_EMAIL_PHOTOSTOART" = "support@art.com";
+"SUPPORT_EMAIL_MYPHOTOS" = "Bestellung@allposters.com";
+"SUPPORT_EMAIL_MESPHOTOS" = "commandes@allposters.com";
+
+"SUPPORT_PHONE_PHOTOSTOART" = "1-800-952-5592";
+"SUPPORT_PHONE_MYPHOTOS" = "089 1437 7605";
+"SUPPORT_PHONE_MESPHOTOS" = "01 70 70 96 61";
+
+"EMAIL" = "E-mail";
+"PLEASE_CONFIGURE_MAIL_ON_DEVICE" = "Merci de configurer courrier sur votre appareil.";
+"ARRIVES" = "Entre le";
+"NO_EMAIL_ADDRESS_FOUND_FOR_CONTACT" = "Aucune adresse e-mail n'a été trouvée pour ce contact";
+"SELECT" = "Sélectionner";
+
+"PHOTOSTOART_CHECKOUT" = "Commander";
+"MYPHOTOS_CHECKOUT" = "Commander";
+"MESPHOTOS_CHECKOUT" = "Commander";
+
+"SUBTOTAL" = "Sous-total";
+"DISCOUNT" = "Réduction";
+"ESTIMATED_SALES_TAX" = "TVA";
+"SHIPPING_CAPS" = "LIVRAISON";
+"SHIPPING" = "Livraison";
+"PLACE_ORDER" = "PASSER MA COMMANDE";
+"SHIPPING_DETAILS" = "Détails de livraison ";
+"SHIPPING_DETAILS_HEADER" = "livraison";
+
+"ENTER_PHOTOSTOART_COUPON_CODE" = "Entrez le code de réduction Art.com ";
+"ENTER_MYPHOTOS_COUPON_CODE" = "Entrez le code de réduction AllPosters.de ";
+"ENTER_MESPHOTOS_COUPON_CODE" = "Entrez le code de réduction AllPosters.fr ";
+
+"ENTER_COUPON_CODE" = "Entrez le code de réduction";
+"TOTAL" = "Total";
+"CONTINUE" = "Continuer";
+"REMOVE_COUPON" = "Supprimer le code";
+"APPLY_COUPON" = "Appliquer le code";
+"STANDARD_SHIPPING" = "Expédition classqiue";
+"CONFIRMATION" = "CONFIRMATION";
+"THANK_YOU_FOR_YOUR_ORDER" = "MERCI DE VOTRE COMMANDE";
+"YOUR_ORDER_NUMBER_IS" = "Votre numéro de commande est :";
+"A_RECEIPT_HAS_BEEN_SENT_TO_YOUR_EMAIL" = "Un reçu à été envoyé à votre adresse e-mail";
+"CUSTOMER_SUPPORT_TEAM" = "L'équipe du service client";
+"COUPON_ERROR" = "Le coupon ne peut s’appliquer. Il peut être expiré ou invalide.";
+
+
+
+// Login & Registration Controller
+"LOGIN" = "Se connecter";
+"Sign In" = "S'inscrire";
+"Create Account" = "Créer un compte";
+"E-mail address" =  "Adresse e-mail";
+"Email Address" = "Adresse email";
+"Login with an Art.com account" = "Se connecter avec un compte Art.com";
+"Password" = "Mot de passe";
+"An error occurred. Please try again." = "Une erreur est intervenue. Merci d'essayer à nouveau.";
+"Login Failed" = "Echec de la connexion";
+//"Confirm E-mail address" = "Confirm E-mail address";
+"Confirm Password" = "Ressaisir mot de passe";
+"E-mail addresses do not match" = "L'adresse e-mail ne correspond pas.";
+"Your passwords did not match" = "Vos mots de passe ne correspondent pas";
+"Your email address or password is incorrect" = "Votre adresse e-mail ou mot de passe est incorrect";
+"Please enter a valid email address" = "Merci d'entrer une adresse e-mail valide.";
+"Please enter a password" = "Merci d'entrer un mot de passe.";
+"Sign up using your email address" = "S'inscrire en utilisant votre adresse e-mail";
+"SIGN UP" = "S'INSCRIRE";
+"Retrieve your password" = "Récuperer votre mot de passe";
+"Forgot password?" = "Mot de passe oublié?";
+"RETRIEVING PASSWORD" = "RÉCUPÉRATION DU MOT DE PASSE";
+"SIGNING UP" = "INSCRIPTION";
+"AUTHENTICATING" = "AUTHENTIFICATION";
+"Terms of Service" = "Conditions d'utilisation.";
+"com.facebook.error.code.2" = "Pour permettre la connexion avec Facebook, allez dans Réglages, sélectionnez le menu Facebook et confugrez MesPhotos en appuyant sur ON.";
+"NEW_PASSWORD_SENT" = "Votre nouveau mot de passe a été envoyé à votre adresse e-mail habituelle.";
+"PASSWORD_AT_LEAST_SEVEN" = "Les mots de passe doivent comporter au moins sept caractères";
+"NO_ACCOUNT_INFO_FOUND" = "Aucun compte n'a été trouvé pour cette adresse e-mail.";
+"ENTER_EMAIL_ACCOUNT" = "Saisissez l'adresse e-mail associée à votre compte";
+
+"LOG_IN_WITH_EMAIL" = "Se connecter avec son e-mail";
+"SIGN_UP_WITH_EMAIL" = "S'inscrire avec son e-mail";
+"FORGOT_YOUR_PASSWORD" = "Vous avez oublié votre mot de passe ?";
+"LOG_IN_WITH_FACEBOOK" = "Se connecter avec Facebook";
+"LOG_IN" = "Se connecter";
+"SIGN_UP" = "S'inscrire";
+
+// Art View
+"Anadite Silver" = "Anadite Silver";
+"Size" = "Taille";
+"Price" = "Prix";
+"No Frame" = "Sans cadre";
+"Type" = "Type";
+"Usually Ships In" = "Normalement livré sous";
+
+"Select Size" = "Choisissez la taille";
+"Framed Size" = "Taille du cadre";
+"Profile" = "Profil";
+"Color" = "Couleur";
+"Material" = "Matière";
+"Style" = "Style";
+"Finish" = "Finir";
+"Select Frame" = "Choisissez le cadre";
+"Price" = "Prix";
+"Item Subtotal" = "Montant total de l'article";
+"Add to My Cart" = "Ajouter au panier";
+"No Frames found for selected options" = "Aucun cadre trouvé pour les options sélectionnés.";
+"GETTING_PAYMENT_TYPES" = "Chargement des modes de paiement en cours";
+"HELP" = "Aide";
+
+"SCAN_CARD" = "Scanner votre carte";
