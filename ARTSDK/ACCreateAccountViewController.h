@@ -27,6 +27,9 @@
 // If set to true, the standard back button will be used
 @property (nonatomic, assign) BOOL  showStandardBackButton;
 
+// If set to true, the SVProgressHUD won't be dismissed after login, and it will be handled by the delegate
+@property (nonatomic, assign) BOOL  shouldRetainHudOnLogin;
+
 @end
 
 @protocol ACCreateAccountDelegate<NSObject>

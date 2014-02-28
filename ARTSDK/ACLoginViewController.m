@@ -476,7 +476,11 @@
     
     // Get Mobile Gallery
     [ArtAPI requestForGalleryGetUserDefaultMobileGallerySuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        [SVProgressHUD dismiss];
+        
+        if(!self.shouldRetainHudOnLogin){
+            [SVProgressHUD dismiss];
+        }
+        
         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
         
         // Save Gallery Response
@@ -498,6 +502,10 @@
         
     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        [SVProgressHUD dismiss];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(loginFailure)]) {
+            [self.delegate loginFailure];
+        }
     }];
 }
 
@@ -652,7 +660,8 @@
         static NSString *SimpleTableIdentifier = @"LoginTableIdentifier";
         ACLoginCustomCell * cell = (ACLoginCustomCell*)[tableView   dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
         if (cell==nil) {
-            cell = (ACLoginCustomCell *)[[ACBundle  loadNibNamed:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACLoginCustomCell-iPad" :@"ACLoginCustomCell"owner:self options:nil] objectAtIndex:0];
+            cell = (ACLoginCustomCell *)[[ACBundle loadNibNamed:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACLoginCustomCell-iPad" :@"ACLoginCustomCell"owner:self options:nil] objectAtIndex:0];
+            
         }
         
         // Make cell unselectable
@@ -815,7 +824,7 @@
     loginLabel.backgroundColor = [UIColor clearColor];
     
     // Facebook Button Icon
-    UIImageView *facebookIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: ARTImage(@"iconFacebook.png")]];
+    UIImageView *facebookIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"ArtAPI.bundle/iconFacebook.png"]];
     facebookIconImageView.frame = CGRectMake(70,5,26,27);
     
     // Facebook Button

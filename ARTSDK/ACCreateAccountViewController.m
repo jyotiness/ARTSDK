@@ -418,7 +418,8 @@
     // Get Mobile Gallery
     
     [ArtAPI requestForGalleryGetUserDefaultMobileGallerySuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        [SVProgressHUD dismiss];
+        if(!self.shouldRetainHudOnLogin)
+            [SVProgressHUD dismiss];
         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
         
         // Call Delegate
@@ -434,6 +435,9 @@
         }
     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        if (self.delegate && [self.delegate respondsToSelector:@selector(createAccountFailure)]) {
+            [self.delegate createAccountFailure];
+        }
     }];
 }
 
