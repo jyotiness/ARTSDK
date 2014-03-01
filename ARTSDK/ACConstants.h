@@ -12,7 +12,7 @@
 
 #ifdef COCOAPODS_POD_AVAILABLE_ARTSDK
     #define ACBundle [NSBundle bundleWithPath:[[[NSBundle mainBundle]resourcePath] stringByAppendingPathComponent:@"ArtAPI.bundle"]]
-    #define ARTImage(name) [NSString stringWithFormat:ARTImage(@"%@",(name)]
+    #define ARTImage(name) [NSString stringWithFormat:@"ArtAPI.bundle/%@",(name)]
     #define ACLocalizedString(key, comment) \
         [[NSBundle bundleWithPath:[[[NSBundle mainBundle]resourcePath] stringByAppendingPathComponent:@"ArtAPI.bundle"]] localizedStringForKey:(key) value:@"" table:nil]
 #else
