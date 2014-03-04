@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
   s.name         = 'ARTSDK'
-  s.version      = '0.0.2'
+  s.version      = '0.0.3'
   s.summary      = 'Art.com iOS SDK'
   s.author       = {
     'Doug Diego' => 'ddiego@art.com'
   }
   s.homepage = 'https://github.com/artcode/ARTSDK'
-  s.source       = { :git => "https://github.com/artcode/ARTSDK.git", :tag => "0.0.2" }
+  s.source       = { :git => "https://github.com/artcode/ARTSDK.git", :tag => "0.0.xi32" }
   s.source_files = ['ARTSDK','thirdparty/nimbus/src/core/src', 'thirdparty/nimbus/src/networkimage/src']
-  s.resource_bundles = { 'ArtAPI' => ['Resources/*.png', 'ARTSDK/*.xib']}
+  s.resource_bundles = { 'ArtAPI' => ['Resources/*.png', 'ARTSDK/*.xib','Resources/**/Localizable.strings','Fonts/*.otf', 'Fonts/*.ttf']}
   s.license		   = {
     :type => 'MIT',
     :file => 'LICENSE'
