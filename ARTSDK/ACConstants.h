@@ -79,6 +79,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 +(UIFont *)getStandardMediumFontWithSize:(CGFloat)size;
 +(UIFont *)getStandardBoldFontWithSize:(CGFloat)size;
 +(UIButton *)getBackButtonForTitle:(NSString *)backTitle;
++(UIButton *)getGreyBackButtonForTitle:(NSString *)backTitle;
 +(UIButton *)getNextButtonForTitle:(NSString *)nextTitle;
 +(UIView *)getNavBarLogo;
 +(BOOL)isArtCircles;

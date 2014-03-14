@@ -139,6 +139,54 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     return (currAppLoc == AppLocationGerman || currAppLoc == AppLocationFrench)?[UIFont fontWithName:@"FetteEngschrift" size:size]:[UIFont fontWithName:@"GiorgioSans-Bold" size:size];
 }
 
++(UIButton *)getGreyBackButtonForTitle:(NSString *)backTitle
+{
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *normalBackground;
+    
+    AppLocation currAppLoc = [self getCurrentAppLocation];
+    
+    switch (currAppLoc) {
+        case AppLocationDefault:{
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronGrey40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            break;
+        }
+        case AppLocationFrench:{
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronGrey40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            break;
+        }
+        case AppLocationGerman:{
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronGrey40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            break;
+        }
+        default:
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronGrey40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            break;
+    }
+    
+    
+    [button setBackgroundImage:normalBackground forState:UIControlStateNormal];
+    //    [button setBackgroundImage:normalBackground forState:UIControlStateHighlighted];
+    CGSize size = CGSizeZero;
+    if(IS_IOS_7_ABOVE){
+        size = [backTitle sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
+    }else{
+        size = [backTitle sizeWithFont:[UIFont systemFontOfSize:17.0f]];
+    }
+    //NSLog(@"Frame Size is %@",NSStringFromCGSize(size));
+    button.frame = CGRectMake(0, 0, size.width + 20, 20);
+    [button.titleLabel setFont:[UIFont systemFontOfSize:17.0f]];
+    //[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:UIColorFromRGB(0x606060) forState:UIControlStateDisabled];
+    [button setTitleColor:UIColorFromRGB(0x606060) forState:UIControlStateHighlighted];
+    
+    [button setTitle:backTitle forState:UIControlStateNormal];
+    button.contentEdgeInsets = UIEdgeInsetsMake(1, 18, 0, 0);
+    return button;
+}
+
 +(UIButton *)getBackButtonForTitle:(NSString *)backTitle
 {
     
