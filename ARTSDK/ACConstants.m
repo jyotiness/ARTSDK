@@ -144,30 +144,36 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *normalBackground;
-    
+    UIImage *selectedBackground;
+
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
         case AppLocationDefault:{
             normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            selectedBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         case AppLocationFrench:{
             normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            selectedBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         case AppLocationGerman:{
             normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            selectedBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
         default:
-            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            normalBackground = [[UIImage imageNamed:ARTImage(@"chevronDarkGrey40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+            selectedBackground = [[UIImage imageNamed:ARTImage(@"chevronGrey40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
+
             break;
     }
     
-    
     [button setBackgroundImage:normalBackground forState:UIControlStateNormal];
-//    [button setBackgroundImage:normalBackground forState:UIControlStateHighlighted];
+    [button setBackgroundImage:selectedBackground forState:UIControlStateHighlighted];
+    
     CGSize size = CGSizeZero;
     if(IS_IOS_7_ABOVE){
         size = [backTitle sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
@@ -341,7 +347,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
             return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
         }
         default:
-            return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
+            return [UIColor darkTextColor];//]colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
     }
     
 }
@@ -365,7 +371,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
         }
         default:{
 //            return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
-            return [UIColor colorWithRed:146.0/255 green:212.0/255 blue:234.0/255 alpha:1.0];
+            return [UIColor grayColor];//[UIColor colorWithRed:146.0/255 green:212.0/255 blue:234.0/255 alpha:1.0];
         }
     }
     
@@ -390,7 +396,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
         }
         default:{
             //            return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
-            return [UIColor colorWithRed:0.196 green:0.475 blue:0.573 alpha:1.000];
+            return [UIColor grayColor];//[UIColor colorWithRed:0.196 green:0.475 blue:0.573 alpha:1.000];
         }
     }
 }
