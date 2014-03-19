@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DecorProductSearchViewController">
+            <connections>
+                <outlet property="tableView" destination="0Id-Ce-Jja" id="sPL-sG-Gjy"/>
+                <outlet property="view" destination="iN0-l3-epB" id="D0K-zj-ZWh"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="0Id-Ce-Jja">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="yYF-Yt-hNa"/>
+                        <outlet property="delegate" destination="-1" id="mp4-xO-cGN"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="0Id-Ce-Jja" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="31K-f0-rLI"/>
+                <constraint firstAttribute="trailing" secondItem="0Id-Ce-Jja" secondAttribute="trailing" id="6aL-pD-UcB"/>
+                <constraint firstAttribute="bottom" secondItem="0Id-Ce-Jja" secondAttribute="bottom" id="BgR-Rx-1Bi"/>
+                <constraint firstItem="0Id-Ce-Jja" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="b1R-JG-TIa"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+        </view>
+    </objects>
+</document>

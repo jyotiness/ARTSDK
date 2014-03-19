@@ -74,7 +74,6 @@
     if (n >= 0) {
         // Override Button
         //self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        //[self.backButton setBackgroundImage:[UIImage imageNamed:ARTImage(@"TOP_NAV_BUTTONS.png"] forState:UIControlStateNormal];
         //[self.backButton addTarget:self action:@selector(backButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         //[self.backButton setTitle:ACLocalizedString(@"BACK", @"BACK")  forState:UIControlStateNormal];
         //[self.backButton.titleLabel setFont:[UIFont fontWithName:kACStandardFont size:23.0f]];

@@ -12,18 +12,18 @@
 #import "UIBarButtonItem+ArtDotCom.h"
 #import "SVProgressHUD.h"
 #import "ArtAPI.h"
+#import "ACShoppingCartItemTableCell.h"
+#import "ACShipAddressViewController.h"
+#import "ACConstants.h"
 
-@implementation ACShoppingCartViewController {
+@interface ACShoppingCartViewController() <ACShipAddressViewDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *checkoutButton;
+@property (weak, nonatomic) IBOutlet UILabel *emptyLabel;
+@end
+
+@implementation ACShoppingCartViewController  {
     UITapGestureRecognizer *recognizer;
 }
-
-
-@synthesize tableView;
-@synthesize data = _data;
-@synthesize cellNib;
-@synthesize tmpCell;
-
-@synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -32,13 +32,8 @@
     return self;
 }
 
-
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    
-    //[AppDel clearImageCache];
 }
 
 #pragma mark - View lifecycle
@@ -47,8 +42,6 @@
     UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     titleView.text = title;
     titleView.font = [UIFont fontWithName:@"AvenirNextLTPro-Demi" size:20];
-    //titleView.textColor = [UIColor artDotComLightGray_Light_Color_iPad];
-    //titleView.shadowColor = [UIColor colorWithRed:0 / 255.0 green:0 / 255.0 blue:0 / 255.0 alpha:0.4];
     titleView.backgroundColor = [UIColor clearColor];
     [titleView sizeToFit];
     return titleView;
@@ -56,7 +49,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:@"USER_DID_LOGOUT" object:nil];
+    
+    self.navigationController.navigationBar.translucent = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidLogout:)
+                                                 name:@"USER_DID_LOGOUT" object:nil];
     
     self.navigationItem.titleView = [self titleViewForTitle:NSLocalizedString(@"Cart", nil)];
     
@@ -65,23 +63,22 @@
     
     self.tableView.rowHeight = 88;
     
-    self.tableView.backgroundColor = [UIColor artDotComLightGray_Light_Color_iPad];
     self.cellNib = [UINib nibWithNibName:@"ACShoppingCartItemTableCell" bundle:ACBundle];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     UIView *fakeFooter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 1)];
     fakeFooter.backgroundColor = [UIColor clearColor];
     self.tableView.tableFooterView = fakeFooter;
     
+    // Localize Empty Cart Label
+    self.emptyLabel.text = NSLocalizedString(@"CART_EMPTY",@"Your Shopping Cart is Empty");
     
     pickerView = [[UIPickerView alloc] init];
     [pickerView sizeToFit];
-    pickerView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    pickerView.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
     pickerView.delegate = self;
     pickerView.dataSource = self;
     pickerView.showsSelectionIndicator = YES;
     
     keyboardDoneButtonView = [[UIToolbar alloc] init];
-    keyboardDoneButtonView.barStyle = UIBarStyleBlack;
     keyboardDoneButtonView.translucent = YES;
     keyboardDoneButtonView.tintColor = nil;
     [keyboardDoneButtonView sizeToFit];
@@ -95,8 +92,15 @@
                              target:nil action:nil];
     [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:flex, nextButton, nil]];
     
+    // Update Checkout Button
+    _checkoutButton.layer.cornerRadius = 2;
+    _checkoutButton.backgroundColor = UIColorFromRGB(0xef9223);
+    [_checkoutButton.titleLabel setFont:[UIFont fontWithName:@"GiorgioSans-Bold" size:40]];
+    [_checkoutButton setTitle:NSLocalizedString(@"CHECKOUT", @"CHECKOUT") forState:UIControlStateNormal];
+    
+    //self.tableView.tableFooterView = subtotalBar;
+    
 }
-
 
 - (void)viewDidUnload {
     
@@ -107,8 +111,6 @@
     self.data = nil;
     self.tmpCell = nil;
     self.cellNib = nil;
-    
-    
 }
 
 
@@ -144,6 +146,7 @@
 - (void)loadDataFromAPI {
     //self.data = [[ACAPI sharedAPI] cart];
     self.data = [ArtAPI cart];
+    //NIDINFO("data: %@", self.data);
     NSArray *shipments = [self.data objectForKeyNotNull:@"Shipments"];
     NSDictionary *shipment = [shipments objectAtIndex:0];
     NSArray *cartItems = [shipment objectForKeyNotNull:@"CartItems"];
@@ -154,29 +157,10 @@
 }
 
 
-#pragma mark Button Handling
-- (void)checkoutButtonPressed:(id)sender {
-    
-    [self.delegate presentCheckout:nil];
-    return;
-
-    
-}
-
-/*
-- (IBAction)helpButtonPressed:(id)sender {
-    CartHelpViewController *helpViewController = [[CartHelpViewController alloc] initWithNibName:@"CartHelpViewController" bundle:nil];
-    helpViewController.baseURL = [NSURL URLWithString:@"http://www.art.com/help_web_view/index.html"];
-    helpViewController.url = [NSURL URLWithString:@"http://www.art.com/help_web_view/index.html"];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
-    [self.parentViewController presentModalViewController:navController animated:YES];
-}
-
-
-- (IBAction)quantityButtonPressed:(id)sender {
-    
-}
-*/
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark Gestures
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
@@ -186,24 +170,20 @@
 
 
 - (void)editButtonPressed:(id)sender {
-    //self.navigationItem.leftBarButtonItem = [UIBarButtonItem customButtonWithTitle:NSLocalizedString(@"Done", nil) target:self action:@selector(doneEditingButtonPressed:)];
-    UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
-    done.frame = CGRectMake(0, 0, 67, 36);
-    [done setImage:[UIImage imageNamed:ARTImage(@"done-button.png")] forState:UIControlStateNormal];
-    [done addTarget:self action:@selector(doneEditingButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:done];
-    isEdit = YES;
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"DONE", @"Done")
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self action:@selector(doneEditingButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = doneButton;
     [(UITableView *) self.tableView setEditing:YES animated:YES];
 }
 
 
 - (void)doneEditingButtonPressed:(id)sender {
-    self.navigationItem.leftBarButtonItem = [UIBarButtonItem customButtonWithTitle:NSLocalizedString(@"Edit", nil) target:self action:@selector(editButtonPressed:)];
-    isEdit = NO;
-    //[UIView beginAnimations:@"" context:nil];
-    //[self.tableView setCenter:CGPointMake(self.tableView.center.x, self.tableView.center.y + 63)];
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"EDIT", @"Edit")
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self action:@selector(editButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = editButton;
     [(UITableView *) self.tableView setEditing:NO animated:YES];
-    //[UIView commitAnimations];
     [self updateNavigationBarButtons];
 }
 
@@ -212,10 +192,27 @@
     [self updateNavigationBarButtons];
 }
 
+- (IBAction)checkoutButtonPressed:(id)sender {
+    
+    //NIDINFO("calling checkoutButtonPressed() sender: %@", sender);
+    
+    if ([self.delegate respondsToSelector:@selector(presentCheckout:)]){
+        [self.delegate presentCheckout:nil];
+    } else {
+        ACShipAddressViewController *vc = [[ACShipAddressViewController alloc] initWithNibName:@"ACShipAddressViewController-iPad" bundle:ACBundle];
+        vc.delegate = self;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    return;
+}
 
 
 
-#pragma mark - Table view data source
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
@@ -245,58 +242,52 @@
 
 
 - (void)updateNavigationBarButtons {
-    NIDINFO("updateNavigationBarButtons() [_cartItems count]: %d", [_cartItems count]);
+    //NIDINFO("updateNavigationBarButtons() [_cartItems count]: %d", [_cartItems count]);
     if ([_cartItems count] > 0) {
         
-        //self.navigationItem.rightBarButtonItem = [UIBarButtonItem customButtonWithTitle:NSLocalizedString(@"Checkout", nil) target:self action:@selector(checkoutButtonPressed:)];
-        
-        UIButton *checkout = [UIButton buttonWithType:UIButtonTypeCustom];
-        checkout.frame = CGRectMake(0, 0, 83, 32);
-        //[checkout setTitle:@"Checkout" forState:UIControlStateNormal];
-        [checkout setImage:[UIImage imageNamed:ARTImage(@"btn-cart-checkout.png")] forState:UIControlStateNormal];
-        [checkout addTarget:self action:@selector(checkoutButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:checkout];
+        //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Checkout" style:UIBarButtonItemStylePlain target:self action:@selector(checkoutButtonPressed:)];
         
         if (self.tableView.editing) {
-            //self.navigationItem.leftBarButtonItem = [UIBarButtonItem customButtonWithTitle:NSLocalizedString(@"Done", nil) target:self action:@selector(doneEditingButtonPressed:)];;
-            
-            UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
-            done.frame = CGRectMake(0, 0, 63, 32);
-            //[done setTitle:@"Done" forState:UIControlStateNormal];
-            [done setImage:[UIImage imageNamed:ARTImage(@"done-button.png")] forState:UIControlStateNormal];
-            [done addTarget:self action:@selector(doneEditingButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:done];
+
+            self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneEditingButtonPressed:)];
+        
         } else {
-            //self.navigationItem.leftBarButtonItem = [UIBarButtonItem customButtonWithTitle: NSLocalizedString(@"Edit", nil) target:self action:@selector(editButtonPressed:)];;
             
-            UIButton *edit = [UIButton buttonWithType:UIButtonTypeCustom];
-            edit.frame = CGRectMake(0, 0, 63, 32);
-            //[edit setTitle:@"Edit" forState:UIControlStateNormal];
-            [edit setImage:[UIImage imageNamed:ARTImage(@"btn-cart-edit.png")] forState:UIControlStateNormal];
-            [edit addTarget:self action:@selector(editButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:edit];
+            self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonPressed:)];
         }
+        
+        self.tableView.tableFooterView = subtotalBar;
     }
     else {
         self.navigationItem.rightBarButtonItem = nil;
         self.navigationItem.leftBarButtonItem = nil;
+        self.tableView.tableFooterView = nil;
     }
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"CLOSE", @"Close")
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(closeButtonPressed:)];
 }
 
+
+-(void) closeButtonPressed: (id) sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tblView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
-    ACShoppingCartItemTableCell *cell = (ACShoppingCartItemTableCell *) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    ACShoppingCartItemTableCell *cell = (ACShoppingCartItemTableCell *) [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         [self.cellNib instantiateWithOwner:self options:nil];
-        cell = (ACShoppingCartItemTableCell *) tmpCell;
+        cell = (ACShoppingCartItemTableCell *) _tmpCell;
         self.tmpCell = nil;
         //254-33-24-23
-        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(254, 33, 30, 26)];
-        //textField.font = [UIFont fontWithName:@"AvenirNextLTPro-Demi" size:12];
+        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(254, 33, 35, 26)];
         textField.textColor = [UIColor artDotComDarkGrayTextColor_iPad];
         textField.borderStyle = UITextBorderStyleRoundedRect;
+        textField.textAlignment = NSTextAlignmentCenter;
         textField.delegate = self;
         [cell.contentView addSubview:textField];
         cell.quantityTextField = textField;
@@ -318,6 +309,15 @@
     NSDictionary *physicalDimensions = [itemAttributes objectForKeyNotNull:@"PhysicalDimensions"];
     NSNumber *height = [physicalDimensions objectForKeyNotNull:@"Height"];
     NSNumber *width = [physicalDimensions objectForKeyNotNull:@"Width"];
+    
+    // Round to the nearest 0.5
+    height = [NSNumber numberWithFloat:roundf(height.floatValue*2.0)/2.0];
+    width = [NSNumber numberWithFloat:roundf(width.floatValue*2.0)/2.0];
+    
+    // Number formatter
+    NSNumberFormatter *fmt = [[NSNumberFormatter alloc] init];
+    [fmt setPositiveFormat:@"0.#"];
+    
     NSNumber *unitOfMeasure = [physicalDimensions objectForKeyNotNull:@"UnitOfMeasure"];
     NSString *title = [itemAttributes objectForKeyNotNull:@"Title"];
     
@@ -329,13 +329,18 @@
     if (framedDimensions) {
         NSNumber *frameWidth = [framedDimensions objectForKeyNotNull:@"Top"];
         NSNumber *frameHeight = [framedDimensions objectForKeyNotNull:@"Left"];
-        cell.dimensions.text = [NSString stringWithFormat:@"%@ in x %@ in", frameWidth, frameHeight];
+        
+        // Round to the nearest 0.5
+        frameHeight = [NSNumber numberWithFloat:roundf(frameHeight.floatValue*2.0)/2.0];
+        frameWidth = [NSNumber numberWithFloat:roundf(frameWidth.floatValue*2.0)/2.0];
+        
+        cell.dimensions.text = [NSString stringWithFormat:@"%@ in x %@ in", [fmt stringFromNumber:frameWidth], [fmt stringFromNumber:frameHeight]];
     }
     else {
         NSString *uom = @"in";
         if ([unitOfMeasure isEqualToNumber:[NSNumber numberWithInt:1]]) uom = @"in";
         if ([unitOfMeasure isEqualToNumber:[NSNumber numberWithInt:2]]) uom = @"cm";
-        cell.dimensions.text = [NSString stringWithFormat:@"%@ %@ by %@ %@", [width stringValue], uom, [height stringValue], uom];
+        cell.dimensions.text = [NSString stringWithFormat:@"%@ %@ by %@ %@", [fmt stringFromNumber:width], uom, [fmt stringFromNumber:height], uom];
     }
     
     NSMutableString *name = [[NSMutableString alloc] init];
@@ -375,9 +380,10 @@
     cell.quantityTextField.tag = indexPath.row;
     return cell;
 }
-
+/*
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    NIDINFO("heightForFooterInSection %f",  subtotalBar.frame.size.height );
     return subtotalBar.frame.size.height;
 }
 
@@ -385,7 +391,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     return ([_cartItems count] > 0) ? subtotalBar : nil;
 }
-
+*/
 
 - (void)tableView:(UITableView *)tblView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ACArtInfoViewController *infoView = [[ACArtInfoViewController alloc] initWithNibName:@"ACArtInfoViewController" bundle:ACBundle];
@@ -394,12 +400,13 @@
     
     NSDictionary *currentItem = [[[[[self.data objectForKeyNotNull:@"Shipments"] objectAtIndex:0] objectForKeyNotNull:@"CartItems"] objectAtIndex:indexPath.row] objectForKeyNotNull:@"Item"];
     
-    UIButton *checkout = [UIButton buttonWithType:UIButtonTypeCustom];
-    checkout.frame = CGRectMake(0, 0, 83, 32);
-    [checkout setImage:[UIImage imageNamed:ARTImage(@"btn-cart-checkout.png")] forState:UIControlStateNormal];
-    [checkout addTarget:self action:@selector(checkoutButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    //UIButton *checkout = [UIButton buttonWithType:UIButtonTypeCustom];
+    //checkout.frame = CGRectMake(0, 0, 83, 32);
+    //checkout.backgroundColor = [UIColor redColor];
+    //DD[checkout setImage:[UIImage imageNamed:@"ArtAPI.bundle/btn-cart-checkout.png"] forState:UIControlStateNormal];
+    //[checkout addTarget:self action:@selector(checkoutButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    infoView.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:checkout];
+    //infoView.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:checkout];
     
     NSDictionary *itemAttributes = [currentItem objectForKeyNotNull:@"ItemAttributes"];
     NSDictionary *physicalDimensions = [itemAttributes objectForKeyNotNull:@"PhysicalDimensions"];
@@ -407,6 +414,15 @@
     infoView.itemType.text = type ? type : @"";
     NSNumber *width = [physicalDimensions objectForKeyNotNull:@"Width"];
     NSNumber *height = [physicalDimensions objectForKeyNotNull:@"Height"];
+    
+    // Round to the nearest 0.5
+    height = [NSNumber numberWithFloat:roundf(height.floatValue*2.0)/2.0];
+    width = [NSNumber numberWithFloat:roundf(width.floatValue*2.0)/2.0];
+    
+    // Number formatter
+    NSNumberFormatter *fmt = [[NSNumberFormatter alloc] init];
+    [fmt setPositiveFormat:@"0.#"];
+    
     NSNumber *unitOfMeasure = [physicalDimensions objectForKeyNotNull:@"UnitOfMeasure"];
     NSDictionary *itemPrice = [currentItem objectForKeyNotNull:@"ItemPrice"];
     NSNumber *displayPrice = [itemPrice objectForKeyNotNull:@"Price"];
@@ -435,11 +451,6 @@
     NSString *httpURL = [mediumInformation objectForKeyNotNull:@"HttpImageURL"];
     
     
-    //NSURL *imageURL = [[ACAPI sharedAPI] URLWithRawFrameURLString:httpURL maxWidth:90 maxHeight:72];
-    //EGOImageView *image = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 10, 90, 72)];
-    //image.contentMode = UIViewContentModeScaleAspectFit;
-    //[image setImageURL:imageURL];
-    
     NSString *imageURL = [ArtAPI cleanImageUrl:httpURL withSize:90];
     NINetworkImageView *image = [[NINetworkImageView alloc] initWithFrame:CGRectMake(10, 10, 90, 72)];
     image.contentMode = UIViewContentModeScaleAspectFit;
@@ -456,13 +467,18 @@
     if (framedDimensions) {
         NSNumber *frameWidth = [framedDimensions objectForKeyNotNull:@"Top"];
         NSNumber *frameHeight = [framedDimensions objectForKeyNotNull:@"Left"];
-        infoView.size.text = [NSString stringWithFormat:@"%@ in x %@ in", frameWidth, frameHeight];
+
+        // Round to the nearest 0.5
+        frameHeight = [NSNumber numberWithFloat:roundf(frameHeight.floatValue*2.0)/2.0];
+        frameWidth = [NSNumber numberWithFloat:roundf(frameWidth.floatValue*2.0)/2.0];
+        
+        infoView.size.text = [NSString stringWithFormat:@"%@ in x %@ in", [fmt stringFromNumber:frameWidth], [fmt stringFromNumber:frameHeight]];
     }
     else {
         NSString *uom = @"in";
         if ([unitOfMeasure isEqualToNumber:[NSNumber numberWithInt:1]]) uom = @"in";
         if ([unitOfMeasure isEqualToNumber:[NSNumber numberWithInt:2]]) uom = @"cm";
-        infoView.size.text = [NSString stringWithFormat:@"%@ %@ x %@ %@", width, uom, height, uom];
+        infoView.size.text = [NSString stringWithFormat:@"%@ %@ x %@ %@", [fmt stringFromNumber:width], uom, [fmt stringFromNumber:height], uom];
     }
     
     
@@ -479,7 +495,7 @@
     [infoView loadDataFromAPI];
     
     
-    infoView.contentSizeForViewInPopover = CGSizeMake(320, 460);
+//    /infoView.contentSizeForViewInPopover = CGSizeMake(320, 460);
     [self.navigationController pushViewController:infoView animated:YES];
 }
 
@@ -493,23 +509,17 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSDictionary *cartItem = [_cartItems objectAtIndex:indexPath.row];
         NSString *cartItemID = [cartItem objectForKeyNotNull:@"Id"];
+        //NIDINFO("removing cartItemId: %@ of cartItem: %@", cartItemID, cartItem );
         
         [_cartItems removeObjectAtIndex:indexPath.row];
         [tblView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self updateNavigationBarButtons];
         
-        
-        //self.hud = [[MBProgressHUD alloc] initWithView:self.view.window];
-        //[[AppDel window] addSubview:self.hud];
-        //self.hud.labelText = @"Removing Item";
-        //[self.hud show:YES];
         [SVProgressHUD showWithStatus:@"Removing Item"];
         
-        
-        //ACJSONAPIRequest *request = [[ACAPI sharedAPI] requestForCartUpdateCartItemQuantityWithDelegate:self cartItemId:cartItemID quantity:0];
-        //[self startRequest:request];
         [ArtAPI requestForCartUpdateCartItemQuantityForCartItemId:cartItemID quantity:0 success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            
             [SVProgressHUD dismiss];
             [self handleResponse:JSON];
         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
@@ -522,15 +532,21 @@
 }
 
 -(void) handleResponse: (id) resp {
-    NIDINFO("handleResponse: %@", resp);
-    NSDictionary *cart = [resp objectForKeyNotNull:@"Cart"];
+    //NIDINFO("handleResponse: %@", resp);
+    NSDictionary *cart = [[resp objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Cart"];
     [ArtAPI setCart:cart];
-    //[self removeHUD];
+    
+    // Post notification that cart was updated - update badges
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CART_UPDATED
+                                                        object:self];
+    //NIDINFO("[ArtAPI cart]: %@", [ArtAPI cart] );
     
     self.data = [ArtAPI cart];
+    //self.data = cart;
     NSArray *shipments = [self.data objectForKeyNotNull:@"Shipments"];
     NSDictionary *shipment = [shipments objectAtIndex:0];
     NSArray *cartItems = [shipment objectForKeyNotNull:@"CartItems"];
+    //NIDINFO("cartItems.count: %d", cartItems.count);
     _cartItems = [[NSMutableArray alloc] initWithArray:cartItems];
     [[self tableView] reloadData];
     [self updateSubtotalLabel];
@@ -539,7 +555,7 @@
 }
 
 -(void) handleFailure: (id) resp {
-    NIDINFO("handleFailure: %@", resp);
+    //NIDINFO("handleFailure: %@", resp);
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred"
                                                     message:[resp objectForKey:@"APIErrorMessage"]
@@ -550,43 +566,6 @@
     [self loadDataFromAPI];
 }
 
-/*
-- (void)super_requestDidFinish:(ACJSONAPIRequest *)request {
-    [self.networkRequests removeObject:request];
-}
-
-
-- (void)super_requestDidFail:(ACJSONAPIRequest *)request {
-    [self.networkRequests removeObject:request];
-    [self hideActivityIndicator];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[request APIErrorMessage] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [alert show];
-}
-
-
-- (void)requestDidFinish:(ACJSONAPIRequest *)request {
-    NSDictionary *response = [[request APIResponse] objectForKeyNotNull:@"Cart"];
-    [[ACAPI sharedAPI] setCart:response];
-    [self removeHUD];
-    
-    self.data = [[ACAPI sharedAPI] cart];
-    NSArray *shipments = [self.data objectForKeyNotNull:@"Shipments"];
-    NSDictionary *shipment = [shipments objectAtIndex:0];
-    NSArray *cartItems = [shipment objectForKeyNotNull:@"CartItems"];
-    _cartItems = [[NSMutableArray alloc] initWithArray:cartItems];
-    [[self tableView] reloadData];
-    [self updateSubtotalLabel];
-    [self updateNavigationBarButtons];
-    [self performSelector:@selector(refresh) withObject:nil afterDelay:0.1];
-}
-
-
-- (void)requestDidFail:(ACJSONAPIRequest *)request {
-    [self super_requestDidFail:request];
-    [self removeHUD];
-    [self loadDataFromAPI];  // reload so the cell that was animated away reappears
-}
-*/
 
 #pragma mark uipicker stuff
 - (void)scroll:(NSIndexPath *)path {
@@ -599,16 +578,12 @@
     self.tableView.scrollEnabled = YES;
     NSDictionary *cartItem = [_cartItems objectAtIndex:textFieldBeingEdited.tag];
     NSString *cartItemID = [cartItem objectForKeyNotNull:@"Id"];
-    //self.hud = [[MBProgressHUD alloc] initWithView:self.view.window];
-    //[[AppDel window] addSubview:self.hud];
-    //self.hud.labelText = @"Updating Quantity";
-    //[self.hud show:YES];
+
     [SVProgressHUD showWithStatus:@"Updating Quantity"];
     NSUInteger quan = [textFieldBeingEdited.text intValue];
-    //ACJSONAPIRequest *request = [[ACAPI sharedAPI] requestForCartUpdateCartItemQuantityWithDelegate:self cartItemId:cartItemID quantity:quan];
-    //[self startRequest:request];
+
     [ArtAPI requestForCartUpdateCartItemQuantityForCartItemId:cartItemID quantity:quan success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+        //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
         [SVProgressHUD dismiss];
         [self handleResponse:JSON];
     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
@@ -617,8 +592,8 @@
         [self handleFailure:JSON];
     }];
     
-    [self updateSubtotalLabel];
-    [self updateNavigationBarButtons];
+    //[self updateSubtotalLabel];
+    //[self updateNavigationBarButtons];
 }
 
 
@@ -685,7 +660,7 @@
 
 - (void)handleTapBehind:(UITapGestureRecognizer *)sender
 {
-    NIDINFO("handleTapBehind() sender: %@", sender );
+    //NIDINFO("handleTapBehind() sender: %@", sender );
     if (sender.state == UIGestureRecognizerStateEnded)
     {
         CGPoint location = [sender locationInView:nil]; //Passing nil gives us coordinates in the window
@@ -701,6 +676,15 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark ACShipAddressViewDelegate
+- (void)didPressBackButton: (ACShipAddressViewController*) shipAddressViewController {
+    //NIDINFO("didPressBackButton: %@", shipAddressViewController);
+    [shipAddressViewController.navigationController popViewControllerAnimated:YES];
 }
 
 

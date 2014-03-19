@@ -172,7 +172,10 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     if(IS_IOS_7_ABOVE){
         size = [backTitle sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
     }else{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         size = [backTitle sizeWithFont:[UIFont systemFontOfSize:17.0f]];
+#pragma GCC diagnostic pop
     }
     //NSLog(@"Frame Size is %@",NSStringFromCGSize(size));
     button.frame = CGRectMake(0, 0, size.width + 20, 20);
@@ -226,7 +229,10 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     if(IS_IOS_7_ABOVE){
         size = [backTitle sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
     }else{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         size = [backTitle sizeWithFont:[UIFont systemFontOfSize:17.0f]];
+#pragma GCC diagnostic pop
     }
     //NSLog(@"Frame Size is %@",NSStringFromCGSize(size));
     button.frame = CGRectMake(0, 0, size.width + 20, 20);
@@ -276,7 +282,10 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     if(IS_IOS_7_ABOVE){
         size = [nextTitle sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
     }else{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         size = [nextTitle sizeWithFont:[UIFont systemFontOfSize:17.0f]];
+#pragma GCC diagnostic pop
     }
     //NSLog(@"Frame Size is %@",NSStringFromCGSize(size));
     button.frame = CGRectMake(0, 0, size.width + 20, 20);

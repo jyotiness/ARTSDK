@@ -12,19 +12,14 @@
 @protocol ACShoppingCartViewDelegate;
 
 @interface ACShoppingCartViewController : UIViewController  <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource> {
-    IBOutlet UITableView *tableView;
     IBOutlet UIView *tableViewFooter;
     IBOutlet UIView *subtotalBar;
     IBOutlet UILabel *subtotalLabel;
-    
-    UINib *cellNib;
-    BOOL isEdit;
     NSMutableArray *_cartItems;
     UIToolbar *keyboardDoneButtonView;
     UIPickerView *pickerView;
     UITextField *textFieldBeingEdited;
     UIButton *activeQuantityButton;
-    
     ACActivityIndicator *activityIndicator;
 }
 

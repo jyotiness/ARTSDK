@@ -490,7 +490,7 @@
 
 - (void)dismissModal {
     [[NSNotificationCenter defaultCenter] removeObserver:nil name:kACNotificationDismissModal object:nil];
-    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)viewDidUnload {
@@ -1620,13 +1620,11 @@
         //[self.cardTypeField resignFirstResponder];
         self.cardTypePickerView = [self generatePickerView:textField];
         textField.inputView = self.cardTypePickerView;
-        //self.cardTypeField.inputAccessoryView = [self generateKeyboardDoneButtonView];
     }
     if (textField.tag == 12)
     {
         self.expDatePickerView = [self generatePickerView:textField];
         textField.inputView = self.expDatePickerView;
-        //self.expDateField.inputAccessoryView = [self generateKeyboardDoneButtonView];
     }
     else
     {
@@ -3070,22 +3068,6 @@
     picker.showsSelectionIndicator = YES;
     [picker setBackgroundColor:[UIColor whiteColor]];
     return picker;
-}
-
--(UIToolbar *) generateKeyboardDoneButtonView
-{
-    UIToolbar *keyboardDoneButtonView1 = [[UIToolbar alloc] init];
-    keyboardDoneButtonView1.barStyle = UIBarStyleBlack;
-    keyboardDoneButtonView1.translucent = YES;
-    keyboardDoneButtonView1.tintColor = nil;
-    [keyboardDoneButtonView1 sizeToFit];
-    
-    UIBarButtonItem* nextButton = [[UIBarButtonItem alloc] initWithTitle: [ACConstants getLocalizedStringForKey:@"NEXT" withDefaultValue:@"NEXT"]
-                                                                   style:UIBarButtonItemStyleBordered target:self
-                                                                  action:@selector(nextButtonPressed:)];
-    UIBarButtonItem* flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [keyboardDoneButtonView1 setItems:[NSArray arrayWithObjects:flex,nextButton, nil]];
-    return keyboardDoneButtonView1 ;
 }
 
 -(void)chooseAdressAtIndex:(int)index

@@ -262,8 +262,6 @@
         // Add Cancel Button
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         cancelButton.frame = CGRectMake(0, 0, 60, 32);
-        [cancelButton setBackgroundImage:[UIImage imageNamed:ARTImage(@"TOP_NAV_BUTTONS.png")] forState:UIControlStateNormal];
-        [cancelButton setBackgroundImage:[UIImage imageNamed:ARTImage(@"TOP_NAV_BUTTONS_SELECTED.png")] forState:UIControlStateHighlighted];
         [cancelButton setTitle:@"Close" forState:UIControlStateNormal];
         UIFont *buttonFont = [UIFont fontWithName:kACStandardFont size:23.0f];
         [cancelButton.titleLabel setFont:buttonFont];
@@ -275,15 +273,6 @@
                            animated:YES
                          completion:nil];
     }
-    /*
-    ACCartViewController *cartVC = [[ACCartViewController alloc] initWithNibName:@"ACCartViewController" bundle:ACBundle];
-    cartVC.delegate = self;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cartVC];
-    [nav setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self.parentController presentViewController:nav animated:YES completion:nil];
-    nav.view.superview.frame = CGRectMake(0, 0, kCartPopoverWidth, kCartPopoverHeight);
-    nav.view.superview.center = self.parentController.view.center;
-     */
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

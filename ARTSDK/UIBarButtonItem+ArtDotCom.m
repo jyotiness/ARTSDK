@@ -8,6 +8,7 @@
 #import "UIBarButtonItem+ArtDotCom.h"
 
 #import "UIColor+Additions.h"
+#import "ACConstants.h"
 
 @implementation UIBarButtonItem (ArtDotCom)
 
@@ -67,11 +68,15 @@
     UIButton *button = [self customButton];
     button.frame = CGRectMake(0, 0, 75, 36);
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-//    UIImage *normalBackground = [[UIImage imageNamed:@"btn_generalNav_n"] stretchableImageWithLeftCapWidth:8 topCapHeight:0];
-//    UIImage *selectedBackground = [[UIImage imageNamed:@"btn_generalNav_h"] stretchableImageWithLeftCapWidth:8 topCapHeight:0];
-//    [button setBackgroundImage:normalBackground forState:UIControlStateNormal];
-//    [button setBackgroundImage:selectedBackground forState:UIControlStateHighlighted];
-    CGSize size = [title sizeWithFont:button.titleLabel.font];
+    CGSize size = CGSizeZero;
+    if(IS_IOS_7_ABOVE){
+        size = [title sizeWithAttributes:@{NSFontAttributeName:button.titleLabel.font}];
+    }else{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        size = [title sizeWithFont:button.titleLabel.font];
+#pragma GCC diagnostic pop
+    }
     button.frame = CGRectMake(0, 0, size.width + 30, 36);
 
     [button setTitle:title forState:UIControlStateNormal];

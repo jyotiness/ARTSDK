@@ -50,3 +50,7 @@ Then open the project file: ARTSDKExample.xcworkspace
 ## Components
 * [Share](docs/ArtAPI-Share.md)	 - A compoent to share content.
 
+## TODO
+* Update ACShoppingCartViewController to look more like photos to art and remove: bg_quantityField
+
+

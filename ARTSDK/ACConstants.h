@@ -35,6 +35,8 @@
 #define CC_TYPE_MASTERCARD @"3"
 #define CC_TYPE_DISCOVER @"1"
 
+#define NOTIFICATION_CART_UPDATED @"NOTIFICATION_CART_UPDATED"
+
 //#define SUPPORT_LILITAB_CARD_READER
 
 // TODO: this is specific to photos to art.  Need to 
