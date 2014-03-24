@@ -10,17 +10,16 @@
 
 
 
-#ifdef COCOAPODS_POD_AVAILABLE_ARTSDK
-    #define ACBundle [NSBundle bundleWithPath:[[[NSBundle mainBundle]resourcePath] stringByAppendingPathComponent:@"ArtAPI.bundle"]]
-    #define ARTImage(name) [NSString stringWithFormat:@"ArtAPI.bundle/%@",(name)]
-    #define ACLocalizedString(key, comment) \
-        [[NSBundle bundleWithPath:[[[NSBundle mainBundle]resourcePath] stringByAppendingPathComponent:@"ArtAPI.bundle"]] localizedStringForKey:(key) value:@"" table:nil]
-#else
+//#ifdef COCOAPODS_POD_AVAILABLE_ARTSDK
+#define ACBundle [NSBundle bundleWithPath:[[[NSBundle mainBundle]resourcePath] stringByAppendingPathComponent:@"ArtAPI.bundle"]]
+#define ARTImage(name) [NSString stringWithFormat:@"ArtAPI.bundle/%@",(name)]
+#define ACLocalizedString(key, comment) \
+    [[NSBundle bundleWithPath:[[[NSBundle mainBundle]resourcePath] stringByAppendingPathComponent:@"ArtAPI.bundle"]] localizedStringForKey:(key) value:@"" table:nil]
+/*#else
     #define ACBundle [NSBundle mainBundle]
     #define ARTImage(name) (name)
     #define ACLocalizedString(key, comment) NSLocalizedString((key), (comment))
-#endif
-
+#endif*/
 
 
 #define ABOUT_URL @"http://cache1.artprintimages.com/images/photostoart/mobile/index.html"
