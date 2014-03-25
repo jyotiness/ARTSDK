@@ -77,6 +77,40 @@
     
 }
 
+-(void)favoritesAction
+{
+    if(self.type == FavoritesTypeGallery)
+    {
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_BOOKMARK_PROGRESS", @"Saving to Bookmarks") ];
+        [ArtAPI addGalleryToBookmark:_itemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
+            //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            
+            [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_BOOKMARKED", @"Saved to Bookmarks") ];
+            
+        }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+            NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+            [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
+            
+        }];
+    }
+    else
+    {
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVING_PROGRESS", @"Saving to Gallery") ];
+        [ArtAPI addToMobileGalleryItemId:_itemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
+            //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            
+            [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVED", @"Saved to Gallery") ];
+            
+        }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+            NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+            [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
+            
+        }];
+    }
+}
+
 - (UIViewController *) activityViewController {
     //NSLog(@"activityViewController itemId: %@", _itemId);
     
@@ -85,37 +119,7 @@
     {
         //NSLog(@"LoggedIn");
         //NSLog(@"Adding Gallery ItemId: %@", _itemId);
-        
-        if(self.type == FavoritesTypeGallery)
-        {
-            [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_BOOKMARK_PROGRESS", @"Saving to Bookmarks") ];
-            [ArtAPI addGalleryToBookmark:_itemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
-                //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-                
-                [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_BOOKMARKED", @"Saved to Bookmarks") ];
-                
-            }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-                NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-                [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
-                
-            }];
-        }
-        else
-        {
-            [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVING_PROGRESS", @"Saving to Gallery") ];
-            [ArtAPI addToMobileGalleryItemId:_itemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
-                //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-                
-                [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVED", @"Saved to Gallery") ];
-                
-            }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-                NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-                [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
-                
-            }];
-        }
+        [self favoritesAction];
         
     } else {
         //NSLog(@"!LoggedIn");
@@ -166,20 +170,7 @@
 - (void)loginSuccess:(ACLoginViewController *)loginViewController {
     //_itemId = loginViewController.tag;
     //NSLog(@"loginSuccess itemId: %@", _itemId );
-    
-    [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVING_PROGRESS", @"Saving to Gallery") ];
-    [ArtAPI addToMobileGalleryItemId:_itemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
-        //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-        
-        [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVED", @"Saved to Gallery") ];
-        [self activityDidFinish:YES];
-    }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-        NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-        [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
-        [self activityDidFinish:YES];
-    }];
-    //[self activityDidFinish:YES];
+    [self favoritesAction];
 }
 
 @end
