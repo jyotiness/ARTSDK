@@ -1907,7 +1907,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
-    [[ArtAPI sharedInstance] profileAddFollowForLookupType:profileLookupType accountIdentifier:accountIdentifier returnBareResponse:returnBareResponse success:success failure:failure];
+    [[ArtAPI sharedInstance] profileRemoveFollowForLookupType:profileLookupType accountIdentifier:accountIdentifier returnBareResponse:returnBareResponse success:success failure:failure];
 }
 
 - (void) profileRemoveFollowForLookupType:(NSString *)profileLookupType
