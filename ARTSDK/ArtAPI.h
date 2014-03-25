@@ -285,6 +285,11 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
+
++ (void) addGalleryToBookmark: (NSString *) galleryId
+                      success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                      failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
 +(NSString*) galleryItemIdForItemId: (NSString *) itemId;
 
 + (NSArray *)mobileGalleryItems;

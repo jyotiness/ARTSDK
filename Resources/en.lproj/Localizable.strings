@@ -240,9 +240,14 @@
 <a href='%@'><img src='%@' alt='art logo' width=100 height=100></a>";
 
 // Share Favorites
+
+"FAVORITES_GALLERY_ACTIVITY_TITLE" = "Save Gallery";
+"FAVORITES_ITEM_ACTIVITY_TITLE" = "Save Item";
 "FAVORITES_ACTIVITY_TITLE" = "Save to Gallery";
 "FAVORITES_ACTIVITY_SAVING_PROGRESS" = "Saving to Gallery";
+"FAVORITES_ACTIVITY_BOOKMARK_PROGRESS" = "Saving to Bookmarks";
 "FAVORITES_ACTIVITY_SAVED" = "Saved to Gallery";
+"FAVORITES_ACTIVITY_BOOKMARKED" = "Saved to Bookmarks";
 "FAVORITES_ACTIVITY_ERROR" = "Error Saving";
 "FAVORITES_ACTIVITY_LOGIN_MESSAGE" = "Please login to save to your Gallery";
 "FAVORITES_REMOVE_ACTIVITY_TITLE" = "Remove from Gallery";

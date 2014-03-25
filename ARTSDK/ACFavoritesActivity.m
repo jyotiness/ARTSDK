@@ -19,10 +19,37 @@
 
 @implementation ACFavoritesActivity
 
+- (instancetype)initWithType:(FavoritesType)type
+{
+    self = [super init];
+    if (self) {
+        
+        self.type = type;
+    }
+    return self;
+}
 
 // Return the name that should be displayed below the icon in the sharing menu
-- (NSString *)activityTitle {
-    return ACLocalizedString(@"FAVORITES_ACTIVITY_TITLE", @"Save to Gallery") ;
+- (NSString *)activityTitle
+{
+    NSString *title = nil;
+    
+    switch (self.type) {
+        case FavoritesTypeGallery:
+            title = ACLocalizedString(@"FAVORITES_GALLERY_ACTIVITY_TITLE", @"Save Gallery") ;
+            break;
+        case FavoritesTypeItem:
+            title = ACLocalizedString(@"FAVORITES_ITEM_ACTIVITY_TITLE", @"Save Item") ;
+            break;
+        case FavoritesTypeOther:
+            title = ACLocalizedString(@"FAVORITES_ACTIVITY_TITLE", @"Save to Gallery") ;
+            break;
+            
+        default:
+            title = ACLocalizedString(@"FAVORITES_ACTIVITY_TITLE", @"Save to Gallery") ;
+            break;
+    }
+    return title;
 }
 
 // Return the string that uniquely identifies this activity type
@@ -54,22 +81,41 @@
     //NSLog(@"activityViewController itemId: %@", _itemId);
     
     
-    if( [ArtAPI isLoggedIn]){
+    if( [ArtAPI isLoggedIn])
+    {
         //NSLog(@"LoggedIn");
         //NSLog(@"Adding Gallery ItemId: %@", _itemId);
         
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVING_PROGRESS", @"Saving to Gallery") ];
-        [ArtAPI addToMobileGalleryItemId:_itemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
-            //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-            
-            [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVED", @"Saved to Gallery") ];
-            
-        }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-            NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-            [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
-            
-        }];
+        if(self.type == FavoritesTypeGallery)
+        {
+            [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_BOOKMARK_PROGRESS", @"Saving to Bookmarks") ];
+            [ArtAPI addGalleryToBookmark:_itemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
+                //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+                
+                [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_BOOKMARKED", @"Saved to Bookmarks") ];
+                
+            }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+                NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+                [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
+                
+            }];
+        }
+        else
+        {
+            [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVING_PROGRESS", @"Saving to Gallery") ];
+            [ArtAPI addToMobileGalleryItemId:_itemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
+                //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+                
+                [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVED", @"Saved to Gallery") ];
+                
+            }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+                NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+                [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
+                
+            }];
+        }
         
     } else {
         //NSLog(@"!LoggedIn");

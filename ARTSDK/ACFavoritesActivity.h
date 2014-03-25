@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum : NSUInteger {
+    FavoritesTypeGallery,
+    FavoritesTypeItem,
+    FavoritesTypeOther
+} FavoritesType;
+
 @interface ACFavoritesActivity : UIActivity
+
+@property(readwrite,nonatomic) FavoritesType type;
+
+- (instancetype)initWithType:(FavoritesType)type;
 
 @end
