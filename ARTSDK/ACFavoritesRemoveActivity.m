@@ -21,10 +21,37 @@
 
 @implementation ACFavoritesRemoveActivity
 
+- (instancetype)initWithType:(FavoritesType)type
+{
+    self = [super init];
+    if (self) {
+        
+        self.type = type;
+    }
+    return self;
+}
 
 // Return the name that should be displayed below the icon in the sharing menu
-- (NSString *)activityTitle {
-    return ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_TITLE", @"Remove from Gallery") ;
+- (NSString *)activityTitle
+{
+    NSString *title = nil;
+    
+    switch (self.type) {
+        case FavoritesTypeGallery:
+            title = ACLocalizedString(@"FAVORITES_REMOVE_GALLERY_ACTIVITY_TITLE", @"Remove Gallery") ;
+            break;
+        case FavoritesTypeItem:
+            title = ACLocalizedString(@"FAVORITES_REMOVE_ITEM_ACTIVITY_TITLE", @"Remove Item") ;
+            break;
+        case FavoritesTypeOther:
+            title = ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_TITLE", @"Remove from Gallery") ;
+            break;
+            
+        default:
+            title = ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_TITLE", @"Remove from Gallery") ;
+            break;
+    }
+    return title;
 }
 
 // Return the string that uniquely identifies this activity type

@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ACFavoritesActivity.h"
 
 @interface ACFavoritesRemoveActivity : UIActivity
+
+@property(readwrite,nonatomic) FavoritesType type;
+
+- (instancetype)initWithType:(FavoritesType)type;
+
 
 @end
