@@ -294,6 +294,8 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 
 + (NSArray *)mobileGalleryItems;
 
++ (void) processMobileGalleryResponse: (NSDictionary*) mobileGalleryResponse;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -393,4 +395,5 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 - (NSString *)aboutURL;
 - (NSString *)termsURL;
 - (NSString *)shareURL;
+
 @end

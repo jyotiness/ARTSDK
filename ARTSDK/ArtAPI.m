@@ -1707,6 +1707,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 
 /**/
 
++(void) processMobileGalleryResponse: (NSDictionary*) mobileGalleryResponse {
+    [[ArtAPI sharedInstance] processMobileGalleryResponse:mobileGalleryResponse];
+}
 
 -(void) processMobileGalleryResponse: (NSDictionary*) mobileGalleryResponse {
     
