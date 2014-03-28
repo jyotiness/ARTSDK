@@ -85,12 +85,12 @@
     
     if(self.type == FavoritesTypeGallery)
     {
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_REMOVING_PROGRESS", @"Removing from Bookmarks") ];
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_REMOVE_BOOKMARK_PROGRESS", @"Removing from Bookmarks") ];
         
         [ArtAPI removeGalleryToBookmark:_galleryItemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-            [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_REMOVED", @"Removed from Bookmarks") ];
+            [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_REMOVED_BOOKMARK", @"Removed from Bookmarks") ];
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
             [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_ERROR", @"Error Removing") ];

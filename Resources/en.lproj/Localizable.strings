@@ -248,6 +248,8 @@
 "FAVORITES_ACTIVITY_BOOKMARK_PROGRESS" = "Saving to Bookmarks";
 "FAVORITES_ACTIVITY_SAVED" = "Saved to Gallery";
 "FAVORITES_ACTIVITY_BOOKMARKED" = "Saved to Bookmarks";
+"FAVORITES_ACTIVITY_REMOVE_BOOKMARK_PROGRESS" = "Removing from Bookmarks";
+"FAVORITES_ACTIVITY_REMOVED_BOOKMARK" = "Removed from Bookmarks";
 "FAVORITES_ACTIVITY_ERROR" = "Error Saving";
 "FAVORITES_ACTIVITY_LOGIN_MESSAGE" = "Please login to save to your Gallery";
 "FAVORITES_REMOVE_ACTIVITY_TITLE" = "Remove from Gallery";
