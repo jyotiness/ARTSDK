@@ -31,6 +31,17 @@
     return self;
 }
 
+- (instancetype)initWithType:(FavoritesType)type andDelegate:(id)delegate
+{
+    self = [super init];
+    if (self) {
+        
+        self.type = type;
+        self.delegate = delegate;
+    }
+    return self;
+}
+
 // Return the name that should be displayed below the icon in the sharing menu
 - (NSString *)activityTitle
 {
@@ -103,9 +114,15 @@
             //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
             [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_SAVED", @"Removed from Gallery") ];
+            
+            if(self.delegate && [self.delegate respondsToSelector:@selector(updateSlideshowForRemovedItem:)]){
+                [self.delegate performSelector:@selector(updateSlideshowForRemovedItem:) withObject:self];
+            }
+            
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
             [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_ERROR", @"Error Removing") ];
+            self.delegate = nil;
         }];
     }
     
