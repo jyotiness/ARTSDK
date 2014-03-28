@@ -47,6 +47,7 @@ NSString* const kResourceCatalogGetSession = @"CatalogGetSession";
 NSString* const kResourceGalleryGetUserDefaultMobileGallery = @"GalleryGetUserDefaultMobileGallery";
 NSString* const kResourceGalleryAddItem = @"GalleryAddItem";
 NSString* const kResourceBookmarkAddGallery = @"ProfileAddGalleryBookmark";
+NSString* const kResourceBookmarkRemoveGallery = @"ProfileRemoveGalleryBookmark";
 NSString* const kResourceGalleryDelete = @"GalleryDelete";
 NSString* const kResourceGalleryRemoveItem = @"GalleryRemoveItem";
 NSString* const kResourceCatalogItemGetFrameRecommendations = @"CatalogItemGetFrameRecommendations";
@@ -1775,6 +1776,50 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     //[analyticsParams setValue:galleryItem.itemID forKey:@"ItemID"];
     //[Analytics logEvent:ANALYTICS_EVENT_NAME_ITEM_ADDED_TO_FAVORITES withParams:analyticsParams];
 }
+
++ (void) removeGalleryToBookmark: (NSString *) galleryId
+                      success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                      failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] removeGalleryToBookmark:galleryId success:success failure:failure] ;
+}
+
+- (void) removeGalleryToBookmark: (NSString *) galleryId
+                       success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                       failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    //    NSNumber * galleryId = [self mobileGalleryID];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                galleryId, @"galleryId",
+                                nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceBookmarkRemoveGallery
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    //NSLog(@"starting request url: %@ %@", request.HTTPMethod, request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        [self processMobileGalleryResponse:JSON];
+        
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+    
+    // Analytics
+    //NSDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:1];
+    //[analyticsParams setValue:galleryItem.itemID forKey:@"ItemID"];
+    //[Analytics logEvent:ANALYTICS_EVENT_NAME_ITEM_ADDED_TO_FAVORITES withParams:analyticsParams];
+}
+
+
 
 + (void) addToMobileGalleryItemId: (NSString *) itemId
                           success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success

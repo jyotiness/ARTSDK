@@ -78,19 +78,36 @@
     
 }
 
-- (UIViewController *) activityViewController {
+- (UIViewController *) activityViewController
+{
     //NSLog(@"activityViewController");
     //NSLog(@"Removing GalleryItemId: %@", _galleryItemId);
     
-    [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_SAVING_PROGRESS", @"Removing from Gallery") ];
-    [ArtAPI removeFromMobileGalleryItemId:[NSNumber numberWithLongLong:_galleryItemId.longLongValue] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
-        //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-        [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_SAVED", @"Removed from Gallery") ];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-        [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_ERROR", @"Error Removing") ];
-    }];
+    if(self.type == FavoritesTypeGallery)
+    {
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_REMOVING_PROGRESS", @"Removing from Bookmarks") ];
+        
+        [ArtAPI removeGalleryToBookmark:_galleryItemId success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
+            //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_REMOVED", @"Removed from Bookmarks") ];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+            [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_ERROR", @"Error Removing") ];
+        }];
+    }
+    else
+    {
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_SAVING_PROGRESS", @"Removing from Gallery") ];
+        [ArtAPI removeFromMobileGalleryItemId:[NSNumber numberWithLongLong:_galleryItemId.longLongValue] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            //NSLog(@"SUCCESS url: %@ %@", request.HTTPMethod, request.URL);
+            //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_SAVED", @"Removed from Gallery") ];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+            [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_REMOVE_ACTIVITY_ERROR", @"Error Removing") ];
+        }];
+    }
     
     [self activityDidFinish:YES];
     
