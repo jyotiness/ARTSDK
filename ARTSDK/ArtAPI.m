@@ -1762,7 +1762,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
-        [self processMobileGalleryResponse:JSON];
+        [self updateBookmarksDictionary:JSON];
         
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
@@ -1804,7 +1804,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
-        [self processMobileGalleryResponse:JSON];
+        [self updateBookmarksDictionary:JSON];
         
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
@@ -2516,6 +2516,40 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         }
          */
         failure(request, response, nil, JSON);
+    }
+}
+
+- (void)updateBookmarksDictionary:(NSDictionary *)response
+{
+    NSDictionary *responseToUse = [response objectForKeyNotNull:@"d"];
+    NSArray *profiles = [responseToUse objectForKeyNotNull:@"Profiles"];
+    if(profiles.count>0){
+        NSArray *bookmarks = [[profiles objectAtIndex:0] objectForKeyNotNull:@"Bookmarks"];
+        
+        if(bookmarks&&bookmarks.count>0){
+            NSMutableDictionary *bookMarksDictionarySet = [[NSMutableDictionary alloc] init];
+            for(NSDictionary *dict in bookmarks){
+                NSDictionary *galleryAttributes = [dict objectForKeyNotNull:@"GalleryAttributes"];
+                NSString *bookmarkId = [galleryAttributes objectForKeyNotNull:@"GalleryId"];
+                if(bookmarkId){
+                    [bookMarksDictionarySet setObject:dict forKey:bookmarkId];
+                }
+                
+            }
+            if([[bookMarksDictionarySet allKeys] count]>0)
+            {
+                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:bookMarksDictionarySet];
+                [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"USER_BOOKMARKS_DICTIONARY"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }else{
+                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"USER_BOOKMARKS_DICTIONARY"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }else{
+            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"USER_BOOKMARKS_DICTIONARY"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
     }
 }
 
