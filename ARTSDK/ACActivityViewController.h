@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef void (^ACActivityViewControllerCompletionHandler)(NSString *activityType, BOOL completed);
 
 @interface ACActivityViewController : UIActivityViewController
 @property (nonatomic, readwrite,copy) NSString *itemId;
+@property(nonatomic,copy) ACActivityViewControllerCompletionHandler acCompletionHandler;  // set to nil after call
 @end

@@ -48,6 +48,12 @@
                         withAction:ANALYTICS_EVENT_NAME_ITEM_SHARE_CANCELED
                          withLabel:activityType];
          }
+         
+         // Call Completion Handler
+         if(weakSelf.acCompletionHandler){
+             weakSelf.acCompletionHandler(activityType,completed);
+         }
+         
      }];
 }
 
@@ -56,5 +62,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end
