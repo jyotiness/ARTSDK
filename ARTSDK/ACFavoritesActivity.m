@@ -14,6 +14,7 @@
 @interface ACFavoritesActivity () <ACLoginDelegate>
 
 @property(nonatomic, copy) NSString *itemId;
+@property(readwrite,nonatomic) BOOL failOnNoAuthSession;
 
 @end
 
@@ -25,6 +26,7 @@
     if (self) {
         
         self.type = type;
+        self.failOnNoAuthSession = YES;
     }
     return self;
 }
@@ -44,7 +46,6 @@
         case FavoritesTypeOther:
             title = ACLocalizedString(@"FAVORITES_ACTIVITY_TITLE", @"Save to Gallery") ;
             break;
-            
         default:
             title = ACLocalizedString(@"FAVORITES_ACTIVITY_TITLE", @"Save to Gallery") ;
             break;
@@ -120,27 +121,29 @@
         //NSLog(@"LoggedIn");
         //NSLog(@"Adding Gallery ItemId: %@", _itemId);
         [self favoritesAction];
+        [self activityDidFinish:YES];
         
     } else {
         //NSLog(@"!LoggedIn");
         
-        ACLoginViewController *loginViewController = [[ACLoginViewController alloc] init];
-        loginViewController.delegate = self;
-        loginViewController.loginMessage = ACLocalizedString(@"FAVORITES_ACTIVITY_LOGIN_MESSAGE", @"Please login to save to your Gallery");
-        //loginViewController.tag = _itemId;
-        //NSLog(@"activityViewController loginViewController.tag: %@", loginViewController.tag);
-        
-        
-        [[UINavigationBar appearance] setTintColor:UIColorFromRGB(0x32ccff)];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-        navigationController.modalInPopover = YES;
-        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        
-        return navigationController;
+        if( _failOnNoAuthSession ){
+            [self activityDidFinish:NO];
+        } else {
+            ACLoginViewController *loginViewController = [[ACLoginViewController alloc] init];
+            loginViewController.delegate = self;
+            loginViewController.loginMessage = ACLocalizedString(@"FAVORITES_ACTIVITY_LOGIN_MESSAGE", @"Please login to save to your Gallery");
+            
+            [[UINavigationBar appearance] setTintColor:UIColorFromRGB(0x32ccff)];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+            navigationController.modalInPopover = YES;
+            navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+            navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            
+            return navigationController;
+        }
     }
     
-    [self activityDidFinish:YES];
+    //[self activityDidFinish:YES];
     
     return nil;
 }
@@ -148,12 +151,12 @@
 
 // handles results from sharing activity.
 - (void)finishedSharing: (BOOL)shared {
-    /*
+    
     if (shared) {
         NSLog(@"User successfully shared!");
     } else {
         NSLog(@"User didn't share.");
-    }*/
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
