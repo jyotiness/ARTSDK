@@ -10,6 +10,7 @@
 #import "ACLoginViewController.h"
 #import "ArtAPI.h"
 #import "SVProgressHUD.h"
+#import "Analytics.h"
 
 @interface ACFavoritesActivity () <ACLoginDelegate>
 
@@ -89,6 +90,8 @@
             
             [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_BOOKMARKED", @"Saved to Bookmarks") ];
             
+            [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_GALLERY_ADDED_TO_BOOKMARKS];
+            
         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
             [SVProgressHUD showErrorWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_ERROR", @"Error Saving") ];
@@ -103,6 +106,8 @@
             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
             
             [SVProgressHUD showSuccessWithStatus:ACLocalizedString(@"FAVORITES_ACTIVITY_SAVED", @"Saved to Gallery") ];
+            
+            [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_ITEM_ADDED_TO_FAVORITES];
             
         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);

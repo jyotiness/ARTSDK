@@ -22,6 +22,7 @@
 #define ANALYTICS_EVENT_NAME_CREATE_ACCOUNT             @"Create Account"
 #define ANALYTICS_EVENT_NAME_FORGOT_PASSWORD            @"Forgot Password"
 #define ANALYTICS_EVENT_NAME_INFO_BUTTON_PRESSED        @"Info button pressed"
+#define ANALYTICS_EVENT_NAME_LOGIN_FAILED               @"Log in Failed"
 
 #define ANALYTICS_EVENT_NAME_PLACE_ORDER                @"Place order pressed"
 #define ANALYTICS_EVENT_NAME_ORDER_CONFIRM_SHOWN        @"Order confirmation shown"
@@ -45,8 +46,10 @@
 #define ANALYTICS_EVENT_NAME_SETUP_BUTTON_CLICKED       @"Setup button clicked"
 #define ANALYTICS_EVENT_NAME_GALLERY_VIEWED             @"Gallery viewed"
 #define ANALYTICS_EVENT_NAME_FAVORITE_GALLERY_VIEWED    @"Favorite gallery viewed"
+#define ANALYTICS_EVENT_NAME_OWN_PROFILE_VIEWED         @"Own Profile viewed"
 #define ANALYTICS_EVENT_NAME_EXTERNAL_LINK_CLICKED      @"External link clicked"
 #define ANALYTICS_EVENT_NAME_ITEM_ADDED_TO_FAVORITES    @"Item added to favorites"
+#define ANALYTICS_EVENT_NAME_GALLERY_ADDED_TO_BOOKMARKS @"Gallery added to bookmarks"
 #define ANALYTICS_EVENT_NAME_GALLERY_SHARED             @"Gallery shared"
 #define ANALYTICS_EVENT_NAME_AUDIO_PLAYED               @"Audio played"
 #define ANALYTICS_EVENT_NAME_VISUALIZER                 @"Visualizer"
@@ -64,13 +67,15 @@
 #define ANALYTICS_EVENT_NAME_CACHE_REFRESH              @"Cache refreshed"
 
 #define ANALYTICS_EVENT_NAME_NOTIFICATION_RECIEVED      @"Notification recieved"
-#define ANALYTICS_EVENT_NAME_SIMPLE_NOTIFICATION             @"Simple Notification"
+#define ANALYTICS_EVENT_NAME_SIMPLE_NOTIFICATION               @"Simple Notification"
 #define ANALYTICS_EVENT_NAME_URLLINK_NOTIFICATION_RECIEVED     @"Link Notification"
 #define ANALYTICS_EVENT_NAME_CIRCLE_LANDING_NOTIFICATION       @"Circle Landing Notification"
 #define ANALYTICS_EVENT_NAME_GALLERY_LANDING_NOTIFICATION      @"Gallery Landing Notification"
 
-#define ANALYTICS_EVENT_NAME_ITEM_SHARE_CANCELED @"Item Share Canceled"
-
+#define ANALYTICS_EVENT_NAME_ITEM_SHARE_CANCELED          @"Item Share Canceled"
+#define ANALYTICS_EVENT_NAME_MOST_LOVED_VIEWED            @"Most Loved Circle viewed"
+#define ANALYTICS_EVENT_NAME_FEATURED_FEED_VIEWED         @"Featured Feed viewed"
+#define ANALYTICS_EVENT_NAME_EVERYONE_FEED_VIEWED         @"Everyone Feed viewed"
 
 @interface Analytics : NSObject {
 

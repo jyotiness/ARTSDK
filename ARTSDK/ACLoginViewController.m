@@ -247,6 +247,8 @@
              // Failure
              [SVProgressHUD dismiss];
              
+             [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_LOGIN_FAILED];
+             
              self.error =  ACLocalizedString(@"Your email address or password is incorrect", @"Your email address or password is incorrect");
              self.tableView.tableHeaderView = [self tableViewHeader];
              [self.tableView reloadData];
