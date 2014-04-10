@@ -659,6 +659,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [defaults setObject:nil forKey:@"FB_ACCESS_TOKEN_KEY"];
     [defaults setObject:nil forKey:@"FB_EXPIRATION_DATE_KEY"];
     
+    /* Clears the hash map used for tracking User's favorite galleries */
+    [self clearMobileGalleryMap];
+
     //[_facebook logout:nil];
     
     //[[ASIDownloadCache sharedCache] clearCachedResponsesForStoragePolicy:ASICachePermanentlyCacheStoragePolicy];
@@ -1866,6 +1869,11 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     //NSDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:1];
     //[analyticsParams setValue:galleryItem.itemID forKey:@"ItemID"];
     //[Analytics logEvent:ANALYTICS_EVENT_NAME_ITEM_ADDED_TO_FAVORITES withParams:analyticsParams];
+}
+
+-(void) clearMobileGalleryMap
+{
+    [_mobileGalleryMap removeAllObjects];
 }
 
 +(NSString*) galleryItemIdForItemId: (NSString *) itemId {
