@@ -20,6 +20,8 @@
     if ([activityType isEqualToString:@"com.art.ios.PinterestSharing"] ||
         [activityType isEqualToString:@"com.art.ios.Mail"] ||
         [activityType isEqualToString:@"com.art.ios.Favorites"] ||
+        [activityType isEqualToString:@"com.art.ios.Facebook"] ||
+        [activityType isEqualToString:@"com.art.ios.Twitter"] ||
         [activityType isEqualToString:@"com.art.ios.FavoritesRemove"]  ) {
         
         NSMutableDictionary * dict = [NSMutableDictionary dictionary];
