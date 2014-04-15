@@ -75,9 +75,10 @@
     
     [mySLComposerSheet setInitialText:_title];
     
-    //        [mySLComposerSheet addImage:[UIImage imageNamed:@"myImage.png"]];
+    //[mySLComposerSheet addImage:[UIImage imageNamed:@"myImage.png"]];
     
-    [mySLComposerSheet addURL:[NSURL URLWithString:_imageURL]];
+    NSString *customUrl = [ACConstants getCutomizedUrlForUrl:_imageURL forType:ACCustomSharingTypeFacebook];
+    [mySLComposerSheet addURL:[NSURL URLWithString:customUrl]];
     
     [mySLComposerSheet setCompletionHandler:^(SLComposeViewControllerResult result) {
         

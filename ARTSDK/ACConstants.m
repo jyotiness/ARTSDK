@@ -513,4 +513,43 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     }
 }
 
++(NSString *)getCutomizedUrlForUrl:(NSString *)urlString forType:(ACCustomSharingType)type
+{
+    if(!urlString)
+        return nil;
+    
+    NSString *outUrlString = nil;
+    NSString *customParameters = nil;
+    NSString *customAddParameters = nil;
+    
+    urlString = [urlString stringByAppendingString:@"/"];
+    
+    if(type == ACCustomSharingTypeFacebook)
+    {
+        customParameters = FACEBOOK_SHARE_CUSTOM_PARAMS;
+        customAddParameters = FACEBOOK_SHARE_CUSTOM_ADD_PARAMS;
+    }
+    else if(type == ACCustomSharingTypeTwitter)
+    {
+        customParameters = TWITTER_SHARE_CUSTOM_PARAMS;
+        customAddParameters = TWITTER_SHARE_CUSTOM_ADD_PARAMS;
+    }
+    
+    if([urlString hasSuffix:@"/"])
+    {
+        urlString = [urlString stringByReplacingCharactersInRange:NSMakeRange(urlString.length-1, 1) withString:@""];
+        outUrlString = [urlString stringByAppendingString:customParameters];
+    }
+    else if([urlString rangeOfString:@"?"].length)
+    {
+        outUrlString = [urlString stringByAppendingString:customAddParameters];
+    }
+    else
+    {
+        outUrlString = [urlString stringByAppendingString:customParameters];
+    }
+    
+    return outUrlString;
+}
+
 @end

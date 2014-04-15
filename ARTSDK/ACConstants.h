@@ -29,6 +29,11 @@
 #define Localized_Bundles [NSArray arrayWithObjects:@"com.art.photostoart",@"com.art.myphotos",@"com.art.mesphotos",nil]
 #define IS_IOS_7_ABOVE ([[UIDevice currentDevice].systemVersion floatValue] >=7.0f)?YES:NO
 
+#define FACEBOOK_SHARE_CUSTOM_PARAMS @"?utm_medium=social&utm_source=facebook&utm_campaign=ACapp&rfid=220421"
+#define FACEBOOK_SHARE_CUSTOM_ADD_PARAMS @"&utm_medium=social&utm_source=facebook&utm_campaign=ACapp&rfid=220421"
+#define TWITTER_SHARE_CUSTOM_PARAMS @"?utm_medium=social&utm_source=twitter&utm_campaign=ACapp&rfid=054994"
+#define TWITTER_SHARE_CUSTOM_ADD_PARAMS @"&utm_medium=social&utm_source=twitter&utm_campaign=ACapp&rfid=054994"
+
 #define CC_TYPE_AMEX @"0"
 #define CC_TYPE_VISA @"5"
 #define CC_TYPE_MASTERCARD @"3"
@@ -46,6 +51,12 @@ typedef enum
     AppLocationGerman,
     AppLocationNone
 }AppLocation;
+
+typedef enum
+{
+    ACCustomSharingTypeFacebook,
+    ACCustomSharingTypeTwitter,
+}ACCustomSharingType;
 
 extern NSString *kACStandardFont;
 extern NSString *kACNotificationDismissModal;
@@ -95,6 +106,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 +(NSDictionary *)getHelpShiftTokens;
 +(NSString *)getCardIOToken;
 +(NSString *)getUpperCaseStringIfNeededForString:(NSString *)normalString;
++(NSString *)getCutomizedUrlForUrl:(NSString *)urlString forType:(ACCustomSharingType)type;
 
 @end
 

@@ -11,6 +11,7 @@
 #import <Accounts/Accounts.h>
 #import "ACConstants.h"
 
+
 @interface ACTwitterActivity ()
 
 @property(nonatomic, strong) NSString *imageURL;
@@ -75,10 +76,9 @@
     [mySLComposerSheet setInitialText:_title];
     
 //        [mySLComposerSheet addImage:[UIImage imageNamed:@"myImage.png"]];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tes" message:_imageURL delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    [alert show];
     
-    [mySLComposerSheet addURL:[NSURL URLWithString:_imageURL]];
+    NSString *customUrl = [ACConstants getCutomizedUrlForUrl:_imageURL forType:ACCustomSharingTypeTwitter];
+    [mySLComposerSheet addURL:[NSURL URLWithString:customUrl]];
     
     [mySLComposerSheet setCompletionHandler:^(SLComposeViewControllerResult result) {
         
