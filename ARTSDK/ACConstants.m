@@ -533,6 +533,10 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     {
         customParameters = TWITTER_SHARE_CUSTOM_PARAMS;
         customAddParameters = TWITTER_SHARE_CUSTOM_ADD_PARAMS;
+    }else if(type == ACCustomSharingTypePinterest)
+    {
+        customParameters = PINTEREST_SHARE_CUSTOM_PARAMS;
+        customAddParameters = PINTEREST_SHARE_CUSTOM_ADD_PARAMS;
     }
     
     if([urlString hasSuffix:@"/"])

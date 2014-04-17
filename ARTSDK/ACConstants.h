@@ -33,6 +33,8 @@
 #define FACEBOOK_SHARE_CUSTOM_ADD_PARAMS @"&utm_medium=social&utm_source=facebook&utm_campaign=ACapp&rfid=220421"
 #define TWITTER_SHARE_CUSTOM_PARAMS @"?utm_medium=social&utm_source=twitter&utm_campaign=ACapp&rfid=054994"
 #define TWITTER_SHARE_CUSTOM_ADD_PARAMS @"&utm_medium=social&utm_source=twitter&utm_campaign=ACapp&rfid=054994"
+#define PINTEREST_SHARE_CUSTOM_PARAMS @"?utm_medium=social&utm_source=pinterest&utm_campaign=ACapp&rfid=097383"
+#define PINTEREST_SHARE_CUSTOM_ADD_PARAMS @"&utm_medium=social&utm_source=pinterest&utm_campaign=ACapp&rfid=097383"
 
 #define CC_TYPE_AMEX @"0"
 #define CC_TYPE_VISA @"5"
@@ -56,6 +58,7 @@ typedef enum
 {
     ACCustomSharingTypeFacebook,
     ACCustomSharingTypeTwitter,
+    ACCustomSharingTypePinterest
 }ACCustomSharingType;
 
 extern NSString *kACStandardFont;

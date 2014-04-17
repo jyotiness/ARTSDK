@@ -67,8 +67,13 @@
 // initiate the sharing process. First we will need to login
 - (void)performActivity {
     //NIDINFO("performActivity");
-    [_pinterest createPinWithImageURL:[NSURL URLWithString:_imageURL]
-                            sourceURL:[NSURL URLWithString:_sourceURL]
+    
+    NSString *customUrl = [ACConstants getCutomizedUrlForUrl:_sourceURL forType:ACCustomSharingTypePinterest];
+    
+    NSURL *imageURL = [NSURL URLWithString:_imageURL];
+    
+    [_pinterest createPinWithImageURL:imageURL
+                            sourceURL:[NSURL URLWithString:customUrl]
                           description:_title];
     
     [self activityDidFinish:YES];
