@@ -75,7 +75,15 @@
     
     [mySLComposerSheet setInitialText:_title];
     
-    //[mySLComposerSheet addImage:[UIImage imageNamed:@"myImage.png"]];
+    @try{
+        //try to add the image
+        NSURL *url = [NSURL URLWithString:_imageURL];
+        if(url){
+            [mySLComposerSheet addImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:url]]];
+        }
+    }@catch(id exception){
+        //do nothing - just dont add the image
+    }
     
     NSString *customUrl = [ACConstants getCutomizedUrlForUrl:_sourceURL forType:ACCustomSharingTypeFacebook];
     [mySLComposerSheet addURL:[NSURL URLWithString:customUrl]];
