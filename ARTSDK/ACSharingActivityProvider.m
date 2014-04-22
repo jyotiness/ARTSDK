@@ -25,17 +25,17 @@
         [activityType isEqualToString:@"com.art.ios.FavoritesRemove"]  ) {
         
         NSMutableDictionary * dict = [NSMutableDictionary dictionary];
-        [dict setObject:_title forKey:@"title"];
-        [dict setObject:_imageURL forKey:@"imageURL"];
-        [dict setObject:_sourceURL forKey:@"sourceURL"];
-        [dict setObject:_iTunesURL forKey:@"iTunesURL"];
-        [dict setObject:_appName forKey:@"appName"];
-        [dict setObject:_itemId forKey:@"itemId"];
+        [dict setObjectNotNull:_title forKey:@"title"];
+        [dict setObjectNotNull:_imageURL forKey:@"imageURL"];
+        [dict setObjectNotNull:_sourceURL forKey:@"sourceURL"];
+        [dict setObjectNotNull:_iTunesURL forKey:@"iTunesURL"];
+        [dict setObjectNotNull:_appName forKey:@"appName"];
+        [dict setObjectNotNull:_itemId forKey:@"itemId"];
         if(_shareItemId){
-            [dict setObject:_shareItemId forKey:@"shareItemId"];
+            [dict setObjectNotNull:_shareItemId forKey:@"shareItemId"];
         }
         if(_galleryItemId){
-            [dict setObject:_galleryItemId forKey:@"galleryItemId"];
+            [dict setObjectNotNull:_galleryItemId forKey:@"galleryItemId"];
         }
         return dict;
         

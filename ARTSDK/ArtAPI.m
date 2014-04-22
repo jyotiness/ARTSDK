@@ -462,19 +462,19 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 nil];
     // Optional
     if( facebookUID ){
-        [parameters setObject:facebookUID forKey:@"facebookUID"];
+        [parameters setObjectNotNull:facebookUID forKey:@"facebookUID"];
     }
     if( facebookToken ){
-        [parameters setObject:facebookToken forKey:@"facebookToken"];
+        [parameters setObjectNotNull:facebookToken forKey:@"facebookToken"];
     }
     if( lastName ){
-        [parameters setObject:lastName forKey:@"lastName"];
+        [parameters setObjectNotNull:lastName forKey:@"lastName"];
     }
     if( emailAddress ){
-        [parameters setObject:emailAddress forKey:@"emailAddress"];
+        [parameters setObjectNotNull:emailAddress forKey:@"emailAddress"];
     }
     if( firstName ){
-        [parameters setObject:firstName forKey:@"firstName"];
+        [parameters setObjectNotNull:firstName forKey:@"firstName"];
     }
     //NSLog(@"requestForAccountAuthenticateWithFacebookUID parameters: %@",parameters);
     
@@ -847,7 +847,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                        keyword, @"keyword",
                                        nil];
     if( moodId){
-        [parameters setObject:moodId.stringValue forKey:@"moodId"];
+        [parameters setObjectNotNull:moodId.stringValue forKey:@"moodId"];
     }
     //NIDINFO("parameters: %@", parameters );
     
@@ -1896,7 +1896,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
             NSString * galleryItemId = [galleryItem objectForKey:@"GalleryItemId"];
             NSString * itemId = [[galleryItem objectForKey:@"Item"] objectForKey:@"ItemNumber"];
             
-            [_mobileGalleryMap setObject:galleryItemId forKey:itemId];
+            [_mobileGalleryMap setObjectNotNull:galleryItemId forKey:itemId];
         }
     }
     
@@ -1944,7 +1944,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                        noCachedCopy?@"true":@"false",@"noCachedCopy",
                                        nil];
     if(self.authenticationToken){
-        [parameters setObject:self.authenticationToken forKey:@"authToken"];
+        [parameters setObjectNotNull:self.authenticationToken forKey:@"authToken"];
     }
     
     NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
@@ -2476,10 +2476,10 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         if (responseDictionary && [responceCode isEqualToNumber:[NSNumber numberWithInt:200]]) {
             //self.APIResponseCode = 200;
             //self.APIResponse = responseDictionary;
-            [json setObject:responceCode forKey:@"APIResponseCode"];
+            [json setObjectNotNull:responceCode forKey:@"APIResponseCode"];
             NSString *t = [[responseType componentsSeparatedByString:@":"] objectAtIndex:0];
             //self.APIResponseType = t;
-            [json setObject:t forKey:@"APIResponseType"];
+            [json setObjectNotNull:t forKey:@"APIResponseType"];
             
             // Extract Session Token
             if ([t isEqualToString:@"SessionResponse"]) {
@@ -2496,12 +2496,12 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         }
         else {
             //self.APIResponseCode = [responceCode intValue];
-            [json setObject:responceCode forKey:@"APIResponseCode"];
+            [json setObjectNotNull:responceCode forKey:@"APIResponseCode"];
             //self.APIErrorMessage = responceMessage;
-            [json setObject:responceMessage forKey:@"APIErrorMessage"];
+            [json setObjectNotNull:responceMessage forKey:@"APIErrorMessage"];
             if ([responceMessage length] < 1) {
                 //self.APIErrorMessage = @"Empty Response";
-                [json setObject:@"Empty Response" forKey:@"APIErrorMessage"];
+                [json setObjectNotNull:@"Empty Response" forKey:@"APIErrorMessage"];
             }
         }
     }
@@ -2543,7 +2543,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                 NSDictionary *galleryAttributes = [dict objectForKeyNotNull:@"GalleryAttributes"];
                 NSString *bookmarkId = [galleryAttributes objectForKeyNotNull:@"GalleryId"];
                 if(bookmarkId){
-                    [bookMarksDictionarySet setObject:dict forKey:bookmarkId];
+                    [bookMarksDictionarySet setObjectNotNull:dict forKey:bookmarkId];
                 }
                 
             }
