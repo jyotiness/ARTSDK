@@ -7,6 +7,8 @@
 //
 
 #import "ACSharingActivityProvider.h"
+#import "NSMutableDictionary+SetNull.h"
+
 // https://github.com/rdougan/RDActivityViewController
 
 @implementation ACSharingActivityProvider
