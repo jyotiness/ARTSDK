@@ -544,14 +544,16 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
         urlString = [urlString stringByReplacingCharactersInRange:NSMakeRange(urlString.length-1, 1) withString:@""];
         outUrlString = [urlString stringByAppendingString:customParameters];
     }
-    else if([urlString rangeOfString:@"?"].length)
-    {
+    
+    NSRange textRange = [urlString rangeOfString:@"?"];
+    if (textRange.location != NSNotFound) {
         outUrlString = [urlString stringByAppendingString:customAddParameters];
     }
     else
     {
         outUrlString = [urlString stringByAppendingString:customParameters];
     }
+
     
     return outUrlString;
 }
