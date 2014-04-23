@@ -1778,7 +1778,6 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 }
 
 -(void) processMobileGalleryResponse: (NSDictionary*) mobileGalleryResponse {
-    return;
     // Save mobile galleryID
     NSDictionary * gallery = [[mobileGalleryResponse objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Gallery"];
     
