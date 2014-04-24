@@ -11,5 +11,6 @@
 @interface NSMutableDictionary (SetNull)
 
 - (BOOL)setObjectNotNull:(id)anObject forKey:(id)aKey;
+- (BOOL)setValidObject:(id)anObject forValidKey:(id)aKey;
 
 @end

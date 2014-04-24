@@ -24,4 +24,15 @@
     }
 }
 
+- (BOOL)setValidObject:(id)anObject forValidKey:(id)aKey {
+    
+    if(anObject!=nil && ![anObject isKindOfClass:[NSNull class]] && aKey !=nil && ![aKey isKindOfClass:[NSNull class]]) {
+        [self setObject:anObject forKey:aKey];
+        return YES;
+    }
+    else
+        return NO;
+    
+}
+
 @end
