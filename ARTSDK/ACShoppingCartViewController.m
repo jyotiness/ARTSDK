@@ -15,6 +15,7 @@
 #import "ACShoppingCartItemTableCell.h"
 #import "ACShipAddressViewController.h"
 #import "ACConstants.h"
+#import "NSString+Additions.h"
 
 @interface ACShoppingCartViewController() <ACShipAddressViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *checkoutButton;

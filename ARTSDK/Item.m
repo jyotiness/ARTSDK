@@ -8,6 +8,7 @@
 
 #import "Item.h"
 #import "ArtAPI.h"
+#import "NSString+Additions.h"
 
 @interface Item()
 @property(nonatomic, strong) NSDictionary * itemDict;

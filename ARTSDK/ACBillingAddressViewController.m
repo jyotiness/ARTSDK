@@ -18,6 +18,7 @@
 #import "NSString+Additions.h"
 #import "Analytics.h"
 #import "ACKeyboardToolbarView.h"
+#import "NSString+Additions.h"
 #ifdef SUPPORT_LILITAB_CARD_READER
 #import "LTMagTekReader.h"
 #endif

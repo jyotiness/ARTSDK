@@ -16,6 +16,7 @@
 #import "UIColor+Additions.h"
 #import "Analytics.h"
 #import "ACKeyboardToolbarView.h"
+#import "NSString+Additions.h"
 
 #define  COUNTRY_PICKER_TAG 5
 #define  STATE_PICKER_TAG 8

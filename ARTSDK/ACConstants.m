@@ -7,6 +7,7 @@
 //
 
 #import "ACConstants.h"
+#import "NSString+Additions.h"
 
 NSString *kACStandardFont = @"GiorgioSans-Bold";
 
