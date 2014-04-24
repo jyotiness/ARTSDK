@@ -123,6 +123,19 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Judy
++(void) decorProductSearchKeyword:(NSString*) keyword
+                      refinements:(NSString*) refinements
+                       paletteHex:(NSString*) paletteHex
+                       pageNumber:(NSString*) pageNumber
+                      numProducts:(NSString*) numProducts
+                         minWidth:(NSString*) minWidth
+                         maxWidth:(NSString*) maxWidth
+                        minHeight:(NSString*) minHeight
+                        maxHeight:(NSString*) maxHeight
+                         minPrice:(NSString*) minPrice
+                         maxPrice:(NSString*) maxPrice
+                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                          failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
 + (void) palettesForMoodId:(NSNumber*) moodId
                  wallColor:(NSString *) wallColor

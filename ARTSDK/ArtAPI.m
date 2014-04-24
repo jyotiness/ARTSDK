@@ -10,6 +10,7 @@
 #import "AFNetworking.h"
 #import "NSDictionary+Additions.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "NSMutableDictionary+SetNull.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // URLs
@@ -737,6 +738,67 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Judy
++(void) decorProductSearchKeyword:(NSString*) keyword
+                      refinements:(NSString*) refinements
+                       paletteHex:(NSString*) paletteHex
+                       pageNumber:(NSString*) pageNumber
+                      numProducts:(NSString*) numProducts
+                         minWidth:(NSString*) minWidth
+                         maxWidth:(NSString*) maxWidth
+                        minHeight:(NSString*) minHeight
+                        maxHeight:(NSString*) maxHeight
+                         minPrice:(NSString*) minPrice
+                         maxPrice:(NSString*) maxPrice
+                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                          failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure {
+    
+    [[ArtAPI sharedInstance] decorProductSearchKeyword:keyword refinements:refinements paletteHex:paletteHex pageNumber:pageNumber numProducts:numProducts minWidth:minWidth maxWidth:maxWidth minHeight:minHeight maxHeight:maxHeight minPrice:minPrice maxPrice:maxPrice success:success failure:failure];
+}
+
+-(void) decorProductSearchKeyword:(NSString*) keyword
+                      refinements:(NSString*) refinements
+                       paletteHex:(NSString*) paletteHex
+                       pageNumber:(NSString*) pageNumber
+                      numProducts:(NSString*) numProducts
+                         minWidth:(NSString*) minWidth
+                         maxWidth:(NSString*) maxWidth
+                        minHeight:(NSString*) minHeight
+                        maxHeight:(NSString*) maxHeight
+                         minPrice:(NSString*) minPrice
+                         maxPrice:(NSString*) maxPrice
+                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                          failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure {
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if( keyword){ [parameters setObject:keyword forKey:@"keyword"]; }
+    if( refinements){ [parameters setObject:refinements forKey:@"refinements"]; }
+    if( paletteHex){ [parameters setObject:paletteHex forKey:@"paletteHex"]; }
+    if( pageNumber){ [parameters setObject:pageNumber forKey:@"pageNumber"]; }
+    if( numProducts){ [parameters setObject:numProducts forKey:@"numProducts"]; }
+    if( minWidth){ [parameters setObject:keyword forKey:@"minWidth"]; }
+    if( maxWidth){ [parameters setObject:keyword forKey:@"maxWidth"]; }
+    if( minHeight){ [parameters setObject:minHeight forKey:@"minHeight"]; }
+    if( maxHeight){ [parameters setObject:maxHeight forKey:@"maxHeight"]; }
+    if( minPrice){ [parameters setObject:keyword forKey:@"minPrice"]; }
+    if( maxPrice){ [parameters setObject:maxPrice forKey:@"maxPrice"]; }
+    NSLog(@"parameters: %@", parameters );
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET" path:kResourceProductsForMoodAndColorWithPaging  parameters:parameters server:kArtcomJudyServerAPIUrl];
+    
+    NSLog(@"starting request url: %@ %@", request.HTTPMethod, request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+        success(request, response, JSON);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [[NSOperationQueue mainQueue] addOperation:operation];
+}
+
 + (void) palettesForMoodId:(NSNumber*) moodId
                  wallColor:(NSString *) wallColor
                    success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
@@ -1716,7 +1778,6 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 }
 
 -(void) processMobileGalleryResponse: (NSDictionary*) mobileGalleryResponse {
-    
     // Save mobile galleryID
     NSDictionary * gallery = [[mobileGalleryResponse objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Gallery"];
     
