@@ -1651,7 +1651,7 @@
     {
         if ([self.selectedCountryCode isEqualToString:@"US"])
         {
-            NSString *newStr = [textField.text stringByAppendingString:string];
+            NSString *newStr = [textField.text stringByAppendingValidString:string];
             if([@"" isEqualToString:string]){
                 if([newStr length] > 0){
                     newStr = [newStr substringToIndex:[newStr length] - 1];
@@ -2483,7 +2483,7 @@
             monthString = [NSString stringWithFormat:@"%d",info.expiryMonth];
             if(info.expiryMonth > 0 && info.expiryMonth < 10){
                 //pad if 0-9
-                monthString = [@"0" stringByAppendingString:monthString];
+                monthString = [@"0" stringByAppendingValidString:monthString];
             }
             
             yearString = [NSString stringWithFormat:@"%d",info.expiryYear];

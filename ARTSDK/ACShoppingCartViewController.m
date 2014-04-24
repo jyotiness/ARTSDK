@@ -434,13 +434,13 @@
     
     NSString *formattedName = @"";
     if (firstName) {
-        formattedName = [formattedName stringByAppendingString:firstName];
+        formattedName = [formattedName stringByAppendingValidString:firstName];
     }
     if (firstName && lastName) {
-        formattedName = [formattedName stringByAppendingString:@" "];
+        formattedName = [formattedName stringByAppendingValidString:@" "];
     }
     if (lastName) {
-        formattedName = [formattedName stringByAppendingString:lastName];
+        formattedName = [formattedName stringByAppendingValidString:lastName];
     }
     
     NSString *title = [itemAttributes objectForKeyNotNull:@"Title"];

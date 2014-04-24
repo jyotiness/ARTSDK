@@ -92,4 +92,14 @@
     
 }
 
+- (NSString *) stringByAppendingValidString:(NSString *)aString {
+    
+    if ([aString length]) {
+        return [self stringByAppendingString:aString];
+    }
+    else
+        return self;
+    
+}
+
 @end

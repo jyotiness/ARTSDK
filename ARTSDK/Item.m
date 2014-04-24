@@ -102,13 +102,13 @@
     NSString *lastName = [artist objectForKeyNotNull:@"LastName"];
     NSString *formattedArtistName = @"";
     if (firstName) {
-        formattedArtistName = [formattedArtistName stringByAppendingString:firstName];
+        formattedArtistName = [formattedArtistName stringByAppendingValidString:firstName];
     }
     if (firstName && lastName) {
-        formattedArtistName = [formattedArtistName stringByAppendingString:@" "];
+        formattedArtistName = [formattedArtistName stringByAppendingValidString:@" "];
     }
     if (lastName) {
-        formattedArtistName = [formattedArtistName stringByAppendingString:lastName];
+        formattedArtistName = [formattedArtistName stringByAppendingValidString:lastName];
     }
     self.artist = formattedArtistName;
 

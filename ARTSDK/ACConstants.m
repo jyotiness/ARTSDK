@@ -522,7 +522,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     NSString *customParameters = nil;
     NSString *customAddParameters = nil;
     
-    urlString = [urlString stringByAppendingString:@"/"];
+    urlString = [urlString stringByAppendingValidString:@"/"];
     
     if(type == ACCustomSharingTypeFacebook)
     {
@@ -542,15 +542,15 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     if([urlString hasSuffix:@"/"])
     {
         urlString = [urlString stringByReplacingCharactersInRange:NSMakeRange(urlString.length-1, 1) withString:@""];
-        outUrlString = [urlString stringByAppendingString:customParameters];
+        outUrlString = [urlString stringByAppendingValidString:customParameters];
     }
     else if([urlString rangeOfString:@"?"].length)
     {
-        outUrlString = [urlString stringByAppendingString:customAddParameters];
+        outUrlString = [urlString stringByAppendingValidString:customAddParameters];
     }
     else
     {
-        outUrlString = [urlString stringByAppendingString:customParameters];
+        outUrlString = [urlString stringByAppendingValidString:customParameters];
     }
     
     return outUrlString;

@@ -14,4 +14,6 @@
 - (BOOL) validateAsEmail;
 - (BOOL) isEmpty;
 - (NSString *) maskCreditCard;
+- (NSString *) stringByAppendingValidString:(NSString *)aString;
+
 @end

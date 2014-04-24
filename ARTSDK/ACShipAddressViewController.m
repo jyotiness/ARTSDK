@@ -1048,7 +1048,7 @@ int nameOrigin=0;
     {
         if ([self.selectedCountryCode isEqualToString:@"US"])
         {
-            NSString *newStr = [textField.text stringByAppendingString:string];
+            NSString *newStr = [textField.text stringByAppendingValidString:string];
             if([@"" isEqualToString:string]){
                 if([newStr length] > 0){
                     newStr = [newStr substringToIndex:[newStr length] - 1];
