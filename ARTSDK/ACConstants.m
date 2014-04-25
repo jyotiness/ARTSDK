@@ -543,16 +543,18 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     if([urlString hasSuffix:@"/"])
     {
         urlString = [urlString stringByReplacingCharactersInRange:NSMakeRange(urlString.length-1, 1) withString:@""];
-        outUrlString = [urlString stringByAppendingValidString:customParameters];
+        outUrlString = [urlString stringByAppendingString:customParameters];
     }
-    else if([urlString rangeOfString:@"?"].length)
-    {
-        outUrlString = [urlString stringByAppendingValidString:customAddParameters];
+    
+    NSRange textRange = [urlString rangeOfString:@"?"];
+    if (textRange.location != NSNotFound) {
+        outUrlString = [urlString stringByAppendingString:customAddParameters];
     }
     else
     {
-        outUrlString = [urlString stringByAppendingValidString:customParameters];
+        outUrlString = [urlString stringByAppendingString:customParameters];
     }
+    
     
     return outUrlString;
 }
