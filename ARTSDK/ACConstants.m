@@ -543,7 +543,6 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     if([urlString hasSuffix:@"/"])
     {
         urlString = [urlString stringByReplacingCharactersInRange:NSMakeRange(urlString.length-1, 1) withString:@""];
-        outUrlString = [urlString stringByAppendingString:customParameters];
     }
     
     NSRange textRange = [urlString rangeOfString:@"?"];
