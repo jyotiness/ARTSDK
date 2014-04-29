@@ -81,9 +81,7 @@
     
 //        [mySLComposerSheet addImage:[UIImage imageNamed:@"myImage.png"]];
     
-    NSString *customUrl = [ACConstants getCutomizedUrlForUrl:_sourceURL forType:ACCustomSharingTypeTwitter];
-    [mySLComposerSheet addURL:[NSURL URLWithString:customUrl]];
-    
+    [mySLComposerSheet addURL:[NSURL URLWithString:_sourceURL]];
     [mySLComposerSheet setCompletionHandler:^(SLComposeViewControllerResult result) {
         
         switch (result) {
