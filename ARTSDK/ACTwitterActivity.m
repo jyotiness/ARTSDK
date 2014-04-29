@@ -82,10 +82,7 @@
 //        [mySLComposerSheet addImage:[UIImage imageNamed:@"myImage.png"]];
     
     NSString *customUrl = [ACConstants getCutomizedUrlForUrl:_sourceURL forType:ACCustomSharingTypeTwitter];
-    NSError *error;
-    NSString *tinyURL =  [NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://tinyurl.com/api-create.php?url=%@", customUrl]]
-                                                  encoding:NSASCIIStringEncoding error:&error];
-    [mySLComposerSheet addURL:[NSURL URLWithString:tinyURL]];
+    [mySLComposerSheet addURL:[NSURL URLWithString:customUrl]];
     
     [mySLComposerSheet setCompletionHandler:^(SLComposeViewControllerResult result) {
         
