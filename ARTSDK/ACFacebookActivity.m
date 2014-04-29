@@ -64,7 +64,11 @@
     NSDictionary * dict = [activityItems objectAtIndex:0];
     _title = [dict objectForKey:@"title"];
     _imageURL = [dict objectForKey:@"imageURL"];
-    _sourceURL = [dict objectForKey:@"sourceURL"];
+    NSString *customUrl = [ACConstants getCutomizedUrlForUrl:[dict objectForKey:@"sourceURL"] forType:ACCustomSharingTypeTwitter];
+    NSError *error;
+    NSString *tinyURL =  [NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://tinyurl.com/api-create.php?url=%@", customUrl]]
+                                                  encoding:NSASCIIStringEncoding error:&error];
+    _sourceURL = tinyURL;
     _iTunesURL = [dict objectForKey:@"iTunesURL"];
     _appName = [dict objectForKey:@"appName"];
 }
@@ -86,7 +90,11 @@
     }
     
     NSString *customUrl = [ACConstants getCutomizedUrlForUrl:_sourceURL forType:ACCustomSharingTypeFacebook];
-    [mySLComposerSheet addURL:[NSURL URLWithString:customUrl]];
+    
+    NSError *error;
+    NSString *tinyURL =  [NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://tinyurl.com/api-create.php?url=%@", customUrl]]
+                                                  encoding:NSASCIIStringEncoding error:&error];
+    [mySLComposerSheet addURL:[NSURL URLWithString:tinyURL]];
     
     [mySLComposerSheet setCompletionHandler:^(SLComposeViewControllerResult result) {
         
