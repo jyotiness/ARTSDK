@@ -420,15 +420,12 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
             return [UIColor colorWithRed:146.0/255 green:212.0/255 blue:234.0/255 alpha:1.0];
         }
         case AppLocationFrench:{
-//            return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
             return [UIColor colorWithRed:146.0/255 green:212.0/255 blue:234.0/255 alpha:1.0];
         }
         case AppLocationGerman:{
-//            return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
             return [UIColor colorWithRed:146.0/255 green:212.0/255 blue:234.0/255 alpha:1.0];
         }
         default:{
-//            return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
             return [UIColor grayColor];//[UIColor colorWithRed:146.0/255 green:212.0/255 blue:234.0/255 alpha:1.0];
         }
     }
