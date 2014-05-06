@@ -1781,7 +1781,13 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     // Save mobile galleryID
     NSDictionary * gallery = [[mobileGalleryResponse objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Gallery"];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MOBILE_GALLERY_UPDATED" object:nil userInfo:[NSDictionary dictionaryWithObject:gallery forKey:@"gallery"]];
+    NSDictionary *userInfoDict = nil;
+    
+    if(gallery){
+        userInfoDict = [NSDictionary dictionaryWithObject:gallery forKey:@"gallery"];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MOBILE_GALLERY_UPDATED" object:nil userInfo:userInfoDict];
     
     if(gallery){
         NSDictionary * galleryAttributes = [gallery objectForKeyNotNull:@"GalleryAttributes"];
