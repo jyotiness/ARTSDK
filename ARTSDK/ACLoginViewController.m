@@ -276,10 +276,13 @@
 - (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI {
     BOOL result = NO;
     FBSession *session = nil;
-    if([ACConstants isArtCircles]){
+    
+    BOOL isAC = [ACConstants isArtCircles];
+    
+    if(isAC){
         session =
         [[FBSession alloc] initWithAppID:nil
-                             permissions:nil
+                             permissions:[NSArray arrayWithObjects:@"user_photos",@"email",nil]
                          urlSchemeSuffix:@"artcircles"
                       tokenCacheStrategy:nil];
     }else{
