@@ -405,7 +405,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
             return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
         }
         default:
-            return [UIColor darkTextColor];//]colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
+            return [UIColor darkTextColor];
     }
     
 }
