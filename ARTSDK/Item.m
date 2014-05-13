@@ -9,6 +9,7 @@
 #import "Item.h"
 #import "ArtAPI.h"
 #import "NSString+Additions.h"
+#import "ARTLogging.h"
 
 @interface Item()
 @property(nonatomic, strong) NSDictionary * itemDict;
@@ -17,11 +18,10 @@
 
 @implementation Item
 
-//@synthesize imageUrl,itemId,title,artist,pixelWidth,pixelHeight,rank,type,itemJSON,galleryItemId;
 
 -(NSString*)description {
-    return [NSString stringWithFormat:@"itemId: %@, imageUrl: %@, title: %@ ,artist: %@, pixelWidth: %@, pixelHeight: %@, type: %@, itemJSON: %@",
-            _itemId,_imageUrl,_title,_artist,_pixelWidth,_pixelHeight,_type,_itemJSON];
+    return [NSString stringWithFormat:@"itemId: %@, imageUrl: %@, title: %@ ,artist: %@, pixelWidth: %@, pixelHeight: %@, type: %@, service: %@",
+            _itemId,_imageUrl,_title,_artist,_pixelWidth,_pixelHeight,_type,_service];
 }
 
 -(void) setItemDict:(NSDictionary *)itemDict {
@@ -91,6 +91,12 @@
         
         // Item Url
         self.itemUrl = [itemAttributes objectForKeyNotNull:@"ProductPageUrl"];
+        
+        // Service
+        NSDictionary * service = [dictionary objectForKeyNotNull:@"Service"];
+        if( service ){
+            self.service = [[ARTService alloc]  initWithDictionary: service ] ;
+        }
         
         [self setItemDict:dictionary];
     }

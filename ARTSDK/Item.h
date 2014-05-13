@@ -7,27 +7,30 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ARTService.h"
 
 @interface Item : NSObject
 
-@property (nonatomic, retain) NSString * imageUrl;
-@property (nonatomic, retain) NSString * croppedImageUrl;
-@property (nonatomic, retain) NSString * thumbImageUrl;
-@property (nonatomic, retain) NSString * itemId;
-@property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSString * artist;
+@property (nonatomic, copy) NSString * imageUrl;
+@property (nonatomic, copy) NSString * croppedImageUrl;
+@property (nonatomic, copy) NSString * thumbImageUrl;
+@property (nonatomic, copy) NSString * itemId;
+@property (nonatomic, copy) NSString * title;
+@property (nonatomic, copy) NSString * artist;
 @property (nonatomic, retain) NSNumber * pixelWidth;
 @property (nonatomic, retain) NSNumber * pixelHeight;
-@property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSString * itemJSON;
+@property (nonatomic, copy) NSString * type;
+@property (nonatomic, copy) NSString * itemJSON;
 @property (nonatomic, retain) NSNumber * price;
-@property (nonatomic, retain) NSString * priceRange;
+@property (nonatomic, copy) NSString * priceRange;
 @property (nonatomic, retain) NSNumber * MSRP;
-@property (nonatomic, retain) NSString * itemUrl;
-@property (nonatomic, retain) NSString * lookupType;
-@property (nonatomic, retain) NSString * sku;
-@property (nonatomic, retain) NSString * size;
-@property(nonatomic, copy) NSString * genericImageUrl;
+@property (nonatomic, copy) NSString * itemUrl;
+@property (nonatomic, copy) NSString * lookupType;
+@property (nonatomic, copy) NSString * sku;
+@property (nonatomic, copy) NSString * size;
+@property (nonatomic, copy) NSString * genericImageUrl;
+@property (nonatomic, retain) ARTService * service;
+@property (nonatomic, copy) NSString * frammedUrl;
 
 - (Item *)initWithFramedItemDictionary:(NSDictionary *)dictionary;
 - (Item *)initWithColorResponseDictionary:(NSDictionary *)dictionary;
