@@ -31,6 +31,8 @@
 @property (nonatomic, copy) NSString * genericImageUrl;
 @property (nonatomic, retain) ARTService * service;
 @property (nonatomic, copy) NSString * frammedUrl;
+@property (nonatomic, retain) NSNumber *itemWidth;
+@property (nonatomic, retain) NSNumber *itemHeight;
 
 - (Item *)initWithFramedItemDictionary:(NSDictionary *)dictionary;
 - (Item *)initWithColorResponseDictionary:(NSDictionary *)dictionary;

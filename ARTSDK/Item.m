@@ -237,6 +237,30 @@
         // Size
         self.size = [self sizeFromDictionary:itemAttributes];
         
+        //set Size individual numbers
+        NSDictionary *physicalDimensions = [itemAttributes objectForKeyNotNull:@"PhysicalDimensions"];
+        if(!ACIsDictionaryWithObjects( physicalDimensions ) ){
+            //NIDINFO("can't find PhysicalDimensions");
+            physicalDimensions = [[itemAttributes  objectForKeyNotNull:@"ItemAttributes"] objectForKeyNotNull:@"PhysicalDimensions"];
+        }
+        NSNumber *width = [physicalDimensions objectForKeyNotNull:@"Width"];
+        NSNumber *height = [physicalDimensions objectForKeyNotNull:@"Height"];
+        
+        self.itemWidth = width;
+        self.itemHeight = height;
+        
+        //transpose if needed
+        if([imageWidth intValue] > [imageHeight intValue] && [width intValue] < [height intValue]){
+            NSNumber *tempNumber = self.itemWidth;
+            self.itemWidth = self.itemHeight;
+            self.itemHeight = tempNumber;
+        }
+        if([imageWidth intValue] < [imageHeight intValue] && [width intValue] > [height intValue]){
+            NSNumber *tempNumber = self.itemWidth;
+            self.itemWidth = self.itemHeight;
+            self.itemHeight = tempNumber;
+        }
+        
         [self setItemDict:dictionary];
         
     }
