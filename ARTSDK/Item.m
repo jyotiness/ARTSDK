@@ -77,6 +77,9 @@
         // Get Item Attributes
         NSDictionary * itemAttributes = [dictionary  objectForKeyNotNull:@"ItemAttributes"];
         
+        // Can Frame ?
+        self.canFrame = [itemAttributes objectForKey:@"CanFrame"];
+        
         // Title
         self.title = [itemAttributes objectForKeyNotNull:@"Title"];
         
@@ -199,6 +202,9 @@
         
         // Get Item Attributes
         NSDictionary * itemAttributes = [dictionary  objectForKeyNotNull:@"ItemAttributes"];
+        
+        // Can Frame ?
+        self.canFrame = [itemAttributes objectForKey:@"CanFrame"];
         
         // Item Id
         self.itemId = [NSString stringWithFormat:@"%@", [dictionary objectForKey:@"ItemNumber"]];

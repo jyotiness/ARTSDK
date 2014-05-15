@@ -16,7 +16,7 @@
 {
     if (self = [super init])
     {
-        ARTLog("initWithDictionary: %@", dictionary);
+        //ARTLog("initWithDictionary: %@", dictionary);
         
         // Service
         NSDictionary * frame = [dictionary objectForKeyNotNull:@"Frame"];

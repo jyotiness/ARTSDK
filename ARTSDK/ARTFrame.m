@@ -16,12 +16,30 @@
 {
     if (self = [super init])
     {
-        ARTLog("initWithDictionary: %@", dictionary);
+        //ARTLog("initWithDictionary: %@", dictionary);
         
         // Moulding
         NSDictionary * moulding = [dictionary objectForKeyNotNull:@"Moulding"];
         if( moulding ){
             self.moulding = [[ARTMoulding alloc]  initWithDictionary: moulding ] ;
+        }
+        
+        // Top Map
+        NSDictionary * topMat = [dictionary objectForKeyNotNull:@"TopMat"];
+        if( topMat ){
+            self.topMat = [[ARTMat alloc]  initWithDictionary: topMat ] ;
+        }
+        
+        // Middle Map
+        NSDictionary * middleMat = [dictionary objectForKeyNotNull:@"MiddleMat"];
+        if( middleMat ){
+            self.middleMat = [[ARTMat alloc]  initWithDictionary: middleMat ] ;
+        }
+        
+        // Top Map
+        NSDictionary * bottomMat = [dictionary objectForKeyNotNull:@"BottomMat"];
+        if( bottomMat ){
+            self.bottomMat = [[ARTMat alloc]  initWithDictionary: topMat ] ;
         }
     }
     return self;

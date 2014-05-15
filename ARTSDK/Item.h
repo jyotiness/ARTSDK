@@ -33,6 +33,7 @@
 @property (nonatomic, copy) NSString * frammedUrl;
 @property (nonatomic, retain) NSNumber *itemWidth;
 @property (nonatomic, retain) NSNumber *itemHeight;
+@property (nonatomic, retain) NSNumber *canFrame;
 
 - (Item *)initWithFramedItemDictionary:(NSDictionary *)dictionary;
 - (Item *)initWithColorResponseDictionary:(NSDictionary *)dictionary;

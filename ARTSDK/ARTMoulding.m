@@ -16,19 +16,32 @@
 {
     if (self = [super init])
     {
-        ARTLog("initWithDictionary: %@", dictionary);
+        //ARTLog("initWithDictionary: %@", dictionary);
         
-        self.cornerImageUrl         = [[dictionary objectForKey:@"CornerImage"] objectForKeyNotNull:@"HttpImageURL"];
-        self.description       = [dictionary objectForKeyNotNull:@"Description"];
-        self.profileImageUrl       = [[dictionary objectForKey:@"ProfileImage"] objectForKeyNotNull:@"HttpImageURL"];
+        self.cornerImageUrl     = [[dictionary objectForKey:@"CornerImage"] objectForKeyNotNull:@"HttpImageURL"];
+        self.description        = [dictionary objectForKeyNotNull:@"Description"];
+        self.profileImageUrl    = [[dictionary objectForKey:@"ProfileImage"] objectForKeyNotNull:@"HttpImageURL"];
+        self.name               = [dictionary objectForKey:@"Name"];
+        self.material           = [dictionary objectForKey:@"Material"];
+        self.price              = [[dictionary objectForKey:@"Price"] objectForKeyNotNull:@"Price"];
         
     }
     return self;
 }
 
+-(NSString*) formattedPrice {
+    if( _price ){
+    NSNumberFormatter *currencyFormatter = [[NSNumberFormatter alloc] init];
+    [currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    return [currencyFormatter stringFromNumber:_price];
+    } else {
+        return @"";
+    }
+}
+
 -(NSString* ) description {
-    return [NSString stringWithFormat:@"cornerImageUrl: %@ profileImageUrl: %@ description: %@",
-            _cornerImageUrl,_profileImageUrl, _description];
+    return [NSString stringWithFormat:@"cornerImageUrl: %@ profileImageUrl: %@ description: %@ name: %@ price: %@",
+            _cornerImageUrl,_profileImageUrl, _description, _name, _price];
 }
 
 @end

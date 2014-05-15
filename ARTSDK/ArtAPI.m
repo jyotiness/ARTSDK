@@ -781,12 +781,12 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     if( maxHeight){ [parameters setObject:maxHeight forKey:@"maxHeight"]; }
     if( minPrice){ [parameters setObject:keyword forKey:@"minPrice"]; }
     if( maxPrice){ [parameters setObject:maxPrice forKey:@"maxPrice"]; }
-    NSLog(@"parameters: %@", parameters );
+    //NSLog(@"parameters: %@", parameters );
     
     // Create Request
     NSMutableURLRequest *request  = [self requestWithMethod:@"GET" path:kResourceProductsForMoodAndColorWithPaging  parameters:parameters server:kArtcomJudyServerAPIUrl];
     
-    NSLog(@"starting request url: %@ %@", request.HTTPMethod, request.URL);
+    //NSLog(@"starting request url: %@ %@", request.HTTPMethod, request.URL);
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -2242,9 +2242,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cartDictionary];
     
     if(data){
-        //NSLog(@"Cart Data is not nil");
+        NSLog(@"Cart Data is not nil");
     }else{
-        //NSLog(@"Cart Data is nil");
+        NSLog(@"Cart Data is nil");
     }
     
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART_PERSISTANCE_KEY"];
