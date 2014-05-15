@@ -136,14 +136,38 @@
         // Image
         self.imageUrl = [[dictionary objectForKey:@"UrlInfo"] objectForKey:@"GenericImageURL"];
         self.genericImageUrl = [[dictionary objectForKey:@"UrlInfo"] objectForKey:@"GenericImageURL"];
+        self.croppedImageUrl = [[dictionary objectForKey:@"UrlInfo"] objectForKey:@"CroppedSquareImageUrl"];
         
         // Dimensions
         NSArray * imageDimensions = [dictionary objectForKey:@"ImageDimensions"];
         for(NSDictionary * imageDimension in imageDimensions){
-            self.pixelWidth = [imageDimension objectForKey:@"PixelWidth"];
-            self.pixelHeight =  [imageDimension objectForKey:@"PixelHeight"];
+            NSNumber *imageSize = [imageDimension objectForKey:@"ImageSize"];
+            if([imageSize intValue] ==1){
+                self.pixelWidth = [imageDimension objectForKey:@"PixelWidth"];
+                self.pixelHeight =  [imageDimension objectForKey:@"PixelHeight"];
+                break;
+            }
         }
     
+        NSDictionary *physicalDimensions = [dictionary objectForKey:@"PhysicalDimensions"];
+        self.itemWidth = [physicalDimensions objectForKey:@"Width"];
+        self.itemHeight = [physicalDimensions objectForKey:@"Height"];
+        
+        if([self.pixelWidth intValue] > [self.pixelHeight intValue] && [self.itemWidth intValue] < [self.itemHeight intValue]){
+            //transposed
+            NSNumber *largeNumber = [self.itemHeight copy];
+            NSNumber *smallNumber = [self.itemWidth copy];
+            self.itemWidth = largeNumber;
+            self.itemHeight = smallNumber;
+        }
+        if([self.pixelWidth intValue] < [self.pixelHeight intValue] && [self.itemWidth intValue] > [self.itemHeight intValue]){
+            //transposed
+            NSNumber *largeNumber = [self.itemWidth copy];
+            NSNumber *smallNumber = [self.itemHeight copy];
+            self.itemWidth = smallNumber;
+            self.itemHeight = largeNumber;
+        }
+        
         // Title
         self.title = [dictionary objectForKeyNotNull:@"Title"];
         
