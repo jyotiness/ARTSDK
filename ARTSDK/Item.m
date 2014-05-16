@@ -67,6 +67,7 @@
         //NSLog(@"dictionary: %@", dictionary);
         NSString * imageURLString = [[[dictionary objectForKey:@"ImageInformation"] objectForKey:@"LargeImage"] objectForKey:@"HttpImageURL"];
         self.itemId =  [dictionary objectForKeyNotNull:@"ItemNumber"];
+        self.lookupType = @"FramedRecommendationItem";
         self.sku =  [dictionary objectForKeyNotNull:@"Sku"];
         self.imageUrl =  [ArtAPI cleanImageUrl:imageURLString withSize:600];
         self.thumbImageUrl =  [ArtAPI cleanImageUrl:imageURLString withSize:115];
@@ -191,6 +192,20 @@
     return self;
 }
 
+/*
+-(NSString*) itemLookupTypeForId: (NSNumber*) lookupTypeId {
+    NSString * lookupType;
+    switch (lookupTypeId.integerValue) {
+        case 0:{
+            lookupType = @"ItemNumber";
+            break;
+        }
+            
+        default:
+            break;
+    }
+    return lookupType;
+}*/
 
 - (Item *)initWithDictionary:(NSDictionary *)dictionary
 {
