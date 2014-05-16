@@ -61,6 +61,11 @@ typedef enum
     ACCustomSharingTypePinterest
 }ACCustomSharingType;
 
+typedef NS_ENUM(NSInteger, ACCheckoutType) {
+    ACCheckoutTypeInApp,
+    ACCheckoutTypePrintReciept
+};
+
 extern NSString *kACStandardFont;
 extern NSString *kACNotificationDismissModal;
 

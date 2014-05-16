@@ -202,6 +202,7 @@
     } else {
         ACShipAddressViewController *vc = [[ACShipAddressViewController alloc] initWithNibName:@"ACShipAddressViewController-iPad" bundle:ACBundle];
         vc.delegate = self;
+        vc.artCheckoutType = ACCheckoutTypePrintReciept;
         [self.navigationController pushViewController:vc animated:YES];
     }
     

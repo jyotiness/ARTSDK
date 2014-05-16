@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import "ACCheckoutTextField.h"
+#import "ACConstants.h"
 #import "GAITrackedViewController.h"
 
 /**
@@ -86,6 +87,8 @@ typedef enum ContactPickeMode {
 @property(nonatomic,retain) UITextField* cityField;
 @property(nonatomic,retain) UITextField* postalCodeField;
 @property(assign) BOOL isUSAddressInvalid;
+@property(readwrite) ACCheckoutType artCheckoutType;
+
 
 
 -(IBAction)textFieldFinished:(id)sender ;

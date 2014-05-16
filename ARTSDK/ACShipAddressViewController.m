@@ -10,6 +10,7 @@
 #import "ACPaymentViewController.h"
 #import "ACAddressBookCustomCell.h"
 #import "ACCheckoutTextField.h"
+#import "ACPrinterReceiptViewController.h"
 #import "ACWebViewController.h"
 #import "ArtAPI.h"
 #import "SVProgressHUD.h"
@@ -1425,11 +1426,19 @@ int nameOrigin=0;
 
 -(void)pushToPaymentScreen
 {
-    ACPaymentViewController *chackOutController = [[ACPaymentViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ?
-                                                   @"ACPaymentViewController-iPad" : @"ACPaymentViewController" bundle:ACBundle];
-    chackOutController.dataShippingOptions=self.dataShippingOptions;
-    [ self.navigationController pushViewController:chackOutController animated:YES];
-    
+    if(ACCheckoutTypePrintReciept == self.artCheckoutType)
+    {
+        ACPrinterReceiptViewController *chackOutController = [[ACPrinterReceiptViewController alloc] initWithNibName:@"ACPrinterReceiptViewController-iPad" bundle:ACBundle];
+//        chackOutController.dataShippingOptions=self.dataShippingOptions;
+        [ self.navigationController pushViewController:chackOutController animated:YES];
+    }
+    else
+    {
+        ACPaymentViewController *chackOutController = [[ACPaymentViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ?
+                                                       @"ACPaymentViewController-iPad" : @"ACPaymentViewController" bundle:ACBundle];
+        chackOutController.dataShippingOptions=self.dataShippingOptions;
+        [ self.navigationController pushViewController:chackOutController animated:YES];
+    }
 }
 
 
