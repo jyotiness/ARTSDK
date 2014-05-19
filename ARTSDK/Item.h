@@ -30,7 +30,7 @@
 @property (nonatomic, copy) NSString * size;
 @property (nonatomic, copy) NSString * genericImageUrl;
 @property (nonatomic, retain) ARTService * service;
-@property (nonatomic, copy) NSString * frammedUrl;
+@property (nonatomic, copy) NSString * framedUrl;
 @property (nonatomic, retain) NSNumber *itemWidth;
 @property (nonatomic, retain) NSNumber *itemHeight;
 @property (nonatomic, retain) NSNumber *canFrame;
