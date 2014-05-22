@@ -11,6 +11,8 @@
 
 @interface ACPrinterReceiptViewController ()
 
+@property (nonatomic,strong) IBOutlet UIButton *finishButton;
+
 @end
 
 @implementation ACPrinterReceiptViewController
@@ -26,6 +28,15 @@
 
 - (void)viewDidLoad
 {
+    [self.finishButton setBackgroundColor:[ACConstants getPrimaryButtonColor]];
+    [self.finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.finishButton.titleLabel.font = [ACConstants getStandardBoldFontWithSize:32.0f];
+    
+    CALayer *btnLayer = [self.finishButton layer];
+    [btnLayer setMasksToBounds:YES];
+    [btnLayer setCornerRadius:2.0f];
+
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
