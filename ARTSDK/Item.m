@@ -70,6 +70,7 @@
         self.lookupType = @"FramedRecommendationItem";
         self.sku =  [dictionary objectForKeyNotNull:@"Sku"];
         self.imageUrl =  [ArtAPI cleanImageUrl:imageURLString withSize:600];
+        self.framedUrl =  [ArtAPI cleanImageUrl:imageURLString withSize:1920];
         self.thumbImageUrl =  [ArtAPI cleanImageUrl:imageURLString withSize:115];
         NSDictionary *itemPrice = [dictionary objectForKeyNotNull:@"ItemPrice"];
         self.price = [itemPrice objectForKeyNotNull:@"Price"];

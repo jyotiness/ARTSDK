@@ -16,7 +16,8 @@
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * material;
 @property (nonatomic, retain) NSNumber * price;
-
+@property (nonatomic, retain) NSNumber * dimensionsTop;
+@property (nonatomic, retain) NSNumber * dimensionsLeft;
 
 -(ARTMoulding *)initWithDictionary:(NSDictionary *)dictionary;
 -(NSString*) formattedPrice;

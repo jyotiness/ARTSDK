@@ -24,7 +24,8 @@
         self.name               = [dictionary objectForKey:@"Name"];
         self.material           = [dictionary objectForKey:@"Material"];
         self.price              = [[dictionary objectForKey:@"Price"] objectForKeyNotNull:@"Price"];
-        
+        self.dimensionsTop      = [[dictionary objectForKey:@"Dimensions"] objectForKeyNotNull:@"Top"];
+        self.dimensionsLeft     = [[dictionary objectForKey:@"Dimensions"] objectForKeyNotNull:@"Left"];
     }
     return self;
 }
