@@ -529,6 +529,13 @@
                                   forKey:[NSNumber numberWithInt:2]];
              
              
+             NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
+             NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+             [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+             [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+             [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+             [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
+             
              UIAlertView *authFailAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
              [authFailAlert show];
              
@@ -574,6 +581,13 @@
          }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
              //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
              // Failure
+             NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
+             NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+             [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+             [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+             [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+             [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
+             
              UIAlertView *forgotPassErrorAlert = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"NO_ACCOUNT_INFO_FOUND", nil) message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
              [forgotPassErrorAlert show];
              [SVProgressHUD dismiss];
@@ -648,6 +662,12 @@
                                   forKey:[NSNumber numberWithInt:1]];
              [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
                                   forKey:[NSNumber numberWithInt:2]];
+             
+             NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+             [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+             [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+             [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+             [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:self.error withParams:analyticsParams];
              
              UIAlertView *accountCreateAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
              [accountCreateAlert show];
@@ -731,6 +751,13 @@
              [alertView show];
              
          }
+         
+         NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
+         NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+         [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+         [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+         [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+         [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
          
          // Call Delegate
          if (self.delegate && [self.delegate respondsToSelector:@selector(loginFailure)]) {

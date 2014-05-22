@@ -15,6 +15,7 @@
 //specific project which is referencing the ArtAPI
 
 #define ANALYTICS_CATEGORY_UI_ACTION                    @"UI ACTION"
+#define ANALYTICS_CATEGORY_ERROR_EVENT                  @"Error Event"
 
 #define ANALYTICS_EVENT_NAME_LOGIN                      @"Log in"
 #define ANALYTICS_EVENT_NAME_LOGIN_EMAIL                @"Log in Email"
@@ -76,6 +77,19 @@
 #define ANALYTICS_EVENT_NAME_MOST_LOVED_VIEWED            @"Most Loved Circle viewed"
 #define ANALYTICS_EVENT_NAME_FEATURED_FEED_VIEWED         @"Featured Feed viewed"
 #define ANALYTICS_EVENT_NAME_EVERYONE_FEED_VIEWED         @"Everyone Feed viewed"
+
+#define ANALYTICS_EVENT_NAME_FOLLOW_CLICKED               @"Follow Clicked"
+#define ANALYTICS_EVENT_NAME_UNFOLLOW_CLICKED             @"Unfollow Clicked"
+#define ANALYTICS_EVENT_NAME_ADD_FOLLOW                   @"Add Follow"
+#define ANALYTICS_EVENT_NAME_REMOVE_FOLLOW                @"Remove Follow"
+#define ANALYTICS_EVENT_NAME_PROFILE_VIEW                 @"Profile Viewed"
+
+//error related
+#define ANALYTICS_APIERRORCODE                               @"ErrorCode"
+#define ANALYTICS_APIURL                                     @"APIURL"
+#define ANALYTICS_APIERRORMESSAGE                            @"ErrorMessage"
+#define ANALYTICS_APIRESPONSETYPE                            @"APIResponseType"
+
 
 @interface Analytics : NSObject {
 

@@ -1359,6 +1359,12 @@ int nameOrigin=0;
              
              [SVProgressHUD dismiss];
              isContinueButtonPressed = NO;
+
+             NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+             [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+             [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+             [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+             [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
              
              // Display error message here: APIErrorMessage
              UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"ERROR" withDefaultValue:@"Error"]

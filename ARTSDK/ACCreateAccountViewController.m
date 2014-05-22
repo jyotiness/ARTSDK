@@ -17,7 +17,7 @@
 #import "UINavigationController+KeyboardDismiss.h"
 #import "ACWebViewController.h"
 #import "ACKeyboardToolbarView.h"
-
+#import "Analytics.h"
 
 @interface ACCreateAccountViewController() <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,ACKeyboardToolbarDelegate>
 @property(nonatomic, copy) NSString *email;
@@ -398,6 +398,13 @@
          NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
          // Failure
          [SVProgressHUD dismiss];
+         
+         NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
+         NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+         [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+         [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+         [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+         [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
          
          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"Login Failed",@"Login Failed")
                                                              message:[JSON objectForKey:@"APIErrorMessage"]

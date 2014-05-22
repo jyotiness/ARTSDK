@@ -941,6 +941,7 @@
     self.couponCodetext = nil;
     self.applyCouponBtton.enabled = NO;
     [self.applyCouponBtton.layer setBorderColor:[UIColor colorWithRed:170.0/255 green:170.0/255 blue:170.0/255 alpha:1.0].CGColor];
+    
     if([[[JSON objectForKey:@"APIErrorMessage"] lowercaseString] rangeOfString:@"coupon collection"].location == NSNotFound)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"ERROR" withDefaultValue:@"Error"]
