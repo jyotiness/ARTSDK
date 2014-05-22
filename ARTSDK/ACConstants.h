@@ -44,15 +44,6 @@
 #define NOTIFICATION_CART_UPDATED @"NOTIFICATION_CART_UPDATED"
 #define NOTIFICATION_ORDER_COMPLETED @"ORDERCOMPLETED"
 
-#define ART_PRINTS_DESCRIPTION @"Art prints represent the best of both worlds: quality and affordability. Art prints are created on paper similar to that of a postcard or greeting card using a digital or offset lithography press"
-
-#define GICLEE_PRINTS_DESCRIPTION @"Giclée prints deliver a vivid image with maximum color accuracy and exceptional resolution. The standard for museums and galleries around the world, giclée is a printing process where millions of ink droplets are sprayed onto high-quality paper"
-
-#define PREMIUM_GICLEE_PRINTS_DESCRIPTION @"Premium giclée prints, an upgrade from the standard giclée print, are produced on thick (310 gsm), textured watercolor paper with the same vivid colors, accuracy, and exceptional resolution giclée prints are known for"
-
-#define PHOTOGRAPHIC_PRINTS_DESCRIPTION @"Photographic prints leverages sophisticated digital technology to capture a level of detail that is absolutely stunning. The colors are vivid and pure. The high-quality archival paper, a favorite choice among professional photographers, has a refined luster quality"
-
-#define PREMIUM_PHOTOGRAPHIC_PRINTS_DESCRIPTION @"Premium photographic prints, an upgrade to the standard photographic print, feature high-gloss premium photographic paper. The result is a unique silver pearlescent finish with stunning visual impact and depth"
 
 //#define SUPPORT_LILITAB_CARD_READER
 
