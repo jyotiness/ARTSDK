@@ -35,7 +35,8 @@
     CALayer *btnLayer = [self.finishButton layer];
     [btnLayer setMasksToBounds:YES];
     [btnLayer setCornerRadius:2.0f];
-
+    
+    [self.navigationItem setHidesBackButton:YES];
     
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
