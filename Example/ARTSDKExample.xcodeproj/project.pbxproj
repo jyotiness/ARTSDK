@@ -7,12 +7,80 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D3992F318DA3F47002FE1E3 /* ACShoppingCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3992F118DA3F47002FE1E3 /* ACShoppingCartViewController.m */; };
-		3D3992F418DA3F47002FE1E3 /* ACShoppingCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D3992F218DA3F47002FE1E3 /* ACShoppingCartViewController.xib */; };
-		3D3992F818DA3F97002FE1E3 /* ACShoppingCartItemTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3992F618DA3F97002FE1E3 /* ACShoppingCartItemTableCell.m */; };
-		3D3992F918DA3F97002FE1E3 /* ACShoppingCartItemTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D3992F718DA3F97002FE1E3 /* ACShoppingCartItemTableCell.xib */; };
 		3D3992FB18DA4AFC002FE1E3 /* DecorProductSearchViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D3992FA18DA4AFC002FE1E3 /* DecorProductSearchViewController~ipad.xib */; };
-		3D9B179018BE91BD0050DD72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9B178F18BE91BD0050DD72 /* Foundation.framework */; };
+		3D9189B91946649500B847B9 /* ACActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91893B1946649400B847B9 /* ACActivityIndicator.m */; };
+		3D9189BA1946649500B847B9 /* ACActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91893D1946649400B847B9 /* ACActivityViewController.m */; };
+		3D9189BB1946649500B847B9 /* ACAddressBookCustomCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D91893E1946649400B847B9 /* ACAddressBookCustomCell-iPad.xib */; };
+		3D9189BC1946649500B847B9 /* ACAddressBookCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189401946649400B847B9 /* ACAddressBookCustomCell.m */; };
+		3D9189BD1946649500B847B9 /* ACAddressBookCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189411946649400B847B9 /* ACAddressBookCustomCell.xib */; };
+		3D9189BE1946649500B847B9 /* ACArtInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189431946649400B847B9 /* ACArtInfoViewController.m */; };
+		3D9189BF1946649500B847B9 /* ACArtInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189441946649400B847B9 /* ACArtInfoViewController.xib */; };
+		3D9189C01946649500B847B9 /* ACBillingAddressViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189451946649400B847B9 /* ACBillingAddressViewController-iPad.xib */; };
+		3D9189C11946649500B847B9 /* ACBillingAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189471946649400B847B9 /* ACBillingAddressViewController.m */; };
+		3D9189C21946649500B847B9 /* ACBillingAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189481946649400B847B9 /* ACBillingAddressViewController.xib */; };
+		3D9189C31946649500B847B9 /* ACCheckoutTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91894A1946649400B847B9 /* ACCheckoutTextField.m */; };
+		3D9189C41946649500B847B9 /* ACConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91894C1946649400B847B9 /* ACConstants.m */; };
+		3D9189C51946649500B847B9 /* ACCreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91894E1946649400B847B9 /* ACCreateAccountViewController.m */; };
+		3D9189C61946649500B847B9 /* ACCustomBillingCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D91894F1946649400B847B9 /* ACCustomBillingCell-iPad.xib */; };
+		3D9189C71946649500B847B9 /* ACCustomBillingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189511946649400B847B9 /* ACCustomBillingCell.m */; };
+		3D9189C81946649500B847B9 /* ACCustomBillingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189521946649400B847B9 /* ACCustomBillingCell.xib */; };
+		3D9189C91946649500B847B9 /* ACFacebookActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189541946649400B847B9 /* ACFacebookActivity.m */; };
+		3D9189CA1946649500B847B9 /* ACFavoritesActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189561946649400B847B9 /* ACFavoritesActivity.m */; };
+		3D9189CB1946649500B847B9 /* ACFavoritesRemoveActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189581946649400B847B9 /* ACFavoritesRemoveActivity.m */; };
+		3D9189CC1946649500B847B9 /* ACForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91895A1946649400B847B9 /* ACForgotPasswordViewController.m */; };
+		3D9189CD1946649500B847B9 /* ACiPhoneLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91895C1946649400B847B9 /* ACiPhoneLoginViewController.m */; };
+		3D9189CE1946649500B847B9 /* ACiPhoneLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D91895D1946649400B847B9 /* ACiPhoneLoginViewController.xib */; };
+		3D9189CF1946649500B847B9 /* ACKeyboardToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91895F1946649400B847B9 /* ACKeyboardToolbarView.m */; };
+		3D9189D01946649500B847B9 /* ACLoginCustomCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189601946649400B847B9 /* ACLoginCustomCell-iPad.xib */; };
+		3D9189D11946649500B847B9 /* ACLoginCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189621946649500B847B9 /* ACLoginCustomCell.m */; };
+		3D9189D21946649500B847B9 /* ACLoginCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189631946649500B847B9 /* ACLoginCustomCell.xib */; };
+		3D9189D31946649500B847B9 /* ACLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189651946649500B847B9 /* ACLoginViewController.m */; };
+		3D9189D41946649500B847B9 /* ACMailActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189671946649500B847B9 /* ACMailActivity.m */; };
+		3D9189D51946649500B847B9 /* ACNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189691946649500B847B9 /* ACNavigationController.m */; };
+		3D9189D61946649500B847B9 /* ACNonEmptyCollectionTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91896B1946649500B847B9 /* ACNonEmptyCollectionTesting.m */; };
+		3D9189D71946649500B847B9 /* ACOrderConfirmationViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D91896C1946649500B847B9 /* ACOrderConfirmationViewController-iPad.xib */; };
+		3D9189D81946649500B847B9 /* ACOrderConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91896E1946649500B847B9 /* ACOrderConfirmationViewController.m */; };
+		3D9189D91946649500B847B9 /* ACOrderConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D91896F1946649500B847B9 /* ACOrderConfirmationViewController.xib */; };
+		3D9189DA1946649500B847B9 /* ACPaymentViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189701946649500B847B9 /* ACPaymentViewController-iPad.xib */; };
+		3D9189DB1946649500B847B9 /* ACPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189721946649500B847B9 /* ACPaymentViewController.m */; };
+		3D9189DC1946649500B847B9 /* ACPaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189731946649500B847B9 /* ACPaymentViewController.xib */; };
+		3D9189DD1946649500B847B9 /* ACPinterestActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189751946649500B847B9 /* ACPinterestActivity.m */; };
+		3D9189DE1946649500B847B9 /* ACPrinterReceiptViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189761946649500B847B9 /* ACPrinterReceiptViewController-iPad.xib */; };
+		3D9189DF1946649500B847B9 /* ACPrinterReceiptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189781946649500B847B9 /* ACPrinterReceiptViewController.m */; };
+		3D9189E01946649500B847B9 /* ACSDKAvailability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91897A1946649500B847B9 /* ACSDKAvailability.m */; };
+		3D9189E11946649500B847B9 /* ACSharingActivityProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91897C1946649500B847B9 /* ACSharingActivityProvider.m */; };
+		3D9189E21946649500B847B9 /* ACShipAddressViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D91897D1946649500B847B9 /* ACShipAddressViewController-iPad.xib */; };
+		3D9189E31946649500B847B9 /* ACShipAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91897F1946649500B847B9 /* ACShipAddressViewController.m */; };
+		3D9189E41946649500B847B9 /* ACShipAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189801946649500B847B9 /* ACShipAddressViewController.xib */; };
+		3D9189E51946649500B847B9 /* ACShipOptionsTableViewCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189811946649500B847B9 /* ACShipOptionsTableViewCell-iPad.xib */; };
+		3D9189E61946649500B847B9 /* ACShipOptionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189831946649500B847B9 /* ACShipOptionsTableViewCell.m */; };
+		3D9189E71946649500B847B9 /* ACShipOptionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189841946649500B847B9 /* ACShipOptionsTableViewCell.xib */; };
+		3D9189E81946649500B847B9 /* ACShoppingCartItemTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189861946649500B847B9 /* ACShoppingCartItemTableCell.m */; };
+		3D9189E91946649500B847B9 /* ACShoppingCartItemTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9189871946649500B847B9 /* ACShoppingCartItemTableCell.xib */; };
+		3D9189EA1946649500B847B9 /* ACShoppingCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189891946649500B847B9 /* ACShoppingCartViewController.m */; };
+		3D9189EB1946649500B847B9 /* ACShoppingCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D91898A1946649500B847B9 /* ACShoppingCartViewController.xib */; };
+		3D9189EC1946649500B847B9 /* ACTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91898C1946649500B847B9 /* ACTableViewController.m */; };
+		3D9189ED1946649500B847B9 /* ACTwitterActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91898E1946649500B847B9 /* ACTwitterActivity.m */; };
+		3D9189EE1946649500B847B9 /* ACWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189901946649500B847B9 /* ACWebViewController.m */; };
+		3D9189EF1946649500B847B9 /* Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189921946649500B847B9 /* Analytics.m */; };
+		3D9189F01946649500B847B9 /* ArtAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189941946649500B847B9 /* ArtAPI.m */; };
+		3D9189F11946649500B847B9 /* ARTFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189961946649500B847B9 /* ARTFrame.m */; };
+		3D9189F21946649500B847B9 /* ARTMat.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91899A1946649500B847B9 /* ARTMat.m */; };
+		3D9189F31946649500B847B9 /* ARTMoulding.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91899C1946649500B847B9 /* ARTMoulding.m */; };
+		3D9189F41946649500B847B9 /* ARTService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D91899E1946649500B847B9 /* ARTService.m */; };
+		3D9189F51946649500B847B9 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189A01946649500B847B9 /* Item.m */; };
+		3D9189F61946649500B847B9 /* NSArray+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189A21946649500B847B9 /* NSArray+Addition.m */; };
+		3D9189F71946649500B847B9 /* NSDate+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189A41946649500B847B9 /* NSDate+Additions.m */; };
+		3D9189F81946649500B847B9 /* NSDictionary+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189A61946649500B847B9 /* NSDictionary+Additions.m */; };
+		3D9189F91946649500B847B9 /* NSMutableArray+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189A81946649500B847B9 /* NSMutableArray+Addition.m */; };
+		3D9189FA1946649500B847B9 /* NSMutableDictionary+SetNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189AA1946649500B847B9 /* NSMutableDictionary+SetNull.m */; };
+		3D9189FB1946649500B847B9 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189AC1946649500B847B9 /* NSString+Additions.m */; };
+		3D9189FC1946649500B847B9 /* PGTableViewWithEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189AE1946649500B847B9 /* PGTableViewWithEmptyView.m */; };
+		3D9189FD1946649500B847B9 /* UIBarButtonItem+ArtDotCom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189B01946649500B847B9 /* UIBarButtonItem+ArtDotCom.m */; };
+		3D9189FE1946649500B847B9 /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189B21946649500B847B9 /* UIColor+Additions.m */; };
+		3D9189FF1946649500B847B9 /* UIImage+Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189B41946649500B847B9 /* UIImage+Colors.m */; };
+		3D918A001946649500B847B9 /* UINavigationController+KeyboardDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189B61946649500B847B9 /* UINavigationController+KeyboardDismiss.m */; };
+		3D918A011946649500B847B9 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9189B81946649500B847B9 /* UIView+Additions.m */; };
 		3D9B179218BE91BD0050DD72 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9B179118BE91BD0050DD72 /* CoreGraphics.framework */; };
 		3D9B179418BE91BD0050DD72 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9B179318BE91BD0050DD72 /* UIKit.framework */; };
 		3D9B179A18BE91BD0050DD72 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B179818BE91BD0050DD72 /* InfoPlist.strings */; };
@@ -48,64 +116,8 @@
 		3D9B18DB18BE94700050DD72 /* NSString+NimbusCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B18AA18BE94700050DD72 /* NSString+NimbusCore.m */; };
 		3D9B18EB18BE94700050DD72 /* NIImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B18BF18BE94700050DD72 /* NIImageProcessing.m */; };
 		3D9B18EC18BE94700050DD72 /* NINetworkImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B18C318BE94700050DD72 /* NINetworkImageView.m */; };
-		3D9B19EB18BEBA320050DD72 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B198518BEBA310050DD72 /* UIView+Additions.m */; };
-		3D9B19EC18BEBA320050DD72 /* UINavigationController+KeyboardDismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B198718BEBA310050DD72 /* UINavigationController+KeyboardDismiss.m */; };
-		3D9B19ED18BEBA320050DD72 /* UIImage+Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B198918BEBA310050DD72 /* UIImage+Colors.m */; };
-		3D9B19EE18BEBA320050DD72 /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B198B18BEBA310050DD72 /* UIColor+Additions.m */; };
-		3D9B19EF18BEBA320050DD72 /* UIBarButtonItem+ArtDotCom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B198D18BEBA310050DD72 /* UIBarButtonItem+ArtDotCom.m */; };
-		3D9B19F018BEBA320050DD72 /* PGTableViewWithEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B198F18BEBA310050DD72 /* PGTableViewWithEmptyView.m */; };
-		3D9B19F118BEBA320050DD72 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B199118BEBA310050DD72 /* NSString+Additions.m */; };
-		3D9B19F218BEBA320050DD72 /* NSDictionary+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B199318BEBA310050DD72 /* NSDictionary+Additions.m */; };
-		3D9B19F318BEBA320050DD72 /* NSDate+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B199518BEBA310050DD72 /* NSDate+Additions.m */; };
-		3D9B19F418BEBA320050DD72 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B199718BEBA310050DD72 /* Item.m */; };
-		3D9B19F518BEBA320050DD72 /* ArtAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B199A18BEBA310050DD72 /* ArtAPI.m */; };
-		3D9B19F618BEBA320050DD72 /* Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B199C18BEBA310050DD72 /* Analytics.m */; };
-		3D9B19F718BEBA320050DD72 /* ACWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B199E18BEBA310050DD72 /* ACWebViewController.m */; };
-		3D9B19F818BEBA320050DD72 /* ACTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19A018BEBA310050DD72 /* ACTableViewController.m */; };
-		3D9B19FB18BEBA320050DD72 /* ACShipOptionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19A518BEBA310050DD72 /* ACShipOptionsTableViewCell.xib */; };
-		3D9B19FC18BEBA320050DD72 /* ACShipOptionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19A618BEBA310050DD72 /* ACShipOptionsTableViewCell.m */; };
-		3D9B19FD18BEBA320050DD72 /* ACShipOptionsTableViewCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19A818BEBA310050DD72 /* ACShipOptionsTableViewCell-iPad.xib */; };
-		3D9B19FE18BEBA320050DD72 /* ACShipAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19A918BEBA310050DD72 /* ACShipAddressViewController.xib */; };
-		3D9B19FF18BEBA320050DD72 /* ACShipAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19AA18BEBA310050DD72 /* ACShipAddressViewController.m */; };
-		3D9B1A0018BEBA320050DD72 /* ACShipAddressViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19AC18BEBA310050DD72 /* ACShipAddressViewController-iPad.xib */; };
-		3D9B1A0118BEBA320050DD72 /* ACSharingActivityProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19AD18BEBA310050DD72 /* ACSharingActivityProvider.m */; };
-		3D9B1A0218BEBA320050DD72 /* ACSDKAvailability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19AF18BEBA310050DD72 /* ACSDKAvailability.m */; };
-		3D9B1A0318BEBA320050DD72 /* ACPinterestActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19B118BEBA310050DD72 /* ACPinterestActivity.m */; };
-		3D9B1A0418BEBA320050DD72 /* ACPaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19B318BEBA310050DD72 /* ACPaymentViewController.xib */; };
-		3D9B1A0518BEBA320050DD72 /* ACPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19B418BEBA310050DD72 /* ACPaymentViewController.m */; };
-		3D9B1A0618BEBA320050DD72 /* ACPaymentViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19B618BEBA310050DD72 /* ACPaymentViewController-iPad.xib */; };
-		3D9B1A0718BEBA320050DD72 /* ACOrderConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19B718BEBA310050DD72 /* ACOrderConfirmationViewController.xib */; };
-		3D9B1A0818BEBA320050DD72 /* ACOrderConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19B818BEBA310050DD72 /* ACOrderConfirmationViewController.m */; };
-		3D9B1A0918BEBA320050DD72 /* ACOrderConfirmationViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19BA18BEBA310050DD72 /* ACOrderConfirmationViewController-iPad.xib */; };
-		3D9B1A0A18BEBA320050DD72 /* ACNonEmptyCollectionTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19BB18BEBA310050DD72 /* ACNonEmptyCollectionTesting.m */; };
-		3D9B1A0B18BEBA320050DD72 /* ACNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19BD18BEBA310050DD72 /* ACNavigationController.m */; };
-		3D9B1A0C18BEBA320050DD72 /* ACMailActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19BF18BEBA310050DD72 /* ACMailActivity.m */; };
-		3D9B1A0D18BEBA320050DD72 /* ACLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19C118BEBA310050DD72 /* ACLoginViewController.m */; };
-		3D9B1A0E18BEBA320050DD72 /* ACLoginCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19C318BEBA310050DD72 /* ACLoginCustomCell.xib */; };
-		3D9B1A0F18BEBA320050DD72 /* ACLoginCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19C418BEBA310050DD72 /* ACLoginCustomCell.m */; };
-		3D9B1A1018BEBA320050DD72 /* ACLoginCustomCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19C618BEBA310050DD72 /* ACLoginCustomCell-iPad.xib */; };
-		3D9B1A1118BEBA320050DD72 /* ACKeyboardToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19C718BEBA320050DD72 /* ACKeyboardToolbarView.m */; };
-		3D9B1A1218BEBA320050DD72 /* ACiPhoneLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19C918BEBA320050DD72 /* ACiPhoneLoginViewController.xib */; };
-		3D9B1A1318BEBA320050DD72 /* ACiPhoneLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19CA18BEBA320050DD72 /* ACiPhoneLoginViewController.m */; };
-		3D9B1A1418BEBA320050DD72 /* ACForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19CC18BEBA320050DD72 /* ACForgotPasswordViewController.m */; };
-		3D9B1A1518BEBA320050DD72 /* ACFavoritesRemoveActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19CE18BEBA320050DD72 /* ACFavoritesRemoveActivity.m */; };
-		3D9B1A1618BEBA320050DD72 /* ACFavoritesActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19D018BEBA320050DD72 /* ACFavoritesActivity.m */; };
-		3D9B1A1718BEBA320050DD72 /* ACCustomBillingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19D218BEBA320050DD72 /* ACCustomBillingCell.xib */; };
-		3D9B1A1818BEBA320050DD72 /* ACCustomBillingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19D318BEBA320050DD72 /* ACCustomBillingCell.m */; };
-		3D9B1A1918BEBA320050DD72 /* ACCustomBillingCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19D518BEBA320050DD72 /* ACCustomBillingCell-iPad.xib */; };
-		3D9B1A1A18BEBA320050DD72 /* ACCreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19D618BEBA320050DD72 /* ACCreateAccountViewController.m */; };
-		3D9B1A1B18BEBA320050DD72 /* ACConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19D818BEBA320050DD72 /* ACConstants.m */; };
-		3D9B1A1C18BEBA320050DD72 /* ACCheckoutTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19DA18BEBA320050DD72 /* ACCheckoutTextField.m */; };
-		3D9B1A1D18BEBA320050DD72 /* ACBillingAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19DC18BEBA320050DD72 /* ACBillingAddressViewController.xib */; };
-		3D9B1A1E18BEBA320050DD72 /* ACBillingAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19DD18BEBA320050DD72 /* ACBillingAddressViewController.m */; };
-		3D9B1A1F18BEBA320050DD72 /* ACBillingAddressViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19DF18BEBA320050DD72 /* ACBillingAddressViewController-iPad.xib */; };
-		3D9B1A2018BEBA320050DD72 /* ACArtInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19E018BEBA320050DD72 /* ACArtInfoViewController.xib */; };
-		3D9B1A2118BEBA320050DD72 /* ACArtInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19E118BEBA320050DD72 /* ACArtInfoViewController.m */; };
-		3D9B1A2218BEBA320050DD72 /* ACAddressBookCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19E318BEBA320050DD72 /* ACAddressBookCustomCell.xib */; };
-		3D9B1A2318BEBA320050DD72 /* ACAddressBookCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19E418BEBA320050DD72 /* ACAddressBookCustomCell.m */; };
-		3D9B1A2418BEBA320050DD72 /* ACAddressBookCustomCell-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9B19E618BEBA320050DD72 /* ACAddressBookCustomCell-iPad.xib */; };
-		3D9B1A2518BEBA320050DD72 /* ACActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19E718BEBA320050DD72 /* ACActivityViewController.m */; };
-		3D9B1A2618BEBA320050DD72 /* ACActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9B19E918BEBA320050DD72 /* ACActivityIndicator.m */; };
+		3DA225CB1947734100D796FD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9B178F18BE91BD0050DD72 /* Foundation.framework */; };
+		3DA225CD1947736A00D796FD /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA225CC1947736A00D796FD /* CFNetwork.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		72B7210F414743B6BDD5413D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93FDFB82C3DE4554B1AD8C93 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -132,13 +144,134 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3D3992F018DA3F47002FE1E3 /* ACShoppingCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACShoppingCartViewController.h; sourceTree = "<group>"; };
-		3D3992F118DA3F47002FE1E3 /* ACShoppingCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACShoppingCartViewController.m; sourceTree = "<group>"; };
-		3D3992F218DA3F47002FE1E3 /* ACShoppingCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACShoppingCartViewController.xib; sourceTree = "<group>"; };
-		3D3992F518DA3F97002FE1E3 /* ACShoppingCartItemTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACShoppingCartItemTableCell.h; sourceTree = "<group>"; };
-		3D3992F618DA3F97002FE1E3 /* ACShoppingCartItemTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACShoppingCartItemTableCell.m; sourceTree = "<group>"; };
-		3D3992F718DA3F97002FE1E3 /* ACShoppingCartItemTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACShoppingCartItemTableCell.xib; sourceTree = "<group>"; };
 		3D3992FA18DA4AFC002FE1E3 /* DecorProductSearchViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "DecorProductSearchViewController~ipad.xib"; sourceTree = "<group>"; };
+		3D91893A1946649400B847B9 /* ACActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACActivityIndicator.h; sourceTree = "<group>"; };
+		3D91893B1946649400B847B9 /* ACActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACActivityIndicator.m; sourceTree = "<group>"; };
+		3D91893C1946649400B847B9 /* ACActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACActivityViewController.h; sourceTree = "<group>"; };
+		3D91893D1946649400B847B9 /* ACActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACActivityViewController.m; sourceTree = "<group>"; };
+		3D91893E1946649400B847B9 /* ACAddressBookCustomCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACAddressBookCustomCell-iPad.xib"; sourceTree = "<group>"; };
+		3D91893F1946649400B847B9 /* ACAddressBookCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACAddressBookCustomCell.h; sourceTree = "<group>"; };
+		3D9189401946649400B847B9 /* ACAddressBookCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACAddressBookCustomCell.m; sourceTree = "<group>"; };
+		3D9189411946649400B847B9 /* ACAddressBookCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACAddressBookCustomCell.xib; sourceTree = "<group>"; };
+		3D9189421946649400B847B9 /* ACArtInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACArtInfoViewController.h; sourceTree = "<group>"; };
+		3D9189431946649400B847B9 /* ACArtInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACArtInfoViewController.m; sourceTree = "<group>"; };
+		3D9189441946649400B847B9 /* ACArtInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACArtInfoViewController.xib; sourceTree = "<group>"; };
+		3D9189451946649400B847B9 /* ACBillingAddressViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACBillingAddressViewController-iPad.xib"; sourceTree = "<group>"; };
+		3D9189461946649400B847B9 /* ACBillingAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACBillingAddressViewController.h; sourceTree = "<group>"; };
+		3D9189471946649400B847B9 /* ACBillingAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACBillingAddressViewController.m; sourceTree = "<group>"; };
+		3D9189481946649400B847B9 /* ACBillingAddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACBillingAddressViewController.xib; sourceTree = "<group>"; };
+		3D9189491946649400B847B9 /* ACCheckoutTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACCheckoutTextField.h; sourceTree = "<group>"; };
+		3D91894A1946649400B847B9 /* ACCheckoutTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACCheckoutTextField.m; sourceTree = "<group>"; };
+		3D91894B1946649400B847B9 /* ACConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACConstants.h; sourceTree = "<group>"; };
+		3D91894C1946649400B847B9 /* ACConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACConstants.m; sourceTree = "<group>"; };
+		3D91894D1946649400B847B9 /* ACCreateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACCreateAccountViewController.h; sourceTree = "<group>"; };
+		3D91894E1946649400B847B9 /* ACCreateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACCreateAccountViewController.m; sourceTree = "<group>"; };
+		3D91894F1946649400B847B9 /* ACCustomBillingCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACCustomBillingCell-iPad.xib"; sourceTree = "<group>"; };
+		3D9189501946649400B847B9 /* ACCustomBillingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACCustomBillingCell.h; sourceTree = "<group>"; };
+		3D9189511946649400B847B9 /* ACCustomBillingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACCustomBillingCell.m; sourceTree = "<group>"; };
+		3D9189521946649400B847B9 /* ACCustomBillingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACCustomBillingCell.xib; sourceTree = "<group>"; };
+		3D9189531946649400B847B9 /* ACFacebookActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACFacebookActivity.h; sourceTree = "<group>"; };
+		3D9189541946649400B847B9 /* ACFacebookActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACFacebookActivity.m; sourceTree = "<group>"; };
+		3D9189551946649400B847B9 /* ACFavoritesActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACFavoritesActivity.h; sourceTree = "<group>"; };
+		3D9189561946649400B847B9 /* ACFavoritesActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACFavoritesActivity.m; sourceTree = "<group>"; };
+		3D9189571946649400B847B9 /* ACFavoritesRemoveActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACFavoritesRemoveActivity.h; sourceTree = "<group>"; };
+		3D9189581946649400B847B9 /* ACFavoritesRemoveActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACFavoritesRemoveActivity.m; sourceTree = "<group>"; };
+		3D9189591946649400B847B9 /* ACForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACForgotPasswordViewController.h; sourceTree = "<group>"; };
+		3D91895A1946649400B847B9 /* ACForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACForgotPasswordViewController.m; sourceTree = "<group>"; };
+		3D91895B1946649400B847B9 /* ACiPhoneLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACiPhoneLoginViewController.h; sourceTree = "<group>"; };
+		3D91895C1946649400B847B9 /* ACiPhoneLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACiPhoneLoginViewController.m; sourceTree = "<group>"; };
+		3D91895D1946649400B847B9 /* ACiPhoneLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACiPhoneLoginViewController.xib; sourceTree = "<group>"; };
+		3D91895E1946649400B847B9 /* ACKeyboardToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACKeyboardToolbarView.h; sourceTree = "<group>"; };
+		3D91895F1946649400B847B9 /* ACKeyboardToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACKeyboardToolbarView.m; sourceTree = "<group>"; };
+		3D9189601946649400B847B9 /* ACLoginCustomCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACLoginCustomCell-iPad.xib"; sourceTree = "<group>"; };
+		3D9189611946649500B847B9 /* ACLoginCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoginCustomCell.h; sourceTree = "<group>"; };
+		3D9189621946649500B847B9 /* ACLoginCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoginCustomCell.m; sourceTree = "<group>"; };
+		3D9189631946649500B847B9 /* ACLoginCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACLoginCustomCell.xib; sourceTree = "<group>"; };
+		3D9189641946649500B847B9 /* ACLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoginViewController.h; sourceTree = "<group>"; };
+		3D9189651946649500B847B9 /* ACLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoginViewController.m; sourceTree = "<group>"; };
+		3D9189661946649500B847B9 /* ACMailActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMailActivity.h; sourceTree = "<group>"; };
+		3D9189671946649500B847B9 /* ACMailActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMailActivity.m; sourceTree = "<group>"; };
+		3D9189681946649500B847B9 /* ACNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACNavigationController.h; sourceTree = "<group>"; };
+		3D9189691946649500B847B9 /* ACNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACNavigationController.m; sourceTree = "<group>"; };
+		3D91896A1946649500B847B9 /* ACNonEmptyCollectionTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACNonEmptyCollectionTesting.h; sourceTree = "<group>"; };
+		3D91896B1946649500B847B9 /* ACNonEmptyCollectionTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACNonEmptyCollectionTesting.m; sourceTree = "<group>"; };
+		3D91896C1946649500B847B9 /* ACOrderConfirmationViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACOrderConfirmationViewController-iPad.xib"; sourceTree = "<group>"; };
+		3D91896D1946649500B847B9 /* ACOrderConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOrderConfirmationViewController.h; sourceTree = "<group>"; };
+		3D91896E1946649500B847B9 /* ACOrderConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACOrderConfirmationViewController.m; sourceTree = "<group>"; };
+		3D91896F1946649500B847B9 /* ACOrderConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACOrderConfirmationViewController.xib; sourceTree = "<group>"; };
+		3D9189701946649500B847B9 /* ACPaymentViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACPaymentViewController-iPad.xib"; sourceTree = "<group>"; };
+		3D9189711946649500B847B9 /* ACPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPaymentViewController.h; sourceTree = "<group>"; };
+		3D9189721946649500B847B9 /* ACPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPaymentViewController.m; sourceTree = "<group>"; };
+		3D9189731946649500B847B9 /* ACPaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACPaymentViewController.xib; sourceTree = "<group>"; };
+		3D9189741946649500B847B9 /* ACPinterestActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPinterestActivity.h; sourceTree = "<group>"; };
+		3D9189751946649500B847B9 /* ACPinterestActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPinterestActivity.m; sourceTree = "<group>"; };
+		3D9189761946649500B847B9 /* ACPrinterReceiptViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACPrinterReceiptViewController-iPad.xib"; sourceTree = "<group>"; };
+		3D9189771946649500B847B9 /* ACPrinterReceiptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPrinterReceiptViewController.h; sourceTree = "<group>"; };
+		3D9189781946649500B847B9 /* ACPrinterReceiptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPrinterReceiptViewController.m; sourceTree = "<group>"; };
+		3D9189791946649500B847B9 /* ACSDKAvailability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSDKAvailability.h; sourceTree = "<group>"; };
+		3D91897A1946649500B847B9 /* ACSDKAvailability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSDKAvailability.m; sourceTree = "<group>"; };
+		3D91897B1946649500B847B9 /* ACSharingActivityProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSharingActivityProvider.h; sourceTree = "<group>"; };
+		3D91897C1946649500B847B9 /* ACSharingActivityProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSharingActivityProvider.m; sourceTree = "<group>"; };
+		3D91897D1946649500B847B9 /* ACShipAddressViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACShipAddressViewController-iPad.xib"; sourceTree = "<group>"; };
+		3D91897E1946649500B847B9 /* ACShipAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACShipAddressViewController.h; sourceTree = "<group>"; };
+		3D91897F1946649500B847B9 /* ACShipAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACShipAddressViewController.m; sourceTree = "<group>"; };
+		3D9189801946649500B847B9 /* ACShipAddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACShipAddressViewController.xib; sourceTree = "<group>"; };
+		3D9189811946649500B847B9 /* ACShipOptionsTableViewCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACShipOptionsTableViewCell-iPad.xib"; sourceTree = "<group>"; };
+		3D9189821946649500B847B9 /* ACShipOptionsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACShipOptionsTableViewCell.h; sourceTree = "<group>"; };
+		3D9189831946649500B847B9 /* ACShipOptionsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACShipOptionsTableViewCell.m; sourceTree = "<group>"; };
+		3D9189841946649500B847B9 /* ACShipOptionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACShipOptionsTableViewCell.xib; sourceTree = "<group>"; };
+		3D9189851946649500B847B9 /* ACShoppingCartItemTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACShoppingCartItemTableCell.h; sourceTree = "<group>"; };
+		3D9189861946649500B847B9 /* ACShoppingCartItemTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACShoppingCartItemTableCell.m; sourceTree = "<group>"; };
+		3D9189871946649500B847B9 /* ACShoppingCartItemTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACShoppingCartItemTableCell.xib; sourceTree = "<group>"; };
+		3D9189881946649500B847B9 /* ACShoppingCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACShoppingCartViewController.h; sourceTree = "<group>"; };
+		3D9189891946649500B847B9 /* ACShoppingCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACShoppingCartViewController.m; sourceTree = "<group>"; };
+		3D91898A1946649500B847B9 /* ACShoppingCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACShoppingCartViewController.xib; sourceTree = "<group>"; };
+		3D91898B1946649500B847B9 /* ACTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTableViewController.h; sourceTree = "<group>"; };
+		3D91898C1946649500B847B9 /* ACTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTableViewController.m; sourceTree = "<group>"; };
+		3D91898D1946649500B847B9 /* ACTwitterActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTwitterActivity.h; sourceTree = "<group>"; };
+		3D91898E1946649500B847B9 /* ACTwitterActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTwitterActivity.m; sourceTree = "<group>"; };
+		3D91898F1946649500B847B9 /* ACWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACWebViewController.h; sourceTree = "<group>"; };
+		3D9189901946649500B847B9 /* ACWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACWebViewController.m; sourceTree = "<group>"; };
+		3D9189911946649500B847B9 /* Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analytics.h; sourceTree = "<group>"; };
+		3D9189921946649500B847B9 /* Analytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analytics.m; sourceTree = "<group>"; };
+		3D9189931946649500B847B9 /* ArtAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtAPI.h; sourceTree = "<group>"; };
+		3D9189941946649500B847B9 /* ArtAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtAPI.m; sourceTree = "<group>"; };
+		3D9189951946649500B847B9 /* ARTFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTFrame.h; sourceTree = "<group>"; };
+		3D9189961946649500B847B9 /* ARTFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTFrame.m; sourceTree = "<group>"; };
+		3D9189971946649500B847B9 /* ARTLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTLogger.h; sourceTree = "<group>"; };
+		3D9189981946649500B847B9 /* ARTLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTLogging.h; sourceTree = "<group>"; };
+		3D9189991946649500B847B9 /* ARTMat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTMat.h; sourceTree = "<group>"; };
+		3D91899A1946649500B847B9 /* ARTMat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTMat.m; sourceTree = "<group>"; };
+		3D91899B1946649500B847B9 /* ARTMoulding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTMoulding.h; sourceTree = "<group>"; };
+		3D91899C1946649500B847B9 /* ARTMoulding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTMoulding.m; sourceTree = "<group>"; };
+		3D91899D1946649500B847B9 /* ARTService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTService.h; sourceTree = "<group>"; };
+		3D91899E1946649500B847B9 /* ARTService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTService.m; sourceTree = "<group>"; };
+		3D91899F1946649500B847B9 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		3D9189A01946649500B847B9 /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
+		3D9189A11946649500B847B9 /* NSArray+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Addition.h"; sourceTree = "<group>"; };
+		3D9189A21946649500B847B9 /* NSArray+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Addition.m"; sourceTree = "<group>"; };
+		3D9189A31946649500B847B9 /* NSDate+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Additions.h"; sourceTree = "<group>"; };
+		3D9189A41946649500B847B9 /* NSDate+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Additions.m"; sourceTree = "<group>"; };
+		3D9189A51946649500B847B9 /* NSDictionary+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Additions.h"; sourceTree = "<group>"; };
+		3D9189A61946649500B847B9 /* NSDictionary+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Additions.m"; sourceTree = "<group>"; };
+		3D9189A71946649500B847B9 /* NSMutableArray+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Addition.h"; sourceTree = "<group>"; };
+		3D9189A81946649500B847B9 /* NSMutableArray+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Addition.m"; sourceTree = "<group>"; };
+		3D9189A91946649500B847B9 /* NSMutableDictionary+SetNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+SetNull.h"; sourceTree = "<group>"; };
+		3D9189AA1946649500B847B9 /* NSMutableDictionary+SetNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+SetNull.m"; sourceTree = "<group>"; };
+		3D9189AB1946649500B847B9 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
+		3D9189AC1946649500B847B9 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
+		3D9189AD1946649500B847B9 /* PGTableViewWithEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGTableViewWithEmptyView.h; sourceTree = "<group>"; };
+		3D9189AE1946649500B847B9 /* PGTableViewWithEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGTableViewWithEmptyView.m; sourceTree = "<group>"; };
+		3D9189AF1946649500B847B9 /* UIBarButtonItem+ArtDotCom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+ArtDotCom.h"; sourceTree = "<group>"; };
+		3D9189B01946649500B847B9 /* UIBarButtonItem+ArtDotCom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+ArtDotCom.m"; sourceTree = "<group>"; };
+		3D9189B11946649500B847B9 /* UIColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Additions.h"; sourceTree = "<group>"; };
+		3D9189B21946649500B847B9 /* UIColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Additions.m"; sourceTree = "<group>"; };
+		3D9189B31946649500B847B9 /* UIImage+Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Colors.h"; sourceTree = "<group>"; };
+		3D9189B41946649500B847B9 /* UIImage+Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Colors.m"; sourceTree = "<group>"; };
+		3D9189B51946649500B847B9 /* UINavigationController+KeyboardDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+KeyboardDismiss.h"; sourceTree = "<group>"; };
+		3D9189B61946649500B847B9 /* UINavigationController+KeyboardDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardDismiss.m"; sourceTree = "<group>"; };
+		3D9189B71946649500B847B9 /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
+		3D9189B81946649500B847B9 /* UIView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
 		3D9B178C18BE91BD0050DD72 /* ARTSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARTSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D9B178F18BE91BD0050DD72 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3D9B179118BE91BD0050DD72 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -213,105 +346,7 @@
 		3D9B18FD18BEB7C00050DD72 /* ArtAPI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ArtAPI-Info.plist"; sourceTree = "<group>"; };
 		3D9B18FF18BEB7C00050DD72 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3D9B190118BEB7C00050DD72 /* ArtAPI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArtAPI-Prefix.pch"; sourceTree = "<group>"; };
-		3D9B198518BEBA310050DD72 /* UIView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
-		3D9B198618BEBA310050DD72 /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
-		3D9B198718BEBA310050DD72 /* UINavigationController+KeyboardDismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardDismiss.m"; sourceTree = "<group>"; };
-		3D9B198818BEBA310050DD72 /* UINavigationController+KeyboardDismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+KeyboardDismiss.h"; sourceTree = "<group>"; };
-		3D9B198918BEBA310050DD72 /* UIImage+Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Colors.m"; sourceTree = "<group>"; };
-		3D9B198A18BEBA310050DD72 /* UIImage+Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Colors.h"; sourceTree = "<group>"; };
-		3D9B198B18BEBA310050DD72 /* UIColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Additions.m"; sourceTree = "<group>"; };
-		3D9B198C18BEBA310050DD72 /* UIColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Additions.h"; sourceTree = "<group>"; };
-		3D9B198D18BEBA310050DD72 /* UIBarButtonItem+ArtDotCom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+ArtDotCom.m"; sourceTree = "<group>"; };
-		3D9B198E18BEBA310050DD72 /* UIBarButtonItem+ArtDotCom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+ArtDotCom.h"; sourceTree = "<group>"; };
-		3D9B198F18BEBA310050DD72 /* PGTableViewWithEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGTableViewWithEmptyView.m; sourceTree = "<group>"; };
-		3D9B199018BEBA310050DD72 /* PGTableViewWithEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGTableViewWithEmptyView.h; sourceTree = "<group>"; };
-		3D9B199118BEBA310050DD72 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
-		3D9B199218BEBA310050DD72 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
-		3D9B199318BEBA310050DD72 /* NSDictionary+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Additions.m"; sourceTree = "<group>"; };
-		3D9B199418BEBA310050DD72 /* NSDictionary+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Additions.h"; sourceTree = "<group>"; };
-		3D9B199518BEBA310050DD72 /* NSDate+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Additions.m"; sourceTree = "<group>"; };
-		3D9B199618BEBA310050DD72 /* NSDate+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Additions.h"; sourceTree = "<group>"; };
-		3D9B199718BEBA310050DD72 /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
-		3D9B199818BEBA310050DD72 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
-		3D9B199918BEBA310050DD72 /* ARTLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTLogger.h; sourceTree = "<group>"; };
-		3D9B199A18BEBA310050DD72 /* ArtAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtAPI.m; sourceTree = "<group>"; };
-		3D9B199B18BEBA310050DD72 /* ArtAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtAPI.h; sourceTree = "<group>"; };
-		3D9B199C18BEBA310050DD72 /* Analytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analytics.m; sourceTree = "<group>"; };
-		3D9B199D18BEBA310050DD72 /* Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analytics.h; sourceTree = "<group>"; };
-		3D9B199E18BEBA310050DD72 /* ACWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACWebViewController.m; sourceTree = "<group>"; };
-		3D9B199F18BEBA310050DD72 /* ACWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACWebViewController.h; sourceTree = "<group>"; };
-		3D9B19A018BEBA310050DD72 /* ACTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTableViewController.m; sourceTree = "<group>"; };
-		3D9B19A118BEBA310050DD72 /* ACTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTableViewController.h; sourceTree = "<group>"; };
-		3D9B19A518BEBA310050DD72 /* ACShipOptionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACShipOptionsTableViewCell.xib; sourceTree = "<group>"; };
-		3D9B19A618BEBA310050DD72 /* ACShipOptionsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACShipOptionsTableViewCell.m; sourceTree = "<group>"; };
-		3D9B19A718BEBA310050DD72 /* ACShipOptionsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACShipOptionsTableViewCell.h; sourceTree = "<group>"; };
-		3D9B19A818BEBA310050DD72 /* ACShipOptionsTableViewCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACShipOptionsTableViewCell-iPad.xib"; sourceTree = "<group>"; };
-		3D9B19A918BEBA310050DD72 /* ACShipAddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACShipAddressViewController.xib; sourceTree = "<group>"; };
-		3D9B19AA18BEBA310050DD72 /* ACShipAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACShipAddressViewController.m; sourceTree = "<group>"; };
-		3D9B19AB18BEBA310050DD72 /* ACShipAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACShipAddressViewController.h; sourceTree = "<group>"; };
-		3D9B19AC18BEBA310050DD72 /* ACShipAddressViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACShipAddressViewController-iPad.xib"; sourceTree = "<group>"; };
-		3D9B19AD18BEBA310050DD72 /* ACSharingActivityProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSharingActivityProvider.m; sourceTree = "<group>"; };
-		3D9B19AE18BEBA310050DD72 /* ACSharingActivityProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSharingActivityProvider.h; sourceTree = "<group>"; };
-		3D9B19AF18BEBA310050DD72 /* ACSDKAvailability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSDKAvailability.m; sourceTree = "<group>"; };
-		3D9B19B018BEBA310050DD72 /* ACSDKAvailability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSDKAvailability.h; sourceTree = "<group>"; };
-		3D9B19B118BEBA310050DD72 /* ACPinterestActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPinterestActivity.m; sourceTree = "<group>"; };
-		3D9B19B218BEBA310050DD72 /* ACPinterestActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPinterestActivity.h; sourceTree = "<group>"; };
-		3D9B19B318BEBA310050DD72 /* ACPaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACPaymentViewController.xib; sourceTree = "<group>"; };
-		3D9B19B418BEBA310050DD72 /* ACPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPaymentViewController.m; sourceTree = "<group>"; };
-		3D9B19B518BEBA310050DD72 /* ACPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPaymentViewController.h; sourceTree = "<group>"; };
-		3D9B19B618BEBA310050DD72 /* ACPaymentViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACPaymentViewController-iPad.xib"; sourceTree = "<group>"; };
-		3D9B19B718BEBA310050DD72 /* ACOrderConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACOrderConfirmationViewController.xib; sourceTree = "<group>"; };
-		3D9B19B818BEBA310050DD72 /* ACOrderConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACOrderConfirmationViewController.m; sourceTree = "<group>"; };
-		3D9B19B918BEBA310050DD72 /* ACOrderConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOrderConfirmationViewController.h; sourceTree = "<group>"; };
-		3D9B19BA18BEBA310050DD72 /* ACOrderConfirmationViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACOrderConfirmationViewController-iPad.xib"; sourceTree = "<group>"; };
-		3D9B19BB18BEBA310050DD72 /* ACNonEmptyCollectionTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACNonEmptyCollectionTesting.m; sourceTree = "<group>"; };
-		3D9B19BC18BEBA310050DD72 /* ACNonEmptyCollectionTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACNonEmptyCollectionTesting.h; sourceTree = "<group>"; };
-		3D9B19BD18BEBA310050DD72 /* ACNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACNavigationController.m; sourceTree = "<group>"; };
-		3D9B19BE18BEBA310050DD72 /* ACNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACNavigationController.h; sourceTree = "<group>"; };
-		3D9B19BF18BEBA310050DD72 /* ACMailActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMailActivity.m; sourceTree = "<group>"; };
-		3D9B19C018BEBA310050DD72 /* ACMailActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMailActivity.h; sourceTree = "<group>"; };
-		3D9B19C118BEBA310050DD72 /* ACLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoginViewController.m; sourceTree = "<group>"; };
-		3D9B19C218BEBA310050DD72 /* ACLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoginViewController.h; sourceTree = "<group>"; };
-		3D9B19C318BEBA310050DD72 /* ACLoginCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACLoginCustomCell.xib; sourceTree = "<group>"; };
-		3D9B19C418BEBA310050DD72 /* ACLoginCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoginCustomCell.m; sourceTree = "<group>"; };
-		3D9B19C518BEBA310050DD72 /* ACLoginCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoginCustomCell.h; sourceTree = "<group>"; };
-		3D9B19C618BEBA310050DD72 /* ACLoginCustomCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACLoginCustomCell-iPad.xib"; sourceTree = "<group>"; };
-		3D9B19C718BEBA320050DD72 /* ACKeyboardToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACKeyboardToolbarView.m; sourceTree = "<group>"; };
-		3D9B19C818BEBA320050DD72 /* ACKeyboardToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACKeyboardToolbarView.h; sourceTree = "<group>"; };
-		3D9B19C918BEBA320050DD72 /* ACiPhoneLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACiPhoneLoginViewController.xib; sourceTree = "<group>"; };
-		3D9B19CA18BEBA320050DD72 /* ACiPhoneLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACiPhoneLoginViewController.m; sourceTree = "<group>"; };
-		3D9B19CB18BEBA320050DD72 /* ACiPhoneLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACiPhoneLoginViewController.h; sourceTree = "<group>"; };
-		3D9B19CC18BEBA320050DD72 /* ACForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACForgotPasswordViewController.m; sourceTree = "<group>"; };
-		3D9B19CD18BEBA320050DD72 /* ACForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACForgotPasswordViewController.h; sourceTree = "<group>"; };
-		3D9B19CE18BEBA320050DD72 /* ACFavoritesRemoveActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACFavoritesRemoveActivity.m; sourceTree = "<group>"; };
-		3D9B19CF18BEBA320050DD72 /* ACFavoritesRemoveActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACFavoritesRemoveActivity.h; sourceTree = "<group>"; };
-		3D9B19D018BEBA320050DD72 /* ACFavoritesActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACFavoritesActivity.m; sourceTree = "<group>"; };
-		3D9B19D118BEBA320050DD72 /* ACFavoritesActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACFavoritesActivity.h; sourceTree = "<group>"; };
-		3D9B19D218BEBA320050DD72 /* ACCustomBillingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACCustomBillingCell.xib; sourceTree = "<group>"; };
-		3D9B19D318BEBA320050DD72 /* ACCustomBillingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACCustomBillingCell.m; sourceTree = "<group>"; };
-		3D9B19D418BEBA320050DD72 /* ACCustomBillingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACCustomBillingCell.h; sourceTree = "<group>"; };
-		3D9B19D518BEBA320050DD72 /* ACCustomBillingCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACCustomBillingCell-iPad.xib"; sourceTree = "<group>"; };
-		3D9B19D618BEBA320050DD72 /* ACCreateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACCreateAccountViewController.m; sourceTree = "<group>"; };
-		3D9B19D718BEBA320050DD72 /* ACCreateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACCreateAccountViewController.h; sourceTree = "<group>"; };
-		3D9B19D818BEBA320050DD72 /* ACConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACConstants.m; sourceTree = "<group>"; };
-		3D9B19D918BEBA320050DD72 /* ACConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACConstants.h; sourceTree = "<group>"; };
-		3D9B19DA18BEBA320050DD72 /* ACCheckoutTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACCheckoutTextField.m; sourceTree = "<group>"; };
-		3D9B19DB18BEBA320050DD72 /* ACCheckoutTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACCheckoutTextField.h; sourceTree = "<group>"; };
-		3D9B19DC18BEBA320050DD72 /* ACBillingAddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACBillingAddressViewController.xib; sourceTree = "<group>"; };
-		3D9B19DD18BEBA320050DD72 /* ACBillingAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACBillingAddressViewController.m; sourceTree = "<group>"; };
-		3D9B19DE18BEBA320050DD72 /* ACBillingAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACBillingAddressViewController.h; sourceTree = "<group>"; };
-		3D9B19DF18BEBA320050DD72 /* ACBillingAddressViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACBillingAddressViewController-iPad.xib"; sourceTree = "<group>"; };
-		3D9B19E018BEBA320050DD72 /* ACArtInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACArtInfoViewController.xib; sourceTree = "<group>"; };
-		3D9B19E118BEBA320050DD72 /* ACArtInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACArtInfoViewController.m; sourceTree = "<group>"; };
-		3D9B19E218BEBA320050DD72 /* ACArtInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACArtInfoViewController.h; sourceTree = "<group>"; };
-		3D9B19E318BEBA320050DD72 /* ACAddressBookCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACAddressBookCustomCell.xib; sourceTree = "<group>"; };
-		3D9B19E418BEBA320050DD72 /* ACAddressBookCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACAddressBookCustomCell.m; sourceTree = "<group>"; };
-		3D9B19E518BEBA320050DD72 /* ACAddressBookCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACAddressBookCustomCell.h; sourceTree = "<group>"; };
-		3D9B19E618BEBA320050DD72 /* ACAddressBookCustomCell-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ACAddressBookCustomCell-iPad.xib"; sourceTree = "<group>"; };
-		3D9B19E718BEBA320050DD72 /* ACActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACActivityViewController.m; sourceTree = "<group>"; };
-		3D9B19E818BEBA320050DD72 /* ACActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACActivityViewController.h; sourceTree = "<group>"; };
-		3D9B19E918BEBA320050DD72 /* ACActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACActivityIndicator.m; sourceTree = "<group>"; };
-		3D9B19EA18BEBA320050DD72 /* ACActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACActivityIndicator.h; sourceTree = "<group>"; };
+		3DA225CC1947736A00D796FD /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		93FDFB82C3DE4554B1AD8C93 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A134A4EACF9743EE9E803D82 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -321,9 +356,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DA225CD1947736A00D796FD /* CFNetwork.framework in Frameworks */,
+				3DA225CB1947734100D796FD /* Foundation.framework in Frameworks */,
 				3D9B179218BE91BD0050DD72 /* CoreGraphics.framework in Frameworks */,
 				3D9B179418BE91BD0050DD72 /* UIKit.framework in Frameworks */,
-				3D9B179018BE91BD0050DD72 /* Foundation.framework in Frameworks */,
 				72B7210F414743B6BDD5413D /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -368,6 +404,7 @@
 		3D9B178E18BE91BD0050DD72 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3DA225CC1947736A00D796FD /* CFNetwork.framework */,
 				3D9B178F18BE91BD0050DD72 /* Foundation.framework */,
 				3D9B179118BE91BD0050DD72 /* CoreGraphics.framework */,
 				3D9B179318BE91BD0050DD72 /* UIKit.framework */,
@@ -427,111 +464,133 @@
 		3D9B17D518BE93820050DD72 /* ARTSDK */ = {
 			isa = PBXGroup;
 			children = (
-				3D9B198518BEBA310050DD72 /* UIView+Additions.m */,
-				3D9B198618BEBA310050DD72 /* UIView+Additions.h */,
-				3D9B198718BEBA310050DD72 /* UINavigationController+KeyboardDismiss.m */,
-				3D9B198818BEBA310050DD72 /* UINavigationController+KeyboardDismiss.h */,
-				3D9B198918BEBA310050DD72 /* UIImage+Colors.m */,
-				3D9B198A18BEBA310050DD72 /* UIImage+Colors.h */,
-				3D9B198B18BEBA310050DD72 /* UIColor+Additions.m */,
-				3D9B198C18BEBA310050DD72 /* UIColor+Additions.h */,
-				3D9B198D18BEBA310050DD72 /* UIBarButtonItem+ArtDotCom.m */,
-				3D9B198E18BEBA310050DD72 /* UIBarButtonItem+ArtDotCom.h */,
-				3D9B198F18BEBA310050DD72 /* PGTableViewWithEmptyView.m */,
-				3D9B199018BEBA310050DD72 /* PGTableViewWithEmptyView.h */,
-				3D9B199118BEBA310050DD72 /* NSString+Additions.m */,
-				3D9B199218BEBA310050DD72 /* NSString+Additions.h */,
-				3D9B199318BEBA310050DD72 /* NSDictionary+Additions.m */,
-				3D9B199418BEBA310050DD72 /* NSDictionary+Additions.h */,
-				3D9B199518BEBA310050DD72 /* NSDate+Additions.m */,
-				3D9B199618BEBA310050DD72 /* NSDate+Additions.h */,
-				3D9B199718BEBA310050DD72 /* Item.m */,
-				3D9B199818BEBA310050DD72 /* Item.h */,
-				3D9B199918BEBA310050DD72 /* ARTLogger.h */,
-				3D9B199A18BEBA310050DD72 /* ArtAPI.m */,
-				3D9B199B18BEBA310050DD72 /* ArtAPI.h */,
-				3D9B199C18BEBA310050DD72 /* Analytics.m */,
-				3D9B199D18BEBA310050DD72 /* Analytics.h */,
-				3D9B199E18BEBA310050DD72 /* ACWebViewController.m */,
-				3D9B199F18BEBA310050DD72 /* ACWebViewController.h */,
-				3D9B19A018BEBA310050DD72 /* ACTableViewController.m */,
-				3D9B19A118BEBA310050DD72 /* ACTableViewController.h */,
-				3D3992F518DA3F97002FE1E3 /* ACShoppingCartItemTableCell.h */,
-				3D3992F618DA3F97002FE1E3 /* ACShoppingCartItemTableCell.m */,
-				3D3992F718DA3F97002FE1E3 /* ACShoppingCartItemTableCell.xib */,
-				3D3992F018DA3F47002FE1E3 /* ACShoppingCartViewController.h */,
-				3D3992F118DA3F47002FE1E3 /* ACShoppingCartViewController.m */,
-				3D3992F218DA3F47002FE1E3 /* ACShoppingCartViewController.xib */,
-				3D9B19A518BEBA310050DD72 /* ACShipOptionsTableViewCell.xib */,
-				3D9B19A618BEBA310050DD72 /* ACShipOptionsTableViewCell.m */,
-				3D9B19A718BEBA310050DD72 /* ACShipOptionsTableViewCell.h */,
-				3D9B19A818BEBA310050DD72 /* ACShipOptionsTableViewCell-iPad.xib */,
-				3D9B19A918BEBA310050DD72 /* ACShipAddressViewController.xib */,
-				3D9B19AA18BEBA310050DD72 /* ACShipAddressViewController.m */,
-				3D9B19AB18BEBA310050DD72 /* ACShipAddressViewController.h */,
-				3D9B19AC18BEBA310050DD72 /* ACShipAddressViewController-iPad.xib */,
-				3D9B19AD18BEBA310050DD72 /* ACSharingActivityProvider.m */,
-				3D9B19AE18BEBA310050DD72 /* ACSharingActivityProvider.h */,
-				3D9B19AF18BEBA310050DD72 /* ACSDKAvailability.m */,
-				3D9B19B018BEBA310050DD72 /* ACSDKAvailability.h */,
-				3D9B19B118BEBA310050DD72 /* ACPinterestActivity.m */,
-				3D9B19B218BEBA310050DD72 /* ACPinterestActivity.h */,
-				3D9B19B318BEBA310050DD72 /* ACPaymentViewController.xib */,
-				3D9B19B418BEBA310050DD72 /* ACPaymentViewController.m */,
-				3D9B19B518BEBA310050DD72 /* ACPaymentViewController.h */,
-				3D9B19B618BEBA310050DD72 /* ACPaymentViewController-iPad.xib */,
-				3D9B19B718BEBA310050DD72 /* ACOrderConfirmationViewController.xib */,
-				3D9B19B818BEBA310050DD72 /* ACOrderConfirmationViewController.m */,
-				3D9B19B918BEBA310050DD72 /* ACOrderConfirmationViewController.h */,
-				3D9B19BA18BEBA310050DD72 /* ACOrderConfirmationViewController-iPad.xib */,
-				3D9B19BB18BEBA310050DD72 /* ACNonEmptyCollectionTesting.m */,
-				3D9B19BC18BEBA310050DD72 /* ACNonEmptyCollectionTesting.h */,
-				3D9B19BD18BEBA310050DD72 /* ACNavigationController.m */,
-				3D9B19BE18BEBA310050DD72 /* ACNavigationController.h */,
-				3D9B19BF18BEBA310050DD72 /* ACMailActivity.m */,
-				3D9B19C018BEBA310050DD72 /* ACMailActivity.h */,
-				3D9B19C118BEBA310050DD72 /* ACLoginViewController.m */,
-				3D9B19C218BEBA310050DD72 /* ACLoginViewController.h */,
-				3D9B19C318BEBA310050DD72 /* ACLoginCustomCell.xib */,
-				3D9B19C418BEBA310050DD72 /* ACLoginCustomCell.m */,
-				3D9B19C518BEBA310050DD72 /* ACLoginCustomCell.h */,
-				3D9B19C618BEBA310050DD72 /* ACLoginCustomCell-iPad.xib */,
-				3D9B19C718BEBA320050DD72 /* ACKeyboardToolbarView.m */,
-				3D9B19C818BEBA320050DD72 /* ACKeyboardToolbarView.h */,
-				3D9B19C918BEBA320050DD72 /* ACiPhoneLoginViewController.xib */,
-				3D9B19CA18BEBA320050DD72 /* ACiPhoneLoginViewController.m */,
-				3D9B19CB18BEBA320050DD72 /* ACiPhoneLoginViewController.h */,
-				3D9B19CC18BEBA320050DD72 /* ACForgotPasswordViewController.m */,
-				3D9B19CD18BEBA320050DD72 /* ACForgotPasswordViewController.h */,
-				3D9B19CE18BEBA320050DD72 /* ACFavoritesRemoveActivity.m */,
-				3D9B19CF18BEBA320050DD72 /* ACFavoritesRemoveActivity.h */,
-				3D9B19D018BEBA320050DD72 /* ACFavoritesActivity.m */,
-				3D9B19D118BEBA320050DD72 /* ACFavoritesActivity.h */,
-				3D9B19D218BEBA320050DD72 /* ACCustomBillingCell.xib */,
-				3D9B19D318BEBA320050DD72 /* ACCustomBillingCell.m */,
-				3D9B19D418BEBA320050DD72 /* ACCustomBillingCell.h */,
-				3D9B19D518BEBA320050DD72 /* ACCustomBillingCell-iPad.xib */,
-				3D9B19D618BEBA320050DD72 /* ACCreateAccountViewController.m */,
-				3D9B19D718BEBA320050DD72 /* ACCreateAccountViewController.h */,
-				3D9B19D818BEBA320050DD72 /* ACConstants.m */,
-				3D9B19D918BEBA320050DD72 /* ACConstants.h */,
-				3D9B19DA18BEBA320050DD72 /* ACCheckoutTextField.m */,
-				3D9B19DB18BEBA320050DD72 /* ACCheckoutTextField.h */,
-				3D9B19DC18BEBA320050DD72 /* ACBillingAddressViewController.xib */,
-				3D9B19DD18BEBA320050DD72 /* ACBillingAddressViewController.m */,
-				3D9B19DE18BEBA320050DD72 /* ACBillingAddressViewController.h */,
-				3D9B19DF18BEBA320050DD72 /* ACBillingAddressViewController-iPad.xib */,
-				3D9B19E018BEBA320050DD72 /* ACArtInfoViewController.xib */,
-				3D9B19E118BEBA320050DD72 /* ACArtInfoViewController.m */,
-				3D9B19E218BEBA320050DD72 /* ACArtInfoViewController.h */,
-				3D9B19E318BEBA320050DD72 /* ACAddressBookCustomCell.xib */,
-				3D9B19E418BEBA320050DD72 /* ACAddressBookCustomCell.m */,
-				3D9B19E518BEBA320050DD72 /* ACAddressBookCustomCell.h */,
-				3D9B19E618BEBA320050DD72 /* ACAddressBookCustomCell-iPad.xib */,
-				3D9B19E718BEBA320050DD72 /* ACActivityViewController.m */,
-				3D9B19E818BEBA320050DD72 /* ACActivityViewController.h */,
-				3D9B19E918BEBA320050DD72 /* ACActivityIndicator.m */,
-				3D9B19EA18BEBA320050DD72 /* ACActivityIndicator.h */,
+				3D91893A1946649400B847B9 /* ACActivityIndicator.h */,
+				3D91893B1946649400B847B9 /* ACActivityIndicator.m */,
+				3D91893C1946649400B847B9 /* ACActivityViewController.h */,
+				3D91893D1946649400B847B9 /* ACActivityViewController.m */,
+				3D91893E1946649400B847B9 /* ACAddressBookCustomCell-iPad.xib */,
+				3D91893F1946649400B847B9 /* ACAddressBookCustomCell.h */,
+				3D9189401946649400B847B9 /* ACAddressBookCustomCell.m */,
+				3D9189411946649400B847B9 /* ACAddressBookCustomCell.xib */,
+				3D9189421946649400B847B9 /* ACArtInfoViewController.h */,
+				3D9189431946649400B847B9 /* ACArtInfoViewController.m */,
+				3D9189441946649400B847B9 /* ACArtInfoViewController.xib */,
+				3D9189451946649400B847B9 /* ACBillingAddressViewController-iPad.xib */,
+				3D9189461946649400B847B9 /* ACBillingAddressViewController.h */,
+				3D9189471946649400B847B9 /* ACBillingAddressViewController.m */,
+				3D9189481946649400B847B9 /* ACBillingAddressViewController.xib */,
+				3D9189491946649400B847B9 /* ACCheckoutTextField.h */,
+				3D91894A1946649400B847B9 /* ACCheckoutTextField.m */,
+				3D91894B1946649400B847B9 /* ACConstants.h */,
+				3D91894C1946649400B847B9 /* ACConstants.m */,
+				3D91894D1946649400B847B9 /* ACCreateAccountViewController.h */,
+				3D91894E1946649400B847B9 /* ACCreateAccountViewController.m */,
+				3D91894F1946649400B847B9 /* ACCustomBillingCell-iPad.xib */,
+				3D9189501946649400B847B9 /* ACCustomBillingCell.h */,
+				3D9189511946649400B847B9 /* ACCustomBillingCell.m */,
+				3D9189521946649400B847B9 /* ACCustomBillingCell.xib */,
+				3D9189531946649400B847B9 /* ACFacebookActivity.h */,
+				3D9189541946649400B847B9 /* ACFacebookActivity.m */,
+				3D9189551946649400B847B9 /* ACFavoritesActivity.h */,
+				3D9189561946649400B847B9 /* ACFavoritesActivity.m */,
+				3D9189571946649400B847B9 /* ACFavoritesRemoveActivity.h */,
+				3D9189581946649400B847B9 /* ACFavoritesRemoveActivity.m */,
+				3D9189591946649400B847B9 /* ACForgotPasswordViewController.h */,
+				3D91895A1946649400B847B9 /* ACForgotPasswordViewController.m */,
+				3D91895B1946649400B847B9 /* ACiPhoneLoginViewController.h */,
+				3D91895C1946649400B847B9 /* ACiPhoneLoginViewController.m */,
+				3D91895D1946649400B847B9 /* ACiPhoneLoginViewController.xib */,
+				3D91895E1946649400B847B9 /* ACKeyboardToolbarView.h */,
+				3D91895F1946649400B847B9 /* ACKeyboardToolbarView.m */,
+				3D9189601946649400B847B9 /* ACLoginCustomCell-iPad.xib */,
+				3D9189611946649500B847B9 /* ACLoginCustomCell.h */,
+				3D9189621946649500B847B9 /* ACLoginCustomCell.m */,
+				3D9189631946649500B847B9 /* ACLoginCustomCell.xib */,
+				3D9189641946649500B847B9 /* ACLoginViewController.h */,
+				3D9189651946649500B847B9 /* ACLoginViewController.m */,
+				3D9189661946649500B847B9 /* ACMailActivity.h */,
+				3D9189671946649500B847B9 /* ACMailActivity.m */,
+				3D9189681946649500B847B9 /* ACNavigationController.h */,
+				3D9189691946649500B847B9 /* ACNavigationController.m */,
+				3D91896A1946649500B847B9 /* ACNonEmptyCollectionTesting.h */,
+				3D91896B1946649500B847B9 /* ACNonEmptyCollectionTesting.m */,
+				3D91896C1946649500B847B9 /* ACOrderConfirmationViewController-iPad.xib */,
+				3D91896D1946649500B847B9 /* ACOrderConfirmationViewController.h */,
+				3D91896E1946649500B847B9 /* ACOrderConfirmationViewController.m */,
+				3D91896F1946649500B847B9 /* ACOrderConfirmationViewController.xib */,
+				3D9189701946649500B847B9 /* ACPaymentViewController-iPad.xib */,
+				3D9189711946649500B847B9 /* ACPaymentViewController.h */,
+				3D9189721946649500B847B9 /* ACPaymentViewController.m */,
+				3D9189731946649500B847B9 /* ACPaymentViewController.xib */,
+				3D9189741946649500B847B9 /* ACPinterestActivity.h */,
+				3D9189751946649500B847B9 /* ACPinterestActivity.m */,
+				3D9189761946649500B847B9 /* ACPrinterReceiptViewController-iPad.xib */,
+				3D9189771946649500B847B9 /* ACPrinterReceiptViewController.h */,
+				3D9189781946649500B847B9 /* ACPrinterReceiptViewController.m */,
+				3D9189791946649500B847B9 /* ACSDKAvailability.h */,
+				3D91897A1946649500B847B9 /* ACSDKAvailability.m */,
+				3D91897B1946649500B847B9 /* ACSharingActivityProvider.h */,
+				3D91897C1946649500B847B9 /* ACSharingActivityProvider.m */,
+				3D91897D1946649500B847B9 /* ACShipAddressViewController-iPad.xib */,
+				3D91897E1946649500B847B9 /* ACShipAddressViewController.h */,
+				3D91897F1946649500B847B9 /* ACShipAddressViewController.m */,
+				3D9189801946649500B847B9 /* ACShipAddressViewController.xib */,
+				3D9189811946649500B847B9 /* ACShipOptionsTableViewCell-iPad.xib */,
+				3D9189821946649500B847B9 /* ACShipOptionsTableViewCell.h */,
+				3D9189831946649500B847B9 /* ACShipOptionsTableViewCell.m */,
+				3D9189841946649500B847B9 /* ACShipOptionsTableViewCell.xib */,
+				3D9189851946649500B847B9 /* ACShoppingCartItemTableCell.h */,
+				3D9189861946649500B847B9 /* ACShoppingCartItemTableCell.m */,
+				3D9189871946649500B847B9 /* ACShoppingCartItemTableCell.xib */,
+				3D9189881946649500B847B9 /* ACShoppingCartViewController.h */,
+				3D9189891946649500B847B9 /* ACShoppingCartViewController.m */,
+				3D91898A1946649500B847B9 /* ACShoppingCartViewController.xib */,
+				3D91898B1946649500B847B9 /* ACTableViewController.h */,
+				3D91898C1946649500B847B9 /* ACTableViewController.m */,
+				3D91898D1946649500B847B9 /* ACTwitterActivity.h */,
+				3D91898E1946649500B847B9 /* ACTwitterActivity.m */,
+				3D91898F1946649500B847B9 /* ACWebViewController.h */,
+				3D9189901946649500B847B9 /* ACWebViewController.m */,
+				3D9189911946649500B847B9 /* Analytics.h */,
+				3D9189921946649500B847B9 /* Analytics.m */,
+				3D9189931946649500B847B9 /* ArtAPI.h */,
+				3D9189941946649500B847B9 /* ArtAPI.m */,
+				3D9189951946649500B847B9 /* ARTFrame.h */,
+				3D9189961946649500B847B9 /* ARTFrame.m */,
+				3D9189971946649500B847B9 /* ARTLogger.h */,
+				3D9189981946649500B847B9 /* ARTLogging.h */,
+				3D9189991946649500B847B9 /* ARTMat.h */,
+				3D91899A1946649500B847B9 /* ARTMat.m */,
+				3D91899B1946649500B847B9 /* ARTMoulding.h */,
+				3D91899C1946649500B847B9 /* ARTMoulding.m */,
+				3D91899D1946649500B847B9 /* ARTService.h */,
+				3D91899E1946649500B847B9 /* ARTService.m */,
+				3D91899F1946649500B847B9 /* Item.h */,
+				3D9189A01946649500B847B9 /* Item.m */,
+				3D9189A11946649500B847B9 /* NSArray+Addition.h */,
+				3D9189A21946649500B847B9 /* NSArray+Addition.m */,
+				3D9189A31946649500B847B9 /* NSDate+Additions.h */,
+				3D9189A41946649500B847B9 /* NSDate+Additions.m */,
+				3D9189A51946649500B847B9 /* NSDictionary+Additions.h */,
+				3D9189A61946649500B847B9 /* NSDictionary+Additions.m */,
+				3D9189A71946649500B847B9 /* NSMutableArray+Addition.h */,
+				3D9189A81946649500B847B9 /* NSMutableArray+Addition.m */,
+				3D9189A91946649500B847B9 /* NSMutableDictionary+SetNull.h */,
+				3D9189AA1946649500B847B9 /* NSMutableDictionary+SetNull.m */,
+				3D9189AB1946649500B847B9 /* NSString+Additions.h */,
+				3D9189AC1946649500B847B9 /* NSString+Additions.m */,
+				3D9189AD1946649500B847B9 /* PGTableViewWithEmptyView.h */,
+				3D9189AE1946649500B847B9 /* PGTableViewWithEmptyView.m */,
+				3D9189AF1946649500B847B9 /* UIBarButtonItem+ArtDotCom.h */,
+				3D9189B01946649500B847B9 /* UIBarButtonItem+ArtDotCom.m */,
+				3D9189B11946649500B847B9 /* UIColor+Additions.h */,
+				3D9189B21946649500B847B9 /* UIColor+Additions.m */,
+				3D9189B31946649500B847B9 /* UIImage+Colors.h */,
+				3D9189B41946649500B847B9 /* UIImage+Colors.m */,
+				3D9189B51946649500B847B9 /* UINavigationController+KeyboardDismiss.h */,
+				3D9189B61946649500B847B9 /* UINavigationController+KeyboardDismiss.m */,
+				3D9189B71946649500B847B9 /* UIView+Additions.h */,
+				3D9189B81946649500B847B9 /* UIView+Additions.m */,
 			);
 			name = ARTSDK;
 			path = ../ARTSDK;
@@ -734,30 +793,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D9189BF1946649500B847B9 /* ACArtInfoViewController.xib in Resources */,
+				3D9189E71946649500B847B9 /* ACShipOptionsTableViewCell.xib in Resources */,
+				3D9189C81946649500B847B9 /* ACCustomBillingCell.xib in Resources */,
+				3D9189D71946649500B847B9 /* ACOrderConfirmationViewController-iPad.xib in Resources */,
+				3D9189BD1946649500B847B9 /* ACAddressBookCustomCell.xib in Resources */,
+				3D9189CE1946649500B847B9 /* ACiPhoneLoginViewController.xib in Resources */,
 				3D9B17D418BE93420050DD72 /* DecorProductSearchViewController.xib in Resources */,
+				3D9189E41946649500B847B9 /* ACShipAddressViewController.xib in Resources */,
 				3D9B17AB18BE91BD0050DD72 /* Images.xcassets in Resources */,
-				3D9B1A1718BEBA320050DD72 /* ACCustomBillingCell.xib in Resources */,
-				3D9B1A0018BEBA320050DD72 /* ACShipAddressViewController-iPad.xib in Resources */,
+				3D9189DC1946649500B847B9 /* ACPaymentViewController.xib in Resources */,
+				3D9189DE1946649500B847B9 /* ACPrinterReceiptViewController-iPad.xib in Resources */,
+				3D9189E51946649500B847B9 /* ACShipOptionsTableViewCell-iPad.xib in Resources */,
+				3D9189E21946649500B847B9 /* ACShipAddressViewController-iPad.xib in Resources */,
+				3D9189BB1946649500B847B9 /* ACAddressBookCustomCell-iPad.xib in Resources */,
+				3D9189C01946649500B847B9 /* ACBillingAddressViewController-iPad.xib in Resources */,
+				3D9189EB1946649500B847B9 /* ACShoppingCartViewController.xib in Resources */,
+				3D9189C21946649500B847B9 /* ACBillingAddressViewController.xib in Resources */,
 				3D9B179A18BE91BD0050DD72 /* InfoPlist.strings in Resources */,
-				3D9B1A1918BEBA320050DD72 /* ACCustomBillingCell-iPad.xib in Resources */,
-				3D9B1A0418BEBA320050DD72 /* ACPaymentViewController.xib in Resources */,
-				3D9B1A0918BEBA320050DD72 /* ACOrderConfirmationViewController-iPad.xib in Resources */,
-				3D9B19FB18BEBA320050DD72 /* ACShipOptionsTableViewCell.xib in Resources */,
-				3D9B19FE18BEBA320050DD72 /* ACShipAddressViewController.xib in Resources */,
-				3D9B19FD18BEBA320050DD72 /* ACShipOptionsTableViewCell-iPad.xib in Resources */,
-				3D9B1A2218BEBA320050DD72 /* ACAddressBookCustomCell.xib in Resources */,
-				3D9B1A1018BEBA320050DD72 /* ACLoginCustomCell-iPad.xib in Resources */,
-				3D9B1A2418BEBA320050DD72 /* ACAddressBookCustomCell-iPad.xib in Resources */,
-				3D9B1A1F18BEBA320050DD72 /* ACBillingAddressViewController-iPad.xib in Resources */,
-				3D9B1A2018BEBA320050DD72 /* ACArtInfoViewController.xib in Resources */,
-				3D9B1A0618BEBA320050DD72 /* ACPaymentViewController-iPad.xib in Resources */,
+				3D9189D01946649500B847B9 /* ACLoginCustomCell-iPad.xib in Resources */,
+				3D9189C61946649500B847B9 /* ACCustomBillingCell-iPad.xib in Resources */,
+				3D9189D21946649500B847B9 /* ACLoginCustomCell.xib in Resources */,
+				3D9189D91946649500B847B9 /* ACOrderConfirmationViewController.xib in Resources */,
+				3D9189E91946649500B847B9 /* ACShoppingCartItemTableCell.xib in Resources */,
 				3D3992FB18DA4AFC002FE1E3 /* DecorProductSearchViewController~ipad.xib in Resources */,
-				3D9B1A0718BEBA320050DD72 /* ACOrderConfirmationViewController.xib in Resources */,
-				3D9B1A1D18BEBA320050DD72 /* ACBillingAddressViewController.xib in Resources */,
-				3D9B1A0E18BEBA320050DD72 /* ACLoginCustomCell.xib in Resources */,
-				3D3992F918DA3F97002FE1E3 /* ACShoppingCartItemTableCell.xib in Resources */,
-				3D3992F418DA3F47002FE1E3 /* ACShoppingCartViewController.xib in Resources */,
-				3D9B1A1218BEBA320050DD72 /* ACiPhoneLoginViewController.xib in Resources */,
+				3D9189DA1946649500B847B9 /* ACPaymentViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -809,73 +869,83 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D9B1A0C18BEBA320050DD72 /* ACMailActivity.m in Sources */,
-				3D9B19F418BEBA320050DD72 /* Item.m in Sources */,
-				3D9B1A2518BEBA320050DD72 /* ACActivityViewController.m in Sources */,
-				3D9B1A1118BEBA320050DD72 /* ACKeyboardToolbarView.m in Sources */,
+				3D9189F51946649500B847B9 /* Item.m in Sources */,
+				3D9189F01946649500B847B9 /* ArtAPI.m in Sources */,
+				3D9189CC1946649500B847B9 /* ACForgotPasswordViewController.m in Sources */,
+				3D9189BE1946649500B847B9 /* ACArtInfoViewController.m in Sources */,
 				3D9B18CE18BE94700050DD72 /* NIFoundationMethods.m in Sources */,
-				3D9B1A1518BEBA320050DD72 /* ACFavoritesRemoveActivity.m in Sources */,
+				3D9189EE1946649500B847B9 /* ACWebViewController.m in Sources */,
 				3D9B18CC18BE94700050DD72 /* NIDeviceOrientation.m in Sources */,
-				3D9B1A1E18BEBA320050DD72 /* ACBillingAddressViewController.m in Sources */,
-				3D9B1A1818BEBA320050DD72 /* ACCustomBillingCell.m in Sources */,
-				3D9B19FF18BEBA320050DD72 /* ACShipAddressViewController.m in Sources */,
+				3D9189D61946649500B847B9 /* ACNonEmptyCollectionTesting.m in Sources */,
+				3D9189EC1946649500B847B9 /* ACTableViewController.m in Sources */,
+				3D9189F71946649500B847B9 /* NSDate+Additions.m in Sources */,
+				3D9189CB1946649500B847B9 /* ACFavoritesRemoveActivity.m in Sources */,
+				3D9189CD1946649500B847B9 /* ACiPhoneLoginViewController.m in Sources */,
 				3D9B18D118BE94700050DD72 /* NINetworkActivity.m in Sources */,
 				3D9B18D318BE94700050DD72 /* NINonRetainingCollections.m in Sources */,
-				3D9B19F818BEBA320050DD72 /* ACTableViewController.m in Sources */,
+				3D9189FB1946649500B847B9 /* NSString+Additions.m in Sources */,
+				3D9189F11946649500B847B9 /* ARTFrame.m in Sources */,
 				3D9B18EB18BE94700050DD72 /* NIImageProcessing.m in Sources */,
-				3D9B19F618BEBA320050DD72 /* Analytics.m in Sources */,
-				3D9B19EE18BEBA320050DD72 /* UIColor+Additions.m in Sources */,
-				3D9B1A1318BEBA320050DD72 /* ACiPhoneLoginViewController.m in Sources */,
+				3D9189F91946649500B847B9 /* NSMutableArray+Addition.m in Sources */,
+				3D9189D81946649500B847B9 /* ACOrderConfirmationViewController.m in Sources */,
+				3D9189EF1946649500B847B9 /* Analytics.m in Sources */,
 				3D9B18DB18BE94700050DD72 /* NSString+NimbusCore.m in Sources */,
+				3D9189FC1946649500B847B9 /* PGTableViewWithEmptyView.m in Sources */,
+				3D9189DF1946649500B847B9 /* ACPrinterReceiptViewController.m in Sources */,
 				3D9B17CA18BE93210050DD72 /* ViewController.m in Sources */,
-				3D9B1A1B18BEBA320050DD72 /* ACConstants.m in Sources */,
 				3D9B18D818BE94700050DD72 /* NISnapshotRotation.m in Sources */,
-				3D9B1A1618BEBA320050DD72 /* ACFavoritesActivity.m in Sources */,
+				3D9189C41946649500B847B9 /* ACConstants.m in Sources */,
+				3D9189DD1946649500B847B9 /* ACPinterestActivity.m in Sources */,
+				3D9189ED1946649500B847B9 /* ACTwitterActivity.m in Sources */,
+				3D9189C71946649500B847B9 /* ACCustomBillingCell.m in Sources */,
+				3D9189C51946649500B847B9 /* ACCreateAccountViewController.m in Sources */,
+				3D9189E81946649500B847B9 /* ACShoppingCartItemTableCell.m in Sources */,
+				3D9189F81946649500B847B9 /* NSDictionary+Additions.m in Sources */,
+				3D9189E61946649500B847B9 /* ACShipOptionsTableViewCell.m in Sources */,
+				3D9189CA1946649500B847B9 /* ACFavoritesActivity.m in Sources */,
+				3D9189F21946649500B847B9 /* ARTMat.m in Sources */,
 				3D9B18D518BE94700050DD72 /* NIPaths.m in Sources */,
-				3D9B1A0218BEBA320050DD72 /* ACSDKAvailability.m in Sources */,
-				3D9B19FC18BEBA320050DD72 /* ACShipOptionsTableViewCell.m in Sources */,
-				3D9B1A0D18BEBA320050DD72 /* ACLoginViewController.m in Sources */,
-				3D9B1A0A18BEBA320050DD72 /* ACNonEmptyCollectionTesting.m in Sources */,
-				3D9B1A0F18BEBA320050DD72 /* ACLoginCustomCell.m in Sources */,
-				3D9B19ED18BEBA320050DD72 /* UIImage+Colors.m in Sources */,
+				3D9189EA1946649500B847B9 /* ACShoppingCartViewController.m in Sources */,
+				3D9189F41946649500B847B9 /* ARTService.m in Sources */,
+				3D9189E31946649500B847B9 /* ACShipAddressViewController.m in Sources */,
+				3D9189DB1946649500B847B9 /* ACPaymentViewController.m in Sources */,
 				3D9B17D318BE93420050DD72 /* DecorProductSearchViewController.m in Sources */,
-				3D9B1A0518BEBA320050DD72 /* ACPaymentViewController.m in Sources */,
 				3D9B18D618BE94700050DD72 /* NIRuntimeClassModifications.m in Sources */,
 				3D9B17A018BE91BD0050DD72 /* AppDelegate.m in Sources */,
-				3D9B1A0318BEBA320050DD72 /* ACPinterestActivity.m in Sources */,
-				3D9B1A2318BEBA320050DD72 /* ACAddressBookCustomCell.m in Sources */,
-				3D9B19F118BEBA320050DD72 /* NSString+Additions.m in Sources */,
-				3D9B1A0B18BEBA320050DD72 /* ACNavigationController.m in Sources */,
+				3D9189F61946649500B847B9 /* NSArray+Addition.m in Sources */,
+				3D9189BA1946649500B847B9 /* ACActivityViewController.m in Sources */,
+				3D9189FE1946649500B847B9 /* UIColor+Additions.m in Sources */,
+				3D9189D41946649500B847B9 /* ACMailActivity.m in Sources */,
+				3D9189CF1946649500B847B9 /* ACKeyboardToolbarView.m in Sources */,
+				3D9189C91946649500B847B9 /* ACFacebookActivity.m in Sources */,
 				3D9B18CB18BE94700050DD72 /* NIDebuggingTools.m in Sources */,
-				3D9B19F718BEBA320050DD72 /* ACWebViewController.m in Sources */,
+				3D9189E11946649500B847B9 /* ACSharingActivityProvider.m in Sources */,
 				3D9B18D718BE94700050DD72 /* NISDKAvailability.m in Sources */,
+				3D9189FD1946649500B847B9 /* UIBarButtonItem+ArtDotCom.m in Sources */,
 				3D9B18EC18BE94700050DD72 /* NINetworkImageView.m in Sources */,
-				3D9B1A2618BEBA320050DD72 /* ACActivityIndicator.m in Sources */,
-				3D9B1A1418BEBA320050DD72 /* ACForgotPasswordViewController.m in Sources */,
-				3D9B1A2118BEBA320050DD72 /* ACArtInfoViewController.m in Sources */,
+				3D918A011946649500B847B9 /* UIView+Additions.m in Sources */,
 				3D9B18CF18BE94700050DD72 /* NIInMemoryCache.m in Sources */,
-				3D9B19EC18BEBA320050DD72 /* UINavigationController+KeyboardDismiss.m in Sources */,
+				3D9189B91946649500B847B9 /* ACActivityIndicator.m in Sources */,
 				3D9B18D218BE94700050DD72 /* NINonEmptyCollectionTesting.m in Sources */,
-				3D9B19F018BEBA320050DD72 /* PGTableViewWithEmptyView.m in Sources */,
+				3D9189FA1946649500B847B9 /* NSMutableDictionary+SetNull.m in Sources */,
 				3D9B18D018BE94700050DD72 /* NINavigationAppearance.m in Sources */,
+				3D9189D51946649500B847B9 /* ACNavigationController.m in Sources */,
+				3D9189BC1946649500B847B9 /* ACAddressBookCustomCell.m in Sources */,
+				3D918A001946649500B847B9 /* UINavigationController+KeyboardDismiss.m in Sources */,
 				3D9B18C918BE94700050DD72 /* NICommonMetrics.m in Sources */,
-				3D9B19F318BEBA320050DD72 /* NSDate+Additions.m in Sources */,
 				3D9B18CD18BE94700050DD72 /* NIError.m in Sources */,
-				3D9B19EB18BEBA320050DD72 /* UIView+Additions.m in Sources */,
-				3D9B1A0818BEBA320050DD72 /* ACOrderConfirmationViewController.m in Sources */,
 				3D9B18DA18BE94700050DD72 /* NIViewRecycler.m in Sources */,
-				3D9B19F218BEBA320050DD72 /* NSDictionary+Additions.m in Sources */,
-				3D3992F818DA3F97002FE1E3 /* ACShoppingCartItemTableCell.m in Sources */,
-				3D9B19EF18BEBA320050DD72 /* UIBarButtonItem+ArtDotCom.m in Sources */,
 				3D9B18CA18BE94700050DD72 /* NIDataStructures.m in Sources */,
 				3D9B18D918BE94700050DD72 /* NIState.m in Sources */,
-				3D9B19F518BEBA320050DD72 /* ArtAPI.m in Sources */,
 				3D9B18D418BE94700050DD72 /* NIOperations.m in Sources */,
-				3D9B1A0118BEBA320050DD72 /* ACSharingActivityProvider.m in Sources */,
-				3D3992F318DA3F47002FE1E3 /* ACShoppingCartViewController.m in Sources */,
-				3D9B1A1C18BEBA320050DD72 /* ACCheckoutTextField.m in Sources */,
-				3D9B1A1A18BEBA320050DD72 /* ACCreateAccountViewController.m in Sources */,
+				3D9189F31946649500B847B9 /* ARTMoulding.m in Sources */,
+				3D9189C31946649500B847B9 /* ACCheckoutTextField.m in Sources */,
+				3D9189E01946649500B847B9 /* ACSDKAvailability.m in Sources */,
+				3D9189D31946649500B847B9 /* ACLoginViewController.m in Sources */,
+				3D9189C11946649500B847B9 /* ACBillingAddressViewController.m in Sources */,
+				3D9189D11946649500B847B9 /* ACLoginCustomCell.m in Sources */,
 				3D9B179C18BE91BD0050DD72 /* main.m in Sources */,
+				3D9189FF1946649500B847B9 /* UIImage+Colors.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

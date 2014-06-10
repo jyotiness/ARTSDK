@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   #s.osx.deployment_target = '10.9'
   s.dependency 'AFNetworking', '~> 1.1.0'
   s.dependency 'CardIO', '~> 3.4.4'
-  s.dependency 'GoogleAnalytics-iOS-SDK', '~> 3.0.3'
+  s.dependency 'GoogleAnalytics-iOS-SDK', '~> 3.0.7'
   s.dependency 'SFHFKeychainUtils', '~> 0.0.1'
   s.dependency 'SVProgressHUD', '~> 0.8.1'
   s.dependency 'Facebook-iOS-SDK', '~> 3.12.0'
