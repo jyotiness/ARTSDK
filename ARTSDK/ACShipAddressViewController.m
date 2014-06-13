@@ -901,7 +901,8 @@ int nameOrigin=0;
                 cell.cellTitleButton.hidden = NO;
                 
                 cell.textLabel.text = self.zipLabelText;
-                cell.textLabel.textColor = (((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid)) && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                BOOL cityNotChoosenForUS = ([ self getCharacterCount:self.postalCode] > 0 && !self.willShowCityAndState);
+                cell.textLabel.textColor = (((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid) || cityNotChoosenForUS) && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 7:
                 if(!self.willShowCityAndState)

@@ -1272,7 +1272,8 @@
                 cell.textField.textAlignment = NSTextAlignmentRight;
                 [cell.textField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-                cell.textLabel.textColor = (((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid))  && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                BOOL cityNotChoosenForUS = ([ self getCharacterCount:self.postalCode] > 0 && !self.willShowCityAndState);
+                cell.textLabel.textColor = (((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid) || cityNotChoosenForUS)  && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 7:
                 
