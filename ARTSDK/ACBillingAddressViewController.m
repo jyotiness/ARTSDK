@@ -3077,7 +3077,7 @@
     //NSLog(@"Generated PickerView - type: %i", self.tagFromPicker);
     UIPickerView *picker = [[UIPickerView alloc] init];
     [picker sizeToFit];
-    picker.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    picker.autoresizingMask = (UIViewAutoresizingFlexibleWidth);// fixing CIRCLESIOS-827, so removing UIViewAutoresizingFlexibleHeight
     picker.delegate = self;
     picker.dataSource = self;
     picker.showsSelectionIndicator = YES;
