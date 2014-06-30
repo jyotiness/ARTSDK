@@ -660,6 +660,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [defaults setObject:nil forKey:@"WALL_GALLERY_ID_PERSISTANCE_KEY"];
     [defaults setObject:nil forKey:@"FB_ACCESS_TOKEN_KEY"];
     [defaults setObject:nil forKey:@"FB_EXPIRATION_DATE_KEY"];
+    [defaults setObject:nil forKey:@"USER_ACCOUNT_ID"];
     
     /* Clears the hash map used for tracking User's favorite galleries */
     [self clearMobileGalleryMap];
