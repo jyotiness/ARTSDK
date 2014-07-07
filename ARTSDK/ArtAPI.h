@@ -190,6 +190,13 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                                     success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                     failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
++ (void) catalogGetContentBlockForBlockName:(NSString *)contentBlockName
+                                    success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                    failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
++ (void) catalogetFeaturedCategorieWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                       failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
 + (void) requestForCartAddItemForItemId:(NSString *)itemId
                              lookupType:(NSString *)lookupType
                               quantitiy:(int)quantity

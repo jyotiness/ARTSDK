@@ -54,6 +54,8 @@ NSString* const kResourceGalleryDelete = @"GalleryDelete";
 NSString* const kResourceGalleryRemoveItem = @"GalleryRemoveItem";
 NSString* const kResourceCatalogItemGetFrameRecommendations = @"CatalogItemGetFrameRecommendations";
 NSString* const kResourceCatalogItemGet = @"CatalogItemGet";
+NSString* const kResourceCatalogGetContentBlock = @"CatalogGetContentBlock";
+NSString* const kResourceCatalogGetFeaturedCategories = @"CatalogGetFeaturedCategories";
 NSString* const kResourceCatalogItemSearch = @"CatalogItemSearch";
 NSString* const kResourceCatalogItemGetVariations= @"CatalogItemGetVariations";
 NSString* const kResourceCartAddItem = @"CartAddItem";
@@ -159,10 +161,10 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     //NSLog(@"ArtAPI.start() sessionID: %@ sessionIDExpired: %d", self.sessionID, [self sessionIDExpired] );
     
     if (self.sessionID == nil || [self sessionIDExpired]) {
-        //NSLog(@"start() sessionID == nil or is expired, get new sessionID");
+        NSLog(@"start() sessionID == nil or is expired, get new sessionID");
         // Initialize a new session
         [self initilizeApplicationId:self.applicationId apiKey:self.apiKey twoDigitISOLanguageCode:self.twoDigitISOLanguageCode twoDigitISOCountryCode:self.twoDigitISOCountryCode success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            //NIDINFO("SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
             //NSLog(@"start() Check Session ID");
             
         }
@@ -170,9 +172,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                  NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
                              }];
     } else {
-        //NSLog(@"start() Check Session ID");
+        NSLog(@"start() Check Session ID");
         [self catalogGetSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            // NSLog(@"Session Valid - Done");
+            NSLog(@"Session Valid - Done");
             // Refresh Mobile Gallery
             if( [self isLoggedIn] ){
                 [self requestForGalleryGetUserDefaultMobileGallerySuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -180,10 +182,10 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                 }];
             }
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            //NSLog(@"Session Invalid - Initilize Session ");
+            NSLog(@"Session Invalid - Initilize Session ");
             // Initialize a new session
             [self initilizeApplicationId:self.applicationId apiKey:self.apiKey twoDigitISOLanguageCode:self.twoDigitISOLanguageCode twoDigitISOCountryCode:self.twoDigitISOCountryCode success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                //NIDINFO("SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+                NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
                 //NSLog(@"start() Check Session ID");
             }
                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
@@ -215,7 +217,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     [[ArtAPI sharedInstance]
      initilizeApplicationId:applicationId apiKey:apiKey twoDigitISOLanguageCode:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode] twoDigitISOCountryCode:[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
      }
      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
          NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -263,10 +265,11 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                                  withParams:parameters
                                             requiresSession:NO
                                             requiresAuthKey:NO];
+    NSLog(@"request: %@", request);
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        //NSLog(@"JSON: %@", JSON);
+        NSLog(@"JSON: %@", JSON);
         
         
         // Geo Code
@@ -295,7 +298,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         }
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
         failure(request, response, error, JSON);
     }];
     [operation start];
@@ -1140,6 +1143,67 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     //[operation start];
     [[NSOperationQueue mainQueue] addOperation:operation];
 }
+
++ (void) catalogGetContentBlockForBlockName:(NSString *)contentBlockName
+                                   success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                   failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:contentBlockName success:success failure:failure];
+}
+
+- (void) catalogGetContentBlockForBlockName:(NSString *)contentBlockName
+                                   success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                   failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       contentBlockName, @"contentBlockName",
+                                       nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceCatalogGetContentBlock
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
++ (void) catalogetFeaturedCategorieWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                       failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] catalogetFeaturedCategorieWithSuccess:success failure:failure];
+}
+
+- (void) catalogetFeaturedCategorieWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                       failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceCatalogGetFeaturedCategories
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:nil
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
 
 
 + (void) requestForCartAddItemForItemId:(NSString *)itemId
@@ -2461,21 +2525,23 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     // Add Session if required
     if (requiresSession) {
         if (![self sessionID]){
-            //NSLog(@"SessionID required but not found");
+            NSLog(@"SessionID required but not found");
             return nil;
         }
+        NSLog(@"setting sessionId: %@", [self sessionID] );
         [params setObject:[self sessionID] forKey:@"sessionId"];
     }
     
     if (requiresAuthKey) {
         if (![self authenticationToken]) {
-            //NSLog(@"authToken required but not found");
+            NSLog(@"authToken required but not found");
             return nil;
         }
         [params setObject:[self authenticationToken] forKey:@"authToken"];
     }
     
     // Add Auth Key
+    NSLog(@"setting apiKey: %@", [self apiKey] );
     [params setObject:[self apiKey] forKey:@"apiKey"];
     
     NSString *protocol = kProtocolDefault;
@@ -2492,7 +2558,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     [httpClient defaultValueForHeader:@"Accept"];
+    NSLog(@"httpClient: %@ method: %@ path: %@ params: %@", httpClient, method, path, params);
     NSMutableURLRequest *request = [httpClient requestWithMethod:method path:path parameters:params];
+    NSLog(@"request: %@", request);
     return request;
 }
 
