@@ -19,7 +19,7 @@
         //ARTLog("initWithDictionary: %@", dictionary);
         
         self.cornerImageUrl     = [[dictionary objectForKey:@"CornerImage"] objectForKeyNotNull:@"HttpImageURL"];
-        self.description        = [dictionary objectForKeyNotNull:@"Description"];
+        self.desc               = [dictionary objectForKeyNotNull:@"Description"];
         self.profileImageUrl    = [[dictionary objectForKey:@"ProfileImage"] objectForKeyNotNull:@"HttpImageURL"];
         self.name               = [dictionary objectForKey:@"Name"];
         self.material           = [dictionary objectForKey:@"Material"];
@@ -42,7 +42,7 @@
 
 -(NSString* ) description {
     return [NSString stringWithFormat:@"cornerImageUrl: %@ profileImageUrl: %@ description: %@ name: %@ price: %@",
-            _cornerImageUrl,_profileImageUrl, _description, _name, _price];
+            _cornerImageUrl,_profileImageUrl, _desc, _name, _price];
 }
 
 @end
