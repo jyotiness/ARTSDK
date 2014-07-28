@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.dependency 'GoogleAnalytics-iOS-SDK', '~> 3.0.7'
   s.dependency 'SFHFKeychainUtils', '~> 0.0.1'
   s.dependency 'SVProgressHUD', '~> 0.8.1'
-  s.dependency 'Facebook-iOS-SDK', '~> 3.12.0'
+  s.dependency 'Facebook-iOS-SDK', '~> 3.16.0'
   s.dependency 'Pinterest-iOS', '~> 2.3'
   s.dependency 'PayPal-iOS-SDK', '~> 2.1'
 end
