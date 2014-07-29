@@ -37,7 +37,10 @@
 
 - (Item *)initWithFramedItemDictionary:(NSDictionary *)dictionary;
 - (Item *)initWithColorResponseDictionary:(NSDictionary *)dictionary;
+
 - (Item *)initWithDictionary:(NSDictionary *)dictionary;
++ (NSArray *) itemWithDictionaryArray: (NSArray*) array;
+
 
 -(NSDictionary*) getItemDict;
 -(void) setItemDict:(NSDictionary *)itemDict;
