@@ -889,6 +889,18 @@
 {
     
     [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"GETTING_PAYMENT_TYPES" withDefaultValue:@"GETTING PAYMENT TYPES"]] maskType:SVProgressHUDMaskTypeClear];
+
+    /*
+    [ArtAPI cartGetPaypalToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+    {
+        [self cartGetPaymentOptionsRequestDidFinish: JSON];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        [SVProgressHUD dismiss];
+    }];
+    
+    return;
+    */
     [ArtAPI
      cartGetPaymentOptionsWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
          //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
@@ -1169,6 +1181,8 @@
 {
     [SVProgressHUD dismiss];
     NSDictionary *response = [JSON objectForKey:@"d"];
+    
+    NSLog(@"response %@",response);
     
     NSArray *paymentOptions = [response objectForKeyNotNull:@"CreditCardOptions"];
     

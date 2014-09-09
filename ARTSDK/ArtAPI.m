@@ -76,6 +76,7 @@ NSString* const kResourceCartSubmitForOrder = @"CartSubmitForOrder";
 NSString* const kEndpointAccountAuthorizationAPI = @"AccountAuthorizationAPI";
 NSString* const kEndpointECommerceAPI = @"ECommerceAPI";
 NSString* const kEndpointPaymentAPI = @"PaymentAPI";
+NSString* const kEndpointIPaymentAPI = @"IPaymentAPI";
 
 
 @interface ArtAPI ()
@@ -1580,6 +1581,32 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [operation start];
 }
 
+#pragma mark PayPal API methods -----
++ (void) cartGetPaypalToken:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] cartGetPaypalToken:success failure:failure];
+}
+
+- (void) cartGetPaypalToken:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:@"CartGetPayPalToken"
+                                              usingEndpoint:kEndpointIPaymentAPI
+                                                 withParams:nil
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
 + (void) cartGetPaymentOptionsWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
     [[ArtAPI sharedInstance] cartGetPaymentOptionsWithSuccess:success
@@ -2528,7 +2555,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
             NSLog(@"SessionID required but not found");
             return nil;
         }
-        NSLog(@"setting sessionId: %@", [self sessionID] );
+        //NSLog(@"setting sessionId: %@", [self sessionID] );
         [params setObject:[self sessionID] forKey:@"sessionId"];
     }
     
@@ -2541,7 +2568,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     }
     
     // Add Auth Key
-    NSLog(@"setting apiKey: %@", [self apiKey] );
+    //NSLog(@"setting apiKey: %@", [self apiKey] );
     [params setObject:[self apiKey] forKey:@"apiKey"];
     
     NSString *protocol = kProtocolDefault;
@@ -2558,9 +2585,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     [httpClient defaultValueForHeader:@"Accept"];
-    NSLog(@"httpClient: %@ method: %@ path: %@ params: %@", httpClient, method, path, params);
+    //NSLog(@"httpClient: %@ method: %@ path: %@ params: %@", httpClient, method, path, params);
     NSMutableURLRequest *request = [httpClient requestWithMethod:method path:path parameters:params];
-    NSLog(@"request: %@", request);
+    //NSLog(@"request: %@", request);
     return request;
 }
 
