@@ -193,15 +193,20 @@
     return self;
 }
 
-+ (NSArray *) itemWithDictionaryArray: (NSArray*) array
-{
-    NSMutableArray * items = [NSMutableArray array];
-    for(NSDictionary* dict in array){
-        [items addObject:[[Item alloc]  initWithDictionary:dict]];
+/*
+-(NSString*) itemLookupTypeForId: (NSNumber*) lookupTypeId {
+    NSString * lookupType;
+    switch (lookupTypeId.integerValue) {
+        case 0:{
+            lookupType = @"ItemNumber";
+            break;
+        }
+            
+        default:
+            break;
     }
-    return [NSArray arrayWithArray:items];
-}
-
+    return lookupType;
+}*/
 
 - (Item *)initWithDictionary:(NSDictionary *)dictionary
 {

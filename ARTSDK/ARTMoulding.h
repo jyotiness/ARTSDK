@@ -11,7 +11,7 @@
 @interface ARTMoulding : NSObject
 
 @property (nonatomic, copy) NSString * cornerImageUrl;
-@property (nonatomic, copy) NSString * desc;
+@property (nonatomic, copy) NSString * description;
 @property (nonatomic, copy) NSString * profileImageUrl;
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * material;

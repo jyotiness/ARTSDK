@@ -2528,7 +2528,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
             NSLog(@"SessionID required but not found");
             return nil;
         }
-        //NSLog(@"setting sessionId: %@", [self sessionID] );
+        NSLog(@"setting sessionId: %@", [self sessionID] );
         [params setObject:[self sessionID] forKey:@"sessionId"];
     }
     
@@ -2541,7 +2541,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     }
     
     // Add Auth Key
-    //NSLog(@"setting apiKey: %@", [self apiKey] );
+    NSLog(@"setting apiKey: %@", [self apiKey] );
     [params setObject:[self apiKey] forKey:@"apiKey"];
     
     NSString *protocol = kProtocolDefault;
@@ -2558,9 +2558,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     [httpClient defaultValueForHeader:@"Accept"];
-    //NSLog(@"httpClient: %@ method: %@ path: %@ params: %@", httpClient, method, path, params);
+    NSLog(@"httpClient: %@ method: %@ path: %@ params: %@", httpClient, method, path, params);
     NSMutableURLRequest *request = [httpClient requestWithMethod:method path:path parameters:params];
-    //NSLog(@"request: %@", request);
+    NSLog(@"request: %@", request);
     return request;
 }
 

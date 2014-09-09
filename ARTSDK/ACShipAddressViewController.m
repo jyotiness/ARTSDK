@@ -18,7 +18,6 @@
 #import "Analytics.h"
 #import "ACKeyboardToolbarView.h"
 #import "NSString+Additions.h"
-//#import "PayPalPaymentViewController.h"
 
 #define  COUNTRY_PICKER_TAG 5
 #define  STATE_PICKER_TAG 8
@@ -27,7 +26,7 @@
 @interface ACShipAddressViewController () <ACKeyboardToolbarDelegate>
 {
     BOOL mCountryPickerInvoked;
-    UIButton *_nextButton;//, *payPalButton;
+    UIButton *_nextButton;
     UIView * _headerView ;
     UILabel *_tableHeaderLabel;
 }
@@ -157,23 +156,6 @@ int nameOrigin=0;
     [btnLayer setCornerRadius:2.0f];
     [_nextButton setContentEdgeInsets:UIEdgeInsetsMake(2, 0, 0, 0)];
     
-	/*
-    {// adding payPal Button
-        payPalButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        [payPalButton setTitle:@"PayPal" forState:UIControlStateNormal];
-        [payPalButton setBackgroundColor:[ACConstants getPrimaryButtonColor]];
-        [payPalButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        payPalButton.titleLabel.font = [ACConstants getStandardBoldFontWithSize:32.0f];
-        [payPalButton addTarget:self action:@selector(payPalButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [footerView addSubview:payPalButton];
-        
-        CALayer *btnLayer = [payPalButton layer];
-        [btnLayer setMasksToBounds:YES];
-        [btnLayer setCornerRadius:2.0f];
-        [payPalButton setContentEdgeInsets:UIEdgeInsetsMake(2, 0, 0, 0)];
-
-    }
-    */
     // Set Footer View
     self.shippingAddressTableView.tableFooterView = footerView;
     
@@ -235,11 +217,7 @@ int nameOrigin=0;
     CGFloat buttonStartScreenWidth = 200;
     if(ACIsPad()){
         // Adjust the next button so that it fits on one screen on the iPad
-
         _nextButton.frame = CGRectMake(self.view.bounds.size.width/2 - buttonStartScreenWidth/2, 0, buttonStartScreenWidth, 44);
-        //_nextButton.frame = CGRectMake((58.0), 0, buttonStartScreenWidth, 44);
-        //payPalButton.frame = CGRectMake((_nextButton.frame.origin.x+_nextButton.frame.size.width) + 20.0 , 0, buttonStartScreenWidth, 44);
-        
     } else {
         _nextButton.frame = CGRectMake(self.view.bounds.size.width/2 - buttonStartScreenWidth/2, 10, buttonStartScreenWidth, 54);
     }
@@ -256,10 +234,6 @@ int nameOrigin=0;
     
     // Configure Picker (Must be called in viewWillAppear)
     [self configureThePicker];
-    
-    // Preconnect to PayPal early
-    //[PayPalMobile preconnectWithEnvironment:PayPalEnvironmentSandbox];
-
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -685,7 +659,6 @@ int nameOrigin=0;
     {
         case 0:
         {
-            numberOfRowsInSection1 = self.willShowCityAndState?10:8;
             return self.willShowCityAndState?10:8;
             break;
         }
@@ -809,6 +782,7 @@ int nameOrigin=0;
     cell.textLabel.hidden = NO;
     cell.pickerButton.hidden = YES;
     cell.contactPickerButton.hidden=YES;
+    
     // Adjust Textfield size
     CGRect textFieldFrame = cell.textField.frame;
     //NSLog(@"section: %d row: %d textFieldFrame: %@" ,indexPath.section, indexPath.row, NSStringFromCGRect(textFieldFrame));
@@ -822,7 +796,6 @@ int nameOrigin=0;
     
     if(0 == indexPath.section)
     {
-        cell.textField.tag = rownum;
         switch ( rownum )
         {
             case 0:
@@ -1027,7 +1000,6 @@ int nameOrigin=0;
     else
     {
         //cell.backgroundColor = [UIColor redColor];
-        cell.textField.tag = numberOfRowsInSection1 + indexPath.section;
         self.emailTextField=cell.textField;
         cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"EMAIL" withDefaultValue:@"Email"];
         cell.textField.text = self.emailAddress;
@@ -1219,18 +1191,9 @@ int nameOrigin=0;
     self.txtActiveField = textField;
     
     [self hidePicker];
-    
-    //UITableViewCell *cell = (UITableViewCell *)[[[textField superview] superview] superview];
-
-    NSInteger currentSelectedTextFieldTag = textField.tag;
-    
-    if(currentSelectedTextFieldTag > numberOfRowsInSection1)
-    {
-        self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-    }
-    else
-    {
-        self.selectedIndexPath = [NSIndexPath indexPathForRow:textField.tag inSection:0];
+        
+    UITableViewCell *cell = (UITableViewCell *)[[[textField superview] superview] superview];
+    self.selectedIndexPath = [self.shippingAddressTableView indexPathForCell:cell];
     //NSLog(@"selectedIndexPath section: %d row: %d cell: %@", self.selectedIndexPath.section, self.selectedIndexPath.row, cell);
     
     if  (self.view.frame.origin.y >= 0)
@@ -1250,8 +1213,8 @@ int nameOrigin=0;
     toolbar.toolbarDelegate = self;
     [textField setInputAccessoryView:toolbar];
     
-    }
 }
+
 // Textfield value changed, store the new value.
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -1324,85 +1287,6 @@ int nameOrigin=0;
     [self.delegate didPressBackButton:self];
 }
 
-/*
--(void)payPalButtonTapped:(UIButton *)payPalButton
-{
-    // Set up payPalConfig
-    PayPalConfiguration *payPalConfig = [[PayPalConfiguration alloc] init];
-    payPalConfig.acceptCreditCards = YES;
-    payPalConfig.languageOrLocale = @"en";
-    payPalConfig.merchantName = @"Art";
-    payPalConfig.merchantPrivacyPolicyURL = [NSURL URLWithString:@"https://www.paypal.com/webapps/mpp/ua/privacy-full"];
-    payPalConfig.merchantUserAgreementURL = [NSURL URLWithString:@"https://www.paypal.com/webapps/mpp/ua/useragreement-full"];
-
-    
-    PayPalItem *item1 = [PayPalItem itemWithName:@"Old jeans with holes"
-                                    withQuantity:2
-                                       withPrice:[NSDecimalNumber decimalNumberWithString:@"84.99"]
-                                    withCurrency:@"USD"
-                                         withSku:@"Hip-00037"];
-    PayPalItem *item2 = [PayPalItem itemWithName:@"Free rainbow patch"
-                                    withQuantity:1
-                                       withPrice:[NSDecimalNumber decimalNumberWithString:@"0.00"]
-                                    withCurrency:@"USD"
-                                         withSku:@"Hip-00066"];
-    PayPalItem *item3 = [PayPalItem itemWithName:@"Long-sleeve plaid shirt (mustache not included)"
-                                    withQuantity:1
-                                       withPrice:[NSDecimalNumber decimalNumberWithString:@"37.99"]
-                                    withCurrency:@"USD"
-                                         withSku:@"Hip-00291"];
-    NSArray *items = @[item1, item2, item3];
-    NSDecimalNumber *subtotal = [PayPalItem totalPriceForItems:items];
-    
-    // Optional: include payment details
-    NSDecimalNumber *shipping = [[NSDecimalNumber alloc] initWithString:@"5.99"];
-    NSDecimalNumber *tax = [[NSDecimalNumber alloc] initWithString:@"2.50"];
-    PayPalPaymentDetails *paymentDetails = [PayPalPaymentDetails paymentDetailsWithSubtotal:subtotal
-                                                                               withShipping:shipping
-                                                                                    withTax:tax];
-    
-    NSDecimalNumber *total = [[subtotal decimalNumberByAdding:shipping] decimalNumberByAdding:tax];
-
-    PayPalPayment *payment = [[PayPalPayment alloc] init];
-    payment.amount = total;
-    payment.currencyCode = @"USD";
-    payment.shortDescription = @"Art Circles";
-    payment.items = items;  // if not including multiple items, then leave payment.items as nil
-    payment.paymentDetails = paymentDetails; // if not including payment details, then leave payment.paymentDetails as nil
-    
-    if (!payment.processable) {
-        // This particular payment will always be processable. If, for
-        // example, the amount was negative or the shortDescription was
-        // empty, this payment wouldn't be processable, and you'd want
-        // to handle that here.
-    }
-
-    // Update payPalConfig re accepting credit cards.
-
-    PayPalPaymentViewController *paymentViewController = [[PayPalPaymentViewController alloc] initWithPayment:payment
-                                                                                                configuration:payPalConfig
-                                                                                                     delegate:self];
-    [self presentViewController:paymentViewController animated:YES completion:nil];
-    //[self pushViewController:paymentViewController animated:YES];
-
-}
-
-#pragma mark PayPalPaymentDelegate methods
-
-- (void)payPalPaymentViewController:(PayPalPaymentViewController *)paymentViewController didCompletePayment:(PayPalPayment *)completedPayment {
-    NSLog(@"PayPal Payment Success!");
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)payPalPaymentDidCancel:(PayPalPaymentViewController *)paymentViewController {
-    NSLog(@"PayPal Payment Canceled");
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-*/
-    
 -(void)continueToPayment:(id)sender
 {
     [self.shippingAddressTableView reloadData]; /* Colors the Text label to black*/
@@ -1569,8 +1453,7 @@ int nameOrigin=0;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark ACKeyboardToolbarDelegate
-- (void)keyboardToolbar: (ACKeyboardToolbarView*) keyboardToolbar didSelectNext: (id) next
-{
+- (void)keyboardToolbar: (ACKeyboardToolbarView*) keyboardToolbar didSelectNext: (id) next {
     if(1 == self.selectedIndexPath.section)
     {
 //        [self.emailTextField resignFirstResponder];
@@ -1582,11 +1465,10 @@ int nameOrigin=0;
         {
             if(self.willShowCityAndState)
             {
-                self.selectedIndexPath = (10 == self.selectedIndexPath.row+1) ? [NSIndexPath indexPathForRow:0 inSection:1]:[NSIndexPath indexPathForRow:self.selectedIndexPath.row+1 inSection:0];
+                self.selectedIndexPath = (10 == self.selectedIndexPath.row+1)?[NSIndexPath indexPathForRow:0 inSection:1]:[NSIndexPath indexPathForRow:self.selectedIndexPath.row+1 inSection:0];
             }
             else{
-                NSInteger incrementSelectedIndexPathRow = selectedIndexPath.row+1;
-                self.selectedIndexPath = (8 == self.selectedIndexPath.row+1) ? [NSIndexPath indexPathForRow:0 inSection:1]:[NSIndexPath indexPathForRow:incrementSelectedIndexPathRow inSection:0];
+                self.selectedIndexPath = (8 == self.selectedIndexPath.row+1)?[NSIndexPath indexPathForRow:0 inSection:1]:[NSIndexPath indexPathForRow:self.selectedIndexPath.row+1 inSection:0];
             }
             
             self.didTapNext = YES;
@@ -1661,9 +1543,7 @@ int nameOrigin=0;
         {
             if ((self.selectedIndexPath.row) <= 9)
             {
-                NSInteger decrementSelectedIndexPathRow = selectedIndexPath.row-1;
-                self.selectedIndexPath = [NSIndexPath indexPathForRow:decrementSelectedIndexPathRow inSection:0];
-                
+                self.selectedIndexPath = [NSIndexPath indexPathForRow:self.selectedIndexPath.row-1 inSection:0];
                 ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
                 //[self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                 if (self.selectedIndexPath.row == COUNTRY_PICKER_TAG)
@@ -1938,7 +1818,8 @@ int nameOrigin=0;
 #pragma mark -
 #pragma mark UIActionSheetDelete
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
     // iPad does not have cancel button, increase index to think it does
     if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
