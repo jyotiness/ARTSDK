@@ -28,7 +28,7 @@ typedef enum ContactPickeMode {
 
 @protocol ACShipAddressViewDelegate;
 
-@interface ACShipAddressViewController : GAITrackedViewController<UITextFieldDelegate,UITextViewDelegate,ABPeoplePickerNavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource,UIActionSheetDelegate>//,PayPalPaymentDelegate,PayPalFuturePaymentDelegate>
+@interface ACShipAddressViewController : GAITrackedViewController<UITextFieldDelegate,UITextViewDelegate,ABPeoplePickerNavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource,UIActionSheetDelegate,UIAlertViewDelegate>//,PayPalPaymentDelegate,PayPalFuturePaymentDelegate>
 {
 //    NSString* name_ ;
 //	NSString* company_ ;

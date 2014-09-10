@@ -1715,20 +1715,42 @@
         if(1< array.count)
         {
             NSString *title = [ACConstants getLocalizedStringForKey:@"CHOOSE_YOUR_CITY" withDefaultValue:@"Choose your City"];
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                                     delegate:self
-                                                            cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]
-                                                       destructiveButtonTitle:nil
-                                                            otherButtonTitles:nil, nil];
             
-            for(NSString *cName in array)
+            
+            int currentDeviceOSVersion = [UIDevice currentDevice].systemVersion.intValue;//CS:fixing CIRCLESIOS-1667
+            if(currentDeviceOSVersion < 8)// For iOS 7 versions
             {
-                [actionSheet addButtonWithTitle:cName];
+                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                                         delegate:self
+                                                                cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]
+                                                           destructiveButtonTitle:nil
+                                                                otherButtonTitles:nil, nil];
+                
+                for(NSString *cName in array)
+                {
+                    [actionSheet addButtonWithTitle:cName];
+                }
+                
+                self.cityArray = addresses;
+                actionSheet.tag = 777;
+                [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
             }
+            else // For iOS 8
+            {
+                UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:@"CANCEL" otherButtonTitles:nil];
+                
+                for(NSString *cityName in array)
+                {
+                    [anAlert addButtonWithTitle:cityName];
+                }
+                
+                self.cityArray = addresses;
+                anAlert.tag = 777;
+                
+                [anAlert show];
+            }
+
             
-            self.cityArray = addresses;
-            actionSheet.tag = 777;
-            [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
         }
         else
         {
@@ -3151,10 +3173,59 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate --
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex//CS: fixing added this for the iOS 8 issues fixes //CIRCLESIOS-1667
+{
+    if(777 == alertView.tag)
+    {
+        if(0 == buttonIndex)
+            return;
+        
+        NSDictionary *cityDict = [ self.cityArray objectAtIndex:buttonIndex-1];
+        self.cityTextField.text = [cityDict objectForKeyNotNull:@"City"];
+        
+        NSString *stateCodee = [cityDict objectForKeyNotNull:@"State"];
+        NSDictionary *stateDict = [ self getStateForCode:stateCodee];
+        NSString *stateName = [stateDict objectForKeyNotNull:@"Name"];
+        if(stateName)
+        {
+            self.selectedStateIndex = [ self.states indexOfObject:stateDict];
+            self.statePickerValue = stateName;
+            self.city = [cityDict objectForKeyNotNull:@"City"];
+            self.postalCode = [cityDict objectForKeyNotNull:@"ZipCode"];
+            
+            self.willShowCityAndState = YES;
+            [self hidePickerWithAnimation:NO]; /*Diss miss country picker*/
+            
+            /*            [self.billingAddressTableView beginUpdates];
+             NSArray *paths = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:8 inSection:0],[NSIndexPath indexPathForRow:9 inSection:0],nil];
+             [self.billingAddressTableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
+             [self.billingAddressTableView endUpdates]; */
+            
+            [ self.billingAddressTableView reloadData];
+        }
+    }
+    else
+    {
+        if(0 == buttonIndex){
+#ifndef __clang_analyzer__
+            if (self.contactAdresses)
+            {
+                CFRelease(self.contactAdresses);
+            }
+#endif
+            return;
+        }
+        
+        [ self chooseAdressAtIndex:buttonIndex-1];
+    }
+
+}
+
 #pragma mark -
 #pragma mark UIActionSheetDelete
-
-
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
     // iPad does not have cancel button, increase index to think it does
@@ -3342,25 +3413,53 @@
     else if(1 < count)
     {
         NSString *title = [ACConstants getLocalizedStringForKey:@"CHOOSE_AN_ADDRESS_FOR_SHIPMENT" withDefaultValue:@"Choose an Address for Shipment"];
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                                 delegate:self
-                                                        cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:nil, nil];
         
-        for (CFIndex i = 0; i < ABMultiValueGetCount(self.contactAdresses); i++)
+        
+        int currentDeviceOSVersion = [UIDevice currentDevice].systemVersion.intValue;//CS:fixing CIRCLESIOS-1667
+        if(currentDeviceOSVersion < 8)// For iOS 7 versions
         {
-            CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
-            //mkl localizing label
-            NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
-            NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
-            CFRelease(labelStringRef);
-            labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
-            labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
-            [actionSheet addButtonWithTitle:labelName];
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                                     delegate:self
+                                                            cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]
+                                                       destructiveButtonTitle:nil
+                                                            otherButtonTitles:nil, nil];
+            
+            for (CFIndex i = 0; i < ABMultiValueGetCount(self.contactAdresses); i++)
+            {
+                CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
+                //mkl localizing label
+                NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
+                NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
+                CFRelease(labelStringRef);
+                labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
+                labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
+                [actionSheet addButtonWithTitle:labelName];
+            }
+            actionSheet.tag = 888;
+            [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
+
         }
-        actionSheet.tag = 888;
-        [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
+        else // For iOS 8
+        {
+            UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:@"CANCEL" otherButtonTitles:nil];
+            
+            for (CFIndex i = 0; i < ABMultiValueGetCount(self.contactAdresses); i++)
+            {
+                CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
+
+                NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
+                NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
+                CFRelease(labelStringRef);
+                labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
+                labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
+                [anAlert addButtonWithTitle:labelName];
+            }
+            
+            anAlert.tag = 888;
+            
+            [anAlert show];
+        }
+
     }
     
     
