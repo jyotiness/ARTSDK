@@ -1035,7 +1035,7 @@ int nameOrigin=0;
         cell.cellTitleButton.hidden = NO;
         cell.contactPickerButton.tag = indexPath.section;
         [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
-        cell.textField.tag = 10;;
+//        cell.textField.tag = 0;;
         cell.textField.textAlignment = NSTextAlignmentRight;
         cell.textField.placeholder = @"";
         [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
@@ -1303,7 +1303,7 @@ int nameOrigin=0;
     else
     {
         self.selectedIndexPath = [NSIndexPath indexPathForRow:textField.tag inSection:0];
-    //NSLog(@"selectedIndexPath section: %d row: %d cell: %@", self.selectedIndexPath.section, self.selectedIndexPath.row, cell);
+    //NSLog(@"selectedIndexPath section: %d row: %d cell: %@", self.selectedIndexPath.section, self.selectedIndexPath.row, cell);s
     }
 
     if  (self.view.frame.origin.y >= 0)
