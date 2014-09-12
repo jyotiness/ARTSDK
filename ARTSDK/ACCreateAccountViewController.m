@@ -326,6 +326,7 @@
    // NSLog(@"handleFacebookLogin accessTokenData: %@", accessTokenData);
     
     if (FBSession.activeSession.isOpen) {
+        
         [[FBRequest requestForMe] startWithCompletionHandler:
          ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
              if (!error) {
@@ -380,6 +381,16 @@
          
          AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
          if(currAppLoc==AppLocationNone){
+
+         	 /* CS: added this while fixing CIRCLEIOS-1593 */
+             NSDictionary *accountDetails = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Account"];
+             NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+             NSString *accountId = [[profileInfo objectForKeyNotNull:@"AccountId"] stringValue];
+             
+             [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
+             [[NSUserDefaults standardUserDefaults] synchronize];
+             
+			/* CS: added above things while fixing CIRCLEIOS-1593 */
              
              [self getDefaultMobileGallery];
              
@@ -424,6 +435,7 @@
     // Get Mobile Gallery
     
     [ArtAPI requestForGalleryGetUserDefaultMobileGallerySuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+       
         if(!self.shouldRetainHudOnLogin)
             [SVProgressHUD dismiss];
         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);

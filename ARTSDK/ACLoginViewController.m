@@ -430,7 +430,9 @@
              [[NSUserDefaults standardUserDefaults] synchronize];
              
              [self getDefaultMobileGallery];
-         }else{
+         }
+         else
+         {
              NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
              NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
              [ArtAPI setAuthenticationToken:authTok];
