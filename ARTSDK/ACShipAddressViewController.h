@@ -59,7 +59,6 @@ typedef enum ContactPickeMode {
     UIView   *mPickerHolderView;
     ACCheckoutTextField *mFailedTextField;
     BOOL isDoingValidation;
-    NSInteger numberOfRowsInSection1; // CS: fixing CIRCLEIOS-1591
 }
 @property(nonatomic,assign) ContactPickeMode contactPickeMode;
 @property(nonatomic,assign) NSInteger tagFromPicker;

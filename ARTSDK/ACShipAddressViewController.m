@@ -685,7 +685,6 @@ int nameOrigin=0;
     {
         case 0:
         {
-            numberOfRowsInSection1 = self.willShowCityAndState?10:8;
             return self.willShowCityAndState?10:8;
             break;
         }
@@ -965,7 +964,8 @@ int nameOrigin=0;
                     
                     cell.textField.placeholder = @"";
                     
-                    cell.textLabel.textColor = (((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid)) && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];            }
+                    cell.textLabel.textColor = (((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid)) && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                }
                 
                 break ;
             case 8:
@@ -1024,10 +1024,10 @@ int nameOrigin=0;
                 break;
         }
     }
-    else
+    else//Section 1
     {
         //cell.backgroundColor = [UIColor redColor];
-        cell.textField.tag = numberOfRowsInSection1 + indexPath.section;
+        //cell.textField.tag = numberOfRowsInSection1 + indexPath.section;
         self.emailTextField=cell.textField;
         cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"EMAIL" withDefaultValue:@"Email"];
         cell.textField.text = self.emailAddress;
@@ -1035,7 +1035,7 @@ int nameOrigin=0;
         cell.cellTitleButton.hidden = NO;
         cell.contactPickerButton.tag = indexPath.section;
         [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
-//        cell.textField.tag = 0;;
+        cell.textField.tag = 10;
         cell.textField.textAlignment = NSTextAlignmentRight;
         cell.textField.placeholder = @"";
         [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
@@ -1296,7 +1296,7 @@ int nameOrigin=0;
 
     NSInteger currentSelectedTextFieldTag = textField.tag;
     
-    if(currentSelectedTextFieldTag > numberOfRowsInSection1)//// CS: fixing CIRCLEIOS-1591
+    if(currentSelectedTextFieldTag == 10)//// CS: fixing CIRCLEIOS-1591
     {
         self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     }
