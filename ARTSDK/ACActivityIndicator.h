@@ -20,3 +20,4 @@ typedef enum {
 - (id)initWithActivityIndicatorType:(ACActivityIndicatorType)type;
 
 @end
+
