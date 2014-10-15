@@ -2888,6 +2888,26 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
 }
 
+#pragma mark URL helpers
+
+-(NSURL *) URLWithRawFrameURLString:(NSString *)imageURLString maxWidth:(NSUInteger)maxWidth maxHeight:(NSUInteger)maxHeight {
+    imageURLString = [imageURLString stringByReplacingOccurrencesOfString:@"://qa-" withString:@"://"];
+    
+    imageURLString = [imageURLString stringByReplacingOccurrencesOfString:@"%5c" withString:@"\\"];
+    imageURLString = [imageURLString stringByReplacingOccurrencesOfString:@"%5C" withString:@"\\"];
+    imageURLString = [imageURLString stringByReplacingOccurrencesOfString:@"%5B" withString:@"["];
+    imageURLString = [imageURLString stringByReplacingOccurrencesOfString:@"%5D" withString:@"]"];
+    imageURLString = [imageURLString stringByReplacingOccurrencesOfString:@"%7C" withString:@"|"];
+    NSString *sizeOverrideString = [NSString stringWithFormat:@"MXW:%d+MXH:%d",maxWidth,maxHeight];
+    imageURLString = [imageURLString stringByReplacingOccurrencesOfString:@"MXW:2000+MXH:2000" withString:sizeOverrideString];
+    
+    imageURLString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)imageURLString, NULL, NULL, kCFStringEncodingUTF8));
+    
+    NSURL *url = [NSURL URLWithString:imageURLString];
+    return url;
+}
+
+
 @end
 
 

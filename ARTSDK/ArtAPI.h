@@ -50,6 +50,9 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 @property(nonatomic, strong) NSDictionary *cart;
 @property (nonatomic, copy) NSString *currentYear;
 @property (nonatomic, copy) NSString *currentMonth;
+@property (nonatomic, assign) CGFloat smallSidePixelMin;
+@property (nonatomic, assign) CGFloat largeSidePixelMin;
+@property (nonatomic, assign) CGFloat currentAspectRatio;
 
 @property (nonatomic, assign) BOOL isDeviceConfigForUS;
 
@@ -421,5 +424,7 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 - (NSString *)aboutURL;
 - (NSString *)termsURL;
 - (NSString *)shareURL;
+
+-(NSURL *) URLWithRawFrameURLString:(NSString *)imageURLString maxWidth:(NSUInteger)maxWidth maxHeight:(NSUInteger)maxHeight;
 
 @end
