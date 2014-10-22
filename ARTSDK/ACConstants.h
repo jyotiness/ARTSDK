@@ -7,7 +7,7 @@
 // //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 
 
 //#ifdef COCOAPODS_POD_AVAILABLE_ARTSDK

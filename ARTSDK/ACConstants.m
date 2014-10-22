@@ -15,6 +15,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
 
 @implementation ACConstants
 
+
 +(AppLocation)getCurrentAppLocation
 {
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
@@ -27,6 +28,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
 
     return AppLocationNone;
 }
+ 
 
 +(NSString *)getGATrackingID
 {
@@ -120,7 +122,6 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
 
 +(NSString *)getLocalizedStringForKey:(NSString *)key withDefaultValue:(NSString *)defaultValue
 {
-    
     NSString *msg = defaultValue;
     NSArray *appsLocationArray = [NSArray arrayWithObjects:@"PHOTOSTOART",@"MESPHOTOS",@"MYPHOTOS",@"", nil];
     
