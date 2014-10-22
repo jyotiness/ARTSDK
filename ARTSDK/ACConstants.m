@@ -49,7 +49,13 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     else if([bundleIdentifier hasSuffix:@"artDials"])
     {
         return @"UA-45173617-5";
-    }else{
+    }
+    else if([bundleIdentifier hasSuffix:@"SwitchArt"])
+    {
+        return @"UA-45173617-6";
+    }
+    else
+    {
         return @"";
     }
 }
