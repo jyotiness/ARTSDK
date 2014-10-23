@@ -53,6 +53,8 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 @property (nonatomic, assign) CGFloat smallSidePixelMin;
 @property (nonatomic, assign) CGFloat largeSidePixelMin;
 @property (nonatomic, assign) CGFloat currentAspectRatio;
+@property (nonatomic, retain) NSNumber *uploadJPGQuality;
+@property (nonatomic, retain) NSString *galleryItemsCount;
 
 @property (nonatomic, assign) BOOL isDeviceConfigForUS;
 
@@ -62,6 +64,10 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 @property(nonatomic,strong) NSString *shareURL;
 
 @property (nonatomic, assign) BOOL isLoginEnabled;
+@property(nonatomic,assign) BOOL isInitFinished;
+@property(nonatomic,assign) BOOL isInitAborted;
+@property(nonatomic,assign) BOOL isRestartInProgress;
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
