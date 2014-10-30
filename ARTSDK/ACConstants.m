@@ -25,6 +25,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
         return AppLocationFrench;
     else if([bundleIdentifier hasSuffix:@"photostoart"])
         return AppLocationDefault;
+    else if([bundleIdentifier hasSuffix:@"SwitchArt"])
+        return AppLocationDefault;
 
     return AppLocationNone;
 }

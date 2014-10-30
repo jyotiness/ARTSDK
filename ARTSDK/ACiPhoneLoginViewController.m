@@ -15,6 +15,9 @@
 #import "ArtAPI.h"
 #import "Analytics.h"
 #import "NSString+Additions.h"
+
+#define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+
 //@interface UINavigationBar (myNave)
 //- (CGSize)changeHeight:(CGSize)size;
 //@end
@@ -68,6 +71,7 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 
+    self.navigationController.navigationBarHidden = NO;
 }
 
 
@@ -134,8 +138,16 @@
 {
     [super viewDidLoad];
     
-    self.loginMode = LoginModeLogin;
-    
+    //self.loginMode = LoginModeLogin;
+
+    if(self.loginMode == LoginModeSignup)
+    {
+        [self.segmentedButton setSelectedSegmentIndex:1];
+    }
+    else// else condition added for use in the P2A and AC apps not related to SwitchArt 
+    {
+    	self.loginMode = LoginModeLogin;
+    }
     
     self.error = nil;
     self.email = @"";
@@ -203,6 +215,12 @@
     self.screenName = @"Login Screen";
     
     // Do any additional setup after loading the view from its nib.
+    [self.tableview setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    if(IS_OS_8_OR_LATER)
+    {
+        self.tableview.layoutMargins = UIEdgeInsetsZero;// CS:fix for the iOS 8 separator issue
+    }
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -214,9 +232,26 @@
 #pragma mark -
 #pragma mark UITableViewDelegate
 
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footerView = (self.loginMode == LoginModeLogin) ? self.loginFooterView:self.signupFooterView;
+    
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetHeight(footerView.frame)-0.275, CGRectGetWidth([UIScreen mainScreen].bounds), 0.275)];
+    separator.backgroundColor = [UIColor lightGrayColor];
+    [footerView addSubview:separator];
+
+    return footerView;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 51.0f;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    self.tableview.tableFooterView = (self.loginMode == LoginModeLogin)?self.loginFooterView:self.signupFooterView;
+    //self.tableview.tableFooterView = (self.loginMode == LoginModeLogin)?self.loginFooterView:self.signupFooterView;
+    //self.tableview.tableFooterView.layoutMargins = UIEdgeInsetsZero;
     
     // Return the number of sections.
     return 1;
@@ -249,19 +284,27 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
+    if(IS_OS_8_OR_LATER)
+    {
+        cell.layoutMargins = UIEdgeInsetsZero;// CS:fix for the iOS 8 separator issue
+    }
+
     int numberOfRows = [self numberOfRows];
+    
+    
     if(0 == indexPath.row)
     {
-        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 0.5)];
+        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 0.5)];
         separator.backgroundColor = [UIColor lightGrayColor];
         [cell.contentView addSubview:separator];
     }
     else if(numberOfRows-1 == indexPath.row)
     {
-        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetHeight(cell.contentView.frame)-0.275, 320, 0.275)];
+        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetHeight(cell.contentView.frame)-0.275, CGRectGetWidth([UIScreen mainScreen].bounds), 0.275)];
         separator.backgroundColor = [UIColor lightGrayColor];
         [cell.contentView addSubview:separator];
     }
+    
     
     // Make cell unselectable
 	cell.selectionStyle = UITableViewCellSelectionStyleDefault;

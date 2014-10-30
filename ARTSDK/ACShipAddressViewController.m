@@ -2423,6 +2423,7 @@ int nameOrigin=0;
 // Called after a person has been selected by the user.
 // Return YES if you want the person to be displayed.
 // Return NO  to do nothing (the delegate is responsible for dismissing the peoplePicker).
+//CS:Fixing the iOS 8 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person
 {
     if(self.contactPickeMode == ContactPickeModeName)
