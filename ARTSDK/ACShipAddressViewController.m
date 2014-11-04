@@ -2444,5 +2444,14 @@ int nameOrigin=0;
     return NO;
 }
 
+-(IBAction)loginWithFacebook:(id)sender
+{
+    
+}
+
+-(IBAction)loginWithEmail:(id)sender
+{
+    
+}
 
 @end

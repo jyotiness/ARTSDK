@@ -65,6 +65,10 @@ typedef enum ContactPickeMode {
 @property(nonatomic,retain) NSString *countryPickerValue;
 @property(nonatomic,retain) NSString *statePickerValue;
 @property (retain, nonatomic) IBOutlet UIView *FooterNextViewButton;
+@property (retain, nonatomic) IBOutlet UIView *swithArtHeaderView;
+@property (retain, nonatomic) IBOutlet UIButton *loginFbButton;
+@property (retain, nonatomic) IBOutlet UIButton *loginEmailButton;
+
 @property(nonatomic,copy) NSArray *emailArray;
 @property(nonatomic,copy) NSArray *cityArray;
 @property(nonatomic,assign) BOOL willShowCityAndState;
@@ -161,6 +165,10 @@ typedef enum ContactPickeMode {
 -(void)prepareCountryList;
 -(void)validateSelectedCountry:(int)countryIndex;
 -(void)cityAndStateSuggestionForZip:(NSString*)newStr;
+
+-(IBAction)loginWithFacebook:(id)sender;
+-(IBAction)loginWithEmail:(id)sender;
+
 
 @property (assign, nonatomic) id <ACShipAddressViewDelegate> delegate;
 
