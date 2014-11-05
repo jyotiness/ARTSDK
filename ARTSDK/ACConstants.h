@@ -54,6 +54,7 @@ typedef enum
     AppLocationDefault,
     AppLocationFrench,
     AppLocationGerman,
+    AppLocationSwitchArt,
     AppLocationNone
 }AppLocation;
 

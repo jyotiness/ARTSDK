@@ -26,7 +26,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     else if([bundleIdentifier hasSuffix:@"photostoart"])
         return AppLocationDefault;
     else if([bundleIdentifier hasSuffix:@"SwitchArt"])
-        return AppLocationDefault;
+        return AppLocationSwitchArt;
 
     return AppLocationNone;
 }
@@ -158,7 +158,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             normalBackground = [[UIImage imageNamed:ARTImage(@"chevronGrey40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
@@ -210,7 +211,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             selectedBackground = [[UIImage imageNamed:ARTImage(@"chevronBlue40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
@@ -267,7 +269,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             normalBackground = [[UIImage imageNamed:ARTImage(@"chevronBlueRight40")] stretchableImageWithLeftCapWidth:20 topCapHeight:0];
             break;
         }
@@ -317,7 +320,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             return [UIImage imageNamed:ARTImage(@"CartSmallBlue.png")];
         }
         case AppLocationFrench:{
@@ -340,7 +344,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             return [UIColor colorWithRed:52.0/255 green:55.0/255 blue:61.0/255 alpha:1.0];
         }
         case AppLocationFrench:{
@@ -361,7 +366,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
 
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             //return [UIColor colorWithRed:239.0/255 green:146.0/255 blue:35.0/255 alpha:1.0];
             return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
         }
@@ -383,7 +389,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             return [UIColor colorWithRed:0.200 green:0.478 blue:0.576 alpha:1.000];
         }
         case AppLocationFrench:{
@@ -404,7 +411,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             return [UIColor colorWithRed:59.0/255 green:184.0/255 blue:232.0/255 alpha:1.0];
         }
         case AppLocationFrench:{
@@ -426,7 +434,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        case AppLocationSwitchArt:{
             return [UIColor colorWithRed:146.0/255 green:212.0/255 blue:234.0/255 alpha:1.0];
         }
         case AppLocationFrench:{
@@ -448,7 +457,8 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     AppLocation currAppLoc = [self getCurrentAppLocation];
     
     switch (currAppLoc) {
-        case AppLocationDefault:{
+        case AppLocationDefault:
+        {
             return [UIColor colorWithRed:0.196 green:0.475 blue:0.573 alpha:1.000];
         }
         case AppLocationFrench:{

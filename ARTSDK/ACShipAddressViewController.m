@@ -208,6 +208,23 @@ int nameOrigin=0;
     
     UIButton *barBackButton = [ACConstants getBackButtonForTitle:[ACConstants getLocalizedStringForKey:@"BACK" withDefaultValue:@"Back"]];
     
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    if((![ArtAPI isLoggedIn]) && AppLocationSwitchArt == currAppLoc)
+    {
+        self.shippingAddressTableView.tableHeaderView = self.swithArtHeaderView;
+        
+        //        [_nextButton setTitle:[ACConstants getLocalizedStringForKey:@"CONTINUE_CAPS" withDefaultValue:@"CONTINUE"] forState:UIControlStateNormal];
+        [self.loginFbButton setBackgroundColor:[ACConstants getPrimaryButtonColor]];
+        [self.loginFbButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.loginFbButton.titleLabel.font = [ACConstants getStandardBoldFontWithSize:32.0f];
+        
+        //        [_nextButton setTitle:[ACConstants getLocalizedStringForKey:@"CONTINUE_CAPS" withDefaultValue:@"CONTINUE"] forState:UIControlStateNormal];
+        [self.loginEmailButton setBackgroundColor:[UIColor grayColor]];
+        [self.loginEmailButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.loginEmailButton.titleLabel.font = [ACConstants getStandardBoldFontWithSize:32.0f];
+    }
+    
+    
     // Allow the calling view controller to define the back button behavior
     if ([self.delegate respondsToSelector:@selector(didPressBackButton:)]){
         [barBackButton addTarget:self action:@selector(didPressBackButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -2444,14 +2461,37 @@ int nameOrigin=0;
     return NO;
 }
 
+#pragma - ACiPhoneLoginViewController Delegate
+
+- (void)loginSuccess
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    NSLog(@"loginSuccess");
+}
+
+- (void)loginFailure
+{
+    NSLog(@"loginFailure");
+}
+
+
 -(IBAction)loginWithFacebook:(id)sender
 {
-    
+    ACiPhoneLoginViewController *loginViewController = [[ACiPhoneLoginViewController alloc]  initWithNibName:@"ACiPhoneLoginViewController" bundle:ACBundle];
+    loginViewController.loginMode = LoginModeLogin;
+    loginViewController.delegate = self;
+    [self.navigationController pushViewController:loginViewController animated:YES];
+
 }
 
 -(IBAction)loginWithEmail:(id)sender
 {
-    
+    ACiPhoneLoginViewController *loginViewController = [[ACiPhoneLoginViewController alloc]  initWithNibName:@"ACiPhoneLoginViewController" bundle:ACBundle];
+    loginViewController.loginMode = LoginModeLogin;
+    loginViewController.delegate = self;
+
+    [self.navigationController pushViewController:loginViewController animated:YES];
+
 }
 
 @end
