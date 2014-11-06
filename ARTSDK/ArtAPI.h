@@ -266,6 +266,8 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 + (void) cartSubmitForOrderWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
++ (void) requestForCartGetWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                              failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -

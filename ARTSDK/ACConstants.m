@@ -86,7 +86,12 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     else if([bundleIdentifier hasSuffix:@"artDials"])
     {
         return @"d4f404eb4fca4e828a4571451b069365";
-    }else
+    }
+    else if ([bundleIdentifier hasSuffix:@"SwitchArt"])
+    {
+        return @"d4f404eb4fca4e828a4571451b069365";//CS: SwitchArt Card IO token should be updated
+    }
+    else
     {
         return @"";
     }

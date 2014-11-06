@@ -70,6 +70,7 @@ NSString* const kResourceCartAddCoupon = @"CartAddCoupon";
 NSString* const kResourceCartRemoveCoupon = @"CartRemoveCoupon";
 NSString* const kResourceCartAddCreditCard = @"CartAddCreditCard";
 NSString* const kResourceCartSubmitForOrder = @"CartSubmitForOrder";
+NSString * const kResourceCartGet = @"CartGet";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Art.com API Endpoints
@@ -1205,6 +1206,35 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [operation start];
 }
 
++ (void) requestForCartGetWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                              failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForCartGetWithSuccess:success failure:failure];
+    //[self requestForCartGetWithSuccess:success failure:failure];
+}
+
+- (void) requestForCartGetWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                              failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceCartGet
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:nil
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+                                         {
+                                             [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+                                         }
+                                                                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                         {
+                                             failure(request, response, error, JSON);
+                                         }];
+    [operation start];
+}
 
 
 + (void) requestForCartAddItemForItemId:(NSString *)itemId
