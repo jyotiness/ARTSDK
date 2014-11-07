@@ -220,6 +220,12 @@
     {
         self.tableview.layoutMargins = UIEdgeInsetsZero;// CS:fix for the iOS 8 separator issue
     }
+    
+    if(self.autoLoginEnabled)
+    {
+        self.autoLoginEnabled = NO;
+        [self loginWithFacebook:nil];
+    }
 
 }
 

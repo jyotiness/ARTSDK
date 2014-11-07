@@ -20,6 +20,7 @@ typedef enum LoginMode {
 @interface ACiPhoneLoginViewController : GAITrackedViewController<FBLoginViewDelegate>
 
 @property (nonatomic,assign) BOOL onlyFacebook;
+@property (nonatomic,assign) BOOL autoLoginEnabled;
 @property (nonatomic,assign) LoginMode loginMode;
 
 @property (nonatomic,strong) IBOutlet UISegmentedControl *segmentedButton;

@@ -2480,6 +2480,7 @@ int nameOrigin=0;
     ACiPhoneLoginViewController *loginViewController = [[ACiPhoneLoginViewController alloc]  initWithNibName:@"ACiPhoneLoginViewController" bundle:ACBundle];
     loginViewController.loginMode = LoginModeLogin;
     loginViewController.delegate = self;
+    loginViewController.autoLoginEnabled = YES;
     [self.navigationController pushViewController:loginViewController animated:YES];
 
 }
