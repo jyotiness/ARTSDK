@@ -2833,7 +2833,7 @@
          primaryPhone:(self.phone.length > 0)?self.phone:@""
          secondaryPhone:@""
          emailAddress:self.emailAddress success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
              [self cartAddCreditCardRequestDidFinish: JSON];
          }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
              NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -2875,7 +2875,7 @@
     
     [ArtAPI
      cartSubmitForOrderWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
          [self requestOrderSubmitDidFinish: JSON];
      }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
          NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -2985,19 +2985,19 @@
     // Initilize Art.com API
     [ArtAPI initilizeApp] ;
     
-    if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
-    {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-    else
-    {
+    //if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
+    //{
+    //    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
+    //    [[NSUserDefaults standardUserDefaults] synchronize];
+    //    [self.navigationController popToRootViewControllerAnimated:YES];
+    //}
+    //else
+    //{
         ACOrderConfirmationViewController *controller = [[ACOrderConfirmationViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACOrderConfirmationViewController-iPad" :@"ACOrderConfirmationViewController"
                                                                                                             bundle:ACBundle];
         controller.orderNumber=orderNumber;
         [self.navigationController pushViewController:controller animated:YES];
-    }
+    //}
     
 }
 
