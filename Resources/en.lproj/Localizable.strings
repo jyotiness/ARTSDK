@@ -136,6 +136,7 @@
 "PHOTOSTOART_CHECKOUT" = "Checkout";
 "MYPHOTOS_CHECKOUT" = "Checkout";
 "MESPHOTOS_CHECKOUT" = "Checkout";
+"SWITCHART_CHECKOUT" = "Checkout";
 
 "SUBTOTAL" = "Subtotal";
 "DISCOUNT" = "Discount";

@@ -130,7 +130,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
 +(NSString *)getLocalizedStringForKey:(NSString *)key withDefaultValue:(NSString *)defaultValue
 {
     NSString *msg = defaultValue;
-    NSArray *appsLocationArray = [NSArray arrayWithObjects:@"PHOTOSTOART",@"MESPHOTOS",@"MYPHOTOS",@"", nil];
+    NSArray *appsLocationArray = [NSArray arrayWithObjects:@"PHOTOSTOART",@"MESPHOTOS",@"MYPHOTOS",@"SWITCHART",@"", nil];
     
     AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
     NSString *keyy = [key stringByReplacingOccurrencesOfString:@"&&" withString:[appsLocationArray objectAtIndex:currAppLoc]];
