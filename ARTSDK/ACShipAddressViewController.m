@@ -2457,6 +2457,22 @@ int nameOrigin=0;
     return NO;
 }
 
+//!-- CS:iOS 8 new methods of ABPeopleNavigationController
+- (void)peoplePickerNavigationController:(ABPeoplePickerNavigationController*)peoplePicker didSelectPerson:(ABRecordRef)person
+{
+    NSLog(@"%@",NSStringFromSelector(_cmd));
+    if(self.contactPickeMode == ContactPickeModeName)
+    {
+        [self populateDataWithPerson:person];
+    }
+    else
+    {
+        [self populateEmailWithPerson:person];
+    }
+    
+    [peoplePicker dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
     return NO;
 }

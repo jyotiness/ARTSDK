@@ -2985,19 +2985,22 @@
     // Initilize Art.com API
     [ArtAPI initilizeApp] ;
     
-    //if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
-    //{
-    //    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
-    //    [[NSUserDefaults standardUserDefaults] synchronize];
-    //    [self.navigationController popToRootViewControllerAnimated:YES];
-    //}
-    //else
-    //{
+    if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
+        [[NSUserDefaults standardUserDefaults] setObject:orderNumber forKey:@"ORDER-NUMBER"];
+
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }
+    else
+    {
         ACOrderConfirmationViewController *controller = [[ACOrderConfirmationViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACOrderConfirmationViewController-iPad" :@"ACOrderConfirmationViewController"
                                                                                                             bundle:ACBundle];
         controller.orderNumber=orderNumber;
         [self.navigationController pushViewController:controller animated:YES];
-    //}
+    }
     
 }
 
