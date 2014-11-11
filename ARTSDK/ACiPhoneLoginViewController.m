@@ -533,7 +533,7 @@
          requestForAccountAuthenticateWithEmailAddress:self.email
          password:self.password
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
              //[SVProgressHUD dismiss];
              
              // ANALYTICS: log event - LOG IN (completed)
@@ -673,7 +673,7 @@
          requestForAccountCreateWithEmailAddress:self.email
          password:self.password
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
              
              AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
              if(currAppLoc==AppLocationNone){
@@ -759,7 +759,7 @@
     [ArtAPI
      requestForAccountAuthenticateWithFacebookUID:facebookUID emailAddress:emailAddress firstName:firstName lastName:lastName facebookToken:facebookToken
      success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
          
          AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
          if(currAppLoc==AppLocationNone){
