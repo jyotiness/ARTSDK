@@ -42,6 +42,7 @@ NSString* const kResourceSearchResultInSimpleFormat = @"/wcf/SearchService.svc/a
 // Art.com API Resources
 NSString* const kResourceAccountAuthenticate = @"AccountAuthenticate";
 NSString* const kResourceAccountCreate = @"AccountCreate";
+NSString* const kResourceAccountGet = @"AccountGet";
 NSString* const kResourceAccountRetrievePassword = @"AccountRetrievePassword";
 NSString* const kResourceAccountAuthenticateWithFacebookUID = @"AccountAuthenticateWithFacebookUID";
 NSString* const kResourceInitializeAPI= @"InitializeAPI";
@@ -401,6 +402,41 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 #pragma mark -
 #pragma mark Authenticaion
 
+
++ (void) requestForAccountGet:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountGet:success failure:failure];
+}
+
+-(void) requestForAccountGet:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                              failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"Bundles",@"propertiesToReturn",nil];
+
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountGet
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+    {
+        NSLog(@"request.URL %@",request.URL);
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
+    }
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+    {
+        failure(request, response, error, JSON);
+    }];
+    
+    [operation start];
+
+}
 
 + (void) requestForAccountAuthenticateWithEmailAddress:(NSString *) emailAddress
                                               password:(NSString *)password
