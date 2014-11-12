@@ -2987,12 +2987,22 @@
     
     if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
     {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
-        [[NSUserDefaults standardUserDefaults] setObject:orderNumber forKey:@"ORDER-NUMBER"];
-
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        [SVProgressHUD showWithStatus:@"Fetching Account Details" maskType:SVProgressHUDMaskTypeClear];
+        [ArtAPI requestForAccountGet:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+         {
+             NSLog(@" requestForAccountGet success \n JSON Account Get response %@ ", JSON);
+             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
+             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
+             [[NSUserDefaults standardUserDefaults] setObject:orderNumber forKey:@"ORDER-NUMBER"];
+             
+             [[NSUserDefaults standardUserDefaults] synchronize];
+             [SVProgressHUD dismiss];
+             [self.navigationController popToRootViewControllerAnimated:NO];
+         }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+         {
+             [SVProgressHUD dismiss];
+             NSLog(@" requestForAccountGet failed ");
+         }];
     }
     else
     {
