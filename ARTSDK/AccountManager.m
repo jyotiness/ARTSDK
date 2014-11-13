@@ -186,10 +186,7 @@
                                          
                                          [[AccountManager sharedInstance] setPurchasedBundles:bundlesArray];
                                          
-                                         if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesLoadedSuccessfully:)])
-                                         {
-                                             [self.delegate bundlesLoadedSuccessfully:self.purchasedBundles];
-                                         }
+
                                      }
                                      
                                  }
@@ -202,6 +199,18 @@
                  }
              }
          }
+         
+         //need to call this no matter what
+         //to make spinner go away
+         //i noticed that if UserProperties is nil, this would never be called
+         //when it was inside all the if blocks above...
+         //-MKL
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesLoadedSuccessfully:)])
+         {
+             [self.delegate bundlesLoadedSuccessfully:self.purchasedBundles];
+         }
+         
          
      }
      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
