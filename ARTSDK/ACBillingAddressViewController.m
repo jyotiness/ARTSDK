@@ -2909,7 +2909,7 @@
     
     NSDictionary *orderAttributes = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"OrderAttributes"];
     NSString *orderNumber = [orderAttributes objectForKeyNotNull:@"OrderNumber"];
-    
+    self.orderNumber = orderNumber;
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction: ANALYTICS_EVENT_NAME_ORDER_CONFIRM_SHOWN withLabel:orderNumber];
     
     NSDictionary *cart = [ArtAPI cart];
@@ -2988,21 +2988,7 @@
     if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
     {
         [SVProgressHUD showWithStatus:@"Fetching Account Details" maskType:SVProgressHUDMaskTypeClear];
-        [ArtAPI requestForAccountGet:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
-         {
-             NSLog(@" requestForAccountGet success \n JSON Account Get response %@ ", JSON);
-             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
-             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
-             [[NSUserDefaults standardUserDefaults] setObject:orderNumber forKey:@"ORDER-NUMBER"];
-             
-             [[NSUserDefaults standardUserDefaults] synchronize];
-             [SVProgressHUD dismiss];
-             [self.navigationController popToRootViewControllerAnimated:NO];
-         }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
-         {
-             [SVProgressHUD dismiss];
-             NSLog(@" requestForAccountGet failed ");
-         }];
+        [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
     }
     else
     {
@@ -3012,6 +2998,24 @@
         [self.navigationController pushViewController:controller animated:YES];
     }
     
+}
+
+-(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles
+{
+    [[AccountManager sharedInstance] setBundlesArray:purchasedBundles];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
+    [[NSUserDefaults standardUserDefaults] setObject:self.orderNumber forKey:@"ORDER-NUMBER"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [SVProgressHUD dismiss];
+    [self.navigationController popToRootViewControllerAnimated:NO];
+}
+
+-(void)bundlesLoadingFailed
+{
+    [SVProgressHUD dismiss];
+    NSLog(@" requestForAccountGet failed ");
 }
 
 -(void)pickerPressed:(id)sender

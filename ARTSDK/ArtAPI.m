@@ -82,6 +82,10 @@ NSString* const kEndpointIPaymentAPI = @"IPaymentAPI";
 
 
 @interface ArtAPI ()
+{
+    NSString *_savedMyPhotosGalleryID;
+}
+
 @property (nonatomic, retain) NSArray *countries;
 @property (nonatomic, retain) NSArray *states;
 @property (nonatomic, retain) NSString *shippingCountryCode;
@@ -395,6 +399,40 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 }
 
 
++ (void) requestForGalleryGetUserDefaultGallery:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                      failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForGalleryGetUserDefaultGallery:success failure:failure];
+}
+
+-(void) requestForGalleryGetUserDefaultGallery:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                     failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObject:@"DefaultMyPhotosGallery" forKey:@"defaultGalleryType"];
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:@"GalleryGetUserDefaultGallery"
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+                                         {
+                                             NSLog(@"request.URL %@",request.URL);
+                                             [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+                                             
+                                         }
+                                                                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                         {
+                                             failure(request, response, error, JSON);
+                                         }];
+    
+    [operation start];
+    
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -776,6 +814,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
          //NSLog(@"logoutAndReset() Does not have an active FBSession");
      }
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2129,6 +2168,20 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     //NSLog(@"refreshMobileGallery() _mobileGalleryMap: %@", _mobileGalleryMap );
 }
+
+- (NSString *) myPhotosGalleryID {
+    if (!_savedMyPhotosGalleryID) {
+        _savedMyPhotosGalleryID = [[NSUserDefaults standardUserDefaults] stringForKey:@"MY_PHOTOS_GALLERY_ID_PERSISTANCE_KEY"];
+    }
+    return _savedMyPhotosGalleryID;
+}
+
+- (void) setMyPhotosGalleryID:(NSString *)galleryID {
+    _savedMyPhotosGalleryID = galleryID;
+    [[NSUserDefaults standardUserDefaults] setObject:galleryID forKey:@"MY_PHOTOS_GALLERY_ID_PERSISTANCE_KEY"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

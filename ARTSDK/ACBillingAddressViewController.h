@@ -11,6 +11,7 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "GAITrackedViewController.h"
 #import "CardIO.h"
+#import "AccountManager.h"
 
 /**
  * A view controller that collects a users billing information
@@ -21,7 +22,7 @@
  *
  */
 
-@interface ACBillingAddressViewController : GAITrackedViewController<UIPickerViewDelegate, UIPickerViewDataSource,UITextFieldDelegate,UITextViewDelegate,ABPeoplePickerNavigationControllerDelegate,UIActionSheetDelegate,CardIOPaymentViewControllerDelegate,UIAlertViewDelegate>
+@interface ACBillingAddressViewController : GAITrackedViewController<UIPickerViewDelegate, UIPickerViewDataSource,UITextFieldDelegate,UITextViewDelegate,ABPeoplePickerNavigationControllerDelegate,UIActionSheetDelegate,CardIOPaymentViewControllerDelegate,UIAlertViewDelegate,AccountManagerDelegate>
 {
     NSString * cardType;
     NSString * cardNumber;
@@ -171,6 +172,8 @@
 
 @property (strong, nonatomic) NSIndexPath *countryIndexPath;
 @property (strong, nonatomic) NSIndexPath *stateIndexPath;
+@property (nonatomic,copy) NSString *orderNumber;
+
 @property (readwrite) int currentActiveTag;
 @property(assign) BOOL isUSAddressInvalid;
 
