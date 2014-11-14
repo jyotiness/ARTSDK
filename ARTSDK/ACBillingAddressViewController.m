@@ -2979,19 +2979,20 @@
         }
     }
     
-    [ArtAPI setCart:nil];
-    //[ArtAPI setSessionID:nil];
-    //[ArtAPI start];
-    // Initilize Art.com API
-    [ArtAPI initilizeApp] ;
     
-    if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
-    {
-        [SVProgressHUD showWithStatus:@"Fetching Account Details" maskType:SVProgressHUDMaskTypeClear];
-        [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
-    }
-    else
-    {
+    
+    
+    if([ACConstants getCurrentAppLocation] == AppLocationSwitchArt){
+        //need to set bundle if it is SwitchArt app
+        
+        NSLog(@"SwitchArt App - needs to set the bundles on the account");
+        [[AccountManager sharedInstance] setBundlesForLoggedInUser:self];
+        
+    }else{
+        
+        [ArtAPI setCart:nil];
+        [ArtAPI initilizeApp];
+        
         ACOrderConfirmationViewController *controller = [[ACOrderConfirmationViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACOrderConfirmationViewController-iPad" :@"ACOrderConfirmationViewController"
                                                                                                             bundle:ACBundle];
         controller.orderNumber=orderNumber;
@@ -2999,6 +3000,23 @@
     }
     
 }
+
+-(void)bundlesSetSuccess{
+    NSLog(@"Set bundles successfully");
+    
+    [ArtAPI setCart:nil];
+    [ArtAPI initilizeApp];
+    
+    //need to retrieve purchased bundles if SwitchArt
+    [SVProgressHUD showWithStatus:@"Fetching Account Details" maskType:SVProgressHUDMaskTypeClear];
+    [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+    
+}
+
+-(void)bundlesSetFailure{
+    NSLog(@"Failed to set bundles");
+}
+
 
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles
 {

@@ -18,7 +18,7 @@
 
 // Art.com API
 NSString* const kArtAPIUrl = @"developer-api.art.com";
-NSString* const kProtocolSecure = @"https://";
+NSString* const kProtocolSecure = @"http://";
 NSString* const kProtocolDefault = @"http://";
 
 // Judy
@@ -43,6 +43,7 @@ NSString* const kResourceSearchResultInSimpleFormat = @"/wcf/SearchService.svc/a
 NSString* const kResourceAccountAuthenticate = @"AccountAuthenticate";
 NSString* const kResourceAccountCreate = @"AccountCreate";
 NSString* const kResourceAccountGet = @"AccountGet";
+NSString* const kResourceAccountUpdateProperty = @"AccountUpdateProperty";
 NSString* const kResourceAccountRetrievePassword = @"AccountRetrievePassword";
 NSString* const kResourceAccountAuthenticateWithFacebookUID = @"AccountAuthenticateWithFacebookUID";
 NSString* const kResourceInitializeAPI= @"InitializeAPI";
@@ -441,6 +442,45 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 #pragma mark -
 #pragma mark Authenticaion
 
+
++ (void) requestForAccountUpdateProperty:(NSString *) propertyKey
+                                withValue:(NSString *) propertyValue
+                                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                      failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountUpdateProperty:propertyKey withValue:propertyValue success:success failure:failure];
+}
+
+-(void) requestForAccountUpdateProperty:(NSString *) propertyKey
+                               withValue:(NSString *) propertyValue
+                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                     failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:propertyKey, @"propertyKey", propertyValue, @"propertyValue",nil];
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountUpdateProperty
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+                                         {
+                                             NSLog(@"request.URL %@",request.URL);
+                                             [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+                                             
+                                         }
+                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                         {
+                                             failure(request, response, error, JSON);
+                                         }];
+    
+    [operation start];
+    
+}
 
 + (void) requestForAccountGet:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure

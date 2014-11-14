@@ -15,7 +15,9 @@
 @optional
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles;
 -(void)bundlesLoadingFailed;
--(void)userGalleryLoadedSuccessfullyWithResponse:(id)jsonResponse withGalleryItems:(NSArray *)galleryItems;
+-(void)bundlesSetSuccess;
+-(void)bundlesSetFailed;
+-(void)userGalleryLoadedSuccessfullyWithResponse:(id)jsonResponse withGalleryItems:(NSArray *)galleryItems withGalleryID:(NSString *)myPhotosDefaultGallery;
 -(void)userGalleryLoadingFailedWithResponse:(id)jsonResponse;
 @end
 
@@ -26,16 +28,16 @@
 
 //Instance's
 @property(nonatomic,strong) NSArray *purchasedBundles;
-
 @property(nonatomic, unsafe_unretained) id<AccountManagerDelegate> delegate;
-
 @property(nonatomic,copy) NSString *activeOrderNumber;
+@property(nonatomic,strong) NSDictionary *lastPurchasedBundle;
 
 //Method's
 +(AccountManager *) sharedInstance;
 -(void)loadUserDefaultGallery:(id<AccountManagerDelegate>)delegate;
 -(BOOL)isLoggedInForSwitchArt;
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate;
+-(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate;
 -(void)setBundlesArrayForLoggedInUser:(NSArray *)bundlesArray;
 -(void)addNewBundleToPurchasedBundles:(NSDictionary *)newBundle;
 -(NSArray *)getBundlesArray;

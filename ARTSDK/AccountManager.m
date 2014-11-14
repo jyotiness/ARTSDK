@@ -56,9 +56,10 @@
          NSArray *responseGalleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
          
          [[ArtAPI sharedInstance] setMyPhotosGalleryID:myPhotosDefaultGallery];
-
-         if(self.delegate && [self.delegate respondsToSelector:@selector(userGalleryLoadedSuccessfullyWithResponse:withGalleryItems:)])
-             [self.delegate userGalleryLoadedSuccessfullyWithResponse:JSON withGalleryItems:responseGalleryItems];
+         NSLog(@"Persisted P2A Gallery: %@", myPhotosDefaultGallery);
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(userGalleryLoadedSuccessfullyWithResponse:withGalleryItems:withGalleryID:)])
+             [self.delegate userGalleryLoadedSuccessfullyWithResponse:JSON withGalleryItems:responseGalleryItems withGalleryID:myPhotosDefaultGallery];
          
          //NSLog(@" requestForAccountGet success \n JSON Account Get response %@ ", JSON);
      }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
@@ -141,6 +142,74 @@
     
     return bundleDict;
 }
+
+
+-(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate
+{
+    self.delegate = delegate;
+    __block BOOL status = NO;
+
+    NSString *propertyKey = @"Bundles";
+    
+    NSMutableArray *existingBundles = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
+    NSMutableDictionary *newBundle = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].lastPurchasedBundle];
+    
+    NSString *guid = @"123456789";
+    NSString *name = @"New Bundle";
+    
+    //NSDictionary *orderInfo =
+    
+    [newBundle setObject:guid forKey:@"bundleId"];
+    [newBundle setObject:name forKey:@"name"];
+    [existingBundles addObject:newBundle];
+    
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:existingBundles options:0 error:&writeError];
+    NSString *propertyValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"%@", propertyValue);
+    
+    NSString *propertyValue2 = @"{\"Bundles\" : [{\"bundleId\":\"MIKE TEST BUNDLE UPDATE\", \"name\":\"My Updated House\", \"description\":\"\", \"APNUM\":\"12259962\", \"terms\":{\"size\":{\"configId\":\"12260010\", \"width\":\"10\", \"height\":\"8\"}, \"frame\":{\"frameAPNUM\":\"\", \"frameText\":\"\"}, \"count\":\"1\"}, \"shippingAddressId\":\"A1\", \"retailPrice\":\"10\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"3452363772784\", \"creditCode\":\"\", \"balance\":{\"count\":\"1\", \"amount\":\"\"}}} , {\"bundleId\":\"94C02DF0772C4054A3BA8044C575E36C-2\", \"name\":\"My Mom's House\", \"description\":\"\", \"APNUM\":\"12259984\", \"terms\":{\"size\":{\"configId\":\"11969361\", \"width\":\"32\", \"height\":\"24\"}, \"frame\":{\"frameAPNUM\":\"12260003\", \"frameText\":\"Pecan\"}, \"count\":\"12\"}, \"shippingAddressId\":\"A2\", \"retailPrice\":\"460\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"4545467845635\", \"creditCode\":\"\", \"balance\":{\"count\":\"6\", \"amount\":\"\"}}}]}";
+    
+    NSLog(@"%@", propertyValue2);
+    
+    [ArtAPI requestForAccountUpdateProperty:propertyKey withValue:propertyValue success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+     {
+         NSLog(@" requestForAccountUpdateProperty success \n JSON Account Get response %@ ", JSON);
+         status = YES;
+         //NSArray *bundlesArray = [[NSMutableArray alloc] init];
+         
+         if(JSON){
+             
+             NSDictionary *dDict = [JSON objectForKeyNotNull:@"d"];
+             
+             if(dDict){
+                 
+             }
+         }
+         
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetSuccess)])
+         {
+             [self.delegate bundlesSetSuccess];
+         }
+         
+         
+     }
+     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+     {
+         status = NO;
+         NSLog(@" requestForAccountUpdateProperty failed ");
+         if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetFailed)])
+         {
+             [self.delegate bundlesSetFailed];
+         }
+         
+     }];
+    
+    return status;
+}
+
 
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate
 {
@@ -228,7 +297,7 @@
      {
          status = NO;
          NSLog(@" requestForAccountGet failed ");
-         if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesLoadedSuccessfully:)])
+         if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesLoadingFailed)])
          {
              [self.delegate bundlesLoadingFailed];
          }
