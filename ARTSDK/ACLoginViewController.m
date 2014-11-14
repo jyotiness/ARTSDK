@@ -487,7 +487,7 @@
     //NSLog(@"getDefaultMobileGallery()");
     
     // Get Mobile Gallery
-    [ArtAPI requestForGalleryGetUserDefaultMobileGallerySuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+    [ArtAPI requestForGalleryGetUserDefaultGallery:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
         if(!self.shouldRetainHudOnLogin){
             [SVProgressHUD dismiss];
