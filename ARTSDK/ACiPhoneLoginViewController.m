@@ -138,6 +138,9 @@
 {
     [super viewDidLoad];
     
+    
+    //[self.loginHolderScrollView setBackgroundColor:[UIColor redColor]];
+    
     //self.loginMode = LoginModeLogin;
 
     if(self.loginMode == LoginModeSignup)
@@ -325,6 +328,7 @@
         case 0:{
             cell.textField.text = self.email;
             [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
+            cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
             [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
             cell.textLabel.textColor = [UIColor blackColor];
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
@@ -337,6 +341,7 @@
         case 1:{
             cell.textField.text = self.password;
             [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+            cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
             cell.textField.secureTextEntry = YES;
             cell.textLabel.textColor = [UIColor blackColor];
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
@@ -349,6 +354,7 @@
         case 2:{
             cell.textField.text = self.password;
             [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+            cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
             cell.textField.secureTextEntry = YES;
             cell.textLabel.textColor = [UIColor blackColor];
             cell.textField.text = self.confirmPassword;
@@ -839,40 +845,65 @@
         CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
         if(screenHeight == 480){
             //iphone no retina
-            rect.size.height = 416-175;
+            //rect.size.height = 416-175;
+            rect.size.height = 416;
         }else if(screenHeight == 960){
             //iphone with retina
-            rect.size.height = 416-175;
-        }else{
+            //rect.size.height = 416-175;
+            rect.size.height = 416;
+        }else if(screenHeight == 1136){
             //iphone5
-            rect.size.height = 504 - 200;
+            //rect.size.height = 504 - 200;
+            rect.size.height = 504;
+        }else if(screenHeight == 1334){
+            //iphone 6
+            rect.size.height = 504;
+        }else {
+            //iphone 6+
+            rect.size.height = 504;
         }
         
         self.loginHolderScrollView.frame = rect;
     
     if(self.loginMode==LoginModeLogin){
         
-        if(screenHeight == 480){
-            //iphone no retina
-            self.loginHolderScrollView.contentSize = CGSizeMake(320, 380);
-        }else if(screenHeight == 960){
-            //iphone with retina
-            self.loginHolderScrollView.contentSize = CGSizeMake(320, 380);
-        }else{
-            //iphone5
-            self.loginHolderScrollView.contentSize = CGSizeMake(320, 355);
-        }
-    }else{
+        CGRect frame = self.loginHolderScrollView.frame;
         
         if(screenHeight == 480){
             //iphone no retina
-            self.loginHolderScrollView.contentSize = CGSizeMake(320, 400);
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
         }else if(screenHeight == 960){
             //iphone with retina
-            self.loginHolderScrollView.contentSize = CGSizeMake(320, 400);
-        }else{
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
+        }else if(screenHeight == 1136){
             //iphone5
-            self.loginHolderScrollView.contentSize = CGSizeMake(320, 380);
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
+        }else if(screenHeight == 1334){
+            //iphone 6
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
+        }else {
+            //iphone 6+
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
+        }
+    }else{
+        
+        CGRect frame = self.loginHolderScrollView.frame;
+        
+        if(screenHeight == 480){
+            //iphone no retina
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
+        }else if(screenHeight == 960){
+            //iphone with retina
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
+        }else if(screenHeight == 1136){
+            //iphone5
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
+        }else if(screenHeight == 1334){
+            //iphone 6
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
+        }else {
+            //iphone 6+
+            self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
         }
         
     }
@@ -917,7 +948,8 @@
     CGRect frame = self.loginHolderScrollView.frame;
     self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
 
-    
+    [self.loginHolderScrollView setContentOffset:
+     CGPointMake(0, -self.loginHolderScrollView.contentInset.top) animated:YES];
         //NSLog(@"Rect at Hide: %@", NSStringFromCGRect(rect));
         
 //    }
@@ -983,7 +1015,30 @@
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.loginHolderScrollView scrollRectToVisible:self.tableview.frame animated:YES];
+            
+            //MKL TEST
+            //[self.loginHolderScrollView scrollRectToVisible:self.tableview.frame animated:YES];
+            //[self.loginHolderScrollView scrollRectToVisible:textField.frame animated:YES];
+            
+            //scroll only for iPhone4 based on which field
+            
+            [self.loginHolderScrollView setContentOffset:CGPointMake(0, textField.frame.origin.y) animated:YES];
+            
+            
+            CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
+            if(screenHeight <= 960){
+                NSLog(@"It is an iPhone4");
+                if (2 == textField.tag) {
+                    //confirm
+                    [self.loginHolderScrollView setContentOffset:CGPointMake(0, textField.frame.origin.y + 50) animated:YES];
+                }else{
+                    [self.loginHolderScrollView setContentOffset:CGPointMake(0, textField.frame.origin.y) animated:YES];
+                }
+            }else {
+                [self.loginHolderScrollView setContentOffset:CGPointMake(0, textField.frame.origin.y) animated:YES];
+            }
+            
+            
         });
     }
     
@@ -998,6 +1053,8 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     //NSLog(@"textFieldDidEndEditing tag: %d text: %@", textField.tag, textField.text);
+    
+    
     
     if (0 == textField.tag) {
         self.email = textField.text;
