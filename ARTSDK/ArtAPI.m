@@ -53,6 +53,7 @@ NSString* const kResourceBookmarkAddGallery = @"ProfileAddGalleryBookmark";
 NSString* const kResourceBookmarkRemoveGallery = @"ProfileRemoveGalleryBookmark";
 NSString* const kResourceGalleryDelete = @"GalleryDelete";
 NSString* const kResourceGalleryRemoveItem = @"GalleryRemoveItem";
+NSString* const kResourceGalleryGetUserDefaultGallery = @"GalleryGetUserDefaultGallery";
 NSString* const kResourceCatalogItemGetFrameRecommendations = @"CatalogItemGetFrameRecommendations";
 NSString* const kResourceCatalogItemGet = @"CatalogItemGet";
 NSString* const kResourceCatalogGetContentBlock = @"CatalogGetContentBlock";
@@ -412,7 +413,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Create Request
     NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
-                                                   resource:@"GalleryGetUserDefaultGallery"
+                                                   resource:kResourceGalleryGetUserDefaultGallery
                                               usingEndpoint:kEndpointECommerceAPI
                                                  withParams:parameters
                                             requiresSession:YES

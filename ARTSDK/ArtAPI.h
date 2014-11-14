@@ -304,8 +304,8 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 #pragma mark -
 #pragma mark Gallery
 
-+ (void) requestForGalleryGetUserDefaultMobileGallerySuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
-                                                     failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
++ (void) requestForGalleryGetUserDefaultGallery:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                        failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
 + (void) removeGalleryId: (NSNumber *) galleryId
                  success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
