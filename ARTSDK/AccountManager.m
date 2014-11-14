@@ -29,8 +29,10 @@
     return _one;
 }
 
--(void)loadUserDefaultGallery{
+-(void)loadUserDefaultGallery:(id<AccountManagerDelegate>)delegate
+{
 
+    self.delegate = delegate;
 /*    Reachability *internetReachabilityTest = [Reachability reachabilityForInternetConnection];
     NetworkStatus networkStatus = [internetReachabilityTest currentReachabilityStatus];
     if (networkStatus == NotReachable) // NETWORK Reachability
@@ -42,20 +44,29 @@
     } */
 
     [SVProgressHUD showWithStatus:@"Fetching Photos" maskType:SVProgressHUDMaskTypeClear];
-    [ArtAPI requestForAccountGet:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+    [ArtAPI requestForGalleryGetUserDefaultGallery:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
          [SVProgressHUD dismiss];
-         NSDictionary *responseGallery = [JSON objectForKeyNotNull:@"Gallery"];
+         NSDictionary *aDict = [JSON objectForKeyNotNull:@"d"];
+         NSDictionary *responseGallery = [aDict objectForKeyNotNull:@"Gallery"];
          NSString *myPhotosDefaultGallery = [[responseGallery objectForKeyNotNull:@"GalleryAttributes"] objectForKeyNotNull:@"GalleryId"];
          
          NSLog(@"P2A Gallery recieved: %@", myPhotosDefaultGallery);
+      
+         NSArray *responseGalleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
          
          [[ArtAPI sharedInstance] setMyPhotosGalleryID:myPhotosDefaultGallery];
 
+         if(self.delegate && [self.delegate respondsToSelector:@selector(userGalleryLoadedSuccessfullyWithResponse:withGalleryItems:)])
+             [self.delegate userGalleryLoadedSuccessfullyWithResponse:JSON withGalleryItems:responseGalleryItems];
+         
          //NSLog(@" requestForAccountGet success \n JSON Account Get response %@ ", JSON);
      }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
      {
          [SVProgressHUD dismiss];
+         if(self.delegate && [self.delegate respondsToSelector:@selector(userGalleryLoadingFailedWithResponse:)])
+             [self.delegate userGalleryLoadingFailedWithResponse:JSON];
+
          NSLog(@"GalleryRetrievalFailed");
      }];
     

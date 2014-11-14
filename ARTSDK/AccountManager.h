@@ -15,9 +15,14 @@
 @optional
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles;
 -(void)bundlesLoadingFailed;
+-(void)userGalleryLoadedSuccessfullyWithResponse:(id)jsonResponse withGalleryItems:(NSArray *)galleryItems;
+-(void)userGalleryLoadingFailedWithResponse:(id)jsonResponse;
 @end
 
 @interface AccountManager : NSObject
+{
+    
+}
 
 //Instance's
 @property(nonatomic,strong) NSArray *purchasedBundles;
@@ -28,7 +33,7 @@
 
 //Method's
 +(AccountManager *) sharedInstance;
--(void)loadUserDefaultGallery;
+-(void)loadUserDefaultGallery:(id<AccountManagerDelegate>)delegate;
 -(BOOL)isLoggedInForSwitchArt;
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate;
 -(void)setBundlesArrayForLoggedInUser:(NSArray *)bundlesArray;
