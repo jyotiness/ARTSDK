@@ -680,10 +680,21 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     return NO;
 }
 
-// What?  - Copied from artcircles
-- (BOOL)authTokenExpired {
-    return NO;
+- (BOOL) authTokenExpired {
+    NSDate *authtokenExpirationDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"AUTH_TOKEN_EXPIRATION_KEY"];
+    NSDate *now = [NSDate date];
+    
+    if (!authtokenExpirationDate) {
+        return YES;
+    }
+    
+    if ([authtokenExpirationDate timeIntervalSince1970] > [now timeIntervalSince1970]) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
+
 
 // Check is the session is expired and clear the cart if it is
 + (BOOL)sessionIDExpired {
