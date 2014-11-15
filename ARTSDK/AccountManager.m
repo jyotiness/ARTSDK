@@ -154,24 +154,31 @@
     NSMutableArray *existingBundles = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
     NSMutableDictionary *newBundle = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].lastPurchasedBundle];
     
-    NSString *guid = @"123456789";
-    NSString *name = @"New Bundle";
+    NSString *guid = [[NSUUID UUID] UUIDString];
+    NSString *name = @"NewTestBundle2";
     
     //NSDictionary *orderInfo =
+    
+    //NOTE - NEED TO SET ALL THE NEW BUNDLE PROPERTIES
     
     [newBundle setObject:guid forKey:@"bundleId"];
     [newBundle setObject:name forKey:@"name"];
     [existingBundles addObject:newBundle];
     
-    NSError *writeError = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:existingBundles options:0 error:&writeError];
-    NSString *propertyValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    //need to make it into a Dictionary with one key
+    NSMutableDictionary *bundlesDictionary = [[NSMutableDictionary alloc] init];
+    [bundlesDictionary setObject:existingBundles forKey:@"Bundles"];
     
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bundlesDictionary options:0 error:&writeError];
+    NSString *propertyValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSLog(@"%@", propertyValue);
     
-    NSString *propertyValue2 = @"{\"Bundles\" : [{\"bundleId\":\"MIKE TEST BUNDLE UPDATE\", \"name\":\"My Updated House\", \"description\":\"\", \"APNUM\":\"12259962\", \"terms\":{\"size\":{\"configId\":\"12260010\", \"width\":\"10\", \"height\":\"8\"}, \"frame\":{\"frameAPNUM\":\"\", \"frameText\":\"\"}, \"count\":\"1\"}, \"shippingAddressId\":\"A1\", \"retailPrice\":\"10\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"3452363772784\", \"creditCode\":\"\", \"balance\":{\"count\":\"1\", \"amount\":\"\"}}} , {\"bundleId\":\"94C02DF0772C4054A3BA8044C575E36C-2\", \"name\":\"My Mom's House\", \"description\":\"\", \"APNUM\":\"12259984\", \"terms\":{\"size\":{\"configId\":\"11969361\", \"width\":\"32\", \"height\":\"24\"}, \"frame\":{\"frameAPNUM\":\"12260003\", \"frameText\":\"Pecan\"}, \"count\":\"12\"}, \"shippingAddressId\":\"A2\", \"retailPrice\":\"460\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"4545467845635\", \"creditCode\":\"\", \"balance\":{\"count\":\"6\", \"amount\":\"\"}}}]}";
+    /*
+    NSString *propertyValue2 = @"{\"Bundles\" :[{\"bundleId\":\"MIKE TEST BUNDLE UPDATE\", \"name\":\"My Updated House\", \"description\":\"\", \"APNUM\":\"12259962\", \"terms\":{\"size\":{\"configId\":\"12260010\", \"width\":\"10\", \"height\":\"8\"}, \"frame\":{\"frameAPNUM\":\"\", \"frameText\":\"\"}, \"count\":\"1\"}, \"shippingAddressId\":\"A1\", \"retailPrice\":\"10\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"3452363772784\", \"creditCode\":\"\", \"balance\":{\"count\":\"1\", \"amount\":\"\"}}} , {\"bundleId\":\"94C02DF0772C4054A3BA8044C575E36C-2\", \"name\":\"My Mom's House\", \"description\":\"\", \"APNUM\":\"12259984\", \"terms\":{\"size\":{\"configId\":\"11969361\", \"width\":\"32\", \"height\":\"24\"}, \"frame\":{\"frameAPNUM\":\"12260003\", \"frameText\":\"Pecan\"}, \"count\":\"12\"}, \"shippingAddressId\":\"A2\", \"retailPrice\":\"460\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"4545467845635\", \"creditCode\":\"\", \"balance\":{\"count\":\"6\", \"amount\":\"\"}}}]}";
     
     NSLog(@"%@", propertyValue2);
+    */
     
     [ArtAPI requestForAccountUpdateProperty:propertyKey withValue:propertyValue success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
@@ -262,10 +269,12 @@
                                      NSDictionary *propertyDict = [NSJSONSerialization JSONObjectWithData:propertyData options:0 error:&error];
                                      
                                      if(!error){
-                                         bundlesArray = [propertyDict objectForKey:@"Bundles"];
-                                         
-                                         [[AccountManager sharedInstance] setPurchasedBundles:bundlesArray];
-                                         
+                                         @try{
+                                             bundlesArray = [propertyDict objectForKey:@"Bundles"];
+                                             [[AccountManager sharedInstance] setPurchasedBundles:bundlesArray];
+                                         }@catch(id exception){
+                                             NSLog(@"There was a bundles array but it was not parseable into a dictionary");
+                                         }
 
                                      }
                                      
