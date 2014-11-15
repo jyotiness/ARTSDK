@@ -31,6 +31,8 @@
 @property(nonatomic, unsafe_unretained) id<AccountManagerDelegate> delegate;
 @property(nonatomic,copy) NSString *activeOrderNumber;
 @property(nonatomic,strong) NSDictionary *lastPurchasedBundle;
+@property(nonatomic,copy) NSString *userName;
+@property(nonatomic,copy) NSString *accountID;
 
 //Method's
 +(AccountManager *) sharedInstance;

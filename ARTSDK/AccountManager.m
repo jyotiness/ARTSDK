@@ -51,6 +51,21 @@
          NSDictionary *responseGallery = [aDict objectForKeyNotNull:@"Gallery"];
          NSString *myPhotosDefaultGallery = [[responseGallery objectForKeyNotNull:@"GalleryAttributes"] objectForKeyNotNull:@"GalleryId"];
          
+         NSDictionary *galleryOwnerDict = [[responseGallery objectForKeyNotNull:@"GalleryAttributes"] objectForKeyNotNull:@"GalleryOwner"];
+         if(galleryOwnerDict)
+         {
+             if(galleryOwnerDict)
+             {
+                 NSString *firstName = [ galleryOwnerDict objectForKey:@"FirstName"];
+                 firstName = (firstName.length > 0)?firstName:@"";
+                 NSString *lastName = [ galleryOwnerDict objectForKey:@"LastName"];
+                 lastName = (lastName.length > 0)?lastName:@"";
+                 self.userName = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
+                 
+                 self.accountID = [ galleryOwnerDict objectForKey:@"AccountId"];
+             }
+         }
+         
          NSLog(@"P2A Gallery recieved: %@", myPhotosDefaultGallery);
       
          NSArray *responseGalleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
@@ -258,6 +273,19 @@
              
                  NSDictionary *accountDict = [dDict objectForKeyNotNull:@"Account"];
                  if(accountDict){
+                     
+                     NSDictionary *curatorInfoDict = [accountDict objectForKeyNotNull:@"CuratorInfo"];
+                     if(curatorInfoDict)
+                     {
+                         NSString *firstName = [ curatorInfoDict objectForKey:@"FirstName"];
+                         firstName = (firstName.length > 0)?firstName:@"";
+                         NSString *lastName = [ curatorInfoDict objectForKey:@"LastName"];
+                         lastName = (lastName.length > 0)?lastName:@"";
+                         self.userName = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
+                         
+                         self.accountID = [ curatorInfoDict objectForKey:@"AccountId"];
+                     }
+
                      NSDictionary *profileInfoDict = [accountDict objectForKeyNotNull:@"ProfileInfo"];
                      
                      if(profileInfoDict){
