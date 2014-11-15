@@ -466,10 +466,12 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                             requiresSession:YES
                                             requiresAuthKey:YES];
     
+    NSLog(@"request.URL %@",request.URL);
+    
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
                                          {
-                                             NSLog(@"request.URL %@",request.URL);
+                                             
                                              [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
                                              
                                          }

@@ -160,14 +160,24 @@
     //NSDictionary *orderInfo =
     
     //NOTE - NEED TO SET ALL THE NEW BUNDLE PROPERTIES
+    //MKL HACK - cannot support more than 2 bundles
+    NSMutableArray *existingBundleArrayOfMaxTwo = [[NSMutableArray alloc] init];
+    NSMutableArray *existingBundleArrayOfMaxOne = [[NSMutableArray alloc] init];
+    
+    if([existingBundles count] >=1){
+        //add first item
+        [existingBundleArrayOfMaxTwo addObject:[existingBundles objectAtIndex:0]];
+    }
     
     [newBundle setObject:guid forKey:@"bundleId"];
     [newBundle setObject:name forKey:@"name"];
     [existingBundles addObject:newBundle];
+    [existingBundleArrayOfMaxTwo addObject:newBundle];
+    [existingBundleArrayOfMaxOne addObject:newBundle];
     
     //need to make it into a Dictionary with one key
     NSMutableDictionary *bundlesDictionary = [[NSMutableDictionary alloc] init];
-    [bundlesDictionary setObject:existingBundles forKey:@"Bundles"];
+    [bundlesDictionary setObject:existingBundleArrayOfMaxOne forKey:@"Bundles"];
     
     NSError *writeError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bundlesDictionary options:0 error:&writeError];
@@ -182,6 +192,7 @@
     
     [ArtAPI requestForAccountUpdateProperty:propertyKey withValue:propertyValue success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
+         
          NSLog(@" requestForAccountUpdateProperty success \n JSON Account Get response %@ ", JSON);
          status = YES;
          //NSArray *bundlesArray = [[NSMutableArray alloc] init];
