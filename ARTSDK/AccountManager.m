@@ -57,9 +57,20 @@
              if(galleryOwnerDict)
              {
                  NSString *firstName = [ galleryOwnerDict objectForKey:@"FirstName"];
-                 firstName = (firstName.length > 0)?firstName:@"";
+                 if(firstName && ![firstName isKindOfClass:[NSNull class]])
+                 {
+                     firstName = (firstName.length > 0)?firstName:@"";
+                 }
+                 else
+                     firstName = @"";
                  NSString *lastName = [ galleryOwnerDict objectForKey:@"LastName"];
-                 lastName = (lastName.length > 0)?lastName:@"";
+                 if(lastName && ![lastName isKindOfClass:[NSNull class]])
+                 {
+                     lastName = (lastName.length > 0)?lastName:@"";
+                 }
+                 else
+                     lastName = @"";
+                 
                  self.userName = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
                  
                  self.accountID = [ galleryOwnerDict objectForKey:@"AccountId"];
@@ -278,9 +289,19 @@
                      if(curatorInfoDict)
                      {
                          NSString *firstName = [ curatorInfoDict objectForKey:@"FirstName"];
-                         firstName = (firstName.length > 0)?firstName:@"";
+                         if(firstName && ![firstName isKindOfClass:[NSNull class]])
+                         {
+                             firstName = (firstName.length > 0)?firstName:@"";
+                         }
+                         else
+                             firstName = @"";
                          NSString *lastName = [ curatorInfoDict objectForKey:@"LastName"];
-                         lastName = (lastName.length > 0)?lastName:@"";
+                         if(lastName && ![lastName isKindOfClass:[NSNull class]])
+                         {
+                             lastName = (lastName.length > 0)?lastName:@"";
+                         }
+                         else
+                             lastName = @"";
                          self.userName = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
                          
                          self.accountID = [ curatorInfoDict objectForKey:@"AccountId"];
