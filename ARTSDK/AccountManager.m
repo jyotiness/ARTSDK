@@ -16,6 +16,7 @@
 @implementation AccountManager
 
 @synthesize purchasedBundles;
+@synthesize userName;
 
 + (AccountManager*) sharedInstance {
     static AccountManager* _one = nil;
@@ -56,6 +57,9 @@
          {
              if(galleryOwnerDict)
              {
+                 /*
+                 NSString *accountUserName = @"";
+                 
                  NSString *firstName = [ galleryOwnerDict objectForKey:@"FirstName"];
                  if(firstName && ![firstName isKindOfClass:[NSNull class]])
                  {
@@ -71,7 +75,16 @@
                  else
                      lastName = @"";
                  
-                 self.userName = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
+                 NSString *nameToUse = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
+                 nameToUse = [nameToUse stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                 
+                 if([nameToUse length] == 0){
+                     nameToUse = accountUserName;
+                 }
+                 
+                 self.userName = nameToUse;
+                 NSLog(@"Set acccount name to %@", self.userName);
+                */
                  
                  self.accountID = [ galleryOwnerDict objectForKey:@"AccountId"];
              }
@@ -139,7 +152,21 @@
     
     //for now just return logged in state
     
-    return [ArtAPI isLoggedIn];
+    BOOL isLoggedIn = [ArtAPI isLoggedIn];
+    
+    bool isAnonymousLogin = YES;
+    static NSString * ANONYMOUS_AUTH_TOKEN = @"ANONYMOUS_AUTH_TOKEN";
+    
+    NSString *anonymousAuthToken = [[NSUserDefaults standardUserDefaults] objectForKey:ANONYMOUS_AUTH_TOKEN];
+    
+    if(anonymousAuthToken){
+        isAnonymousLogin = YES;
+    }else{
+        isAnonymousLogin = NO;
+    }
+    
+    return (isLoggedIn && !isAnonymousLogin);
+    
 }
 
 -(void)setBundlesArray:(NSArray *)bundleArray{
@@ -285,6 +312,17 @@
                  NSDictionary *accountDict = [dDict objectForKeyNotNull:@"Account"];
                  if(accountDict){
                      
+                     NSString *accountUserName = @"";
+                     
+                     NSDictionary *profileInfoDict = [accountDict objectForKeyNotNull:@"ProfileInfo"];
+                     if(profileInfoDict){
+                         accountUserName = [profileInfoDict objectForKeyNotNull:@"UserName"];
+                         
+                         if(!accountUserName) accountUserName = @"";
+                         
+                     }
+                     
+                     
                      NSDictionary *curatorInfoDict = [accountDict objectForKeyNotNull:@"CuratorInfo"];
                      if(curatorInfoDict)
                      {
@@ -294,20 +332,32 @@
                              firstName = (firstName.length > 0)?firstName:@"";
                          }
                          else
+                         {
                              firstName = @"";
+                         }
                          NSString *lastName = [ curatorInfoDict objectForKey:@"LastName"];
                          if(lastName && ![lastName isKindOfClass:[NSNull class]])
                          {
                              lastName = (lastName.length > 0)?lastName:@"";
                          }
                          else
+                         {
                              lastName = @"";
-                         self.userName = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
+                         }
+                         
+                         NSString *nameToUse = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
+                         nameToUse = [nameToUse stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                         
+                         if([nameToUse length] == 0){
+                             nameToUse = accountUserName;
+                         }
+                         
+                         self.userName = nameToUse;
+                         NSLog(@"Set acccount name to %@", self.userName);
                          
                          self.accountID = [ curatorInfoDict objectForKey:@"AccountId"];
                      }
 
-                     NSDictionary *profileInfoDict = [accountDict objectForKeyNotNull:@"ProfileInfo"];
                      
                      if(profileInfoDict){
                          NSArray *userPropertiesArray = [profileInfoDict objectForKeyNotNull:@"UserProperties"];
