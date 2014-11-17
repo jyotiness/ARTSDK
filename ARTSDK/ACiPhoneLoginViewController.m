@@ -704,11 +704,38 @@
              
              
          }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-             //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
              // Failure
              [SVProgressHUD dismiss];
              
              self.error =  [JSON objectForKey:@"APIErrorMessage"];
+             
+             //try to get better error message from operation response
+             NSDictionary *dDict = [JSON objectForKey:@"d"];
+             
+             if(dDict){
+                 NSDictionary *operationResponseDict = [dDict objectForKey:@"OperationResponse"];
+                 if(operationResponseDict){
+                     NSArray *errorsArray = [operationResponseDict objectForKey:@"Errors"];
+                     if(errorsArray){
+                         
+                         NSDictionary *firstError = [errorsArray objectAtIndex:0];
+                         
+                         if(firstError){
+                         
+                             NSString *errorCode = [firstError objectForKey:@"ErrorCode"];
+                             NSString *errorMessage = [firstError objectForKey:@"ErrorMessage"];
+                             
+                             if(errorMessage){
+                                 if([errorMessage length] > 0){
+                                     self.error = errorMessage;
+                                 }
+                             }
+                         }
+                     }
+                     
+                 }
+             }
              
              self.password = self.confirmPassword = @"";
              
