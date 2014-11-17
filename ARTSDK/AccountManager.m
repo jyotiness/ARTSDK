@@ -43,7 +43,7 @@
         return;
     } */
 
-    [SVProgressHUD showWithStatus:@"Fetching Photos" maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeClear];
     [ArtAPI requestForGalleryGetUserDefaultGallery:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
          [SVProgressHUD dismiss];
