@@ -44,10 +44,10 @@
         return;
     } */
 
-    [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeClear];
     [ArtAPI requestForGalleryGetUserDefaultGallery:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
-         [SVProgressHUD dismiss];
+         //[SVProgressHUD dismiss];
          NSDictionary *aDict = [JSON objectForKeyNotNull:@"d"];
          NSDictionary *responseGallery = [aDict objectForKeyNotNull:@"Gallery"];
          NSString *myPhotosDefaultGallery = [[responseGallery objectForKeyNotNull:@"GalleryAttributes"] objectForKeyNotNull:@"GalleryId"];
@@ -57,35 +57,6 @@
          {
              if(galleryOwnerDict)
              {
-                 /*
-                 NSString *accountUserName = @"";
-                 
-                 NSString *firstName = [ galleryOwnerDict objectForKey:@"FirstName"];
-                 if(firstName && ![firstName isKindOfClass:[NSNull class]])
-                 {
-                     firstName = (firstName.length > 0)?firstName:@"";
-                 }
-                 else
-                     firstName = @"";
-                 NSString *lastName = [ galleryOwnerDict objectForKey:@"LastName"];
-                 if(lastName && ![lastName isKindOfClass:[NSNull class]])
-                 {
-                     lastName = (lastName.length > 0)?lastName:@"";
-                 }
-                 else
-                     lastName = @"";
-                 
-                 NSString *nameToUse = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
-                 nameToUse = [nameToUse stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                 
-                 if([nameToUse length] == 0){
-                     nameToUse = accountUserName;
-                 }
-                 
-                 self.userName = nameToUse;
-                 NSLog(@"Set acccount name to %@", self.userName);
-                */
-                 
                  self.accountID = [ galleryOwnerDict objectForKey:@"AccountId"];
              }
          }
@@ -103,47 +74,16 @@
          //NSLog(@" requestForAccountGet success \n JSON Account Get response %@ ", JSON);
      }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
      {
-         [SVProgressHUD dismiss];
+         //[SVProgressHUD dismiss];
          if(self.delegate && [self.delegate respondsToSelector:@selector(userGalleryLoadingFailedWithResponse:)])
              [self.delegate userGalleryLoadingFailedWithResponse:JSON];
 
          NSLog(@"GalleryRetrievalFailed");
      }];
     
-/*    ACJSONAPIRequest *requestDefaultGalleries=[[ACAPI sharedAPI] requestForGalleryGetUserDefaultGalleryWithDelegate:self withDefaultGalleryType:@"DefaultMyPhotosGallery"];
-    if(!requestDefaultGalleries){
-        if(![ArtAPI authenticationToken]){
-            UIAlertView *authAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ERROR", nil) message:NSLocalizedString(@"AUTHENTICATION_TOKEN_IS_NULL", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
-            [authAlertView show];
-            return;
-        }
-    }
-    [requestDefaultGalleries setDidFinishSelector:@selector(defaultGalleriesSucceeded:)];
-    [requestDefaultGalleries setDidFailSelector:@selector(defaultGalleriesFailed:)];
-    [requestDefaultGalleries startAsynchronous]; */
-    
-}
-
-/*
--(void)defaultGalleriesFailed:(ACJSONAPIRequest *)request{
-
-    NSLog(@"GalleryRetrievalFailed");
-    if(request.isCancelled){
-        return;
-    }
 }
 
 
--(void) defaultGalleriesSucceeded:(ACJSONAPIRequest *)request{
- 
-    NSDictionary *responseGallery = [[request APIResponse] objectForKeyNotNull:@"Gallery"];
-    NSString *myPhotosDefaultGallery = [[responseGallery objectForKeyNotNull:@"GalleryAttributes"] objectForKeyNotNull:@"GalleryId"];
-
-    NSLog(@"P2A Gallery recieved: %@", myPhotosDefaultGallery);
-    
-    [[ACAPI sharedAPI] setMyPhotosGalleryID:myPhotosDefaultGallery];
-    
-} */
 
 -(BOOL)isLoggedInForSwitchArt{
     
