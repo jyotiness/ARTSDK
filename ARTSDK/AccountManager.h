@@ -30,16 +30,17 @@
 @property(nonatomic,strong) NSArray *purchasedBundles;
 @property(nonatomic, unsafe_unretained) id<AccountManagerDelegate> delegate;
 @property(nonatomic,copy) NSString *activeOrderNumber;
-@property(nonatomic,strong) NSDictionary *lastPurchasedBundle;
+@property(nonatomic,strong) NSDictionary *lastPurchasedBundle;  //teh one that was in the cart prior to checking out
 @property(nonatomic,strong) NSString *userName;
 @property(nonatomic,strong) NSString *accountID;
+@property(nonatomic,strong) NSDictionary *currentWorkingBundle;
 
 //Method's
 +(AccountManager *) sharedInstance;
 -(void)loadUserDefaultGallery:(id<AccountManagerDelegate>)delegate;
 -(BOOL)isLoggedInForSwitchArt;
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate;
--(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate;
+-(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber;
 -(void)setBundlesArrayForLoggedInUser:(NSArray *)bundlesArray;
 -(void)addNewBundleToPurchasedBundles:(NSDictionary *)newBundle;
 -(NSArray *)getBundlesArray;

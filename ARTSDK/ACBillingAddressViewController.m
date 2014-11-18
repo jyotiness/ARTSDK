@@ -2872,7 +2872,6 @@
 -(void) cartAddCreditCardRequestDidFinish:(id)JSON {
     isDoingValidation=NO;
     
-    
     [ArtAPI
      cartSubmitForOrderWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
          NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
@@ -2905,7 +2904,7 @@
 
 -(void) requestOrderSubmitDidFinish:(id)JSON
 {
-    [SVProgressHUD dismiss];
+    
     
     NSDictionary *orderAttributes = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"OrderAttributes"];
     NSString *orderNumber = [orderAttributes objectForKeyNotNull:@"OrderNumber"];
@@ -2934,7 +2933,7 @@
                     NSNumber *itemQuant = (NSNumber *)[cartItem objectForKeyNotNull:@"Quantity"];
                     int quantity = 0;
                     if(itemQuant && ![itemQuant isKindOfClass:[NSNull class]]){
-                        quantity = [itemQuant integerValue];
+                        quantity = (int)[itemQuant integerValue];
                     }
                     
                     if(currentItem && ![currentItem isKindOfClass:[NSNull class]]){
@@ -2979,16 +2978,18 @@
         }
     }
     
-    
-    
-    
     if([ACConstants getCurrentAppLocation] == AppLocationSwitchArt){
         //need to set bundle if it is SwitchArt app
         
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
+        
         NSLog(@"SwitchArt App - needs to set the bundles on the account");
-        [[AccountManager sharedInstance] setBundlesForLoggedInUser:self];
+        [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:orderNumber];
         
     }else{
+        
+        [SVProgressHUD dismiss];
         
         [ArtAPI setCart:nil];
         [ArtAPI initilizeApp];
@@ -3008,13 +3009,31 @@
     [ArtAPI initilizeApp];
     
     //need to retrieve purchased bundles if SwitchArt
-    [SVProgressHUD showWithStatus:@"Fetching Account Details" maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
     [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
     
 }
 
 -(void)bundlesSetFailure{
     NSLog(@"Failed to set bundles");
+    
+    //need to do the same thing though even though the UserProperties update failed
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                     message: @"There was an error updating the pack information on the account."
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
+    
+    [ alert show];
+    
+    [ArtAPI setCart:nil];
+    [ArtAPI initilizeApp];
+    
+    //need to retrieve purchased bundles if SwitchArt
+    
+    [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+    
 }
 
 

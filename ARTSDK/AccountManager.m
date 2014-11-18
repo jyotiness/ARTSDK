@@ -17,6 +17,9 @@
 
 @synthesize purchasedBundles;
 @synthesize userName;
+@synthesize lastPurchasedBundle;
+@synthesize currentWorkingBundle;
+
 
 + (AccountManager*) sharedInstance {
     static AccountManager* _one = nil;
@@ -137,40 +140,30 @@
 }
 
 
--(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate
+-(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber
 {
     self.delegate = delegate;
     __block BOOL status = NO;
 
     NSString *propertyKey = @"Bundles";
     
-    NSMutableArray *existingBundles = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
-    NSMutableDictionary *newBundle = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].lastPurchasedBundle];
+    //assume bundles are already compressed
+    NSMutableArray *packArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
+    //NSMutableArray *packArray = [[NSMutableArray alloc] init];
     
-    NSString *guid = [[NSUUID UUID] UUIDString];
-    NSString *name = @"NewTestBundle2";
+    NSMutableDictionary *newBundleUncompressed = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].lastPurchasedBundle];
     
-    //NSDictionary *orderInfo =
-    
-    //NOTE - NEED TO SET ALL THE NEW BUNDLE PROPERTIES
-    //MKL HACK - cannot support more than 2 bundles
-    NSMutableArray *existingBundleArrayOfMaxTwo = [[NSMutableArray alloc] init];
-    NSMutableArray *existingBundleArrayOfMaxOne = [[NSMutableArray alloc] init];
-    
-    if([existingBundles count] >=1){
-        //add first item
-        [existingBundleArrayOfMaxTwo addObject:[existingBundles objectAtIndex:0]];
+    //set order id
+    NSMutableDictionary *orderDict = [newBundleUncompressed objectForKey:@"orderInfo"];
+    if(orderDict){
+        [orderDict setObject:orderNumber forKey:@"orderNumber"];
     }
     
-    [newBundle setObject:guid forKey:@"bundleId"];
-    [newBundle setObject:name forKey:@"name"];
-    [existingBundles addObject:newBundle];
-    [existingBundleArrayOfMaxTwo addObject:newBundle];
-    [existingBundleArrayOfMaxOne addObject:newBundle];
+    [packArray addObject:newBundleUncompressed];
     
     //need to make it into a Dictionary with one key
     NSMutableDictionary *bundlesDictionary = [[NSMutableDictionary alloc] init];
-    [bundlesDictionary setObject:existingBundleArrayOfMaxOne forKey:@"Bundles"];
+    [bundlesDictionary setObject:packArray forKey:@"Bundles"];
     
     NSError *writeError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bundlesDictionary options:0 error:&writeError];
@@ -236,6 +229,8 @@
         [alert show];
         return NO;
     } */
+    
+    [[AccountManager sharedInstance] setPurchasedBundles:nil];
     
     [ArtAPI requestForAccountGet:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
@@ -345,6 +340,20 @@
          //when it was inside all the if blocks above...
          //-MKL
          
+         //default to working with the first bundle
+         self.currentWorkingBundle = nil;
+         if(self.purchasedBundles){
+             if([self.purchasedBundles count] > 0){
+                 self.currentWorkingBundle = [self.purchasedBundles objectAtIndex:0];
+                 NSLog(@"Set the working bundle to be the first one in the array");
+             }else{
+                 NSLog(@"Set the working bundle to nil");
+             }
+         }else{
+             NSLog(@"Set the working bundle to nil");
+         }
+         
+         
          if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesLoadedSuccessfully:)])
          {
              [self.delegate bundlesLoadedSuccessfully:self.purchasedBundles];
@@ -354,6 +363,9 @@
      }
      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
      {
+         self.currentWorkingBundle = nil;
+         NSLog(@"Set the working bundle to nil");
+         
          status = NO;
          NSLog(@" requestForAccountGet failed ");
          if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesLoadingFailed)])
