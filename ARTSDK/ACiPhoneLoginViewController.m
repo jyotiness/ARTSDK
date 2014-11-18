@@ -332,9 +332,7 @@
             [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
             cell.textLabel.textColor = [UIColor blackColor];
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
-//                cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
-//                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }
@@ -347,7 +345,6 @@
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                 cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
-//                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }
@@ -361,7 +358,6 @@
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                 cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
-//                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }

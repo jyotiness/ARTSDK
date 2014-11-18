@@ -31,32 +31,6 @@ typedef enum ContactPickeMode {
 
 @interface ACShipAddressViewController : GAITrackedViewController<UITextFieldDelegate,UITextViewDelegate,ABPeoplePickerNavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource,UIActionSheetDelegate,UIAlertViewDelegate,ACiPhoneLoginDelegate>//,PayPalPaymentDelegate,PayPalFuturePaymentDelegate>
 {
-//    NSString* name_ ;
-//	NSString* company_ ;
-//	NSString* phone_ ;
-//    
-//	
-//	UITextField* nameField_ ;
-//	UITextField* companyField_ ;
-//	UITextField* phoneField_ ;
-//	
-//    
-//    NSString* addressLine1 ;
-//	NSString* addressLine2 ;
-//	NSString* postalCode ;
-//	NSString* city ;
-//	
-//	UITextField* addressLine1Field ;
-//	UITextField* addressLine2Field ;
-//	UITextField* postalCodeField ;
-//	UITextField* cityField ;
-//    UITextField* stateField;
-//    
-//    UIButton *countryButton;
-//    UIButton *stateButton;
-//    UIPickerView *countrypickerView;
-//    UIPickerView *statepickerView;
-    
     UIView   *mPickerHolderView;
     ACCheckoutTextField *mFailedTextField;
     BOOL isDoingValidation;
@@ -66,9 +40,7 @@ typedef enum ContactPickeMode {
 @property(nonatomic,retain) NSString *countryPickerValue;
 @property(nonatomic,retain) NSString *statePickerValue;
 @property (retain, nonatomic) IBOutlet UIView *FooterNextViewButton;
-@property (retain, nonatomic) IBOutlet UIView *swithArtHeaderView;
-@property (retain, nonatomic) IBOutlet UIButton *loginFbButton;
-@property (retain, nonatomic) IBOutlet UIButton *loginEmailButton;
+@property (nonatomic,strong) IBOutlet UIView *loginHeaderView;
 
 @property(nonatomic,copy) NSArray *emailArray;
 @property(nonatomic,copy) NSArray *cityArray;
@@ -94,15 +66,33 @@ typedef enum ContactPickeMode {
 @property(assign) BOOL isUSAddressInvalid;
 @property(readwrite) ACCheckoutType artCheckoutType;
 
+@property (nonatomic,strong) IBOutlet UISegmentedControl *segmentedButton;
+@property (nonatomic,strong) IBOutlet UIButton *facebookLoginButton;
+@property (nonatomic,strong) IBOutlet UITableView *tableview;
+@property (nonatomic,strong) IBOutlet UIView *loginView;
+@property (nonatomic,strong) IBOutlet UIView *signupView;
+@property (nonatomic,strong) IBOutlet UIView *facebookLoginHolderView;
+@property (nonatomic,strong) IBOutlet UIScrollView *loginHolderScrollView;
 
+@property (nonatomic,strong) IBOutlet UIButton *emailLoginButton;
+@property (nonatomic,strong) IBOutlet UIButton *emailSignupButton;
+@property (nonatomic,strong) IBOutlet UIButton *forgotPasswordButton;
+@property (nonatomic,strong) IBOutlet UILabel *loginTitleLabel;
+
+@property (nonatomic, assign) id <ACiPhoneLoginDelegate> loginDelegate;
+@property (nonatomic,assign) LoginMode loginMode;
+
+- (IBAction)toggleSegmentedAction:(id)sender;
+
+- (IBAction)loginWithFacebook:(id)sender;
+- (IBAction)loginWithEmail:(id)sender;
+- (IBAction)signupWithEmail:(id)sender;
+- (IBAction)forgotPassword:(id)sender;
 
 -(IBAction)textFieldFinished:(id)sender ;
 -(IBAction)goBack:(id)sender;
 -(IBAction)close:(id)sender;
 -(IBAction)continueToPayment:(id)sender;
-//@property (retain, nonatomic) IBOutlet UIButton *shippingBackButton;
-//@property (retain, nonatomic) IBOutlet UIButton *shippingCloseButton;
-//@property (retain, nonatomic) IBOutlet UILabel *shippingMainHeader;
 
 @property (retain, nonatomic) NSString *zipLabelText;
 
@@ -129,9 +119,6 @@ typedef enum ContactPickeMode {
 @property(nonatomic,copy) NSString * zipUnderValidation;
 
 @property (nonatomic, retain) UITextField *txtActiveField;
-//@property (nonatomic, retain) UIButton *btnDone;
-//@property (nonatomic, retain) UIButton *btnNext;
-//@property (nonatomic, retain) UIButton *btnPrev;
 @property (nonatomic, assign) ABMultiValueRef contactAdresses;
 
 @property (nonatomic, strong)  ACCheckoutTextField *firstNameTextField;
@@ -145,7 +132,6 @@ typedef enum ContactPickeMode {
 @property (nonatomic, strong)  ACCheckoutTextField *stateTextField;
 @property (nonatomic, strong)  ACCheckoutTextField *zipTextField;
 @property (nonatomic, strong)  ACCheckoutTextField *phoneField ;
-//@property (nonatomic, retain)  UIToolbar *accessoryTootlBar;
 
 @property(nonatomic,assign) BOOL stateValidationRequired;
 @property(nonatomic,assign) BOOL phoneValidationRequired;
@@ -155,12 +141,7 @@ typedef enum ContactPickeMode {
 @property (retain, nonatomic) IBOutlet UIImageView *topNavBarImageView;
 
 -(void)configureThePicker;
-//-(UIView*)createInputAccessoryView:(BOOL)isTextField isModal:(BOOL)isModal;
 -(void)hidePicker;
-//-(IBAction)previousButtonPressed:(id)sender;
-//-(IBAction)nextButtonPressed:(id)sender;
-//-(IBAction)gotoNextTextfield:(id)sender;
-//-(IBAction)gotoPrevTextfield:(id)sender;
 
 -(int)getCharacterCount:(NSString*)str;
 -(void)prepareCountryList;
