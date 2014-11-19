@@ -17,10 +17,12 @@
 
 @synthesize purchasedBundles;
 @synthesize userName;
-@synthesize lastPurchasedBundle;
-@synthesize currentWorkingBundle;
+@synthesize unpurchasedWorkingPack;
+@synthesize purchasedWorkingPack;
 @synthesize addressesByAddressID;
 @synthesize addressArray;
+@synthesize unpurchasedPackName;
+@synthesize packPurchaseMode;
 
 + (AccountManager*) sharedInstance {
     static AccountManager* _one = nil;
@@ -140,6 +142,59 @@
     return bundleDict;
 }
 
+-(NSDictionary *)getAddressForAddressID:(NSString*)addressID
+{
+    NSDictionary *addressDict = nil;
+    
+    if(self.addressesByAddressID){
+        addressDict = [self.addressesByAddressID objectForKey:addressID];
+    }
+    
+    return addressDict;
+}
+
+-(NSString *)getNewPackName{
+    
+    NSString *rootPackName = @"Untitled Pack";
+    int maxPackIndex = 1000;
+    
+    NSString *packName;
+    
+    for(int i=1;i<maxPackIndex;i++){
+        packName = [NSString stringWithFormat:@"%@ %i", rootPackName, i, nil];
+        
+        if(![self packNameExistsInPurchasedBundles:packName]){
+            return packName;
+        }
+        
+    }
+    
+    //if you get through 100, then just return the rootName - this should never happen
+    return rootPackName;
+}
+
+-(BOOL)packNameExistsInPurchasedBundles:(NSString *)packName{
+    
+    BOOL retBool = NO;
+    
+    NSString *tempPackName = @"";
+    
+    for(NSDictionary *tempPack in self.purchasedBundles){
+        
+        tempPackName = [tempPack objectForKeyNotNull:@"name"];
+        
+        if([[packName uppercaseString] isEqualToString:[tempPackName uppercaseString]]){
+            
+            return YES;
+            
+        }
+        
+    }
+    
+    return retBool;
+    
+}
+
 
 -(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber
 {
@@ -152,7 +207,7 @@
     NSMutableArray *packArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
     //NSMutableArray *packArray = [[NSMutableArray alloc] init];
     
-    NSMutableDictionary *newBundleUncompressed = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].lastPurchasedBundle];
+    NSMutableDictionary *newBundleUncompressed = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].unpurchasedWorkingPack];
     
     //set order id
     NSMutableDictionary *orderDict = [newBundleUncompressed objectForKey:@"orderInfo"];
@@ -231,7 +286,10 @@
         return NO;
     } */
     
-    [[AccountManager sharedInstance] setPurchasedBundles:nil];
+    //clear the existing data.  this method will replace it
+    [self setPurchasedBundles:nil];
+    self.addressesByAddressID = [[NSMutableDictionary alloc] init];
+    self.addressArray = [[NSMutableArray alloc] init];
     
     [ArtAPI requestForAccountGet:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
@@ -330,6 +388,28 @@
                              
                          }
                          
+                         NSArray *addressesArray = [profileInfoDict objectForKeyNotNull:@"Addresses"];
+                         
+                         if(addressesArray){
+                             //index all addresses
+                             NSString *tempAddressID;
+                             
+                             for(NSDictionary *tempAddress in addressesArray){
+                             
+                                 tempAddressID = [tempAddress objectForKey:@"AddressIdentifier"];
+                                 
+                                 if(tempAddressID){
+                                     if(![self.addressesByAddressID objectForKey:tempAddressID]){
+                                         //only index one per address id, just in case
+                                         [self.addressesByAddressID setObject:tempAddress forKey:tempAddressID];
+                                         [self.addressArray addObject:tempAddress];
+                                         
+                                         NSLog(@"Indexed address with AddressID: %@", tempAddressID);
+                                     }
+                                 }
+
+                             }
+                         }
                      }
                  }
              }
@@ -342,10 +422,10 @@
          //-MKL
          
          //default to working with the first bundle
-         self.currentWorkingBundle = nil;
+         self.purchasedWorkingPack = nil;
          if(self.purchasedBundles){
              if([self.purchasedBundles count] > 0){
-                 self.currentWorkingBundle = [NSMutableDictionary dictionaryWithDictionary:[self.purchasedBundles objectAtIndex:0]];
+                 self.purchasedWorkingPack = [NSMutableDictionary dictionaryWithDictionary:[self.purchasedBundles objectAtIndex:0]];
                  NSLog(@"Set the working bundle to be the first one in the array");
              }else{
                  NSLog(@"Set the working bundle to nil");
@@ -364,7 +444,7 @@
      }
      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
      {
-         self.currentWorkingBundle = nil;
+         self.purchasedWorkingPack = nil;
          NSLog(@"Set the working bundle to nil");
          
          status = NO;

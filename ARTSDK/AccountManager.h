@@ -11,6 +11,11 @@
 #import "ArtAPI.h"
 //#import "ACAPI.h"
 
+typedef enum {
+    PurchaseModeNewPack = 0,
+    PurchaseModeExistingPack = 1
+} SAPackPurchaseMode;
+
 @protocol AccountManagerDelegate<NSObject>;
 @optional
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles;
@@ -28,12 +33,14 @@
 
 //Instance's
 @property(nonatomic,strong) NSArray *purchasedBundles;
-@property(nonatomic, unsafe_unretained) id<AccountManagerDelegate> delegate;
-@property(nonatomic,copy) NSString *activeOrderNumber;
-@property(nonatomic,strong) NSDictionary *lastPurchasedBundle;  //teh one that was in the cart prior to checking out
+@property(nonatomic,unsafe_unretained) id<AccountManagerDelegate> delegate;
+@property(nonatomic,strong) NSString *activeOrderNumber;
 @property(nonatomic,strong) NSString *userName;
 @property(nonatomic,strong) NSString *accountID;
-@property(nonatomic,strong) NSMutableDictionary *currentWorkingBundle;
+@property(nonatomic,strong) NSString *unpurchasedPackName;
+@property(nonatomic,assign) SAPackPurchaseMode packPurchaseMode;
+@property(nonatomic,strong) NSMutableDictionary *unpurchasedWorkingPack;
+@property(nonatomic,strong) NSMutableDictionary *purchasedWorkingPack;
 @property(nonatomic,strong) NSMutableDictionary *addressesByAddressID;
 @property(nonatomic,strong) NSMutableArray *addressArray;
 
@@ -48,5 +55,7 @@
 -(NSArray *)getBundlesArray;
 -(NSDictionary *)getBundleForOrderNumber:(NSString*)orderNumber;
 -(void)setBundlesArray:(NSArray *)bundleArray;
+-(NSDictionary *)getAddressForAddressID:(NSString*)addressID;
+-(NSString *)getNewPackName;
 
 @end
