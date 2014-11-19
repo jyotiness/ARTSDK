@@ -139,6 +139,8 @@ typedef enum ContactPickeMode {
 @property (nonatomic, strong)  ACCheckoutTextField *zipTextField;
 @property (nonatomic, strong)  ACCheckoutTextField *phoneField ;
 
+@property (nonatomic, strong)  NSArray *addressArray;
+
 @property(nonatomic,assign) BOOL stateValidationRequired;
 @property(nonatomic,assign) BOOL phoneValidationRequired;
 @property(nonatomic,assign) BOOL isModal;
@@ -153,7 +155,7 @@ typedef enum ContactPickeMode {
 -(void)prepareCountryList;
 -(void)validateSelectedCountry:(int)countryIndex;
 -(void)cityAndStateSuggestionForZip:(NSString*)newStr;
-
+-(void) populateDataWithLoginResponse:(NSDictionary*)dict;
 -(IBAction)loginWithFacebook:(id)sender;
 -(IBAction)loginWithEmail:(id)sender;
 

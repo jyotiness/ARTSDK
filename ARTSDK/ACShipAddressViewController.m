@@ -1251,11 +1251,14 @@ int nameOrigin=0;
 #pragma mark ALertView Delegate Method --
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex//CS: fixing added this for the iOS 8 issues fixes //CIRCLESIOS-1667
 {
-    if(888 == alertView.tag)// Select Address Tag
+    if(111 == alertView.tag)
+    {
+        [ self chooseAdressForDict:[self.addressArray objectAtIndex:buttonIndex-1]];
+    }
+    else if(888 == alertView.tag)// Select Address Tag
     {
         if(0 == buttonIndex){
-#ifndef __clang_analyzer__
-            if (self.contactAdresses)
+#ifndef __clang_analyzer__alertView            if (self.contactAdresses)
             {
                 CFRelease(self.contactAdresses);
             }
@@ -2063,8 +2066,11 @@ int nameOrigin=0;
         buttonIndex++;
     }
     
-    
-    if(888 == actionSheet.tag)
+    if(111 == actionSheet.tag)
+    {
+        [ self chooseAdressForDict:[self.addressArray objectAtIndex:buttonIndex-1]];
+    }
+    else if(888 == actionSheet.tag)
     {
         if(0 == buttonIndex){
 #ifndef __clang_analyzer__
@@ -2251,13 +2257,81 @@ int nameOrigin=0;
             
             [anAlert show];
         }
-
-
     }
     if (emails){
         CFRelease(emails);
     }
+}
+
+-(void)chooseAdressForDict:(NSDictionary*)dict
+{
+    self.postalCode = [dict objectForKey:@"ZipCode"];
+    self.city = [dict objectForKey:@"City"];
     
+    NSString *countryFromAddress = [[dict objectForKey:@"Country"] uppercaseString];
+    
+    NSString *countryCodeFromAddress = [[[dict objectForKeyNotNull:@"CountryIsoA3"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] uppercaseString];
+    
+    if([[countryFromAddress uppercaseString] isEqualToString:@"USA"])
+        countryFromAddress = @"US";
+    
+    if([[countryCodeFromAddress uppercaseString] isEqualToString:@"USA"])
+        countryCodeFromAddress = @"US";
+    
+//    NSLog(@"%@",address);
+    NSDictionary *phoneDict = [dict objectForKey:@"Phone"];
+    if(phoneDict)
+    {
+        self.phone = [phoneDict objectForKeyNotNull:@"Primary"];
+    }
+
+    for(NSDictionary *country in self.countries)
+    {
+        NSString *loopCountryName = [[[country objectForKeyNotNull:@"Name"]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] uppercaseString];
+        NSString *loopCountryCode = [[[country objectForKeyNotNull:@"IsoA2"]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] uppercaseString];
+        if([countryFromAddress isEqualToString:loopCountryName]||[countryFromAddress isEqualToString:loopCountryCode]||[countryCodeFromAddress isEqualToString:loopCountryName]||[countryCodeFromAddress isEqualToString:loopCountryCode])
+        {
+            self.countryPickerValue = [country objectForKeyNotNull:@"Name"];
+            self.selectedCountryIndex = [ self.countries indexOfObject:country];
+            self.selectedCountryCode = [country objectForKeyNotNull:@"IsoA2"];
+            break;
+        }
+    }
+    
+    if(self.selectedCountryIndex < 0){
+        self.selectedCountryCode = nil;
+    }
+    
+    if([self.selectedCountryCode isEqualToString:@"US"])
+    {
+        NSString *stateFromAddress = [[[dict objectForKey:@"State"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] uppercaseString];
+        for(NSDictionary *state in self.states)
+        {
+            NSString *loopStateCode = [[[state objectForKeyNotNull:@"StateCode"]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] uppercaseString];
+            if([stateFromAddress isEqualToString:loopStateCode])
+            {
+                self.selectedStateIndex = [ self.states indexOfObject:state];
+                self.statePickerValue = [state objectForKeyNotNull:@"Name"];
+                break;
+            }
+        }
+    }
+    else
+    {
+        self.stateTextField.text = [dict objectForKey:@"State"];
+    }
+    
+    NSString *streetAddress = [dict objectForKey:@"Address1"];
+    self.addressLine1 = [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    
+    [ self.shippingAddressTableView reloadData];
+    
+#ifndef __clang_analyzer__
+    if (self.contactAdresses)
+    {
+        CFRelease(self.contactAdresses);
+    }
+#endif
 }
 
 -(void)chooseAdressAtIndex:(int)index
@@ -2327,6 +2401,127 @@ int nameOrigin=0;
         CFRelease(self.contactAdresses);
     }
     #endif
+}
+
+- (void) populateDataWithLoginResponse:(NSDictionary*)dict
+{
+    NSDictionary *accountDetails = [dict objectForKeyNotNull:@"Account"];
+    if(accountDetails)
+    {
+        NSDictionary *curatorInfo = [accountDetails objectForKeyNotNull:@"CuratorInfo"];
+        if(curatorInfo)
+        {
+            NSString *firstName = [curatorInfo objectForKeyNotNull:@"FirstName"];
+            NSString *lastNamePart = [curatorInfo objectForKeyNotNull:@"LastName"];
+            self.name = [NSString stringWithFormat:@"%@",firstName];
+            self.lastName = lastNamePart?[NSString stringWithFormat:@"%@",lastNamePart]:@"";
+        }
+        
+        NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+        if(profileInfo)
+        {
+            NSArray *addressesArray = [ profileInfo objectForKeyNotNull:@"Addresses"];
+            if(addressesArray && addressesArray.count >0)
+            {
+                self.company = nil;
+                self.postalCode = nil;
+                self.city = nil;
+                self.phone = nil;
+                self.countryPickerValue = [ACConstants getLocalizedStringForKey:@"SELECT_COUNTRY" withDefaultValue:@"Select Country"];
+                self.statePickerValue = [ACConstants getLocalizedStringForKey:@"SELECT_STATE" withDefaultValue:@"Select State"];
+                self.addressLine1 = nil;
+                self.addressLine2 = nil;
+                self.selectedStateIndex = -1;
+                self.selectedCountryIndex = -1;
+                self.willShowCityAndState = YES;
+                self.addressArray = addressesArray;
+                
+                int count = (int)addressesArray.count;
+                if(1 == count)
+                {
+                    [ self chooseAdressForDict:[addressesArray objectAtIndex:0]];
+                }
+                else if(1 < count)
+                {
+                    NSString *title = [ACConstants getLocalizedStringForKey:@"CHOOSE_AN_ADDRESS_FOR_SHIPMENT" withDefaultValue:@"Choose an Address for Shipment"];
+                    
+                    int currentDeviceOSVersion = [UIDevice currentDevice].systemVersion.intValue;
+                    if(currentDeviceOSVersion < 8)// For iOS 7 versions
+                    {
+                        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                                                 delegate:self
+                                                                        cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]
+                                                                   destructiveButtonTitle:nil
+                                                                        otherButtonTitles:nil, nil];
+                        
+                        for(NSDictionary* dict in addressesArray)
+                        {
+                            /*CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
+                             //mkl localizing label
+                             NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
+                             NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
+                             CFRelease(labelStringRef);
+                             labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
+                             labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""]; */
+                            [actionSheet addButtonWithTitle:[dict objectForKeyNotNull:@"ZipCode"]];
+                        }
+                        
+                        actionSheet.tag = 111;
+                        [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
+                        
+                    }
+                    else // For iOS 8
+                    {
+                        UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:@"CANCEL" otherButtonTitles:nil];
+                        
+                        for(NSDictionary* dict in addressesArray)
+                        {
+                            /*CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
+                             //mkl localizing label
+                             NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
+                             NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
+                             CFRelease(labelStringRef);
+                             labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
+                             labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""]; */
+                            [anAlert addButtonWithTitle:[dict objectForKeyNotNull:@"ZipCode"]];
+                        }
+                        anAlert.tag = 111;
+                        
+                        [anAlert show];
+                    }
+                    
+                }
+                
+                [self.shippingAddressTableView reloadData];
+                
+                //Advance to the first required cell:
+                if ([self.nameField.text length] < 1) {
+                    [self.nameField becomeFirstResponder];
+                    return;
+                }
+                if ([self.addressLine1Field.text length] < 1) {
+                    [self.addressLine1Field becomeFirstResponder];
+                    return;
+                }
+                if ([self.cityField.text length] < 1) {
+                    [self.cityField becomeFirstResponder];
+                    return;
+                }
+                
+                if ([self.stateField.text length] < 1) {
+                    [self.stateField becomeFirstResponder];
+                    return;
+                }
+                if ([self.postalCodeField.text length] < 1) {
+                    [self.postalCodeField becomeFirstResponder];
+                    return;
+                }
+
+            }
+            
+        }
+    }
+    
 }
 
 - (void) populateDataWithPerson:(ABRecordRef)person
@@ -2667,6 +2862,7 @@ int nameOrigin=0;
                  NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
                  NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
                  [ArtAPI setAuthenticationToken:authTok];
+                 [self populateDataWithLoginResponse:responseDict];
                  
                  [SVProgressHUD dismiss];
                  
