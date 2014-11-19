@@ -2555,7 +2555,7 @@ int nameOrigin=0;
                              CFRelease(labelStringRef);
                              labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
                              labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""]; */
-                            [actionSheet addButtonWithTitle:[dict objectForKeyNotNull:@"Street"]];
+                            [actionSheet addButtonWithTitle:[dict objectForKeyNotNull:@"Address1"]];
                         }
                         
                         actionSheet.tag = 111;
@@ -2575,7 +2575,7 @@ int nameOrigin=0;
                              CFRelease(labelStringRef);
                              labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
                              labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""]; */
-                            [anAlert addButtonWithTitle:[dict objectForKeyNotNull:@"Street"]];
+                            [anAlert addButtonWithTitle:[dict objectForKeyNotNull:@"Address1"]];
                         }
                         anAlert.tag = 111;
                         
@@ -2620,45 +2620,62 @@ int nameOrigin=0;
     self.name = [NSString stringWithFormat:@"%@",firstName];
     self.lastName = lastNamePart?[NSString stringWithFormat:@"%@",lastNamePart]:@"";
     
-    NSString *company = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonOrganizationProperty);
-    self.company = company;
     
-    self.postalCode = nil;
-    self.city = nil;
-    self.phone = nil;
-    self.countryPickerValue = [ACConstants getLocalizedStringForKey:@"SELECT_COUNTRY" withDefaultValue:@"Select Country"];
-    self.statePickerValue = [ACConstants getLocalizedStringForKey:@"SELECT_STATE" withDefaultValue:@"Select State"];
-    self.addressLine1 = nil;
-    self.addressLine2 = nil;
-    self.selectedStateIndex = -1;
-    self.selectedCountryIndex = -1;
+    [self.shippingAddressTableView reloadData];
     
-    self.willShowCityAndState = YES;
-    
-    ABMultiValueRef phones = ABRecordCopyValue(person, kABPersonPhoneProperty);
-    int phoneCount = ABMultiValueGetCount(phones);
-    if(1 <= phoneCount)
-    {
-        NSString *ph = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phones, 0);
-        self.phone = ph;
+    if ([self.nameField.text length] < 1) {
+        [self.nameField becomeFirstResponder];
+        return;
     }
-    if (phones) {
-        CFRelease(phones);
+    if ([self.lastNameTextField.text length] < 1) {
+        [self.lastNameTextField becomeFirstResponder];
+        return;
     }
-    
-    ABMultiValueRef addresses = ABRecordCopyValue(person, kABPersonAddressProperty);
-    self.contactAdresses = addresses;
-    
-#ifndef __clang_analyzer__
-    int count = ABMultiValueGetCount(self.contactAdresses);
-#endif
-    if(1 == count)
+
+    ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
+    if(0 == ABMultiValueGetCount(emails))
     {
-        [ self chooseAdressAtIndex:0];
+        NSString *fName = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        NSString *lName = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
+        NSString *contactName = lName?[NSString stringWithFormat:@"%@ %@",fName,lName]:[NSString stringWithFormat:@"%@",fName];
+        
+        //if(fName)
+        //    CFRelease(fName);
+        //if(lName)
+        //    CFRelease(lName);
+        NSString *noEmail = [ACConstants getLocalizedStringForKey:@"NO_EMAIL_ADDRESS_FOUND_FOR_CONTACT" withDefaultValue:@"No email address found for the contact"];
+        UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"EMAIL_NOT_FOUND" withDefaultValue:@"Email Not Found"]
+                                                         message: [ NSString stringWithFormat:@"%@ \"%@\"",noEmail,contactName]
+                                                        delegate:nil
+                                               cancelButtonTitle:[ACConstants getLocalizedStringForKey:@"OK" withDefaultValue:@"OK"]
+                                               otherButtonTitles:nil, nil];
+        
+        [ alert show];
+        alert = nil;
     }
-    else if(1 < count)
+    else if(1 == ABMultiValueGetCount(emails))
     {
-        NSString *title = [ACConstants getLocalizedStringForKey:@"CHOOSE_AN_ADDRESS_FOR_SHIPMENT" withDefaultValue:@"Choose an Address for Shipment"];
+        //NSString *label = (__bridge_transfer NSString *)ABMultiValueCopyLabelAtIndex(emails, 0);
+        NSString *email  = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emails, 0);
+        self.emailTextField.text = email;
+        self.emailAddress = email;
+        [self.shippingAddressTableView reloadData];
+    }
+    else
+    {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        for (CFIndex i = 0; i < ABMultiValueGetCount(emails); i++)
+        {
+            //NSString *label = (NSString *)ABMultiValueCopyLabelAtIndex(emails, i);
+            NSString *email = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emails, i);
+            [ array addObject:email];
+            
+            //if (email) {
+            //    CFRelease(email);
+            //}
+        }
+        
+        NSString *title = [ACConstants getLocalizedStringForKey:@"CHOOSE_AN_EMAIL" withDefaultValue:@"Choose an email"];
         
         int currentDeviceOSVersion = [UIDevice currentDevice].systemVersion.intValue;
         if(currentDeviceOSVersion < 8)// For iOS 7 versions
@@ -2669,19 +2686,13 @@ int nameOrigin=0;
                                                        destructiveButtonTitle:nil
                                                             otherButtonTitles:nil, nil];
             
-            for (CFIndex i = 0; i < ABMultiValueGetCount(self.contactAdresses); i++)
+            for(NSString *emailStr in array)
             {
-                CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
-                //mkl localizing label
-                NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
-                NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
-                CFRelease(labelStringRef);
-                labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
-                labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
-                //NSLog(@"add button: %@", labelName);
-                [actionSheet addButtonWithTitle:labelName];
+                [actionSheet addButtonWithTitle:emailStr];
             }
-            actionSheet.tag = 888;
+            
+            self.emailArray = (NSArray*)array;
+            actionSheet.tag = 999;
             [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
             
         }
@@ -2689,52 +2700,22 @@ int nameOrigin=0;
         {
             UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:@"CANCEL" otherButtonTitles:nil];
             
-            for (CFIndex i = 0; i < ABMultiValueGetCount(self.contactAdresses); i++)
+            for(NSString *emailStr in array)
             {
-                CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
-                
-                NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
-                NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
-                CFRelease(labelStringRef);
-                
-                labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
-                labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
-                
-                [anAlert addButtonWithTitle:labelName];
+                [anAlert addButtonWithTitle:emailStr];
             }
             
-            anAlert.tag = 888;
+            self.emailArray = (NSArray*)array;
+            anAlert.tag = 999;
             
             [anAlert show];
         }
-        
     }
-    
+    if (emails){
+        CFRelease(emails);
+    }
+
     [self.shippingAddressTableView reloadData];
-    
-    //Advance to the first required cell:
-    if ([self.nameField.text length] < 1) {
-        [self.nameField becomeFirstResponder];
-        return;
-    }
-    if ([self.addressLine1Field.text length] < 1) {
-        [self.addressLine1Field becomeFirstResponder];
-        return;
-    }
-    if ([self.cityField.text length] < 1) {
-        [self.cityField becomeFirstResponder];
-        return;
-    }
-    
-    if ([self.stateField.text length] < 1) {
-        [self.stateField becomeFirstResponder];
-        return;
-    }
-    if ([self.postalCodeField.text length] < 1) {
-        [self.postalCodeField becomeFirstResponder];
-        return;
-    }
-    
 }
 
 
