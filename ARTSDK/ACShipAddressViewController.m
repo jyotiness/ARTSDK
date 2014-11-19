@@ -1362,7 +1362,7 @@ int nameOrigin=0;
             return;
         }
         
-        [ self chooseAdressAtIndex:buttonIndex-1];
+        [ self chooseAdressAtIndex:(int)buttonIndex-1];
     }
     else if(999 == alertView.tag)// Select Email Tag
     {
@@ -1373,6 +1373,7 @@ int nameOrigin=0;
         self.emailTextField.text = email;
         self.emailAddress = email;
         self.emailArray = nil;
+        [self.shippingAddressTableView reloadData];
     }
     else if(777 == alertView.tag)// Select City Alert tag
     {
@@ -2297,6 +2298,7 @@ int nameOrigin=0;
         NSString *email  = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emails, 0);
         self.emailTextField.text = email;
         self.emailAddress = email;
+        [self.shippingAddressTableView reloadData];
     }
     else
     {
