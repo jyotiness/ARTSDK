@@ -19,7 +19,8 @@
 @synthesize userName;
 @synthesize lastPurchasedBundle;
 @synthesize currentWorkingBundle;
-
+@synthesize addressesByAddressID;
+@synthesize addressArray;
 
 + (AccountManager*) sharedInstance {
     static AccountManager* _one = nil;

@@ -34,6 +34,8 @@
 @property(nonatomic,strong) NSString *userName;
 @property(nonatomic,strong) NSString *accountID;
 @property(nonatomic,strong) NSMutableDictionary *currentWorkingBundle;
+@property(nonatomic,strong) NSMutableDictionary *addressesByAddressID;
+@property(nonatomic,strong) NSMutableArray *addressArray;
 
 //Method's
 +(AccountManager *) sharedInstance;
