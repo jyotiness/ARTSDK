@@ -315,7 +315,7 @@ int nameOrigin=0;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return (self.needSignUp)?3:2;
 }
 
 
@@ -710,6 +710,11 @@ int nameOrigin=0;
             return 1;
             break;
         }
+        case 2:{
+            return 5;
+            break;
+        }
+            
             
         default:{
             return 0;
@@ -743,7 +748,7 @@ int nameOrigin=0;
     else
     {
         UILabel *tableHeaderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, self.view.bounds.size.width, 40)];
-        tableHeaderLabel.text = [ACConstants getLocalizedStringForKey:@"SEND_RECEIPT_TO" withDefaultValue:@"SEND RECEIPT TO"];
+        tableHeaderLabel.text = (1 == section)?[ACConstants getLocalizedStringForKey:@"SEND_RECEIPT_TO" withDefaultValue:@"SEND RECEIPT TO"]:@"ACCOUNT INFO";
         tableHeaderLabel.numberOfLines = 1;
         tableHeaderLabel.textAlignment = NSTextAlignmentLeft;
         tableHeaderLabel.textColor = [UIColor darkGrayColor];
@@ -879,12 +884,6 @@ int nameOrigin=0;
                 cell.textField.frame = textFieldFrame;
                 [cell.textField setClearButtonMode:UITextFieldViewModeNever];
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
-                // Adjust picker button
-                //CGRect contactPickerButtonFrame = cell.contactPickerButton.frame;
-                //contactPickerButtonFrame.origin.x = [self widthForTableView:self.shippingAddressTableView] - contactPickerButtonFrame.size.width;
-                //cell.contactPickerButton.frame = contactPickerButtonFrame;
-                
                 
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
@@ -1061,7 +1060,7 @@ int nameOrigin=0;
                 break;
         }
     }
-    else//Section 1
+    else if(1 == indexPath.section)
     {
         //cell.backgroundColor = [UIColor redColor];
         //cell.textField.tag = numberOfRowsInSection1 + indexPath.section;
@@ -1092,6 +1091,90 @@ int nameOrigin=0;
         //contactPickerButtonFrame.origin.x = [self widthForTableView:self.shippingAddressTableView] - contactPickerButtonFrame.size.width;
         //cell.contactPickerButton.frame = contactPickerButtonFrame;
     }
+    else
+    {
+        if(0 == indexPath.section)
+        {
+            cell.textField.tag = rownum;
+            switch ( rownum )
+            {
+                case 0:
+                    self.firstNameTextField = cell.textField;
+                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"FIRST_NAME" withDefaultValue:@"First Name"];
+                    cell.textField.text = self.name;
+                    cell.contactPickerButton.hidden=NO;
+                    cell.cellTitleButton.hidden = NO;
+                    cell.contactPickerButton.tag = indexPath.section;
+                    cell.textField.tag=indexPath.row;
+                    cell.textField.placeholder = @"";
+                    CGRect textFieldFrame = cell.textField.frame;
+                    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
+                        textFieldFrame.origin.x = 120;
+                    } else {
+                        textFieldFrame.origin.x = 80;
+                    }
+                    cell.textField.frame = textFieldFrame;
+                    [cell.textField setClearButtonMode:UITextFieldViewModeNever];
+                    [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                    
+                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                    break ;
+                case 1:
+                    self.lastNameTextField = cell.textField;
+                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"LAST_NAME" withDefaultValue:@"Last Name"];
+                    cell.textField.text = self.lastName;
+                    cell.contactPickerButton.tag = indexPath.section;
+                    cell.cellTitleButton.hidden = NO;
+                    [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                    cell.textField.placeholder = @"";
+                    [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                    
+                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                    break ;
+                case 2:
+                    self.lastNameTextField = cell.textField;
+                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"EMAIL" withDefaultValue:@"Email"];
+                    cell.textField.text = self.email;
+                    cell.contactPickerButton.tag = indexPath.section;
+                    cell.cellTitleButton.hidden = NO;
+                    [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                    cell.textField.placeholder = @"";
+                    [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
+                    
+                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                    break ;
+                case 3:
+                    self.lastNameTextField = cell.textField;
+                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"PASSWORD" withDefaultValue:@"Password"];
+                    cell.textField.text = self.password;
+                    cell.contactPickerButton.tag = indexPath.section;
+                    cell.cellTitleButton.hidden = NO;
+                    [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                    cell.textField.placeholder = @"";
+                    [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                    cell.textField.secureTextEntry = YES;
+                    
+                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                    break ;
+                case 4:
+                    self.lastNameTextField = cell.textField;
+                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"CONFIRM_PASSWORD" withDefaultValue:@"Confirm Password"];
+                    cell.textField.text = self.password;
+                    cell.contactPickerButton.tag = indexPath.section;
+                    cell.cellTitleButton.hidden = NO;
+                    [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                    cell.textField.placeholder = @"";
+                    [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                    
+                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                    break ;
+                    
+                    default:
+                    break;
+            }
+        }
+    }
+    
     cell.textField.keyboardAppearance = UIKeyboardAppearanceLight;
     return cell;
 }
@@ -2802,21 +2885,21 @@ int nameOrigin=0;
     self.email = @"";
     self.password = @"";
     self.confirmPassword = @"";
-    self.tableview.tableHeaderView = nil;
     [self.fieldErrors removeAllObjects];
     
     if(0 == self.segmentedButton.selectedSegmentIndex)
     {
         self.loginView.hidden = NO;
         self.signupView.hidden = YES;
+        self.needSignUp = NO;
     }
     else
     {
         self.loginView.hidden = YES;
         self.signupView.hidden = NO;
+        self.needSignUp = YES;
     }
-    
-//    [self.tableview reloadData];
+    [self.shippingAddressTableView reloadData];
 }
 
 - (IBAction)loginWithFacebook:(id)sender
@@ -2898,10 +2981,10 @@ int nameOrigin=0;
              
              UIAlertView *authFailAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
              [authFailAlert show];
-             [self.tableview reloadData];
+             [self.shippingAddressTableView reloadData];
          }];
     } else {
-        [self.tableview reloadData];
+        [self.shippingAddressTableView reloadData];
     }
 }
 
@@ -3039,7 +3122,7 @@ int nameOrigin=0;
              UIAlertView *accountCreateAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
              [accountCreateAlert show];
              
-             [self.tableview reloadData];
+             [self.shippingAddressTableView reloadData];
              
          }];
         

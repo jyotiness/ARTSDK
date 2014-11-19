@@ -68,15 +68,10 @@ typedef enum ContactPickeMode {
 
 @property (nonatomic,strong) IBOutlet UISegmentedControl *segmentedButton;
 @property (nonatomic,strong) IBOutlet UIButton *facebookLoginButton;
-@property (nonatomic,strong) IBOutlet UITableView *tableview;
 @property (nonatomic,strong) IBOutlet UIView *loginView;
 @property (nonatomic,strong) IBOutlet UIView *signupView;
 @property (nonatomic,strong) IBOutlet UIView *facebookLoginHolderView;
-@property (nonatomic,strong) IBOutlet UIScrollView *loginHolderScrollView;
 
-@property (nonatomic,strong) IBOutlet UIButton *emailLoginButton;
-@property (nonatomic,strong) IBOutlet UIButton *emailSignupButton;
-@property (nonatomic,strong) IBOutlet UIButton *forgotPasswordButton;
 @property (nonatomic,strong) IBOutlet UILabel *loginTitleLabel;
 
 @property (nonatomic,strong) IBOutlet UITextField *emailLoginTextField;
@@ -145,6 +140,7 @@ typedef enum ContactPickeMode {
 @property(nonatomic,assign) BOOL phoneValidationRequired;
 @property(nonatomic,assign) BOOL isModal;
 @property(nonatomic,assign) BOOL didTapNext;
+@property(nonatomic,assign) BOOL needSignUp;
 
 @property (retain, nonatomic) IBOutlet UIImageView *topNavBarImageView;
 
