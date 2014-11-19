@@ -13,9 +13,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ACShipAddressViewController">
             <connections>
+                <outlet property="confirmPasswordTextField" destination="qtc-F0-jxQ" id="uuh-Td-RUF"/>
+                <outlet property="emailLoginTextField" destination="tKs-4h-xMA" id="pel-3b-2va"/>
+                <outlet property="emailSignupTextField" destination="Rx9-yN-9rG" id="Ive-If-e81"/>
                 <outlet property="loginHeaderView" destination="RaR-sd-Q3i" id="DP6-4A-7gZ"/>
                 <outlet property="loginTitleLabel" destination="cxV-Us-wKh" id="uQX-3m-vY3"/>
                 <outlet property="loginView" destination="rFU-OR-Ikk" id="9Qq-sg-8Zp"/>
+                <outlet property="passwordLoginTextField" destination="hFP-om-4zX" id="qMk-Mg-zfv"/>
+                <outlet property="passwordSignupTextField" destination="B37-1p-2Gc" id="jl5-A3-mmr"/>
                 <outlet property="segmentedButton" destination="Cut-c4-Fmb" id="hoc-wD-NCd"/>
                 <outlet property="shippingAddressTableView" destination="13" id="22"/>
                 <outlet property="signupView" destination="eZA-g7-6qe" id="eFY-Ad-pIk"/>
@@ -48,7 +53,7 @@
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <view contentMode="scaleToFill" id="RaR-sd-Q3i">
+        <view contentMode="scaleToFill" id="RaR-sd-Q3i" userLabel="Header View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="374"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -90,7 +95,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rFU-OR-Ikk" userLabel="Login View">
                     <rect key="frame" x="0.0" y="180" width="320" height="143"/>
                     <subviews>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tKs-4h-xMA">
+                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tKs-4h-xMA" userLabel="Email Text">
                             <rect key="frame" x="-1" y="1" width="322" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -98,8 +103,11 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="gQC-gh-0cc"/>
+                            </connections>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hFP-om-4zX">
+                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hFP-om-4zX" userLabel="Password Text">
                             <rect key="frame" x="-1" y="46" width="322" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -107,6 +115,9 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="6TG-YS-DbH"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6cK-yi-d0R" userLabel="Login Footer View">
                             <rect key="frame" x="-1" y="91" width="322" height="51"/>
@@ -158,7 +169,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eZA-g7-6qe" userLabel="Sign Up View">
                     <rect key="frame" x="0.0" y="180" width="320" height="186"/>
                     <subviews>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rx9-yN-9rG">
+                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rx9-yN-9rG" userLabel="Email Text">
                             <rect key="frame" x="0.0" y="1" width="322" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -166,8 +177,11 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="Tln-S1-fif"/>
+                            </connections>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B37-1p-2Gc">
+                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B37-1p-2Gc" userLabel="Password Text">
                             <rect key="frame" x="0.0" y="46" width="322" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -175,8 +189,11 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="Acw-Tm-w3l"/>
+                            </connections>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qtc-F0-jxQ">
+                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qtc-F0-jxQ" userLabel="Confirm Password Text">
                             <rect key="frame" x="0.0" y="91" width="322" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -184,6 +201,9 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="x7M-NA-ljq"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QVn-M1-SOB" userLabel="Signup Footer View">
                             <rect key="frame" x="0.0" y="136" width="320" height="51"/>

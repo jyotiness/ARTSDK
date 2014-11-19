@@ -19,6 +19,7 @@
 #import "ACKeyboardToolbarView.h"
 #import "NSString+Additions.h"
 #import "AccountManager.h"
+#import <QuartzCore/QuartzCore.h>
 //#import "PayPalPaymentViewController.h"
 
 #define  COUNTRY_PICKER_TAG 5
@@ -100,6 +101,13 @@ int nameOrigin=0;
     self.addressLine2 = @"";
     self.city = @"";
     self.postalCode = @"";
+    self.error = nil;
+    self.email = @"";
+    self.password = @"";
+    self.confirmPassword = @"";
+    
+//    self.emailLoginTextField.layer.sublayerTransform = CATransform3DMakeTranslation(100, -40, -40);
+
     //NSLog(@"isDeviceConfigForUS: %d", [ArtAPI  isDeviceConfigForUS]);
     if([ArtAPI  isDeviceConfigForUS])
     {
@@ -1388,6 +1396,15 @@ int nameOrigin=0;
     else if (9 == textField.tag) {
         self.phone = textField.text;
     }
+    else if ((textField == self.emailLoginTextField) || (textField == self.emailSignupTextField)) {
+        self.email = textField.text;
+    }
+    else if ((textField == self.passwordLoginTextField) || (textField == self.passwordSignupTextField)) {
+        self.password=textField.text;
+    }
+    else if (textField == self.confirmPasswordTextField)
+        self.confirmPassword=textField.text;
+
 }
 
 

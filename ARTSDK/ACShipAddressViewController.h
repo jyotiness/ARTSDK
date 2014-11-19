@@ -79,6 +79,12 @@ typedef enum ContactPickeMode {
 @property (nonatomic,strong) IBOutlet UIButton *forgotPasswordButton;
 @property (nonatomic,strong) IBOutlet UILabel *loginTitleLabel;
 
+@property (nonatomic,strong) IBOutlet UITextField *emailLoginTextField;
+@property (nonatomic,strong) IBOutlet UITextField *passwordLoginTextField;
+@property (nonatomic,strong) IBOutlet UITextField *emailSignupTextField;
+@property (nonatomic,strong) IBOutlet UITextField *passwordSignupTextField;
+@property (nonatomic,strong) IBOutlet UITextField *confirmPasswordTextField;
+
 @property (nonatomic, assign) id <ACiPhoneLoginDelegate> loginDelegate;
 @property (nonatomic,assign) LoginMode loginMode;
 
