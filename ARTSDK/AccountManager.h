@@ -33,7 +33,7 @@
 @property(nonatomic,strong) NSDictionary *lastPurchasedBundle;  //teh one that was in the cart prior to checking out
 @property(nonatomic,strong) NSString *userName;
 @property(nonatomic,strong) NSString *accountID;
-@property(nonatomic,strong) NSDictionary *currentWorkingBundle;
+@property(nonatomic,strong) NSMutableDictionary *currentWorkingBundle;
 
 //Method's
 +(AccountManager *) sharedInstance;

@@ -3014,7 +3014,8 @@
     
 }
 
--(void)bundlesSetFailure{
+
+-(void)bundlesSetFailed{
     NSLog(@"Failed to set bundles");
     
     //need to do the same thing though even though the UserProperties update failed

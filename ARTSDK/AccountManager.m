@@ -344,7 +344,7 @@
          self.currentWorkingBundle = nil;
          if(self.purchasedBundles){
              if([self.purchasedBundles count] > 0){
-                 self.currentWorkingBundle = [self.purchasedBundles objectAtIndex:0];
+                 self.currentWorkingBundle = [NSMutableDictionary dictionaryWithDictionary:[self.purchasedBundles objectAtIndex:0]];
                  NSLog(@"Set the working bundle to be the first one in the array");
              }else{
                  NSLog(@"Set the working bundle to nil");
