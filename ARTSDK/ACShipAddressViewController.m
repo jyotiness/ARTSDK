@@ -1093,85 +1093,81 @@ int nameOrigin=0;
     }
     else
     {
-        if(0 == indexPath.section)
+        switch ( rownum )
         {
-            cell.textField.tag = rownum;
-            switch ( rownum )
-            {
-                case 0:
-                    self.firstNameTextField = cell.textField;
-                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"FIRST_NAME" withDefaultValue:@"First Name"];
-                    cell.textField.text = self.name;
-                    cell.contactPickerButton.hidden=NO;
-                    cell.cellTitleButton.hidden = NO;
-                    cell.contactPickerButton.tag = indexPath.section;
-                    cell.textField.tag=indexPath.row;
-                    cell.textField.placeholder = @"";
-                    CGRect textFieldFrame = cell.textField.frame;
-                    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
-                        textFieldFrame.origin.x = 120;
-                    } else {
-                        textFieldFrame.origin.x = 80;
-                    }
-                    cell.textField.frame = textFieldFrame;
-                    [cell.textField setClearButtonMode:UITextFieldViewModeNever];
-                    [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                    
-                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
-                    break ;
-                case 1:
-                    self.lastNameTextField = cell.textField;
-                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"LAST_NAME" withDefaultValue:@"Last Name"];
-                    cell.textField.text = self.lastName;
-                    cell.contactPickerButton.tag = indexPath.section;
-                    cell.cellTitleButton.hidden = NO;
-                    [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-                    cell.textField.placeholder = @"";
-                    [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                    
-                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
-                    break ;
-                case 2:
-                    self.lastNameTextField = cell.textField;
-                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"EMAIL" withDefaultValue:@"Email"];
-                    cell.textField.text = self.email;
-                    cell.contactPickerButton.tag = indexPath.section;
-                    cell.cellTitleButton.hidden = NO;
-                    [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-                    cell.textField.placeholder = @"";
-                    [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
-                    
-                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
-                    break ;
-                case 3:
-                    self.lastNameTextField = cell.textField;
-                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"PASSWORD" withDefaultValue:@"Password"];
-                    cell.textField.text = self.password;
-                    cell.contactPickerButton.tag = indexPath.section;
-                    cell.cellTitleButton.hidden = NO;
-                    [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-                    cell.textField.placeholder = @"";
-                    [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                    cell.textField.secureTextEntry = YES;
-                    
-                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
-                    break ;
-                case 4:
-                    self.lastNameTextField = cell.textField;
-                    cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"CONFIRM_PASSWORD" withDefaultValue:@"Confirm Password"];
-                    cell.textField.text = self.password;
-                    cell.contactPickerButton.tag = indexPath.section;
-                    cell.cellTitleButton.hidden = NO;
-                    [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-                    cell.textField.placeholder = @"";
-                    [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                    
-                    cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
-                    break ;
-                    
-                    default:
-                    break;
-            }
+            case 0:
+                self.firstNameTextField = cell.textField;
+                cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"FIRST_NAME" withDefaultValue:@"First Name"];
+                cell.textField.text = self.name;
+                cell.contactPickerButton.hidden=NO;
+                cell.cellTitleButton.hidden = NO;
+                cell.contactPickerButton.tag = indexPath.section;
+                cell.textField.tag=indexPath.row;
+                cell.textField.placeholder = @"";
+                CGRect textFieldFrame = cell.textField.frame;
+                if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
+                    textFieldFrame.origin.x = 120;
+                } else {
+                    textFieldFrame.origin.x = 80;
+                }
+                cell.textField.frame = textFieldFrame;
+                [cell.textField setClearButtonMode:UITextFieldViewModeNever];
+                [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                
+                cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                break ;
+            case 1:
+                self.lastNameTextField = cell.textField;
+                cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"LAST_NAME" withDefaultValue:@"Last Name"];
+                cell.textField.text = self.lastName;
+                cell.contactPickerButton.tag = indexPath.section;
+                cell.cellTitleButton.hidden = NO;
+                [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                cell.textField.placeholder = @"";
+                [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                
+                cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                break ;
+            case 2:
+                self.lastNameTextField = cell.textField;
+                cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"EMAIL" withDefaultValue:@"Email"];
+                cell.textField.text = self.email;
+                cell.contactPickerButton.tag = indexPath.section;
+                cell.cellTitleButton.hidden = NO;
+                [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                cell.textField.placeholder = @"";
+                [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
+                
+                cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                break ;
+            case 3:
+                self.lastNameTextField = cell.textField;
+                cell.textLabel.text = @"Password";//[ACConstants getLocalizedStringForKey:@"PASSWORD" withDefaultValue:@"Password"];
+                cell.textField.text = self.password;
+                cell.contactPickerButton.tag = indexPath.section;
+                cell.cellTitleButton.hidden = NO;
+                [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                cell.textField.placeholder = @"";
+                [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                cell.textField.secureTextEntry = YES;
+                
+                cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                break ;
+            case 4:
+                self.lastNameTextField = cell.textField;
+                cell.textLabel.text = @"Confirm Password";//[ACConstants getLocalizedStringForKey:@"CONFIRM_PASSWORD" withDefaultValue:@"Confirm Password"];
+                cell.textField.text = self.password;
+                cell.contactPickerButton.tag = indexPath.section;
+                cell.cellTitleButton.hidden = NO;
+                [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                cell.textField.placeholder = @"";
+                [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                
+                cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
+                break ;
+                
+                default:
+                break;
         }
     }
     
