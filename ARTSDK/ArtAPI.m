@@ -2401,6 +2401,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     //NSLog(@"saving to keychain authenticationToken: %@", authenticationToken );
     _authenticationToken = authenticationToken;
     if (authenticationToken) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
         [[NSUserDefaults standardUserDefaults] setObject:authenticationToken forKey:AUTH_TOKEN_KEY];
     }
     else {
