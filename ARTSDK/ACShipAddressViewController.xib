@@ -114,7 +114,7 @@
                                 <constraint firstAttribute="height" constant="44" id="p0v-Fn-iDf"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="6TG-YS-DbH"/>
                             </connections>
@@ -188,7 +188,7 @@
                                 <constraint firstAttribute="height" constant="44" id="cSm-gt-6Aq"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="Acw-Tm-w3l"/>
                             </connections>
@@ -200,7 +200,7 @@
                                 <constraint firstAttribute="height" constant="44" id="rlT-TV-T90"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="x7M-NA-ljq"/>
                             </connections>

@@ -2859,6 +2859,7 @@ int nameOrigin=0;
                  [[NSUserDefaults standardUserDefaults] synchronize];
                  
              }else{
+                 self.shippingAddressTableView.tableHeaderView = nil;
                  NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
                  NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
                  [ArtAPI setAuthenticationToken:authTok];
@@ -2871,9 +2872,7 @@ int nameOrigin=0;
                      [self.loginDelegate loginSuccess];
                  }
              }
-             
-             
-         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+         }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
              NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
              // Failure
              [SVProgressHUD dismiss];
@@ -2890,7 +2889,6 @@ int nameOrigin=0;
              [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
                                   forKey:[NSNumber numberWithInt:2]];
              
-             
              NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
              NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
              [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
@@ -2900,14 +2898,7 @@ int nameOrigin=0;
              
              UIAlertView *authFailAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
              [authFailAlert show];
-             
-             //             UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:self.error delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-             //             [loginFailedAlert show];
-             
-//             self.tableview.tableHeaderView = [self tableViewHeader]; jobin
-             
              [self.tableview reloadData];
-             
          }];
     } else {
         [self.tableview reloadData];
