@@ -205,7 +205,6 @@ int nameOrigin=0;
 {
     self.navigationController.navigationBarHidden = NO;
     
-    
     UIButton *barBackButton = [ACConstants getBackButtonForTitle:[ACConstants getLocalizedStringForKey:@"BACK" withDefaultValue:@"Back"]];
     
     AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
@@ -215,6 +214,7 @@ int nameOrigin=0;
         self.loginTitleLabel.font = [ACConstants getStandardBoldFontWithSize:26.0f];
         self.loginView.hidden = NO;
         self.signupView.hidden = YES;
+        _nextButton.enabled = NO;
 
 /*        [self.loginFbButton setBackgroundColor:[ACConstants getPrimaryButtonColor]];
         [self.loginFbButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -884,7 +884,8 @@ int nameOrigin=0;
                 cell.textField.frame = textFieldFrame;
                 [cell.textField setClearButtonMode:UITextFieldViewModeNever];
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 1:
@@ -896,7 +897,8 @@ int nameOrigin=0;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 2:
@@ -908,7 +910,8 @@ int nameOrigin=0;
                 cell.textField.placeholder = [ACConstants getLocalizedStringForKey:@"OPTIONAL" withDefaultValue:@"Optional"];
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = [ UIColor blackColor];
                 break ;
             case 3:
@@ -920,7 +923,8 @@ int nameOrigin=0;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 4:
@@ -932,7 +936,8 @@ int nameOrigin=0;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.cellTitleButton.hidden = NO;
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = [ UIColor blackColor];
                 break ;
             case 5:
@@ -948,7 +953,8 @@ int nameOrigin=0;
                 //pickerButtonFrame.size.width = [self widthForTableView:self.shippingAddressTableView];
                 cell.pickerButton.frame = pickerButtonFrame;
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 self.countryButton = cell.pickerButton;
                 self.countryButton.selected = isDoingValidation && (-1 == self.selectedCountryIndex);
                 
@@ -961,7 +967,8 @@ int nameOrigin=0;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 cell.cellTitleButton.hidden = NO;
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.text = self.zipLabelText;
                 BOOL cityNotChoosenForUS = ([ self getCharacterCount:self.postalCode] > 0 && !self.willShowCityAndState);
                 cell.textLabel.textColor = (((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid) || cityNotChoosenForUS) && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
@@ -978,7 +985,8 @@ int nameOrigin=0;
                     cell.cellTitleButton.hidden = NO;
                     cell.textField.placeholder = self.phoneValidationRequired?@"":[ACConstants getLocalizedStringForKey:@"OPTIONAL" withDefaultValue:@"Optional"];
                     [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-                    
+                    cell.textField.secureTextEntry = NO;
+
                     if([self.selectedCountryCode isEqualToString:@"DE"])
                     {
                         cell.textLabel.textColor = (self.phoneValidationRequired && ![cell.textField validateAsGermanPhoneNumber] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
@@ -997,7 +1005,8 @@ int nameOrigin=0;
                     cell.cellTitleButton.hidden = NO;
                     [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                     [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                    
+                    cell.textField.secureTextEntry = NO;
+
                     cell.textField.placeholder = @"";
                     
                     cell.textLabel.textColor = (((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid)) && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
@@ -1017,6 +1026,7 @@ int nameOrigin=0;
                     CGRect pickerButtonFrame = cell.pickerButton.frame;
                     //pickerButtonFrame.size.width = [self widthForTableView:self.shippingAddressTableView];
                     cell.pickerButton.frame = pickerButtonFrame;
+                    cell.textField.secureTextEntry = NO;
 
                     self.stateButton = cell.pickerButton;
                     self.stateButton.selected = isDoingValidation && ((-1 == self.selectedStateIndex) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid));
@@ -1034,7 +1044,8 @@ int nameOrigin=0;
                     cell.textField.placeholder = @"";
                     cell.textField.placeholder = self.stateValidationRequired?@"":[ACConstants getLocalizedStringForKey:@"OPTIONAL" withDefaultValue:@"Optional"];
                     [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                    
+                    cell.textField.secureTextEntry = NO;
+
                     cell.textLabel.textColor = (self.stateValidationRequired && ((![cell.textField validateAsNotEmpty]) || ([ self.selectedCountryCode isEqualToString:@"US"] && self.isUSAddressInvalid)) && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 }
                 break;
@@ -1048,7 +1059,8 @@ int nameOrigin=0;
                 cell.textField.textAlignment = NSTextAlignmentRight;
                 cell.textField.placeholder = self.phoneValidationRequired?@"":[ACConstants getLocalizedStringForKey:@"OPTIONAL" withDefaultValue:@"Optional"];
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-                
+                cell.textField.secureTextEntry = NO;
+
                 if([self.selectedCountryCode isEqualToString:@"DE"])
                 {
                     cell.textLabel.textColor = (self.phoneValidationRequired && ![cell.textField validateAsGermanPhoneNumber] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
@@ -1075,7 +1087,8 @@ int nameOrigin=0;
         cell.textField.textAlignment = NSTextAlignmentRight;
         cell.textField.placeholder = @"";
         [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-        
+        cell.textField.secureTextEntry = NO;
+
         CGRect emailFrame = cell.textField.frame;
         //NSLog(@"emailFrame: %@" ,NSStringFromCGRect(emailFrame));
         if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
@@ -1113,7 +1126,8 @@ int nameOrigin=0;
                 cell.textField.frame = textFieldFrame;
                 [cell.textField setClearButtonMode:UITextFieldViewModeNever];
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 1:
@@ -1125,19 +1139,21 @@ int nameOrigin=0;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 2:
                 self.lastNameTextField = cell.textField;
                 cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"EMAIL" withDefaultValue:@"Email"];
-                cell.textField.text = self.email;
+                cell.textField.text = self.emailAddress;
                 cell.contactPickerButton.tag = indexPath.section;
                 cell.cellTitleButton.hidden = NO;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 3:
@@ -1162,7 +1178,8 @@ int nameOrigin=0;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                
+                cell.textField.secureTextEntry = NO;
+
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
                 
@@ -1498,7 +1515,7 @@ int nameOrigin=0;
     //        [ self.txtActiveField resignFirstResponder];
     [self.view endEditing:YES];
     
-    self.contactPickeMode = (0 == contactBtn.tag)?ContactPickeModeName:ContactPickeModeEmail;
+    self.contactPickeMode = (int)contactBtn.tag;
     ABPeoplePickerNavigationController *peoplePicker = [[ABPeoplePickerNavigationController alloc] init];
     peoplePicker.peoplePickerDelegate = self;
     peoplePicker.navigationItem.title = (0 == contactBtn.tag)?[ACConstants getLocalizedStringForKey:@"CHOOSE_CONTACT" withDefaultValue:@"Choose Contact"]:[ACConstants getLocalizedStringForKey:@"CHOOSE_EMAIL" withDefaultValue:@"Choose Email"];
@@ -2280,12 +2297,6 @@ int nameOrigin=0;
         NSString *email  = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emails, 0);
         self.emailTextField.text = email;
         self.emailAddress = email;
-        //if (label) {
-        //    CFRelease(label);
-        //}
-        //if (email) {
-        //    CFRelease(email);
-        //}
     }
     else
     {
@@ -2542,7 +2553,7 @@ int nameOrigin=0;
                              CFRelease(labelStringRef);
                              labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
                              labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""]; */
-                            [actionSheet addButtonWithTitle:[dict objectForKeyNotNull:@"ZipCode"]];
+                            [actionSheet addButtonWithTitle:[dict objectForKeyNotNull:@"Street"]];
                         }
                         
                         actionSheet.tag = 111;
@@ -2562,7 +2573,7 @@ int nameOrigin=0;
                              CFRelease(labelStringRef);
                              labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
                              labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""]; */
-                            [anAlert addButtonWithTitle:[dict objectForKeyNotNull:@"ZipCode"]];
+                            [anAlert addButtonWithTitle:[dict objectForKeyNotNull:@"Street"]];
                         }
                         anAlert.tag = 111;
                         
@@ -2595,32 +2606,20 @@ int nameOrigin=0;
                     [self.postalCodeField becomeFirstResponder];
                     return;
                 }
-
             }
-            
         }
     }
-    
 }
 
-- (void) populateDataWithPerson:(ABRecordRef)person
+- (void) populateDataForSignup:(ABRecordRef)person
 {
-    
     NSString *firstName = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
     NSString *lastNamePart = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
     self.name = [NSString stringWithFormat:@"%@",firstName];
     self.lastName = lastNamePart?[NSString stringWithFormat:@"%@",lastNamePart]:@"";
     
-    //if(firstName)
-    //    CFRelease(firstName);
-    //if(lastNamePart)
-    //    CFRelease(lastNamePart);
-    
     NSString *company = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonOrganizationProperty);
     self.company = company;
-    //if(company){
-    //    CFRelease(company);
-    // }
     
     self.postalCode = nil;
     self.city = nil;
@@ -2640,7 +2639,6 @@ int nameOrigin=0;
     {
         NSString *ph = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phones, 0);
         self.phone = ph;
-        //[ph release];
     }
     if (phones) {
         CFRelease(phones);
@@ -2648,9 +2646,131 @@ int nameOrigin=0;
     
     ABMultiValueRef addresses = ABRecordCopyValue(person, kABPersonAddressProperty);
     self.contactAdresses = addresses;
-//    if (addresses) {
-//        CFRelease(addresses);
-//    }
+    
+#ifndef __clang_analyzer__
+    int count = ABMultiValueGetCount(self.contactAdresses);
+#endif
+    if(1 == count)
+    {
+        [ self chooseAdressAtIndex:0];
+    }
+    else if(1 < count)
+    {
+        NSString *title = [ACConstants getLocalizedStringForKey:@"CHOOSE_AN_ADDRESS_FOR_SHIPMENT" withDefaultValue:@"Choose an Address for Shipment"];
+        
+        int currentDeviceOSVersion = [UIDevice currentDevice].systemVersion.intValue;
+        if(currentDeviceOSVersion < 8)// For iOS 7 versions
+        {
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                                     delegate:self
+                                                            cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]
+                                                       destructiveButtonTitle:nil
+                                                            otherButtonTitles:nil, nil];
+            
+            for (CFIndex i = 0; i < ABMultiValueGetCount(self.contactAdresses); i++)
+            {
+                CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
+                //mkl localizing label
+                NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
+                NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
+                CFRelease(labelStringRef);
+                labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
+                labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
+                //NSLog(@"add button: %@", labelName);
+                [actionSheet addButtonWithTitle:labelName];
+            }
+            actionSheet.tag = 888;
+            [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
+            
+        }
+        else // For iOS 8
+        {
+            UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:@"CANCEL" otherButtonTitles:nil];
+            
+            for (CFIndex i = 0; i < ABMultiValueGetCount(self.contactAdresses); i++)
+            {
+                CFStringRef labelStringRef = ABMultiValueCopyLabelAtIndex(self.contactAdresses, i);
+                
+                NSString *phoneLabelLocalized = (__bridge_transfer NSString*)ABAddressBookCopyLocalizedLabel(labelStringRef);
+                NSString *labelName = [NSString stringWithFormat:@"%@",phoneLabelLocalized];
+                CFRelease(labelStringRef);
+                
+                labelName = [ labelName stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
+                labelName = [ labelName stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
+                
+                [anAlert addButtonWithTitle:labelName];
+            }
+            
+            anAlert.tag = 888;
+            
+            [anAlert show];
+        }
+        
+    }
+    
+    [self.shippingAddressTableView reloadData];
+    
+    //Advance to the first required cell:
+    if ([self.nameField.text length] < 1) {
+        [self.nameField becomeFirstResponder];
+        return;
+    }
+    if ([self.addressLine1Field.text length] < 1) {
+        [self.addressLine1Field becomeFirstResponder];
+        return;
+    }
+    if ([self.cityField.text length] < 1) {
+        [self.cityField becomeFirstResponder];
+        return;
+    }
+    
+    if ([self.stateField.text length] < 1) {
+        [self.stateField becomeFirstResponder];
+        return;
+    }
+    if ([self.postalCodeField.text length] < 1) {
+        [self.postalCodeField becomeFirstResponder];
+        return;
+    }
+    
+}
+
+
+- (void) populateDataWithPerson:(ABRecordRef)person
+{
+    NSString *firstName = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+    NSString *lastNamePart = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
+    self.name = [NSString stringWithFormat:@"%@",firstName];
+    self.lastName = lastNamePart?[NSString stringWithFormat:@"%@",lastNamePart]:@"";
+    
+    NSString *company = (__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonOrganizationProperty);
+    self.company = company;
+    
+    self.postalCode = nil;
+    self.city = nil;
+    self.phone = nil;
+    self.countryPickerValue = [ACConstants getLocalizedStringForKey:@"SELECT_COUNTRY" withDefaultValue:@"Select Country"];
+    self.statePickerValue = [ACConstants getLocalizedStringForKey:@"SELECT_STATE" withDefaultValue:@"Select State"];
+    self.addressLine1 = nil;
+    self.addressLine2 = nil;
+    self.selectedStateIndex = -1;
+    self.selectedCountryIndex = -1;
+    
+    self.willShowCityAndState = YES;
+    
+    ABMultiValueRef phones = ABRecordCopyValue(person, kABPersonPhoneProperty);
+    int phoneCount = ABMultiValueGetCount(phones);
+    if(1 <= phoneCount)
+    {
+        NSString *ph = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phones, 0);
+        self.phone = ph;
+    }
+    if (phones) {
+        CFRelease(phones);
+    }
+    
+    ABMultiValueRef addresses = ABRecordCopyValue(person, kABPersonAddressProperty);
+    self.contactAdresses = addresses;
     
     #ifndef __clang_analyzer__
     int count = ABMultiValueGetCount(self.contactAdresses);
@@ -2746,13 +2866,17 @@ int nameOrigin=0;
 //CS:Fixing the iOS 8 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person
 {
-    if(self.contactPickeMode == ContactPickeModeName)
-    {
-        [self populateDataWithPerson:person];
-    }
-    else
-    {
-        [self populateEmailWithPerson:person];
+    switch (self.contactPickeMode) {
+        case ContactPickeModeName:
+            [self populateDataWithPerson:person];
+            break;
+        case ContactPickeModeEmail:
+            [self populateEmailWithPerson:person];
+        case ContactPickeModeSignup:
+            [self populateDataForSignup:person];
+
+        default:
+            break;
     }
     
     //[peoplePicker dismissModalViewControllerAnimated:YES];
@@ -2938,6 +3062,7 @@ int nameOrigin=0;
                  [[NSUserDefaults standardUserDefaults] synchronize];
                  
              }else{
+                 _nextButton.enabled = YES;
                  self.shippingAddressTableView.tableHeaderView = nil;
                  NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
                  NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
@@ -3162,9 +3287,13 @@ int nameOrigin=0;
              [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
              [[NSUserDefaults standardUserDefaults] synchronize];
          }else{
+             
+             _nextButton.enabled = YES;
+             self.shippingAddressTableView.tableHeaderView = nil;
              NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
              NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
              [ArtAPI setAuthenticationToken:authTok];
+             [self populateDataWithLoginResponse:responseDict];
              
              // Call Delegate
              if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {

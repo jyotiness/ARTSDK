@@ -24,7 +24,8 @@
 
 typedef enum ContactPickeMode {
     ContactPickeModeName,
-    ContactPickeModeEmail
+    ContactPickeModeEmail,
+    ContactPickeModeSignup
 }ContactPickeMode;
 
 @protocol ACShipAddressViewDelegate;
