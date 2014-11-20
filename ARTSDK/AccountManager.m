@@ -468,14 +468,14 @@
     
     [ArtAPI requestForAccountUpdateLocationWithParameters:parameters success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
     {
-        if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetFailed)])
+        if(self.delegate && [self.delegate respondsToSelector:@selector(addressUpdatedSuccessfully:)])
         {
             [self.delegate addressUpdatedSuccessfully:JSON];
         }
     }
     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
     {
-        if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetFailed)])
+        if(self.delegate && [self.delegate respondsToSelector:@selector(addressUpdationFailed:)])
         {
             [self.delegate addressUpdationFailed:JSON];
         }
