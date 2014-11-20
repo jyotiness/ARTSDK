@@ -235,7 +235,7 @@
     [ArtAPI requestForAccountUpdateProperty:propertyKey withValue:propertyValue success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
          
-         NSLog(@" requestForAccountUpdateProperty success \n JSON Account Get response %@ ", JSON);
+         NSLog(@" requestForAccountUpdateProperty success \n JSON Account Update Property response %@ ", JSON);
          status = YES;
          //NSArray *bundlesArray = [[NSMutableArray alloc] init];
          
@@ -259,7 +259,9 @@
      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
      {
          status = NO;
-         NSLog(@" requestForAccountUpdateProperty failed ");
+         
+         NSLog(@" requestForAccountUpdateProperty failed \n JSON Account Update Property response %@ ", JSON);
+         
          if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetFailed)])
          {
              [self.delegate bundlesSetFailed];
