@@ -1109,7 +1109,7 @@ int nameOrigin=0;
         switch ( rownum )
         {
             case 0:
-                self.firstNameTextField = cell.textField;
+                self.signupFirstNameTextField = cell.textField;
                 cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"FIRST_NAME" withDefaultValue:@"First Name"];
                 cell.textField.text = self.name;
                 cell.contactPickerButton.hidden=NO;
@@ -1131,7 +1131,7 @@ int nameOrigin=0;
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 1:
-                self.lastNameTextField = cell.textField;
+                self.signupLastNameTextField = cell.textField;
                 cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"LAST_NAME" withDefaultValue:@"Last Name"];
                 cell.textField.text = self.lastName;
                 cell.contactPickerButton.tag = indexPath.section;
@@ -1911,13 +1911,17 @@ int nameOrigin=0;
 #pragma mark ACKeyboardToolbarDelegate
 - (void)keyboardToolbar: (ACKeyboardToolbarView*) keyboardToolbar didSelectNext: (id) next
 {
-    if(1 == self.selectedIndexPath.section)
+    if(!self.needSignUp && (1 == self.selectedIndexPath.section))
     {
-//        [self.emailTextField resignFirstResponder];
         [self.view endEditing:YES];
     }
     else
     {
+        if(1 == self.selectedIndexPath.section)
+        {
+            [self.signupFirstNameTextField becomeFirstResponder];
+            self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
+        }
         if ((self.selectedIndexPath.row) < 10)
         {
             if(self.willShowCityAndState)

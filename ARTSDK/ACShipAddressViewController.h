@@ -75,6 +75,9 @@ typedef enum ContactPickeMode {
 
 @property (nonatomic,strong) IBOutlet UILabel *loginTitleLabel;
 
+@property (nonatomic,strong)  UITextField *signupFirstNameTextField;
+@property (nonatomic,strong)  UITextField *signupLastNameTextField;
+
 @property (nonatomic,strong) IBOutlet UITextField *emailLoginTextField;
 @property (nonatomic,strong) IBOutlet UITextField *passwordLoginTextField;
 @property (nonatomic,strong) IBOutlet UITextField *emailSignupTextField;
