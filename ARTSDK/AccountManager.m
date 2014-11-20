@@ -195,6 +195,65 @@
     
 }
 
+-(BOOL)updateBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate
+{
+    self.delegate = delegate;
+    __block BOOL status = NO;
+    
+    NSString *propertyKey = @"Bundles";
+    
+    //assume bundles are already compressed
+    NSMutableArray *packArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
+    
+    
+    //need to make it into a Dictionary with one key
+    NSMutableDictionary *bundlesDictionary = [[NSMutableDictionary alloc] init];
+    [bundlesDictionary setObject:packArray forKey:@"Bundles"];
+    
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bundlesDictionary options:0 error:&writeError];
+    NSString *propertyValue = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", propertyValue);
+    
+    [ArtAPI requestForAccountUpdateProperty:propertyKey withValue:propertyValue success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+     {
+         
+         NSLog(@" requestForAccountUpdateProperty success \n JSON Account Update Property response %@ ", JSON);
+         status = YES;
+         //NSArray *bundlesArray = [[NSMutableArray alloc] init];
+         
+         if(JSON){
+             
+             NSDictionary *dDict = [JSON objectForKeyNotNull:@"d"];
+             
+             if(dDict){
+                 
+             }
+         }
+         
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetSuccess)])
+         {
+             [self.delegate bundlesSetSuccess];
+         }
+         
+         
+     }
+                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+     {
+         status = NO;
+         
+         NSLog(@" requestForAccountUpdateProperty failed \n JSON Account Update Property response %@ ", JSON);
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetFailed)])
+         {
+             [self.delegate bundlesSetFailed];
+         }
+         
+     }];
+    
+    return status;
+}
 
 -(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber
 {
