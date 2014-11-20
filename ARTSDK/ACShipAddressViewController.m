@@ -1752,7 +1752,16 @@ int nameOrigin=0;
     } else {
         //NSLog(@"failed validation");
         // Reload and display error
+        UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"ERROR" withDefaultValue:@"Error"]
+                                                         message: @"Invalid email format. Please try again."
+                                                        delegate:nil
+                                               cancelButtonTitle:[ACConstants getLocalizedStringForKey:@"OK" withDefaultValue:@"OK"]
+                                               otherButtonTitles:nil, nil];
+        
+        [ alert show];
+
         [self.shippingAddressTableView reloadData];
+        
 //        self.tableview.tableHeaderView = [self tableViewHeader];
     }
 
