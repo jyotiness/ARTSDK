@@ -34,6 +34,8 @@
 {
     NSArray *mDataSourceArray;
 }
+@property(nonatomic, copy) NSString *fName;
+@property(nonatomic, copy) NSString *lName;
 @property(nonatomic, copy) NSString *email;
 @property(nonatomic, copy) NSString *password;
 @property(nonatomic, copy) NSString *confirmPassword;
@@ -70,7 +72,7 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-
+    
     self.navigationController.navigationBarHidden = NO;
 }
 
@@ -99,10 +101,10 @@
 - (void)viewDidLayoutSubviews
 {
     CGRect frame = self.facebookLoginButton.frame;
-//    frame.origin.y = 0.5;
-//    self.facebookLoginButton.frame = frame;
+    //    frame.origin.y = 0.5;
+    //    self.facebookLoginButton.frame = frame;
     
-//    self.facebookLoginButton.center = self.facebookLoginHolderView.center;
+    //    self.facebookLoginButton.center = self.facebookLoginHolderView.center;
     
     if(self.onlyFacebook){
         [self.segmentedButton removeFromSuperview];
@@ -142,17 +144,19 @@
     //[self.loginHolderScrollView setBackgroundColor:[UIColor redColor]];
     
     //self.loginMode = LoginModeLogin;
-
+    
     if(self.loginMode == LoginModeSignup)
     {
         [self.segmentedButton setSelectedSegmentIndex:1];
     }
-    else// else condition added for use in the P2A and AC apps not related to SwitchArt 
+    else// else condition added for use in the P2A and AC apps not related to SwitchArt
     {
-    	self.loginMode = LoginModeLogin;
+        self.loginMode = LoginModeLogin;
     }
     
     self.error = nil;
+    self.fName = @"";
+    self.lName = @"";
     self.email = @"";
     self.password = @"";
     self.confirmPassword = @"";
@@ -165,15 +169,15 @@
     
     [self.facebookLoginButton setTitleColor:[ACConstants getPrimaryLinkColor] forState:UIControlStateNormal];
     [self.facebookLoginButton setTitleColor:[ACConstants getHighlightedPrimaryLinkColor] forState:UIControlStateHighlighted];
-
+    
     [self.emailLoginButton setTitleColor:[ACConstants getPrimaryLinkColor] forState:UIControlStateNormal];
     [self.emailLoginButton setTitleColor:[ACConstants getHighlightedPrimaryLinkColor] forState:UIControlStateHighlighted];
     [self.emailSignupButton setTitleColor:[ACConstants getPrimaryLinkColor] forState:UIControlStateNormal];
     [self.emailSignupButton setTitleColor:[ACConstants getHighlightedPrimaryLinkColor] forState:UIControlStateHighlighted];
     [self.forgotPasswordButton setTitleColor:[ACConstants getPrimaryLinkColor] forState:UIControlStateNormal];
     [self.forgotPasswordButton setTitleColor:[ACConstants getHighlightedPrimaryLinkColor] forState:UIControlStateHighlighted];
-
-    mDataSourceArray = [[NSArray alloc] initWithObjects:ACLocalizedString(@"Email Address",nil),ACLocalizedString(@"Password",nil),ACLocalizedString(@"Confirm Password", nil), nil];
+    
+    mDataSourceArray = [[NSArray alloc] initWithObjects:ACLocalizedString(@"First Name",nil),ACLocalizedString(@"Last Name",nil),ACLocalizedString(@"Email Address",nil),ACLocalizedString(@"Password",nil),ACLocalizedString(@"Confirm Password", nil), nil];
     
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"] style:UIBarButtonItemStylePlain target:self action:@selector(cancelLogin:)];
     self.navigationItem.rightBarButtonItem = cancelItem;
@@ -193,18 +197,18 @@
     frame = self.loginHolderScrollView.frame;
     self.loginHolderScrollView.contentSize = CGSizeMake(320, 504);
     self.selectedIndexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
-
     
-/*    UIView *loginTopSeparator = [[UIView alloc] initWithFrame:CGRectMake(0,0, 320, 2.5)];
-    loginSeparator.backgroundColor = [UIColor lightGrayColor];
-    [self.facebookLoginButton addSubview:loginTopSeparator];
-    UIView *loginBottomSeparator = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetHeight(self.facebookLoginButton.frame)-2.5, 320, 2.5)];
-    signupSeparator.backgroundColor = [UIColor lightGrayColor];
-    [self.facebookLoginButton addSubview:loginBottomSeparator]; 
- */
+    
+    /*    UIView *loginTopSeparator = [[UIView alloc] initWithFrame:CGRectMake(0,0, 320, 2.5)];
+     loginSeparator.backgroundColor = [UIColor lightGrayColor];
+     [self.facebookLoginButton addSubview:loginTopSeparator];
+     UIView *loginBottomSeparator = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetHeight(self.facebookLoginButton.frame)-2.5, 320, 2.5)];
+     signupSeparator.backgroundColor = [UIColor lightGrayColor];
+     [self.facebookLoginButton addSubview:loginBottomSeparator];
+     */
     
     self.title = ACLocalizedString(@"LOGIN", nil);
-
+    
     if(self.onlyFacebook)
     {
         self.tableview.hidden = YES;
@@ -229,7 +233,7 @@
         self.autoLoginEnabled = NO;
         [self loginWithFacebook:nil];
     }
-
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -248,7 +252,7 @@
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetHeight(footerView.frame)-0.275, CGRectGetWidth([UIScreen mainScreen].bounds), 0.275)];
     separator.backgroundColor = [UIColor lightGrayColor];
     [footerView addSubview:separator];
-
+    
     return footerView;
 }
 
@@ -286,7 +290,7 @@
     
     static NSString *SimpleTableIdentifier = @"ACLoginCustomCell";
     ACLoginCustomCell * cell = (ACLoginCustomCell*)[tableView
-                                        dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
+                                                    dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
     if (cell==nil)
     {
         cell = (ACLoginCustomCell *)[[ACBundle loadNibNamed:@"ACLoginCustomCell" owner:self options:nil] objectAtIndex:0];
@@ -297,7 +301,7 @@
     {
         cell.layoutMargins = UIEdgeInsetsZero;// CS:fix for the iOS 8 separator issue
     }
-
+    
     int numberOfRows = [self numberOfRows];
     
     
@@ -316,8 +320,15 @@
     
     
     // Make cell unselectable
-	cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    cell.textLabel.text = [ mDataSourceArray objectAtIndex:indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    if(self.loginMode == LoginModeSignup)
+    {
+        cell.textLabel.text = [ mDataSourceArray objectAtIndex:indexPath.row];
+    }
+    else{
+        cell.textLabel.text = [ mDataSourceArray objectAtIndex:indexPath.row + 2];
+    }
+    
     cell.textField.text = @"";
     cell.textField.tag=indexPath.row;
     
@@ -325,18 +336,73 @@
     
     switch ( indexPath.row )
     {
+            
         case 0:{
+            if (self.loginMode == LoginModeSignup)
+            {
+                cell.textField.text = self.fName;
+                [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+                [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                cell.textLabel.textColor = [UIColor blackColor];
+                if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
+                    cell.textLabel.textColor = [UIColor redColor];
+                }
+                break;
+            }else
+            {
+                cell.textField.text = self.email;
+                [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
+                cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+                [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                cell.textLabel.textColor = [UIColor blackColor];
+                if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
+                    cell.textLabel.textColor = [UIColor redColor];
+                }
+                break;
+            }
+        }
+        case 1:{
+            if (self.loginMode == LoginModeSignup)
+            {
+                cell.textField.text = self.lName;
+                [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+                [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+                cell.textLabel.textColor = [UIColor blackColor];
+                if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
+                    cell.textLabel.textColor = [UIColor redColor];             }
+                break;
+            }
+            else
+            {
+                cell.textField.text = self.password;
+                [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+                cell.textField.secureTextEntry = YES;
+                cell.textLabel.textColor = [UIColor blackColor];
+                if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
+                    cell.textField.text = @"";
+                    cell.textLabel.textColor = [UIColor redColor];
+                }
+                break;
+                
+            }
+        }
+        case 2:{
             cell.textField.text = self.email;
             [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
             cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
             [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
             cell.textLabel.textColor = [UIColor blackColor];
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
+                //                cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
+                //                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }
-        case 1:{
+        case 3:{
             cell.textField.text = self.password;
             [cell.textField setKeyboardType:UIKeyboardTypeDefault];
             cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -345,10 +411,11 @@
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                 cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
+                //                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }
-        case 2:{
+        case 4:{
             cell.textField.text = self.password;
             [cell.textField setKeyboardType:UIKeyboardTypeDefault];
             cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -358,6 +425,7 @@
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                 cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
+                //                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }
@@ -384,40 +452,40 @@
 
 -(int)numberOfRows
 {
-    return (self.loginMode == LoginModeLogin)?2:3;
+    return (self.loginMode == LoginModeLogin)?2:5;
 }
 
 -(UIView *) tableViewHeader {
     
-//    if( ACIsStringWithAnyText(self.error)){
-//        
-//        CGRect bounds = self.view.bounds;
-//        
-//        // Initial Height
-//        CGFloat height = 0;
-//        if( ACIsStringWithAnyText(self.error)){
-//            height = height + 25;
-//        }
-//        
-//        UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, height)];
-//        
-//        
-//        // Error Label
-//        if( ACIsStringWithAnyText(self.error)){
-//            UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, 20)];
-//            errorLabel.backgroundColor = [UIColor clearColor];
-//            errorLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12];
-//            errorLabel.textColor = [UIColor redColor];
-//            errorLabel.textAlignment = UITextAlignmentCenter;
-//            errorLabel.text = self.error;
-//            [view addSubview:errorLabel];
-//        }
-//        
-//        return view;
-//        
-//    }else{
-        return nil;
-//    }
+    //    if( ACIsStringWithAnyText(self.error)){
+    //
+    //        CGRect bounds = self.view.bounds;
+    //
+    //        // Initial Height
+    //        CGFloat height = 0;
+    //        if( ACIsStringWithAnyText(self.error)){
+    //            height = height + 25;
+    //        }
+    //
+    //        UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, height)];
+    //
+    //
+    //        // Error Label
+    //        if( ACIsStringWithAnyText(self.error)){
+    //            UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, 20)];
+    //            errorLabel.backgroundColor = [UIColor clearColor];
+    //            errorLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12];
+    //            errorLabel.textColor = [UIColor redColor];
+    //            errorLabel.textAlignment = UITextAlignmentCenter;
+    //            errorLabel.text = self.error;
+    //            [view addSubview:errorLabel];
+    //        }
+    //
+    //        return view;
+    //
+    //    }else{
+    return nil;
+    //    }
 }
 
 -(BOOL) validateFormForSignUp
@@ -427,15 +495,15 @@
     
     if( ![self.email validateAsEmail]){
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a valid email address", @"Please enter a valid email address")
-                             forKey:[NSNumber numberWithInt:0]];
+                             forKey:[NSNumber numberWithInt:2]];
     }
     if( [self.password isEmpty]){
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                             forKey:[NSNumber numberWithInt:1]];
+                             forKey:[NSNumber numberWithInt:3]];
     }
     if( [self.confirmPassword isEmpty]){
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                             forKey:[NSNumber numberWithInt:2]];
+                             forKey:[NSNumber numberWithInt:4]];
     }
     
     if(((self.password.length > 0)&&(self.password.length < 7)) || ((self.confirmPassword.length > 0)&&(self.confirmPassword.length < 7))){
@@ -446,15 +514,15 @@
         self.password = self.confirmPassword = @"";
         
         [self.fieldErrors setObject:ACLocalizedString(@"PASSWORD_AT_LEAST_SEVEN", @"PASSWORD_AT_LEAST_SEVEN")
-                             forKey:[NSNumber numberWithInt:1]];
+                             forKey:[NSNumber numberWithInt:3]];
         
         [self.fieldErrors setObject:ACLocalizedString(@"PASSWORD_AT_LEAST_SEVEN", @"PASSWORD_AT_LEAST_SEVEN")
-                             forKey:[NSNumber numberWithInt:2]];
+                             forKey:[NSNumber numberWithInt:4]];
         
         return NO;
         
     }
-
+    
     if(ACIsStringWithAnyText(self.password ) &&
        ACIsStringWithAnyText(self.confirmPassword ) &&
        ![self.password isEqualToString:self.confirmPassword]) {
@@ -466,9 +534,9 @@
         
         self.password = self.confirmPassword = @"";
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                             forKey:[NSNumber numberWithInt:1]];
+                             forKey:[NSNumber numberWithInt:3]];
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                             forKey:[NSNumber numberWithInt:2]];
+                             forKey:[NSNumber numberWithInt:4]];
     }
     
     return ( [self.fieldErrors count]>0 || ACIsStringWithAnyText(self.error))?NO:YES;
@@ -479,14 +547,27 @@
 {
     [self.fieldErrors removeAllObjects];
     
+ if (self.loginMode == LoginModeSignup)
+  {
     if( ![self.email validateAsEmail]){
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a valid email address", @"Please enter a valid email address")
-                             forKey:[NSNumber numberWithInt:0]];
+                             forKey:[NSNumber numberWithInt:2]];
     }
     if( [self.password isEmpty]){
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                             forKey:[NSNumber numberWithInt:1]];
+                             forKey:[NSNumber numberWithInt:3]];
     }
+  }
+ else{
+     if( ![self.email validateAsEmail]){
+         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a valid email address", @"Please enter a valid email address")
+                              forKey:[NSNumber numberWithInt:0]];
+     }
+     if( [self.password isEmpty]){
+         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
+                              forKey:[NSNumber numberWithInt:1]];
+     }
+  }
     //NSLog(@"fieldErrors: %@", self.fieldErrors);
     
     return ( [self.fieldErrors count]>0)?NO:YES;
@@ -500,9 +581,11 @@
 - (IBAction)toggleSegmentedAction:(id)sender
 {
     self.selectedIndexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
-
+    
     self.loginMode = !self.loginMode;
     self.error = nil;
+    self.fName = @"";
+    self.lName = @"";
     self.email = @"";
     self.password = @"";
     self.confirmPassword = @"";
@@ -519,9 +602,9 @@
 
 - (IBAction)loginWithEmail:(id)sender
 {
-//    if([self.txtActiveField isFirstResponder])
-//    {
-//        [ self.txtActiveField resignFirstResponder];
+    //    if([self.txtActiveField isFirstResponder])
+    //    {
+    //        [ self.txtActiveField resignFirstResponder];
     //    }
     [self.view endEditing:YES];
     
@@ -556,7 +639,7 @@
                  [ArtAPI setAuthenticationToken:authTok];
                  
                  [SVProgressHUD dismiss];
-
+                 
                  // Call Delegate
                  if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
                      [self.delegate loginSuccess];
@@ -592,8 +675,8 @@
              UIAlertView *authFailAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
              [authFailAlert show];
              
-//             UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:self.error delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-//             [loginFailedAlert show];
+             //             UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:self.error delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+             //             [loginFailedAlert show];
              
              self.tableview.tableHeaderView = [self tableViewHeader];
              
@@ -609,10 +692,10 @@
     
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_FORGOT_PASSWORD];
     
-//    if([self.txtActiveField isFirstResponder])
-//    {
-//        [ self.txtActiveField resignFirstResponder];
-//    }
+    //    if([self.txtActiveField isFirstResponder])
+    //    {
+    //        [ self.txtActiveField resignFirstResponder];
+    //    }
     [self.view endEditing:YES];
     
     
@@ -629,7 +712,7 @@
              UIAlertView *forgotPassSuccessAlert = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"NEW_PASSWORD_SENT", nil)  message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
              [forgotPassSuccessAlert show];
              
-//             [self.navigationController popViewControllerAnimated:YES];
+             //             [self.navigationController popViewControllerAnimated:YES];
              
          }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
              //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -658,15 +741,16 @@
     
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_CREATE_ACCOUNT];
     
-//    if([self.txtActiveField isFirstResponder])
-//    {
-//        [ self.txtActiveField resignFirstResponder];
+    //    if([self.txtActiveField isFirstResponder])
+    //    {
+    //        [ self.txtActiveField resignFirstResponder];
     //    }
     [self.view endEditing:YES];
     
     self.error = nil;
     self.tableview.tableHeaderView = [self tableViewHeader];
-    
+    //NSLog(@"signupWithEmail - FName:" + self.fName + " LName:" + self.lName );
+    NSLog(@"emailAddress: %@ firstName: %@ lastName: %@",self.email, self.fName, self.lName);
     if ([self validateFormForSignUp] ){
         //NSLog(@"passed validation");
         [SVProgressHUD showWithStatus:ACLocalizedString(@"SIGNING UP",@"SIGNING UP")];
@@ -674,6 +758,8 @@
         [ArtAPI
          requestForAccountCreateWithEmailAddress:self.email
          password:self.password
+         firstName:self.fName
+         lastName:self.lName
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
              
@@ -718,7 +804,7 @@
                          NSDictionary *firstError = [errorsArray objectAtIndex:0];
                          
                          if(firstError){
-                         
+                             
                              NSString *errorCode = [firstError objectForKey:@"ErrorCode"];
                              NSString *errorMessage = [firstError objectForKey:@"ErrorMessage"];
                              
@@ -859,34 +945,34 @@
 -(void)keyboardWillShow:(NSNotification *)notiFication
 {
     //NSLog(@"keyboardWillShow");
-//    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+    //    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
     
-        //NSLog(@"iPhone");
-        CGRect rect = self.loginHolderScrollView.frame;
-        
-        //iPhone5 compatibility
-        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
-        if(screenHeight == 480){
-            //iphone no retina
-            //rect.size.height = 416-175;
-            rect.size.height = 416;
-        }else if(screenHeight == 960){
-            //iphone with retina
-            //rect.size.height = 416-175;
-            rect.size.height = 416;
-        }else if(screenHeight == 1136){
-            //iphone5
-            //rect.size.height = 504 - 200;
-            rect.size.height = 504;
-        }else if(screenHeight == 1334){
-            //iphone 6
-            rect.size.height = 504;
-        }else {
-            //iphone 6+
-            rect.size.height = 504;
-        }
-        
-        self.loginHolderScrollView.frame = rect;
+    //NSLog(@"iPhone");
+    CGRect rect = self.loginHolderScrollView.frame;
+    
+    //iPhone5 compatibility
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
+    if(screenHeight == 480){
+        //iphone no retina
+        //rect.size.height = 416-175;
+        rect.size.height = 416;
+    }else if(screenHeight == 960){
+        //iphone with retina
+        //rect.size.height = 416-175;
+        rect.size.height = 416;
+    }else if(screenHeight == 1136){
+        //iphone5
+        //rect.size.height = 504 - 200;
+        rect.size.height = 504;
+    }else if(screenHeight == 1334){
+        //iphone 6
+        rect.size.height = 504;
+    }else {
+        //iphone 6+
+        rect.size.height = 504;
+    }
+    
+    self.loginHolderScrollView.frame = rect;
     
     if(self.loginMode==LoginModeLogin){
         
@@ -930,58 +1016,58 @@
         }
         
     }
-
-/*        double delayInSeconds = 0.1;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.loginHolderView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        }); */
-//    }
-//else
-//    {
-//        //NSLog(@"iPad");
-//        // Adjust table to fit keyboard
-///*        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 225, 0.0);
-//        self.loginHolderView.contentInset = contentInsets;
-//        self.loginHolderView.scrollIndicatorInsets = contentInsets;
-//        [self.loginHolderView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES]; */
-//    }
+    
+    /*        double delayInSeconds = 0.1;
+     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+     [self.loginHolderView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+     }); */
+    //    }
+    //else
+    //    {
+    //        //NSLog(@"iPad");
+    //        // Adjust table to fit keyboard
+    ///*        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 225, 0.0);
+    //        self.loginHolderView.contentInset = contentInsets;
+    //        self.loginHolderView.scrollIndicatorInsets = contentInsets;
+    //        [self.loginHolderView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES]; */
+    //    }
 }
 
 -(void)keyboardWillHide:(NSNotification *)notiFication
 {
     //NSLog(@"keyboardWillHide");
-//    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
-        CGRect rect = self.loginHolderScrollView.frame;
-        
-        //iPhone5 compatibility
-        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
-        if(screenHeight == 480){
-            //iphone no retina
-            rect.size.height = 416;
-        }else if(screenHeight == 960){
-            //iphone with retina
-            rect.size.height = 416;
-        }else{
-            //iphone5
-            rect.size.height = 504;
-        }
-        self.loginHolderScrollView.frame = rect;
+    //    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+    CGRect rect = self.loginHolderScrollView.frame;
+    
+    //iPhone5 compatibility
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
+    if(screenHeight == 480){
+        //iphone no retina
+        rect.size.height = 416;
+    }else if(screenHeight == 960){
+        //iphone with retina
+        rect.size.height = 416;
+    }else{
+        //iphone5
+        rect.size.height = 504;
+    }
+    self.loginHolderScrollView.frame = rect;
     
     CGRect frame = self.loginHolderScrollView.frame;
     self.loginHolderScrollView.contentSize = CGSizeMake(320, frame.size.height);
-
+    
     [self.loginHolderScrollView setContentOffset:
      CGPointMake(0, -self.loginHolderScrollView.contentInset.top) animated:YES];
-        //NSLog(@"Rect at Hide: %@", NSStringFromCGRect(rect));
-        
-//    }
-//    else {
-//        // Adjust table to fit keyboard
-//        UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-//        self.loginHolderView.contentInset = contentInsets;
-//        self.loginHolderView.scrollIndicatorInsets = contentInsets;
-//    }
+    //NSLog(@"Rect at Hide: %@", NSStringFromCGRect(rect));
+    
+    //    }
+    //    else {
+    //        // Adjust table to fit keyboard
+    //        UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    //        self.loginHolderView.contentInset = contentInsets;
+    //        self.loginHolderView.scrollIndicatorInsets = contentInsets;
+    //    }
 }
 
 
@@ -1010,13 +1096,13 @@
 
 - (IBAction)textFieldFinished:(id)sender
 {
-//    [sender resignFirstResponder];
+    //    [sender resignFirstResponder];
     [self.view endEditing:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-//    [textField resignFirstResponder];
+    //    [textField resignFirstResponder];
     [self.view endEditing:YES];
     return YES;
 }
@@ -1028,7 +1114,7 @@
         self.txtActiveField = textField;
         
         self.selectedIndexPath = [NSIndexPath indexPathForRow:textField.tag inSection:1];
-
+        
         ACKeyboardToolbarView * toolbar = [[ACKeyboardToolbarView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([self.view getCurrentScreenBoundsDependOnOrientation]), 40)];
         toolbar.toolbarDelegate = self;
         [textField setInputAccessoryView:toolbar];
@@ -1077,17 +1163,27 @@
 {
     //NSLog(@"textFieldDidEndEditing tag: %d text: %@", textField.tag, textField.text);
     
-    
-    
-    if (0 == textField.tag) {
-        self.email = textField.text;
+    if(self.loginMode == LoginModeSignup)
+    {
+        if (0 == textField.tag) {
+            self.fName = textField.text;
+        }else if (1 == textField.tag) {
+            self.lName = textField.text;
+        }else if (2 == textField.tag) {
+            self.email = textField.text;
+        }
+        else if (3 == textField.tag) {
+            self.password=textField.text;
+        }else if (4 == textField.tag) {
+            self.confirmPassword=textField.text;
+        }
+    } else {
+        if (0 == textField.tag) {
+            self.email = textField.text;
+        }else if (1 == textField.tag) {
+            self.password = textField.text;
+        }
     }
-    else if (1 == textField.tag) {
-        self.password=textField.text;
-    }else if (2 == textField.tag) {
-        self.confirmPassword=textField.text;
-    }
-    
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1119,7 +1215,7 @@
         //        [ self.txtActiveField resignFirstResponder];
         [self.view endEditing:YES];
     }
-
+    
     
     ACLoginCustomCell *cell = (ACLoginCustomCell*)[self.tableview cellForRowAtIndexPath:self.selectedIndexPath];
     [cell.textField becomeFirstResponder];
@@ -1157,42 +1253,36 @@
 #pragma mark Facebook
 - (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI {
     BOOL result = NO;
-//    if(!FBSession.activeSession.isOpen){
-        FBSession *session = nil;
-        if([ACConstants isArtCircles]){
-            session =
-            [[FBSession alloc] initWithAppID:nil
-                                 permissions:nil
-                             urlSchemeSuffix:@"artcircles"
-                          tokenCacheStrategy:nil];
-        }else if([ACConstants isSwitchArt]){
-            session =
-            [[FBSession alloc] initWithAppID:nil
-                                 permissions:nil
-                             urlSchemeSuffix:@"switchart"
-                          tokenCacheStrategy:nil];
-        }else{
-            session =
-            [[FBSession alloc] initWithAppID:nil
-                                 permissions:[NSArray arrayWithObjects:@"user_photos",@"email",nil]
-                             defaultAudience:FBSessionDefaultAudienceFriends
-                             urlSchemeSuffix:nil
-                          tokenCacheStrategy:nil];
-        }
-        
-        if (allowLoginUI ||
-            (session.state == FBSessionStateCreatedTokenLoaded)) {
-            [FBSession setActiveSession:session];
-            [session openWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent
-                    completionHandler:
-             ^(FBSession *session, FBSessionState state, NSError *error) {
-                 [self sessionStateChanged:session state:state error:error];
-             }];
-            result = session.isOpen;
-        }
-//    }else{
-//        [self handleFacebookLogin];
-//    }
+    //    if(!FBSession.activeSession.isOpen){
+    FBSession *session = nil;
+    if([ACConstants isArtCircles]){
+        session =
+        [[FBSession alloc] initWithAppID:nil
+                             permissions:nil
+                         urlSchemeSuffix:@"artcircles"
+                      tokenCacheStrategy:nil];
+    }else{
+        session =
+        [[FBSession alloc] initWithAppID:nil
+                             permissions:[NSArray arrayWithObjects:@"user_photos",@"email",nil]
+                         defaultAudience:FBSessionDefaultAudienceFriends
+                         urlSchemeSuffix:nil
+                      tokenCacheStrategy:nil];
+    }
+    
+    if (allowLoginUI ||
+        (session.state == FBSessionStateCreatedTokenLoaded)) {
+        [FBSession setActiveSession:session];
+        [session openWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent
+                completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             [self sessionStateChanged:session state:state error:error];
+         }];
+        result = session.isOpen;
+    }
+    //    }else{
+    //        [self handleFacebookLogin];
+    //    }
     
     return result;
 }
@@ -1271,18 +1361,18 @@
              }
          }];
         
-//        [[FBRequest requestWithGraphPath:@"me?fields=picture.type(large)" parameters: nil HTTPMethod:@"GET"] startWithCompletionHandler:
-//         ^(FBRequestConnection *connection, id result,NSError *error) {
-//             if (!error) {
-//                 //NSLog(@"ACLoginViewControllergot user result: %@", result );
-//                 NSString * url = [[[result objectForKey:@"picture"] objectForKey: @"data"] objectForKey:@"url"];
-//                 NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-//                 UIImage *profilePicture = [UIImage imageWithData:data];
-//                 [self saveToCache:profilePicture name:@"profilePicture"];
-//             } else {
-//                 NSLog(@"error: %@", error);
-//             }
-//         }];
+        //        [[FBRequest requestWithGraphPath:@"me?fields=picture.type(large)" parameters: nil HTTPMethod:@"GET"] startWithCompletionHandler:
+        //         ^(FBRequestConnection *connection, id result,NSError *error) {
+        //             if (!error) {
+        //                 //NSLog(@"ACLoginViewControllergot user result: %@", result );
+        //                 NSString * url = [[[result objectForKey:@"picture"] objectForKey: @"data"] objectForKey:@"url"];
+        //                 NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+        //                 UIImage *profilePicture = [UIImage imageWithData:data];
+        //                 [self saveToCache:profilePicture name:@"profilePicture"];
+        //             } else {
+        //                 NSLog(@"error: %@", error);
+        //             }
+        //         }];
         
     }
 }
