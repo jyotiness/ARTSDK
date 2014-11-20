@@ -3335,6 +3335,12 @@ int nameOrigin=0;
                              permissions:nil
                          urlSchemeSuffix:@"artcircles"
                       tokenCacheStrategy:nil];
+    }else if([ACConstants isSwitchArt]){
+        session =
+        [[FBSession alloc] initWithAppID:nil
+                             permissions:nil
+                         urlSchemeSuffix:@"switchart"
+                      tokenCacheStrategy:nil];
     }else{
         session =
         [[FBSession alloc] initWithAppID:nil

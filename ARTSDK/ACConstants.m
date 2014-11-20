@@ -526,6 +526,15 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     return NO;
 }
 
++(BOOL)isSwitchArt
+{
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    if([bundleIdentifier hasSuffix:@"switchart"]){
+        return YES;
+    }
+    return NO;
+}
+
 +(NSString *)getUpperCaseStringIfNeededForString:(NSString *)normalString
 {
     AppLocation currAppLoc = [self getCurrentAppLocation];

@@ -107,6 +107,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 +(UIButton *)getNextButtonForTitle:(NSString *)nextTitle;
 +(UIView *)getNavBarLogo;
 +(BOOL)isArtCircles;
++(BOOL)isSwitchArt;
 +(UIImage *)getMiniCartImage;
 +(UIColor *)getPrimaryButtonColor;
 +(UIColor *)getHomeScreenHoverColor;
