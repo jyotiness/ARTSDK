@@ -462,6 +462,28 @@
 }
 
 
+-(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate
+{
+    self.delegate = delegate;
+    
+    [ArtAPI requestForAccountUpdateLocationWithParameters:parameters success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+    {
+        if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetFailed)])
+        {
+            [self.delegate addressUpdatedSuccessfully:JSON];
+        }
+    }
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+    {
+        if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetFailed)])
+        {
+            [self.delegate addressUpdationFailed:JSON];
+        }
+
+    }];
+}
+
+
 -(void)setBundlesArrayForLoggedInUser:(NSArray *)bundlesArray{
     
     //need to set the property on the logged in account

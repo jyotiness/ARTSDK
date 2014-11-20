@@ -44,6 +44,7 @@ NSString* const kResourceAccountAuthenticate = @"AccountAuthenticate";
 NSString* const kResourceAccountCreate = @"AccountCreate";
 NSString* const kResourceAccountGet = @"AccountGet";
 NSString* const kResourceAccountUpdateProperty = @"AccountUpdateProperty";
+NSString* const kResourceAccountUpdateLocationByType = @"AccountUpdateLocationByType";
 NSString* const kResourceAccountRetrievePassword = @"AccountRetrievePassword";
 NSString* const kResourceAccountAuthenticateWithFacebookUID = @"AccountAuthenticateWithFacebookUID";
 NSString* const kResourceInitializeAPI= @"InitializeAPI";
@@ -443,6 +444,8 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 #pragma mark Authenticaion
 
 
+
+
 + (void) requestForAccountUpdateProperty:(NSString *) propertyKey
                                 withValue:(NSString *) propertyValue
                                  success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
@@ -482,6 +485,63 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     [operation start];
     
+}
+
+
++ (void) requestForAccountUpdateLocationWithParameters:(NSDictionary *)parameters
+                                       success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                       failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountUpdateLocationWithParameters:parameters success:success failure:failure];
+}
+
+- (void) requestForAccountUpdateLocationWithParameters:(NSDictionary *)parameters
+                                               success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    
+    /* 
+        http://developer-api.art.com/AccountAuthorizationAPI.svc/jsonp/AccountUpdateLocationByType?
+        apiKey=A555B7EF46B941C3A13B21537E03427D&
+        sessionId=0D3B5AD8CDC9440882A8F3998B1952C7&
+        authToken=98772724fd3e412aab1767cecbdf69e3&
+        addressType=3&
+        addressLine1=41%20Ord%20Street&
+        addressLine2=upstairs&
+        companyName=myself&
+        city=San%20Francisco&
+        state=CA&
+        twoDigitIsoCountryCode=US&
+        zipCode=94114&
+        primaryPhone=510-879-4748
+     */
+    
+   // NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:addresstype,@"addressType",addressLine1,@"addressLine1",addressLine2,@"addressLine2",companyName,@"companyName",city,@"city",state,@"state",countryCode,@"twoDigitIsoCountryCode",zipCode,@"zipCode",primaryPhone,@"primaryPhone",nil];
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountUpdateLocationByType
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    
+    NSLog(@"request.URL %@",request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+                                         {
+                                             
+                                             [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+                                             
+                                         }
+                                                                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                         {
+                                             failure(request, response, error, JSON);
+                                         }];
+    
+    [operation start];
+
 }
 
 + (void) requestForAccountGet:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success

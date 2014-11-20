@@ -18,6 +18,8 @@ typedef enum {
 
 @protocol AccountManagerDelegate<NSObject>;
 @optional
+-(void)addressUpdatedSuccessfully:(id)jsonResponse;
+-(void)addressUpdationFailed:(id)jsonResponse;
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles;
 -(void)bundlesLoadingFailed;
 -(void)bundlesSetSuccess;
@@ -55,7 +57,11 @@ typedef enum {
 -(NSArray *)getBundlesArray;
 -(NSDictionary *)getBundleForOrderNumber:(NSString*)orderNumber;
 -(void)setBundlesArray:(NSArray *)bundleArray;
+
 -(NSDictionary *)getAddressForAddressID:(NSString*)addressID;
 -(NSString *)getNewPackName;
+
+-(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate;
+
 
 @end
