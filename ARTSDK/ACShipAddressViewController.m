@@ -34,7 +34,7 @@
     UILabel *_tableHeaderLabel;
 }
 
-@property(nonatomic, copy) NSString *email;
+@property(nonatomic, copy) NSString *signupEmail;
 @property(nonatomic, copy) NSString *password;
 @property(nonatomic, copy) NSString *confirmPassword;
 @property(nonatomic, strong) NSString * error;
@@ -102,7 +102,7 @@ int nameOrigin=0;
     self.city = @"";
     self.postalCode = @"";
     self.error = nil;
-    self.email = @"";
+    self.signupEmail = @"";
     self.password = @"";
     self.confirmPassword = @"";
     
@@ -212,9 +212,9 @@ int nameOrigin=0;
     {
         self.shippingAddressTableView.tableHeaderView = self.loginHeaderView;
         self.loginTitleLabel.font = [ACConstants getStandardBoldFontWithSize:26.0f];
-        self.loginView.hidden = NO;
-        self.signupView.hidden = YES;
-        _nextButton.enabled = NO;
+        self.loginView.hidden = self.needSignUp;
+        self.signupView.hidden = !self.needSignUp;
+        _nextButton.enabled = self.needSignUp;
 
 /*        [self.loginFbButton setBackgroundColor:[ACConstants getPrimaryButtonColor]];
         [self.loginFbButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -1144,10 +1144,10 @@ int nameOrigin=0;
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 2:
-                self.lastNameTextField = cell.textField;
+                self.emailSignupTextField = cell.textField;
                 cell.textLabel.text = [ACConstants getLocalizedStringForKey:@"EMAIL" withDefaultValue:@"Email"];
-                cell.textField.text = self.emailAddress;
-                cell.contactPickerButton.tag = indexPath.section;
+                cell.textField.text = self.signupEmail;
+                cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
@@ -1157,10 +1157,10 @@ int nameOrigin=0;
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 3:
-                self.lastNameTextField = cell.textField;
+                self.passwordSignupTextField = cell.textField;
                 cell.textLabel.text = @"Password";//[ACConstants getLocalizedStringForKey:@"PASSWORD" withDefaultValue:@"Password"];
                 cell.textField.text = self.password;
-                cell.contactPickerButton.tag = indexPath.section;
+                cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
@@ -1170,15 +1170,15 @@ int nameOrigin=0;
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
             case 4:
-                self.lastNameTextField = cell.textField;
+                self.confirmPasswordTextField = cell.textField;
                 cell.textLabel.text = @"Confirm Password";//[ACConstants getLocalizedStringForKey:@"CONFIRM_PASSWORD" withDefaultValue:@"Confirm Password"];
-                cell.textField.text = self.password;
-                cell.contactPickerButton.tag = indexPath.section;
+                cell.textField.text = self.confirmPassword;
+                cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
-                cell.textField.secureTextEntry = NO;
+                cell.textField.secureTextEntry = YES;
 
                 cell.textLabel.textColor = (![cell.textField validateAsNotEmpty] && isDoingValidation)?[UIColor redColor]:[ UIColor blackColor];
                 break ;
@@ -1466,6 +1466,18 @@ int nameOrigin=0;
 {
     if (10 == textField.tag) {
         self.emailAddress = textField.text;
+        if(self.needSignUp)
+            self.signupEmail = self.emailAddress;
+    }
+    else if ((textField == self.emailLoginTextField) || (textField == self.emailSignupTextField)) {
+        self.signupEmail = textField.text;
+    }
+    else if ((textField == self.passwordLoginTextField) || (textField == self.passwordSignupTextField)) {
+        self.password=textField.text;
+    }
+    else if (textField == self.confirmPasswordTextField)
+    {
+        self.confirmPassword=textField.text;
     }
     else if (7 == textField.tag) {
         self.city=textField .text;
@@ -1496,14 +1508,6 @@ int nameOrigin=0;
     else if (9 == textField.tag) {
         self.phone = textField.text;
     }
-    else if ((textField == self.emailLoginTextField) || (textField == self.emailSignupTextField)) {
-        self.email = textField.text;
-    }
-    else if ((textField == self.passwordLoginTextField) || (textField == self.passwordSignupTextField)) {
-        self.password=textField.text;
-    }
-    else if (textField == self.confirmPasswordTextField)
-        self.confirmPassword=textField.text;
 
 }
 
@@ -1627,20 +1631,140 @@ int nameOrigin=0;
     
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_SHIPPING_ADDRESS_CONTINUE];
     
-//    if([self.txtActiveField isFirstResponder])
-//    {
-//        [ self.txtActiveField resignFirstResponder];
-//    }
     [self.view endEditing:YES];
     [self hidePicker];
     
+    if(self.needSignUp)
+    {
+        if([self.password isEqualToString:self.confirmPassword])
+        {
+            [self createAccount];
+        }
+        else
+        {
+            UIAlertView *accountCreateAlert = [[UIAlertView alloc] initWithTitle:@"Wrong Password" message:@"Password entered does not match, Please try again" delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+            [accountCreateAlert show];
+        }
+    }
+    else{
+        [self proceedToShippingOptions];
+    }
+    
+}
+
+-(void)createAccount
+{
+    if ([self validateFormForSignUp] ){
+        //NSLog(@"passed validation");
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"SIGNING UP",@"SIGNING UP")];
+        
+        [ArtAPI
+         requestForAccountCreateWithEmailAddress:self.signupEmail
+         password:self.password
+         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+             
+             AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+             if(currAppLoc==AppLocationNone){
+                 NSDictionary *accountDetails = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Account"];
+                 NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+                 NSString *accountId = [[profileInfo objectForKeyNotNull:@"AccountId"] stringValue];
+                 
+                 [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
+                 [[NSUserDefaults standardUserDefaults] synchronize];
+                 
+             }else{
+                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+                 [ArtAPI setAuthenticationToken:authTok];
+                 
+                 [self proceedToShippingOptions];
+
+                 // Call Delegate
+//                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
+//                     [self.loginDelegate loginSuccess];
+//                 }
+             }
+             
+             
+             
+         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+             // Failure
+             [SVProgressHUD dismiss];
+             
+             self.error =  [JSON objectForKey:@"APIErrorMessage"];
+             
+             //try to get better error message from operation response
+             NSDictionary *dDict = [JSON objectForKey:@"d"];
+             
+             if(dDict){
+                 NSDictionary *operationResponseDict = [dDict objectForKey:@"OperationResponse"];
+                 if(operationResponseDict){
+                     NSArray *errorsArray = [operationResponseDict objectForKey:@"Errors"];
+                     if(errorsArray){
+                         
+                         NSDictionary *firstError = [errorsArray objectAtIndex:0];
+                         
+                         if(firstError){
+                             
+                             NSString *errorCode = [firstError objectForKey:@"ErrorCode"];
+                             NSString *errorMessage = [firstError objectForKey:@"ErrorMessage"];
+                             
+                             if(errorMessage){
+                                 if([errorMessage length] > 0){
+                                     self.error = errorMessage;
+                                 }
+                             }
+                         }
+                     }
+                     
+                 }
+             }
+             
+             self.password = self.confirmPassword = @"";
+             
+             [self.fieldErrors setObject:ACLocalizedString(@"Account Create Failed", @"Account Create Failed")
+                                  forKey:[NSNumber numberWithInt:0]];
+             
+             [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
+                                  forKey:[NSNumber numberWithInt:1]];
+             [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
+                                  forKey:[NSNumber numberWithInt:2]];
+             
+             NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+             [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+             [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+             [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+             [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:self.error withParams:analyticsParams];
+             
+             UIAlertView *accountCreateAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+             [accountCreateAlert show];
+             
+             //ACLocalizedString(@"Your email address or password is incorrect", @"Your email address or password is incorrect");
+//             self.tableview.tableHeaderView = [self tableViewHeader];
+             [self.shippingAddressTableView reloadData];
+             
+         }];
+        
+    } else {
+        //NSLog(@"failed validation");
+        // Reload and display error
+        [self.shippingAddressTableView reloadData];
+//        self.tableview.tableHeaderView = [self tableViewHeader];
+    }
+
+}
+
+-(void)proceedToShippingOptions
+{
     if ([self validateForm]&&!isContinueButtonPressed)
     {
         
         self.isUSAddressInvalid = NO;
         
         isContinueButtonPressed = YES;
-
+        
         NSString *stateValueToBePassedToCall=nil;
         if ([self.selectedCountryCode isEqualToString:@"US"])
         {
@@ -1694,7 +1818,7 @@ int nameOrigin=0;
              
              [SVProgressHUD dismiss];
              isContinueButtonPressed = NO;
-
+             
              NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
              [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
              [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
@@ -1713,9 +1837,7 @@ int nameOrigin=0;
              [self.shippingAddressTableView reloadData];
          }];
     }
-    
 }
-
 
 -(void) cartUpdateShippingDidFinishLoading:(id)JSON
 {
@@ -2907,7 +3029,7 @@ int nameOrigin=0;
     [self.fieldErrors removeAllObjects];
     //NSLog(@"validateForm email: %@ password: %@ confirmPassword: %@", self.email, self.password, self.confirmPassword);
     
-    if( ![self.email validateAsEmail]){
+    if( ![self.signupEmail validateAsEmail]){
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a valid email address", @"Please enter a valid email address")
                              forKey:[NSNumber numberWithInt:0]];
     }
@@ -2961,7 +3083,7 @@ int nameOrigin=0;
 {
     [self.fieldErrors removeAllObjects];
     
-    if( ![self.email validateAsEmail]){
+    if( ![self.signupEmail validateAsEmail]){
         [self.fieldErrors setObject:ACLocalizedString(@"Please enter a valid email address", @"Please enter a valid email address")
                              forKey:[NSNumber numberWithInt:0]];
     }
@@ -2985,7 +3107,7 @@ int nameOrigin=0;
     
     self.loginMode = !self.loginMode;
     self.error = nil;
-    self.email = @"";
+    self.signupEmail = @"";
     self.password = @"";
     self.confirmPassword = @"";
     [self.fieldErrors removeAllObjects];
@@ -2995,12 +3117,14 @@ int nameOrigin=0;
         self.loginView.hidden = NO;
         self.signupView.hidden = YES;
         self.needSignUp = NO;
+        _nextButton.enabled = NO;
     }
     else
     {
         self.loginView.hidden = YES;
         self.signupView.hidden = NO;
         self.needSignUp = YES;
+        _nextButton.enabled = YES;
     }
     [self.shippingAddressTableView reloadData];
 }
@@ -3009,87 +3133,6 @@ int nameOrigin=0;
 {
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_LOGIN_FACEBOOK];
     [self openSessionWithAllowLoginUI: YES];
-}
-
-- (IBAction)loginWithEmail:(id)sender
-{
-    //    if([self.txtActiveField isFirstResponder])
-    //    {
-    //        [ self.txtActiveField resignFirstResponder];
-    //    }
-    [self.view endEditing:YES];
-    
-    self.error = nil;
-    
-    if ([self validateFormForLogin] ){
-        
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
-        
-        [ArtAPI
-         requestForAccountAuthenticateWithEmailAddress:self.email
-         password:self.password
-         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-             //[SVProgressHUD dismiss];
-             
-             // ANALYTICS: log event - LOG IN (completed)
-             [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_LOGIN_EMAIL];
-             
-             AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
-             if(currAppLoc==AppLocationNone){
-                 NSDictionary *accountDetails = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Account"];
-                 NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
-                 NSString *accountId = [[profileInfo objectForKeyNotNull:@"AccountId"] stringValue];
-                 
-                 [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
-                 [[NSUserDefaults standardUserDefaults] synchronize];
-                 
-             }else{
-                 _nextButton.enabled = YES;
-                 self.shippingAddressTableView.tableHeaderView = nil;
-                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
-                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
-                 [ArtAPI setAuthenticationToken:authTok];
-                 [self populateDataWithLoginResponse:responseDict];
-                 
-                 [SVProgressHUD dismiss];
-                 
-                 // Call Delegate
-                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
-                     [self.loginDelegate loginSuccess];
-                 }
-             }
-         }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-             // Failure
-             [SVProgressHUD dismiss];
-             
-             self.error =  ACLocalizedString(@"Your email address or password is incorrect", @"Your email address or password is incorrect");
-             
-             self.password = self.confirmPassword = @"";
-             
-             [self.fieldErrors setObject:ACLocalizedString(@"Login Failed", @"Login Failed")
-                                  forKey:[NSNumber numberWithInt:0]];
-             
-             [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                                  forKey:[NSNumber numberWithInt:1]];
-             [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                                  forKey:[NSNumber numberWithInt:2]];
-             
-             NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
-             NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
-             [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
-             [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
-             [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
-             [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
-             
-             UIAlertView *authFailAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
-             [authFailAlert show];
-             [self.shippingAddressTableView reloadData];
-         }];
-    } else {
-        [self.shippingAddressTableView reloadData];
-    }
 }
 
 - (void)forgotPasswordForEmail:(NSString *)mail {
@@ -3147,7 +3190,7 @@ int nameOrigin=0;
         [SVProgressHUD showWithStatus:ACLocalizedString(@"SIGNING UP",@"SIGNING UP")];
         
         [ArtAPI
-         requestForAccountCreateWithEmailAddress:self.email
+         requestForAccountCreateWithEmailAddress:self.signupEmail
          password:self.password
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
