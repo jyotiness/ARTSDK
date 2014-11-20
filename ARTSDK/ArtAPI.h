@@ -117,6 +117,12 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                                         password:(NSString *)password
                                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                          failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
++ (void) requestForAccountCreateWithEmailAddress:(NSString *) emailAddress
+                                        password:(NSString *)password
+                                        firstName:(NSString *)firstName
+                                        lastName:(NSString *)lastName
+                                         success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
 + (void) accountRetrievePasswordWithEmailAddress:(NSString *) emailAddress
                                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success

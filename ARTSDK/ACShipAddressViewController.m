@@ -1922,7 +1922,24 @@ int nameOrigin=0;
             [self.signupFirstNameTextField becomeFirstResponder];
             self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
         }
-        if ((self.selectedIndexPath.row) < 10)
+        else if(2 == self.selectedIndexPath.section)
+        {
+//            [self.signupFirstNameTextField becomeFirstResponder];
+            if(4 == self.selectedIndexPath.row)
+            {
+                [self.view endEditing:YES];
+            }
+            else
+            {
+                self.selectedIndexPath = [NSIndexPath indexPathForRow:self.selectedIndexPath.row+1 inSection:2];
+                ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
+                [cell.textField becomeFirstResponder];
+                
+                [self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            }
+
+        }
+        else if ((self.selectedIndexPath.row) < 10)
         {
             if(self.willShowCityAndState)
             {

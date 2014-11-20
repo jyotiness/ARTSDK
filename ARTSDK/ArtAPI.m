@@ -705,9 +705,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 }
 
 - (void) requestForAccountCreateWithEmailAddress: (NSString *) emailAddress
-                                              password:(NSString *)password
-                                               success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
-                                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+                                        password:(NSString *)password
+                                         success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 emailAddress, @"emailAddress",
@@ -734,6 +734,58 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     }];
     [operation start];
 }
+
++ (void) requestForAccountCreateWithEmailAddress:(NSString *) emailAddress
+                                        password:(NSString *)password
+                                       firstName:(NSString *)firstName
+                                        lastName:(NSString *)lastName
+                                         success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountCreateWithEmailAddress:emailAddress
+                                                            password:password
+                                                            firstName:firstName
+                                                            lastName:lastName
+                                                             success:success
+                                                             failure:failure];
+}
+
+- (void) requestForAccountCreateWithEmailAddress: (NSString *) emailAddress
+                                        password:(NSString *)password
+                                       firstName:firstName
+                                        lastName:lastName
+                                         success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                emailAddress, @"emailAddress",
+                                password, @"password",
+                                firstName, @"firstname",
+                                lastName, @"lastname",
+                                nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountCreate
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
+        // Save email addresss
+        self.email = emailAddress;
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
+
 
 + (void) accountRetrievePasswordWithEmailAddress:(NSString *) emailAddress
                                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
