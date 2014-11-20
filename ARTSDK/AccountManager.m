@@ -309,13 +309,10 @@
                  if(accountDict){
                      
                      NSString *accountUserName = @"";
-                     
                      NSDictionary *profileInfoDict = [accountDict objectForKeyNotNull:@"ProfileInfo"];
                      if(profileInfoDict){
                          accountUserName = [profileInfoDict objectForKeyNotNull:@"UserName"];
-                         
                          if(!accountUserName) accountUserName = @"";
-                         
                      }
                      
                      
@@ -325,23 +322,23 @@
                          NSString *firstName = [ curatorInfoDict objectForKey:@"FirstName"];
                          if(firstName && ![firstName isKindOfClass:[NSNull class]])
                          {
-                             firstName = (firstName.length > 0)?firstName:@"";
+                             self.firstName = (firstName.length > 0)?firstName:@"";
                          }
                          else
                          {
-                             firstName = @"";
+                             self.firstName = @"";
                          }
                          NSString *lastName = [ curatorInfoDict objectForKey:@"LastName"];
                          if(lastName && ![lastName isKindOfClass:[NSNull class]])
                          {
-                             lastName = (lastName.length > 0)?lastName:@"";
+                             self.lastName = (lastName.length > 0)?lastName:@"";
                          }
                          else
                          {
-                             lastName = @"";
+                             self.lastName = @"";
                          }
                          
-                         NSString *nameToUse = [NSString stringWithFormat:@"%@ %@",firstName,lastName];
+                         NSString *nameToUse = [NSString stringWithFormat:@"%@ %@",self.firstName,self.lastName];
                          nameToUse = [nameToUse stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                          
                          if([nameToUse length] == 0){
