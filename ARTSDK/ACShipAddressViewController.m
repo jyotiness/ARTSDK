@@ -1661,6 +1661,8 @@ int nameOrigin=0;
         [ArtAPI
          requestForAccountCreateWithEmailAddress:self.signupEmail
          password:self.password
+         firstName:self.name
+         lastName:self.lastName
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
              
@@ -1889,6 +1891,7 @@ int nameOrigin=0;
 
 -(void)pushToPaymentScreen
 {
+    self.needSignUp = NO;
     if(ACCheckoutTypePrintReciept == self.artCheckoutType)
     {
         ACPrinterReceiptViewController *chackOutController = [[ACPrinterReceiptViewController alloc] initWithNibName:@"ACPrinterReceiptViewController-iPad" bundle:ACBundle];
