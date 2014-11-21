@@ -1086,7 +1086,7 @@ int nameOrigin=0;
                 cell.cellTitleButton.hidden = NO;
                 cell.contactPickerButton.tag = indexPath.section;
                 cell.textField.tag=indexPath.row;
-                cell.textField.placeholder = @"";
+                cell.textField.placeholder = @"Optional";
                 CGRect textFieldFrame = cell.textField.frame;
                 if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
                     textFieldFrame.origin.x = 120;
@@ -1108,7 +1108,7 @@ int nameOrigin=0;
                 cell.cellTitleButton.hidden = NO;
                 cell.textField.tag=indexPath.row;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-                cell.textField.placeholder = @"";
+                cell.textField.placeholder = @"Optional";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
                 cell.textField.secureTextEntry = NO;
 
