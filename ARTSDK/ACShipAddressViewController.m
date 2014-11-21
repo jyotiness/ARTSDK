@@ -214,7 +214,6 @@ int nameOrigin=0;
         self.loginTitleLabel.font = [ACConstants getStandardBoldFontWithSize:26.0f];
         self.loginView.hidden = self.needSignUp;
         self.signupView.hidden = !self.needSignUp;
-        _nextButton.enabled = self.needSignUp;
 
 /*        [self.loginFbButton setBackgroundColor:[ACConstants getPrimaryButtonColor]];
         [self.loginFbButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -1372,6 +1371,11 @@ int nameOrigin=0;
         NSString *email = [ self.emailArray objectAtIndex:buttonIndex-1];
         self.emailTextField.text = email;
         self.emailAddress = email;
+        if(self.needSignUp)
+        {
+            self.signupEmail = self.emailAddress;
+            [self.shippingAddressTableView reloadData];
+        }
         self.emailArray = nil;
         [self.shippingAddressTableView reloadData];
     }
@@ -1467,7 +1471,10 @@ int nameOrigin=0;
     if (10 == textField.tag) {
         self.emailAddress = textField.text;
         if(self.needSignUp)
+        {
             self.signupEmail = self.emailAddress;
+            [self.shippingAddressTableView reloadData];
+        }
     }
     else if ((textField == self.emailLoginTextField) || (textField == self.emailSignupTextField)) {
         self.signupEmail = textField.text;
@@ -1508,7 +1515,6 @@ int nameOrigin=0;
     else if (9 == textField.tag) {
         self.phone = textField.text;
     }
-
 }
 
 
@@ -1627,6 +1633,14 @@ int nameOrigin=0;
     
 -(void)continueToPayment:(id)sender
 {
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    if((![[AccountManager sharedInstance] isLoggedInForSwitchArt]) && AppLocationSwitchArt == currAppLoc)
+    {
+        UIAlertView *accountCreateAlert = [[UIAlertView alloc] initWithTitle:@"Log In" message:@"Please log in to continue" delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+        [accountCreateAlert show];
+        return;
+    }
+    
     [self.shippingAddressTableView reloadData]; /* Colors the Text label to black*/
     
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_SHIPPING_ADDRESS_CONTINUE];
@@ -2879,6 +2893,11 @@ int nameOrigin=0;
         NSString *email  = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emails, 0);
         self.emailTextField.text = email;
         self.emailAddress = email;
+        if(self.needSignUp)
+        {
+            self.signupEmail = self.emailAddress;
+            [self.shippingAddressTableView reloadData];
+        }
         [self.shippingAddressTableView reloadData];
     }
     else
@@ -3215,14 +3234,12 @@ int nameOrigin=0;
         self.loginView.hidden = NO;
         self.signupView.hidden = YES;
         self.needSignUp = NO;
-        _nextButton.enabled = NO;
     }
     else
     {
         self.loginView.hidden = YES;
         self.signupView.hidden = NO;
         self.needSignUp = YES;
-        _nextButton.enabled = YES;
     }
     [self.shippingAddressTableView reloadData];
 }
@@ -3412,7 +3429,6 @@ int nameOrigin=0;
              [[NSUserDefaults standardUserDefaults] synchronize];
          }else{
              
-             _nextButton.enabled = YES;
              self.shippingAddressTableView.tableHeaderView = nil;
              NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
              NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
