@@ -593,36 +593,6 @@ int nameOrigin=0;
 {
     //NSLog(@"keyboardWillShow");
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
-        
-        //NSLog(@"iPhone");
-//        CGRect rect = self.shippingAddressTableView.frame;
-//        
-//        //iPhone5 compatibility
-//        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
-//        if(screenHeight == 480){
-//            //iphone no retina
-//            rect.size.height = 416-225;
-//        }else if(screenHeight == 960){
-//            //iphone with retina
-//            rect.size.height = 416-225;
-//        }else{
-//            //iphone5
-//            rect.size.height = 504 - 225;
-//        }
-//        
-//        self.shippingAddressTableView.frame = rect;
-//        
-//        //NSLog(@"Rect: %@ IndexPath to scroll to: %i,%i",NSStringFromCGRect(rect), self.selectedIndexPath.section, self.selectedIndexPath.row);
-//        
-//        // For some reason the phone and email fields are being scrolled after this is called, and there for making this scrollTo invalid.
-//        // By delay it, the scrollTo works. This is not the ideal way to do it, but I can't figure why or where they are being scrolled.
-//        double delayInSeconds = 0.1;
-//        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-//        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//            [self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-//        });
-        
-        
         UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 270, 0.0);
         self.shippingAddressTableView.contentInset = contentInsets;
         self.shippingAddressTableView.scrollIndicatorInsets = contentInsets;
@@ -849,6 +819,7 @@ int nameOrigin=0;
     cell.textLabel.hidden = NO;
     cell.pickerButton.hidden = YES;
     cell.contactPickerButton.hidden=YES;
+    cell.textField.cellIndexPath = indexPath;
     // Adjust Textfield size
     CGRect textFieldFrame = cell.textField.frame;
     //NSLog(@"section: %d row: %d textFieldFrame: %@" ,indexPath.section, indexPath.row, NSStringFromCGRect(textFieldFrame));
@@ -1135,6 +1106,7 @@ int nameOrigin=0;
                 cell.textField.text = self.lastName;
                 cell.contactPickerButton.tag = indexPath.section;
                 cell.cellTitleButton.hidden = NO;
+                cell.textField.tag=indexPath.row;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
@@ -1148,6 +1120,7 @@ int nameOrigin=0;
                 cell.textField.text = self.signupEmail;
                 cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
+                cell.textField.tag=indexPath.row;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -1161,6 +1134,7 @@ int nameOrigin=0;
                 cell.textField.text = self.password;
                 cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
+                cell.textField.tag=indexPath.row;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
@@ -1174,6 +1148,7 @@ int nameOrigin=0;
                 cell.textField.text = self.confirmPassword;
                 cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
+                cell.textField.tag=indexPath.row;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
@@ -1414,57 +1389,52 @@ int nameOrigin=0;
 
 - (IBAction)textFieldFinished:(id)sender
 {
-//    [sender resignFirstResponder];
     [self.view endEditing:YES];
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(ACCheckoutTextField *)textField
 {
-//    [textField resignFirstResponder];
     [self.view endEditing:YES];
     return YES;
 }
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
+-(void)textFieldDidBeginEditing:(ACCheckoutTextField *)textField
 {
-    //NSLog(@"textFieldDidBeginEditing: textField: %@", textField );
-    
     self.txtActiveField = textField;
-    
     [self hidePicker];
     
-    //UITableViewCell *cell = (UITableViewCell *)[[[textField superview] superview] superview];
+    ACKeyboardToolbarView * toolbar = [[ACKeyboardToolbarView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([self.view getCurrentScreenBoundsDependOnOrientation]), 40)];
+    toolbar.tag = 1;
+//        toolbar.cellIndexPath = indexPath;
+    toolbar.toolbarDelegate = self;
+    [textField setInputAccessoryView:toolbar];
 
-    NSInteger currentSelectedTextFieldTag = textField.tag;
     
-    if(currentSelectedTextFieldTag == 10)//// CS: fixing CIRCLEIOS-1591
+    NSIndexPath *indexPath = ((ACCheckoutTextField*)textField).cellIndexPath;
+//    if(!indexPath)
+//        return;
+    
+    NSInteger currentSelectedTextFieldTag = textField.tag;
+    if(2 == indexPath.section)
+    {
+        self.selectedIndexPath = [NSIndexPath indexPathForRow:textField.tag inSection:2];
+    }
+    else if(currentSelectedTextFieldTag == 10)
     {
         self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     }
     else
     {
         self.selectedIndexPath = [NSIndexPath indexPathForRow:textField.tag inSection:0];
-    //NSLog(@"selectedIndexPath section: %d row: %d cell: %@", self.selectedIndexPath.section, self.selectedIndexPath.row, cell);s
     }
 
-    if  (self.view.frame.origin.y >= 0)
-    {
-        //[self setViewMovedUp:YES];
-    }
     if (textField==self.stateField)
     {
-//        [stateField resignFirstResponder];
         [self.view endEditing:YES];
     }
     
-    // Now add the view as an input accessory view to the selected textfield.
-    //[textField setInputAccessoryView: [self createInputAccessoryView:YES isModal:NO]];
-    ACKeyboardToolbarView * toolbar = [[ACKeyboardToolbarView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([self.view getCurrentScreenBoundsDependOnOrientation]), 40)];
-    toolbar.tag = 1;
-    toolbar.toolbarDelegate = self;
-    [textField setInputAccessoryView:toolbar];
-    
 }
+
 // Textfield value changed, store the new value.
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -2012,10 +1982,13 @@ int nameOrigin=0;
         {
             [self.signupFirstNameTextField becomeFirstResponder];
             self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
+            ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
+            [cell.textField becomeFirstResponder];
+            
+            [self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }
         else if(2 == self.selectedIndexPath.section)
         {
-//            [self.signupFirstNameTextField becomeFirstResponder];
             if(4 == self.selectedIndexPath.row)
             {
                 [self.view endEditing:YES];
@@ -2075,37 +2048,38 @@ int nameOrigin=0;
 }
 
 - (void)keyboardToolbar: (ACKeyboardToolbarView*) keyboardToolbar didSelectPrevious: (id) previous {
-    // If the active textfield is the first one, can't go to any previous
-    // field so just return.
-    
- /*   if(self.willShowCityAndState && (8 == self.selectedIndexPath.row))
-    {
-        
-        if ([self.selectedCountryCode isEqualToString:@"US"])
-        {
-            [ self countryPickerPressed:self.stateButton];
-        }
-        else
-        {
-            self.selectedIndexPath = [NSIndexPath indexPathForRow:7 inSection:0];
-            ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
-            [cell.textField becomeFirstResponder];
-        }
-    }
-    else*/ if(1 == self.selectedIndexPath.section)
+    if(1 == self.selectedIndexPath.section)
     {
         self.selectedIndexPath = [NSIndexPath indexPathForRow:self.willShowCityAndState?9:7 inSection:0];
-        
-//        [cell.textField becomeFirstResponder];
-//        [self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        
-        [UIView animateWithDuration:0.40 animations:^{
+                [UIView animateWithDuration:0.40 animations:^{
             [self.shippingAddressTableView setContentOffset:CGPointMake(0, 360 - ([UIScreen mainScreen].bounds.size.height - 480)/2)];
         }completion:^(BOOL finished) {
             ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
             [cell.textField becomeFirstResponder];
         }];
         
+    }
+    else if(2 == self.selectedIndexPath.section)
+    {
+        if(0 == self.selectedIndexPath.row)
+        {
+            self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+            ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
+            [cell.textField becomeFirstResponder];
+            
+            [self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
+        else
+        {
+            NSLog(@"Row = %d",self.selectedIndexPath.row);
+            self.selectedIndexPath = [NSIndexPath indexPathForRow:self.selectedIndexPath.row-1 inSection:2];
+            NSLog(@"New Row = %d",self.selectedIndexPath.row);
+            
+            ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
+            [cell.textField becomeFirstResponder];
+            
+            [self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
     }
     else
     {
@@ -2141,8 +2115,6 @@ int nameOrigin=0;
         }
         else
         {
-//            ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
-            //            [cell.textField resignFirstResponder];
             [self.view endEditing:YES];
         }
     }

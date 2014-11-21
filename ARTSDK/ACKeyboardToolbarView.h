@@ -13,6 +13,8 @@
 
 @interface ACKeyboardToolbarView : UIToolbar
 @property (assign, nonatomic) id <ACKeyboardToolbarDelegate> toolbarDelegate;
+//@property (nonatomic, assign) NSIndexPath *cellIndexPath;
+
 - (id)initWithFrame:(CGRect)frame hideNextPrevButtons: (BOOL) hideNextPrevButtons;
 @end
 

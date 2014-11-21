@@ -10,4 +10,6 @@
 
 @interface SALoginTextField : UITextField
 
+@property (nonatomic, retain) NSIndexPath *cellIndexPath;
+
 @end

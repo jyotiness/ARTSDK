@@ -13,7 +13,7 @@
 }
 
 @property (nonatomic, retain) UIImage *normalBackgound;
-@property (nonatomic, retain) NSIndexPath *cellIndexPath;
+@property (nonatomic, assign) NSIndexPath *cellIndexPath;
 
 //- (void) setValidationHighlight:(BOOL)highlighted;
 
