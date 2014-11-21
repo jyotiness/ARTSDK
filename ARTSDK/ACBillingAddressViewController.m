@@ -2984,8 +2984,8 @@
         [SVProgressHUD dismiss];
         [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
         
-        NSLog(@"SwitchArt App - needs to set the bundles on the account");
-        [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:orderNumber];
+        NSLog(@"SwitchArt App - needs to set the address on the account");
+        [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:orderNumber];
         
     }else{
         
@@ -3000,6 +3000,31 @@
         [self.navigationController pushViewController:controller animated:YES];
     }
     
+}
+
+-(void)addressSetSuccess:(NSString *)orderNumber withAddressID:(NSString *)addressID{
+    
+    NSLog(@"SwitchArt App - needs to set the bundles on the account");
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:orderNumber withAddressID:addressID];
+    
+}
+
+-(void)addressSetFailed:(NSString *)orderNumber{
+    NSLog(@"Failed to set shipping address");
+    
+    //need to do the same thing though even though the UserProperties update failed
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message: @"There was an error updating account information."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
+    
+    [ alert show];
+    
+    //set bundles anyway but with blank address ID
+    NSLog(@"SwitchArt App - needs to set the bundles on the account");
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:orderNumber withAddressID:@""];
 }
 
 -(void)bundlesSetSuccess{

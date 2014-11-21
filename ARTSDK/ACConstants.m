@@ -529,7 +529,7 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
 +(BOOL)isSwitchArt
 {
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    if([bundleIdentifier hasSuffix:@"switchart"]){
+    if([bundleIdentifier hasSuffix:@"SwitchArt"]){
         return YES;
     }
     return NO;

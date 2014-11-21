@@ -1792,6 +1792,71 @@ int nameOrigin=0;
         
         [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];
         
+        //SWITCHART - NEED TO KEEP THIS ADDRESS IN THE ACCOUNTMANAGER FOR LATER TO UPDATE
+        //THE SHIPPING ADDRESS ON THE ACCOUNT.  THIS IS NOT OPTIMAL, BUT NECESSARY
+        AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+        if(currAppLoc==AppLocationSwitchArt){
+            
+            NSMutableDictionary *addressDict = [[NSMutableDictionary alloc] init];
+            NSMutableDictionary *nameDict = [[NSMutableDictionary alloc] init];
+            NSMutableDictionary *phoneDict = [[NSMutableDictionary alloc] init];
+            
+            //phone
+            NSString *primaryPhone4Dict = self.phone;
+            NSString *secondaryPhone4Dict = @"";
+            if(!primaryPhone4Dict) primaryPhone4Dict=@"";
+            [phoneDict setObject:primaryPhone4Dict forKey:@"Primary"];
+            [phoneDict setObject:secondaryPhone4Dict forKey:@"Secondary"];
+            [addressDict setObject:phoneDict forKey:@"Phone"];
+            
+            //name
+            NSString *firstName4Dict = self.name;
+            NSString *lastName4Dict = self.lastName;
+            if(!firstName4Dict) firstName4Dict=@"";
+            if(!lastName4Dict) lastName4Dict=@"";
+            [nameDict setObject:firstName4Dict forKey:@"FirstName"];
+            [nameDict setObject:lastName4Dict forKey:@"LastName"];
+            [addressDict setObject:nameDict forKey:@"Name"];
+            
+            //the rest
+            NSString *address14Dict = self.addressLine1;
+            if(!address14Dict) address14Dict = @"";
+            NSString *address24Dict = self.addressLine2;
+            if(!address24Dict) address24Dict = @"";
+            NSString *addressIdentifier4Dict = @"";
+            NSString *addressType4Dict = @"3";  //3 is shipping
+            NSString *city4Dict = self.city;
+            if(!city4Dict) city4Dict = @"";
+            NSString *companyName4Dict = self.company;
+            if(!companyName4Dict) companyName4Dict = @"";
+            NSString *country4Dict = self.countryPickerValue;
+            if(!country4Dict) country4Dict = @"";
+            NSString *country2ISO4Dict = self.selectedCountryCode;
+            if(!country2ISO4Dict) country2ISO4Dict = @"";
+            NSString *country3ISO4Dict = @"";
+            NSString *county4Dict = @"";
+            NSString *state4Dict = self.stateValue;
+            if(!state4Dict) state4Dict = @"";
+            NSString *zip4Dict = self.postalCode;
+            if(!zip4Dict) zip4Dict = @"";
+            
+            [addressDict setObject:address14Dict forKey:@"Address1"];
+            [addressDict setObject:address24Dict forKey:@"Address2"];
+            [addressDict setObject:addressIdentifier4Dict forKey:@"AddressIdentifier"];
+            [addressDict setObject:addressType4Dict forKey:@"AddressType"];
+            [addressDict setObject:city4Dict forKey:@"City"];
+            [addressDict setObject:companyName4Dict forKey:@"CompanyName"];
+            [addressDict setObject:country4Dict forKey:@"Country"];
+            [addressDict setObject:country2ISO4Dict forKey:@"CountryIsoA2"];
+            [addressDict setObject:country3ISO4Dict forKey:@"CountryIsoA3"];
+            [addressDict setObject:county4Dict forKey:@"County"];
+            [addressDict setObject:state4Dict forKey:@"State"];
+            [addressDict setObject:zip4Dict forKey:@"ZipCode"];
+            
+            [AccountManager sharedInstance].shippingAddressUsedInCheckout = addressDict;
+            
+        }
+        
         
         [ArtAPI
          cartUpdateShippingAddressFirstName:self.name

@@ -24,6 +24,8 @@ typedef enum {
 -(void)bundlesLoadingFailed;
 -(void)bundlesSetSuccess;
 -(void)bundlesSetFailed;
+-(void)addressSetSuccess:(NSString *)orderNumber withAddressID:(NSString *)addressID;
+-(void)addressSetFailed:(NSString *)orderNumber;
 -(void)userGalleryLoadedSuccessfullyWithResponse:(id)jsonResponse withGalleryItems:(NSArray *)galleryItems withGalleryID:(NSString *)myPhotosDefaultGallery;
 -(void)userGalleryLoadingFailedWithResponse:(id)jsonResponse;
 @end
@@ -47,20 +49,21 @@ typedef enum {
 @property(nonatomic,strong) NSMutableArray *addressArray;
 @property(nonatomic,strong) NSString *firstName;
 @property(nonatomic,strong) NSString *lastName;
+@property(nonatomic,strong) NSMutableDictionary *shippingAddressUsedInCheckout;
 
 //Method's
 +(AccountManager *) sharedInstance;
 -(void)loadUserDefaultGallery:(id<AccountManagerDelegate>)delegate;
 -(BOOL)isLoggedInForSwitchArt;
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate;
--(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber;
+-(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber  withAddressID:(NSString *)addressID;
 -(void)setBundlesArrayForLoggedInUser:(NSArray *)bundlesArray;
 -(void)addNewBundleToPurchasedBundles:(NSDictionary *)newBundle;
 -(BOOL)updateBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate;
 -(NSArray *)getBundlesArray;
 -(NSDictionary *)getBundleForOrderNumber:(NSString*)orderNumber;
 -(void)setBundlesArray:(NSArray *)bundleArray;
-
+-(BOOL)setShippingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber;
 -(NSDictionary *)getAddressForAddressID:(NSString*)addressID;
 -(NSString *)getNewPackName;
 

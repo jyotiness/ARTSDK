@@ -71,7 +71,7 @@
 "STATE" = "State";
 "CHOOSE_CONTACT" = "Choose Contact";
 "CHOOSE_EMAIL" = "Choose Email";
-"UPDATING_SHIPPING_ADDRESS" = "Updating shipping address";
+"UPDATING_SHIPPING_ADDRESS" = "Updating shipping address...";
 "CHOOSE_AN_ADDRESS_FOR_SHIPMENT" = "Choose an Address for Shipment";
 "EMAIL_NOT_FOUND" = "Email Not Found";
 "CHOOSE_AN_EMAIL" = "Choose an email";

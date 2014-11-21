@@ -23,6 +23,7 @@
 @synthesize addressArray;
 @synthesize unpurchasedPackName;
 @synthesize packPurchaseMode;
+@synthesize shippingAddressUsedInCheckout;
 
 + (AccountManager*) sharedInstance {
     static AccountManager* _one = nil;
@@ -255,11 +256,11 @@
     return status;
 }
 
--(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber
+-(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber withAddressID:(NSString *)addressID
 {
     self.delegate = delegate;
     __block BOOL status = NO;
-
+    
     NSString *propertyKey = @"Bundles";
     
     //assume bundles are already compressed
@@ -274,6 +275,7 @@
         [orderDict setObject:orderNumber forKey:@"orderNumber"];
     }
     
+    [newBundleUncompressed setObject:addressID forKey:@"shippingAddressId"];
     [packArray addObject:newBundleUncompressed];
     
     //need to make it into a Dictionary with one key
@@ -286,10 +288,10 @@
     NSLog(@"%@", propertyValue);
     
     /*
-    NSString *propertyValue2 = @"{\"Bundles\" :[{\"bundleId\":\"MIKE TEST BUNDLE UPDATE\", \"name\":\"My Updated House\", \"description\":\"\", \"APNUM\":\"12259962\", \"terms\":{\"size\":{\"configId\":\"12260010\", \"width\":\"10\", \"height\":\"8\"}, \"frame\":{\"frameAPNUM\":\"\", \"frameText\":\"\"}, \"count\":\"1\"}, \"shippingAddressId\":\"A1\", \"retailPrice\":\"10\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"3452363772784\", \"creditCode\":\"\", \"balance\":{\"count\":\"1\", \"amount\":\"\"}}} , {\"bundleId\":\"94C02DF0772C4054A3BA8044C575E36C-2\", \"name\":\"My Mom's House\", \"description\":\"\", \"APNUM\":\"12259984\", \"terms\":{\"size\":{\"configId\":\"11969361\", \"width\":\"32\", \"height\":\"24\"}, \"frame\":{\"frameAPNUM\":\"12260003\", \"frameText\":\"Pecan\"}, \"count\":\"12\"}, \"shippingAddressId\":\"A2\", \"retailPrice\":\"460\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"4545467845635\", \"creditCode\":\"\", \"balance\":{\"count\":\"6\", \"amount\":\"\"}}}]}";
-    
-    NSLog(@"%@", propertyValue2);
-    */
+     NSString *propertyValue2 = @"{\"Bundles\" :[{\"bundleId\":\"MIKE TEST BUNDLE UPDATE\", \"name\":\"My Updated House\", \"description\":\"\", \"APNUM\":\"12259962\", \"terms\":{\"size\":{\"configId\":\"12260010\", \"width\":\"10\", \"height\":\"8\"}, \"frame\":{\"frameAPNUM\":\"\", \"frameText\":\"\"}, \"count\":\"1\"}, \"shippingAddressId\":\"A1\", \"retailPrice\":\"10\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"3452363772784\", \"creditCode\":\"\", \"balance\":{\"count\":\"1\", \"amount\":\"\"}}} , {\"bundleId\":\"94C02DF0772C4054A3BA8044C575E36C-2\", \"name\":\"My Mom's House\", \"description\":\"\", \"APNUM\":\"12259984\", \"terms\":{\"size\":{\"configId\":\"11969361\", \"width\":\"32\", \"height\":\"24\"}, \"frame\":{\"frameAPNUM\":\"12260003\", \"frameText\":\"Pecan\"}, \"count\":\"12\"}, \"shippingAddressId\":\"A2\", \"retailPrice\":\"460\", \"invoicePrice\":\"\", \"orderInfo\":{\"orderNumber\":\"4545467845635\", \"creditCode\":\"\", \"balance\":{\"count\":\"6\", \"amount\":\"\"}}}]}";
+     
+     NSLog(@"%@", propertyValue2);
+     */
     
     [ArtAPI requestForAccountUpdateProperty:propertyKey withValue:propertyValue success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
@@ -315,7 +317,7 @@
          
          
      }
-     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
      {
          status = NO;
          
@@ -324,6 +326,92 @@
          if(self.delegate && [self.delegate respondsToSelector:@selector(bundlesSetFailed)])
          {
              [self.delegate bundlesSetFailed];
+         }
+         
+     }];
+    
+    return status;
+}
+
+-(BOOL)setShippingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber
+{
+    self.delegate = delegate;
+    __block BOOL status = NO;
+
+    //need to make it into a Dictionary with one key
+    NSDictionary *addressDict = self.shippingAddressUsedInCheckout;
+    
+    NSString *addresstype = [addressDict objectForKeyNotNull:@"AddressType"];
+    NSString *addressLine1 = [addressDict objectForKeyNotNull:@"Address1"];
+    NSString *addressLine2 = [addressDict objectForKeyNotNull:@"Address2"];
+    NSString *companyName = [addressDict objectForKeyNotNull:@"CompanyName"];
+    NSString *city = [addressDict objectForKeyNotNull:@"City"];
+    NSString *state = [addressDict objectForKeyNotNull:@"State"];
+    NSString *countryCode = [addressDict objectForKeyNotNull:@"CountryIsoA2"];
+    NSString *zipCode = [addressDict objectForKeyNotNull:@"ZipCode"];
+    NSString *primaryPhone = [[addressDict objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
+    NSString *firstName = [[addressDict objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
+    NSString *lastName = [[addressDict objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
+    
+    NSString *isDefault = @"true";
+    
+    NSDictionary *addressParameters = [NSDictionary dictionaryWithObjectsAndKeys:addresstype,@"addressType",firstName,@"firstName",lastName,@"lastName",addressLine1,@"addressLine1",addressLine2,@"addressLine2",companyName,@"companyName",city,@"city",state,@"state",countryCode,@"twoDigitIsoCountryCode",zipCode,@"zipCode",primaryPhone,@"primaryPhone",isDefault,@"isDefault", nil];
+    
+    
+    [ArtAPI requestForAccountUpdateLocationWithParameters:addressParameters success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+     {
+         
+         NSLog(@" requestForAccountUpdateProperty success \n JSON Account Update Property response %@ ", JSON);
+         status = YES;
+         
+         NSString *addressID = @"";
+         
+         if(JSON){
+             
+             NSDictionary *dDict = [JSON objectForKey:@"d"];
+             
+             if(dDict){
+                 
+                 NSDictionary *accountDict = [dDict objectForKey:@"Account"];
+                 
+                 if(accountDict){
+                     
+                     NSDictionary *profileInfoDict = [accountDict objectForKey:@"ProfileInfo"];
+                     
+                     if(profileInfoDict){
+                         NSArray *addresses = [profileInfoDict objectForKey:@"Addresses"];
+                         
+                         if(addresses){
+                             int lastIndex = (int)[addresses count];
+                             lastIndex = lastIndex - 1;
+                             if(lastIndex >= 0){
+                                 NSDictionary *theAddressWeJustSet = [addresses objectAtIndex:lastIndex];
+                                 addressID = [theAddressWeJustSet objectForKeyNotNull:@"AddressIdentifier"];
+                             }
+                         }
+                     }
+                 }
+                 
+                 
+             }
+         }
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(addressSetSuccess:withAddressID:)])
+         {
+             [self.delegate addressSetSuccess:orderNumber withAddressID:addressID];
+         }
+         
+         
+     }
+     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+     {
+         status = NO;
+         
+         NSLog(@" requestForAccountUpdateLocation failed \n JSON Account Update Location response %@ ", JSON);
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(addressSetFailed:)])
+         {
+             [self.delegate addressSetFailed:orderNumber];
          }
          
      }];
@@ -454,6 +542,7 @@
                              
                              for(NSDictionary *tempAddress in addressesArray){
                              
+                                 NSLog(@"%@", tempAddress);
                                  tempAddressID = [tempAddress objectForKey:@"AddressIdentifier"];
                                  
                                  if(tempAddressID){
