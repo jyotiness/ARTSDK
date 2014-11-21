@@ -342,6 +342,7 @@
             {
                 cell.textField.text = self.fName;
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
+                cell.textField.placeholder = @"Optional";
                 cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textLabel.textColor = [UIColor blackColor];
@@ -356,6 +357,7 @@
                 cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textLabel.textColor = [UIColor blackColor];
+                cell.textField.placeholder = @"";
                 if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                     cell.textLabel.textColor = [UIColor redColor];
                 }
@@ -370,6 +372,7 @@
                 cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textLabel.textColor = [UIColor blackColor];
+                cell.textField.placeholder = @"Optional";
                 if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                     cell.textLabel.textColor = [UIColor redColor];             }
                 break;
@@ -381,6 +384,7 @@
                 cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
                 cell.textField.secureTextEntry = YES;
                 cell.textLabel.textColor = [UIColor blackColor];
+                cell.textField.placeholder = @"";
                 if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                     cell.textField.text = @"";
                     cell.textLabel.textColor = [UIColor redColor];
@@ -395,10 +399,9 @@
             cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
             [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
             cell.textLabel.textColor = [UIColor blackColor];
+            cell.textField.placeholder = @"";
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
-                //                cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
-                //                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }
@@ -407,11 +410,11 @@
             [cell.textField setKeyboardType:UIKeyboardTypeDefault];
             cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
             cell.textField.secureTextEntry = YES;
+            cell.textField.placeholder = @"";
             cell.textLabel.textColor = [UIColor blackColor];
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                 cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
-                //                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }
@@ -422,10 +425,10 @@
             cell.textField.secureTextEntry = YES;
             cell.textLabel.textColor = [UIColor blackColor];
             cell.textField.text = self.confirmPassword;
+            cell.textField.placeholder = @"";
             if([self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]] != nil){
                 cell.textField.text = @"";
                 cell.textLabel.textColor = [UIColor redColor];
-                //                cell.textField.placeholder = [self.fieldErrors objectForKey:[NSNumber numberWithInt:indexPath.row]];
             }
             break;
         }
