@@ -759,7 +759,8 @@
         [SVProgressHUD showWithStatus:ACLocalizedString(@"SIGNING UP",@"SIGNING UP")];
         
         [ArtAPI
-         requestForAccountCreateWithEmailAddress:self.email
+         //requestForAccountCreateWithEmailAddress:self.email
+         requestForAccountCreateExtentedEmailAddress:self.email
          password:self.password
          firstName:self.fName
          lastName:self.lName
