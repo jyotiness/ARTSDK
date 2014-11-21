@@ -42,6 +42,7 @@ NSString* const kResourceSearchResultInSimpleFormat = @"/wcf/SearchService.svc/a
 // Art.com API Resources
 NSString* const kResourceAccountAuthenticate = @"AccountAuthenticate";
 NSString* const kResourceAccountCreate = @"AccountCreate";
+NSString* const kResourceAccountCreateExtented = @"AccountCreateExtented";
 NSString* const kResourceAccountGet = @"AccountGet";
 NSString* const kResourceAccountUpdateProperty = @"AccountUpdateProperty";
 NSString* const kResourceAccountUpdateLocationByType = @"AccountUpdateLocationByType";
@@ -785,7 +786,55 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [operation start];
 }
 
++ (void) requestForAccountCreateExtentedEmailAddress:(NSString *) emailAddress
+                                        password:(NSString *)password
+                                       firstName:(NSString *)firstName
+                                        lastName:(NSString *)lastName
+                                         success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountCreateExtentedEmailAddress:emailAddress
+                                                            password:password
+                                                           firstName:firstName
+                                                            lastName:lastName
+                                                             success:success
+                                                             failure:failure];
+}
 
+- (void) requestForAccountCreateExtentedEmailAddress: (NSString *) emailAddress
+                                        password:(NSString *)password
+                                       firstName:firstName
+                                        lastName:lastName
+                                         success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                emailAddress, @"emailAddress",
+                                password, @"password",
+                                firstName, @"firstname",
+                                lastName, @"lastname",
+                                nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountCreateExtented
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
+        // Save email addresss
+        self.email = emailAddress;
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
 
 + (void) accountRetrievePasswordWithEmailAddress:(NSString *) emailAddress
                                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success

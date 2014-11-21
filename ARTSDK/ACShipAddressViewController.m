@@ -1604,7 +1604,7 @@ int nameOrigin=0;
 -(void)continueToPayment:(id)sender
 {
     AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
-    if((![[AccountManager sharedInstance] isLoggedInForSwitchArt]) && AppLocationSwitchArt == currAppLoc)
+    if((!self.needSignUp && (![[AccountManager sharedInstance] isLoggedInForSwitchArt]) && AppLocationSwitchArt == currAppLoc))
     {
         UIAlertView *accountCreateAlert = [[UIAlertView alloc] initWithTitle:@"Log In" message:@"Please log in to continue" delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
         [accountCreateAlert show];
@@ -1643,7 +1643,7 @@ int nameOrigin=0;
         [SVProgressHUD showWithStatus:ACLocalizedString(@"SIGNING UP",@"SIGNING UP")];
         
         [ArtAPI
-         requestForAccountCreateWithEmailAddress:self.signupEmail
+         requestForAccountCreateExtentedEmailAddress:self.signupEmail
          password:self.password
          firstName:self.name
          lastName:self.lastName

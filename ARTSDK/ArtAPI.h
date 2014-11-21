@@ -100,6 +100,13 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 #pragma mark -
 #pragma mark Authenticaion
 
++ (void) requestForAccountCreateExtentedEmailAddress:(NSString *) emailAddress
+                                            password:(NSString *)password
+                                           firstName:(NSString *)firstName
+                                            lastName:(NSString *)lastName
+                                             success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                             failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
 + (void) requestForAccountAuthenticateWithEmailAddress:(NSString *) emailAddress
                                               password:(NSString *)password
                                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
