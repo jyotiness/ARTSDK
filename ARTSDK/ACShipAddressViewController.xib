@@ -6,7 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Giorgio Sans-Bold.otf">
+        <mutableArray key="GiorgioSans-Bold.ttf">
             <string>GiorgioSans-Bold</string>
         </mutableArray>
     </customFonts>
@@ -198,7 +198,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rFU-OR-Ikk" userLabel="Login View">
                     <rect key="frame" x="0.0" y="180" width="320" height="143"/>
                     <subviews>
-                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tKs-4h-xMA" userLabel="Email Text" customClass="ACCheckoutTextField">
+                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tKs-4h-xMA" userLabel="Email Text" customClass="ACCheckoutTextField">
                             <rect key="frame" x="0.0" y="1" width="320" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -211,7 +211,7 @@
                                 <outlet property="delegate" destination="-1" id="gQC-gh-0cc"/>
                             </connections>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hFP-om-4zX" userLabel="Password Text" customClass="ACCheckoutTextField">
+                        <textField opaque="NO" clipsSubviews="YES" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hFP-om-4zX" userLabel="Password Text" customClass="ACCheckoutTextField">
                             <rect key="frame" x="0.0" y="46" width="320" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>

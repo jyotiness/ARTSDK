@@ -223,6 +223,10 @@ int nameOrigin=0;
         [self.loginEmailButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         self.loginEmailButton.titleLabel.font = [ACConstants getStandardBoldFontWithSize:32.0f]; */
     }
+    else
+    {
+        self.shippingAddressTableView.tableHeaderView = nil;
+    }
     
     
     // Allow the calling view controller to define the back button behavior
@@ -1899,6 +1903,86 @@ int nameOrigin=0;
     }
 }
 
+- (IBAction)loginWithEmail:(id)sender
+{
+    [self.view endEditing:YES];
+    
+    self.error = nil;
+    
+    if ([self validateFormForLogin] ){
+        
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
+        
+        [ArtAPI
+         requestForAccountAuthenticateWithEmailAddress:self.signupEmail
+         password:self.password
+         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+             //[SVProgressHUD dismiss];
+             
+             // ANALYTICS: log event - LOG IN (completed)
+             [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_LOGIN_EMAIL];
+             
+             AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+             if(currAppLoc==AppLocationNone){
+                 NSDictionary *accountDetails = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Account"];
+                 NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+                 NSString *accountId = [[profileInfo objectForKeyNotNull:@"AccountId"] stringValue];
+                 
+                 [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
+                 [[NSUserDefaults standardUserDefaults] synchronize];
+                 
+             }else{
+                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+                 [ArtAPI setAuthenticationToken:authTok];
+                 self.shippingAddressTableView.tableHeaderView = nil;
+                 [self populateDataWithLoginResponse:responseDict];
+                 [SVProgressHUD dismiss];
+                 
+                 // Call Delegate
+                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
+                     [self.loginDelegate loginSuccess];
+                 }
+             }
+             
+             
+         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+             // Failure
+             [SVProgressHUD dismiss];
+             
+             self.error =  ACLocalizedString(@"Your email address or password is incorrect", @"Your email address or password is incorrect");
+             
+             self.password = self.confirmPassword = @"";
+             
+             [self.fieldErrors setObject:ACLocalizedString(@"Login Failed", @"Login Failed")
+                                  forKey:[NSNumber numberWithInt:0]];
+             
+             [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
+                                  forKey:[NSNumber numberWithInt:1]];
+             [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
+                                  forKey:[NSNumber numberWithInt:2]];
+             
+             
+             NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
+             NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+             [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+             [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+             [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+             [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
+             
+             UIAlertView *authFailAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+             [authFailAlert show];
+             
+             [self.shippingAddressTableView reloadData];
+             
+         }];
+    } else {
+        [self.shippingAddressTableView reloadData];
+    }
+}
+
 -(void) cartUpdateShippingDidFinishLoading:(id)JSON
 {
     NSDictionary *cart = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"Cart"];
@@ -3126,6 +3210,7 @@ int nameOrigin=0;
 -(BOOL) validateFormForSignUp
 {
     [self.fieldErrors removeAllObjects];
+    self.error = nil;
     //NSLog(@"validateForm email: %@ password: %@ confirmPassword: %@", self.email, self.password, self.confirmPassword);
     
     if( ![self.signupEmail validateAsEmail]){
