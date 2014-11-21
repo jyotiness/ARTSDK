@@ -2396,6 +2396,12 @@ int nameOrigin=0;
         self.emailTextField.text = email;
         self.emailAddress = email;
         self.emailArray = nil;
+        if(self.needSignUp)
+        {
+            self.signupEmail = self.emailAddress;
+            [self.shippingAddressTableView reloadData];
+        }
+
     }
     else if(777 == actionSheet.tag)
     {
@@ -2504,7 +2510,11 @@ int nameOrigin=0;
         NSString *email  = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emails, 0);
         self.emailTextField.text = email;
         self.emailAddress = email;
-        [self.shippingAddressTableView reloadData];
+        if(self.needSignUp)
+        {
+            self.signupEmail = self.emailAddress;
+            [self.shippingAddressTableView reloadData];
+        }
     }
     else
     {
