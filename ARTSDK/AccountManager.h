@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 //#import "ACJSONAPIRequest.h"
 #import "ArtAPI.h"
-//#import "ACAPI.h"
 
 typedef enum {
     PurchaseModeNewPack = 0,
@@ -68,6 +67,5 @@ typedef enum {
 -(NSString *)getNewPackName;
 
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate;
-
 
 @end

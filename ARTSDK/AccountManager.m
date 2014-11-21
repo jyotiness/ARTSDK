@@ -132,11 +132,38 @@
     NSDictionary *bundleDict = nil;
     for(NSDictionary *dict in self.purchasedBundles)
     {
-        NSString *oNumber = [[dict objectForKey:@"orderInfo"] objectForKey:@"orderNumber"];
-        if([orderNumber isEqualToString:oNumber])
-        {
-            bundleDict = dict;
-            break;
+        @try{
+            
+            //order dict might be nil
+            NSString *oNumber = [[dict objectForKey:@"orderInfo"] objectForKey:@"orderNumber"];
+            if([orderNumber isEqualToString:oNumber])
+            {
+                bundleDict = dict;
+                break;
+            }
+        }@catch(id exception){
+            continue;
+        }
+    }
+    
+    return bundleDict;
+}
+
+-(NSMutableDictionary *)getBundleForBundleID:(NSString*)bundleID
+{
+    NSMutableDictionary *bundleDict = nil;
+    for(NSDictionary *dict in self.purchasedBundles)
+    {
+        @try{
+            
+            NSString *tempBundleID = [dict objectForKeyNotNull:@"bundleId"];
+            if([bundleID isEqualToString:tempBundleID])
+            {
+                bundleDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+                break;
+            }
+        }@catch(id exception){
+            continue;
         }
     }
     
@@ -435,6 +462,19 @@
         return NO;
     } */
     
+    BOOL shouldDefaultBundle = NO;
+    
+    if(!self.purchasedBundles){
+       shouldDefaultBundle = YES;
+    }else{
+        if([self.purchasedBundles count] == 0){
+            shouldDefaultBundle = YES;
+        }else{
+            shouldDefaultBundle = NO;
+        }
+    }
+    
+    
     //clear the existing data.  this method will replace it
     [self setPurchasedBundles:nil];
     self.addressesByAddressID = [[NSMutableDictionary alloc] init];
@@ -568,16 +608,38 @@
          //when it was inside all the if blocks above...
          //-MKL
          
-         //default to working with the first bundle
-         self.purchasedWorkingPack = nil;
          if(self.purchasedBundles){
              if([self.purchasedBundles count] > 0){
-                 self.purchasedWorkingPack = [NSMutableDictionary dictionaryWithDictionary:[self.purchasedBundles objectAtIndex:0]];
-                 NSLog(@"Set the working bundle to be the first one in the array");
+                 
+                 if(!self.purchasedWorkingPack){
+                     if(self.packPurchaseMode == PurchaseModeNewPack){
+                         //leave it as is - you are creating a new pack
+                         if(shouldDefaultBundle){
+                             self.purchasedWorkingPack = [NSMutableDictionary dictionaryWithDictionary:[self.purchasedBundles objectAtIndex:0]];
+                             NSLog(@"Set the working bundle to be the first one in the array");
+                         }
+                     }else{
+                         self.purchasedWorkingPack = [NSMutableDictionary dictionaryWithDictionary:[self.purchasedBundles objectAtIndex:0]];
+                         NSLog(@"Set the working bundle to be the first one in the array");
+                     }
+                 }else{
+                     //make sure the selected pack is in tehre and select it
+                     NSString *bundleID = [self.purchasedWorkingPack objectForKey:@"bundleId"];
+                     
+                     self.purchasedWorkingPack = [self getBundleForBundleID:bundleID];
+                     
+                     if(!self.purchasedWorkingPack){
+                         //coundnt find the bundle anymore - need to set to the first one
+                          self.purchasedWorkingPack = [NSMutableDictionary dictionaryWithDictionary:[self.purchasedBundles objectAtIndex:0]];
+                     }
+                     
+                 }
              }else{
+                 self.purchasedWorkingPack = nil;
                  NSLog(@"Set the working bundle to nil");
              }
          }else{
+             self.purchasedWorkingPack = nil;
              NSLog(@"Set the working bundle to nil");
          }
          
@@ -605,6 +667,8 @@
     
     return status;
 }
+
+
 
 
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate
