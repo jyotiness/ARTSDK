@@ -75,7 +75,7 @@ NSString* const kResourceCartAddCoupon = @"CartAddCoupon";
 NSString* const kResourceCartRemoveCoupon = @"CartRemoveCoupon";
 NSString* const kResourceCartAddCreditCard = @"CartAddCreditCard";
 NSString* const kResourceCartSubmitForOrder = @"CartSubmitForOrder";
-NSString * const kResourceCartGet = @"CartGet";
+NSString* const kResourceCartGet = @"CartGet";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Art.com API Endpoints
