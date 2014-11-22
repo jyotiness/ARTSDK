@@ -292,7 +292,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if(((0 == section) && !mShowCoupon))
-        return self.sectionFooterView1;
+        return [ACConstants isSwitchArt]?nil:self.sectionFooterView1;
     else if(1 == section)
         return self.sectionFooterView2;
     
