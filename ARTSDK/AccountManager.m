@@ -16,7 +16,10 @@
 @implementation AccountManager
 
 @synthesize purchasedBundles;
+@synthesize orderHistory;
+@synthesize orderHistoryByOrderID;;
 @synthesize userName;
+@synthesize accountID;
 @synthesize unpurchasedWorkingPack;
 @synthesize purchasedWorkingPack;
 @synthesize addressesByAddressID;
@@ -149,17 +152,18 @@
     return bundleDict;
 }
 
--(NSMutableDictionary *)getBundleForBundleID:(NSString*)bundleID
+-(NSDictionary *)getBundleForBundleID:(NSString*)bundleID
 {
-    NSMutableDictionary *bundleDict = nil;
+    NSDictionary *bundleDict = nil;
     for(NSDictionary *dict in self.purchasedBundles)
     {
         @try{
             
-            NSString *tempBundleID = [dict objectForKeyNotNull:@"bundleId"];
+            //order dict might be nil
+            NSString *tempBundleID = [dict objectForKey:@"bundleId"];
             if([bundleID isEqualToString:tempBundleID])
             {
-                bundleDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+                bundleDict = dict;
                 break;
             }
         }@catch(id exception){
@@ -168,6 +172,16 @@
     }
     
     return bundleDict;
+}
+
+
+-(NSMutableDictionary *)getOrderDictForOID:(NSString*)OID
+{
+    NSMutableDictionary *orderDict = nil;
+
+    orderDict = [self.orderHistoryByOrderID objectForKey:OID];
+    
+    return orderDict;
 }
 
 -(NSDictionary *)getAddressForAddressID:(NSString*)addressID
@@ -360,6 +374,66 @@
     return status;
 }
 
+-(NSString *)getGiftCertificateForWorkingPack{
+    
+    NSString *giftCertificate = @"";
+    
+    NSDictionary *packDict = self.purchasedWorkingPack;
+    
+    if(!packDict)return @"";
+    
+    NSDictionary *orderInfoDict = [packDict objectForKey:@"orderInfo"];
+    
+    if(orderInfoDict){
+        NSString *orderNumber = [orderInfoDict objectForKey:@"orderNumber"];
+        
+        NSDictionary *orderDict = [self getOrderDictForOID:orderNumber];
+        
+        if(orderDict){
+            giftCertificate = [orderDict objectForKey:@"CreditCode"];
+            
+            if(!giftCertificate) giftCertificate = @"";
+        }
+        
+    }
+    
+    return giftCertificate;
+
+}
+
+-(NSInteger)getCreditBalanceForWorkingPack{
+    
+    NSString *creditBalanceString = @"0";
+    NSInteger creditBalance = 0;
+    
+    NSDictionary *packDict = self.purchasedWorkingPack;
+    
+    if(!packDict)return 0;
+    
+    NSDictionary *orderInfoDict = [packDict objectForKey:@"orderInfo"];
+    
+    if(orderInfoDict){
+        NSString *orderNumber = [orderInfoDict objectForKey:@"orderNumber"];
+        
+        NSDictionary *orderDict = [self getOrderDictForOID:orderNumber];
+        
+        if(orderDict){
+            creditBalanceString = [orderDict objectForKey:@"CreditBalanceCount"];
+            
+            if(!creditBalanceString) creditBalanceString = @"0";
+            
+            @try{
+                creditBalance = [creditBalanceString integerValue];
+            }@catch(id exception){
+                creditBalance = 0;
+            }
+        }
+    }
+    
+    return creditBalance;
+    
+}
+
 -(BOOL)setShippingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber
 {
     self.delegate = delegate;
@@ -446,6 +520,53 @@
     return status;
 }
 
+-(BOOL)applyGiftCertificateToCart:(id<AccountManagerDelegate>)delegate usingGiftCertificate:(NSString *)giftCertificate{
+    
+    self.delegate = delegate;
+    __block BOOL status = NO;
+    
+    
+    [ArtAPI requestForCartAddGiftCertificatePayment:giftCertificate success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+     {
+         
+         NSLog(@" requestForCartAddGiftCertificatePayment success \n JSON Account Update Property response %@ ", JSON);
+         status = YES;
+         
+         if(JSON){
+             
+             NSDictionary *dDict = [JSON objectForKey:@"d"];
+             
+             if(dDict){
+                 
+                 
+             }
+         }
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(addGiftCertificateSuccess)])
+         {
+             [self.delegate addGiftCertificateSuccess];
+         }
+         
+         
+     }
+          failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+     {
+         status = NO;
+         
+         NSLog(@" requestForCartAddGiftCertificatePayment failed \n JSON Account Update Location response %@ ", JSON);
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(addGiftCertificateFailed)])
+         {
+             [self.delegate addGiftCertificateFailed];
+         }
+         
+     }];
+    
+    return status;
+
+    
+}
+
 
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate
 {
@@ -498,6 +619,10 @@
                      NSString *accountUserName = @"";
                      NSDictionary *profileInfoDict = [accountDict objectForKeyNotNull:@"ProfileInfo"];
                      if(profileInfoDict){
+                         
+                         NSString *accountIDString = [profileInfoDict objectForKey:@"AccountId"];
+                         self.accountID = accountIDString;
+                         
                          accountUserName = [profileInfoDict objectForKeyNotNull:@"UserName"];
                          if(!accountUserName) accountUserName = @"";
                      }
@@ -506,6 +631,11 @@
                      NSDictionary *curatorInfoDict = [accountDict objectForKeyNotNull:@"CuratorInfo"];
                      if(curatorInfoDict)
                      {
+                         NSString *accountIDString = [curatorInfoDict objectForKey:@"AccountId"];
+                         if(!self.accountID){
+                             self.accountID = accountIDString;
+                         }
+                         
                          NSString *firstName = [ curatorInfoDict objectForKey:@"FirstName"];
                          if(firstName && ![firstName isKindOfClass:[NSNull class]])
                          {
@@ -635,8 +765,11 @@
                      }
                  }else{
                      //make sure the selected pack is in tehre and select it
-                     NSString *bundleID = [self.purchasedWorkingPack objectForKey:@"bundleId"];
                      
+                     //rechecking the old pack to make sure it is in the newly loaded
+                     //set of packs.  If not we need to select one that is
+                     
+                     NSString *bundleID = [self.purchasedWorkingPack objectForKey:@"bundleId"];
                      self.purchasedWorkingPack = [self getBundleForBundleID:bundleID];
                      
                      if(!self.purchasedWorkingPack){
@@ -679,7 +812,75 @@
     return status;
 }
 
+-(BOOL)retrieveOrderHistoryArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate
+{
+    self.delegate = delegate;
 
+    __block BOOL status = NO;
+
+   
+    //clear the existing data.  this method will replace it
+    [self setOrderHistory:nil];
+    [self setOrderHistoryByOrderID:nil];
+    
+    NSString *customerNumber = self.accountID;
+    NSString *emailAddress = @"USEACCOUNTID";
+    
+    [ArtAPI requestForCartTrackOrderHistory:customerNumber withEmailAddress:emailAddress success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+     {
+         NSLog(@" requestForCartTrackOrderHistory success \n JSON Account Get response %@ ", JSON);
+         status = YES;
+         
+         if(JSON){
+             
+             self.orderHistoryByOrderID = [[NSMutableDictionary alloc] init];
+             
+             NSDictionary *dDict = [JSON objectForKeyNotNull:@"d"];
+             
+             if(dDict){
+                 
+                 NSArray *orderHistoryArray = [dDict objectForKeyNotNull:@"OrderHistory"];
+                 NSString *OID = @"";
+                 
+                 if(orderHistoryArray){
+                     
+                     self.orderHistory = orderHistoryArray;
+                     
+                     for(NSDictionary *orderDict in orderHistoryArray){
+                         
+                         OID = [orderDict objectForKeyNotNull:@"OrderNumber"];
+                         if(OID){
+                             [self.orderHistoryByOrderID setObject:orderDict forKey:OID];
+                         }
+                     }
+                 }
+
+             }
+         }
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(orderHistoryLoadedSuccessfully)])
+         {
+             [self.delegate orderHistoryLoadedSuccessfully];
+         }
+         
+     }
+      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+     {
+         [self setOrderHistory:nil];
+         [self setOrderHistoryByOrderID:nil];
+         NSLog(@"Set the order history to nil");
+         
+         status = NO;
+         NSLog(@" requestForCartTrackOrderHistory failed ");
+         if(self.delegate && [self.delegate respondsToSelector:@selector(orderHistoryLoadingFailed)])
+         {
+             [self.delegate orderHistoryLoadingFailed];
+         }
+         
+     }];
+    
+    return status;
+}
 
 
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate

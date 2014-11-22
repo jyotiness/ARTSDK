@@ -2086,9 +2086,66 @@ int nameOrigin=0;
         [ArtAPI setCart:cart];
         [ArtAPI setShippingCountryCode:self.selectedCountryCode];
     }
-    isContinueButtonPressed = NO;
-    [self loadDataFromAPI];
+    
+    
+    
+    //SwitchArt - here the flow changes if ADDING TO PACK
+    if([AccountManager sharedInstance].purchasedWorkingPack){
+        
+        //this should mean there is a working pack that was purchased prior to this order
+        NSString *giftCertificate = [[AccountManager sharedInstance] getGiftCertificateForWorkingPack];
+        
+        if(!giftCertificate) giftCertificate = @"";
+        if([giftCertificate isEqualToString:@""]){
+            
+            [SVProgressHUD dismiss];
+            [self showGCAlert];
+            
+        }else{
+            NSLog(@"SwitchArt App - needs to set the GC on the Cart");
+            [[AccountManager sharedInstance] applyGiftCertificateToCart:self usingGiftCertificate:giftCertificate];
+        }
+        
+    }else{
+        //proceed to shipping options screen
+        isContinueButtonPressed = NO;
+        [self loadDataFromAPI];
+    }
+    
+    
 }
+
+-(void)showGCAlert{
+    //there is no GC - need to show an alert here
+    UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:@"Error"
+                                                     message:@"There was a problem redeeming your SwitchArt™ Pack credit.  Please try again later."
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
+    
+    [ alert show];
+    alert = nil;
+}
+
+
+-(void)addGiftCertificateSuccess{
+    
+    NSLog(@"Added Gift Certificate");
+    //now need to submit the order
+    
+    [SVProgressHUD dismiss];
+}
+
+-(void)addGiftCertificateFailed{
+    NSLog(@"Failed to add Gift Certificate");
+    
+    [SVProgressHUD dismiss];
+    [self showGCAlert];
+    
+    //remain on shipping address screen
+    
+}
+
 
 - (void) loadDataFromAPI {
     //NSLog(@"loadDataFromAPI");

@@ -12,7 +12,9 @@
 #import "ACConstants.h"
 #import "GAITrackedViewController.h"
 #import "ACiPhoneLoginViewController.h"
-//#import "PayPalMobile.h"
+#import "AccountManager.h"
+
+
 /**
  * A view controller that collects a users shipping address.
  *
@@ -30,7 +32,7 @@ typedef enum ContactPickeMode {
 
 @protocol ACShipAddressViewDelegate;
 
-@interface ACShipAddressViewController : GAITrackedViewController<UITextFieldDelegate,UITextViewDelegate,ABPeoplePickerNavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource,UIActionSheetDelegate,UIAlertViewDelegate,ACiPhoneLoginDelegate>//,PayPalPaymentDelegate,PayPalFuturePaymentDelegate>
+@interface ACShipAddressViewController : GAITrackedViewController<UITextFieldDelegate,UITextViewDelegate,ABPeoplePickerNavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource,UIActionSheetDelegate,UIAlertViewDelegate,ACiPhoneLoginDelegate,AccountManagerDelegate>//,PayPalPaymentDelegate,PayPalFuturePaymentDelegate>
 {
     UIView   *mPickerHolderView;
     ACCheckoutTextField *mFailedTextField;

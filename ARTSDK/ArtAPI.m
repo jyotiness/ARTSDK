@@ -18,7 +18,7 @@
 
 // Art.com API
 NSString* const kArtAPIUrl = @"developer-api.art.com";
-NSString* const kProtocolSecure = @"http://";
+NSString* const kProtocolSecure = @"https://";
 NSString* const kProtocolDefault = @"http://";
 
 // Judy
@@ -76,6 +76,8 @@ NSString* const kResourceCartRemoveCoupon = @"CartRemoveCoupon";
 NSString* const kResourceCartAddCreditCard = @"CartAddCreditCard";
 NSString* const kResourceCartSubmitForOrder = @"CartSubmitForOrder";
 NSString* const kResourceCartGet = @"CartGet";
+NSString* const kResourceCartTrackOrderHistory = @"CartTrackOrderHistory";
+NSString* const kResourceCartAddGiftCertificatePayment = @"CartAddGiftCertificatePayment";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Art.com API Endpoints
@@ -2070,6 +2072,85 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [operation start];
 }
 
++ (void) requestForCartTrackOrderHistory:(NSString *) customerNumber
+                        withEmailAddress:(NSString *) emailAddress
+                                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForCartTrackOrderHistory:customerNumber withEmailAddress:emailAddress success:success failure:failure];
+}
+
+-(void) requestForCartTrackOrderHistory:(NSString *) customerNumber
+                              withEmailAddress:(NSString *) emailAddress
+                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:customerNumber, @"customerNumber", emailAddress, @"emailAddress",nil];
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceCartTrackOrderHistory
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    
+    NSLog(@"request.URL %@",request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+                                         {
+                                             
+                                             [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+                                             
+                                         }
+                                                                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                         {
+                                             failure(request, response, error, JSON);
+                                         }];
+    
+    [operation start];
+    
+}
+
++ (void) requestForCartAddGiftCertificatePayment:(NSString *) giftCertificateCode
+                                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForCartAddGiftCertificatePayment:giftCertificateCode success:success failure:failure];
+}
+
+-(void) requestForCartAddGiftCertificatePayment:(NSString *) giftCertificateCode
+                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:giftCertificateCode, @"giftCertificateCode",nil];
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+                                                   resource:kResourceCartAddGiftCertificatePayment
+                                              usingEndpoint:kEndpointPaymentAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    
+    NSLog(@"request.URL %@",request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+                                         {
+                                             
+                                             [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+                                             
+                                         }
+                                                                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                         {
+                                             failure(request, response, error, JSON);
+                                         }];
+    
+    [operation start];
+    
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

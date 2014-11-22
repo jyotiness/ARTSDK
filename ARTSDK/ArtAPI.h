@@ -325,6 +325,24 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                          failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
++ (void) requestForCartTrackOrderHistory:(NSString *) customerNumber
+                        withEmailAddress:(NSString *) emailAddress
+                                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
+-(void) requestForCartTrackOrderHistory:(NSString *) customerNumber
+                       withEmailAddress:(NSString *) emailAddress
+                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
++(void) requestForCartAddGiftCertificatePayment:(NSString *) giftCertificateCode
+                                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
+-(void) requestForCartAddGiftCertificatePayment:(NSString *) giftCertificateCode
+                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
