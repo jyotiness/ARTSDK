@@ -93,6 +93,10 @@ int nameOrigin=0;
     
     self.title = [ACConstants getLocalizedStringForKey:@"&&_CHECKOUT" withDefaultValue:@"ART.COM CHECKOUT"];
 
+    if([[AccountManager sharedInstance] isLoggedInForSwitchArt]){
+        [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+    }
+
 	self.name = @"" ;
     self.lastName = @"";
 	self.company = @"" ;
@@ -194,6 +198,43 @@ int nameOrigin=0;
         [self prepareCountryList];
     }
     self.tagFromPicker = COUNTRY_PICKER_TAG;
+}
+
+///CS;====API CallBacks
+-(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles;
+{
+    NSLog(@" %@ ",NSStringFromSelector(_cmd));
+    
+    [SVProgressHUD dismiss];
+    NSDictionary *aPack = [purchasedBundles objectAtIndex:0];
+    NSString *addressID = [aPack objectForKeyNotNull:@"shippingAddressId"];
+    NSDictionary *addressDict = [[AccountManager sharedInstance] getAddressForAddressID:@"3d6abaa2e5554a10a85a8db6bc305186"];//]@"4996CC9B-41CB-4779-AED4-FE32E4DA9978"];
+    
+    if(addressDict){
+        
+        NSDictionary *nameDict = [addressDict objectForKeyNotNull:@"Name"];
+        NSDictionary *phoneDict = [addressDict objectForKeyNotNull:@"Phone"];
+        self.name = [nameDict objectForKeyNotNull:@"FirstName"] ;
+        self.lastName = [nameDict objectForKeyNotNull:@"LastName"];
+        self.company = [addressDict objectForKeyNotNull:@"CompanyName"] ;
+        self.phone = [phoneDict objectForKeyNotNull:@"Primary"] ;
+        self.addressLine1 = [addressDict objectForKeyNotNull:@"Address1"];
+        self.addressLine2 = [addressDict objectForKeyNotNull:@"Address2"];
+        self.city = [addressDict objectForKeyNotNull:@"City"];
+        self.postalCode = [addressDict objectForKeyNotNull:@"ZipCode"];
+        self.emailAddress = [addressDict objectForKeyNotNull:@"emailAddress"];
+        self.selectedCountryCode = [addressDict objectForKeyNotNull:@"CountryIsoA2"];
+//        self.select = [addressDict objectForKeyNotNull:@"CountryIsoA2"];
+        
+        [self.shippingAddressTableView reloadData];
+    }
+}
+
+-(void)bundlesLoadingFailed;
+{
+    NSLog(@" %@ ",NSStringFromSelector(_cmd));
+    
+    [SVProgressHUD dismiss];
 }
 
 - (void)dismissModal {

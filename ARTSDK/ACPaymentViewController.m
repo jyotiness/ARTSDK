@@ -347,7 +347,7 @@
     NSDictionary  *cart = [ArtAPI cart];
     self.shippingType = [[[[cart objectForKeyNotNull:@"Shipments"] objectAtIndex:0] objectForKeyNotNull:@"ShippingPriority"] intValue];
     
-	int rownum=indexPath.row;
+	int rownum = indexPath.row;
 
     NSDictionary *cellData = nil;
     if(rownum<self.dataShippingOptions.count){
