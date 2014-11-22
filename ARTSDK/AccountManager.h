@@ -48,6 +48,8 @@ typedef enum {
 @property(nonatomic,strong) NSMutableArray *addressArray;
 @property(nonatomic,strong) NSString *firstName;
 @property(nonatomic,strong) NSString *lastName;
+@property(nonatomic,strong) NSString *shippingAddressIdentifier;
+@property(nonatomic,strong) NSString *userEmailAddress;
 @property(nonatomic,strong) NSMutableDictionary *shippingAddressUsedInCheckout;
 
 //Method's

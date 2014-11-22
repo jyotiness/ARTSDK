@@ -93,14 +93,10 @@ int nameOrigin=0;
     
     self.title = [ACConstants getLocalizedStringForKey:@"&&_CHECKOUT" withDefaultValue:@"ART.COM CHECKOUT"];
 
-    if([[AccountManager sharedInstance] isLoggedInForSwitchArt]){
-        [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
-    }
-
-	self.name = @"" ;
+    self.name = @"" ;
     self.lastName = @"";
-	self.company = @"" ;
-	self.phone = @"" ;
+    self.company = @"" ;
+    self.phone = @"" ;
     self.addressLine1 = @"";
     self.addressLine2 = @"";
     self.city = @"";
@@ -110,6 +106,54 @@ int nameOrigin=0;
     self.password = @"";
     self.confirmPassword = @"";
     
+
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    if(AppLocationSwitchArt == currAppLoc){
+        
+        NSDictionary *workingPack = [AccountManager sharedInstance].purchasedWorkingPack;
+        if(workingPack){
+            NSString *shippingAddressID = [workingPack objectForKey:@"shippingAddressId"];
+            
+            if(shippingAddressID){
+                
+                NSDictionary *shippingAddress = [[AccountManager sharedInstance]getAddressForAddressID:shippingAddressID];
+                
+                NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
+                NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
+                NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
+                NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
+                NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+                NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+                NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
+                NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
+                NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
+                NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
+                
+                self.name = firstNameSA;
+                self.lastName = lastNameSA;
+                self.company = companyNameSA;
+                self.phone = phoneSA;
+                self.addressLine1 = address1SA;
+                self.addressLine2 = address2SA;
+                self.city = citySA;
+                self.stateValue = stateSA;
+                self.postalCode = zipSA;
+                self.countryPickerValue = countrySA;
+                self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
+                self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
+                
+                [self.shippingAddressTableView reloadData];
+            }
+            else
+            {
+                [self getAddressFromAddress];
+            }
+        }
+        else{
+            [self getAddressFromAddress];
+        }
+    }
+
 //    self.emailLoginTextField.layer.sublayerTransform = CATransform3DMakeTranslation(100, -40, -40);
 
     //NSLog(@"isDeviceConfigForUS: %d", [ArtAPI  isDeviceConfigForUS]);
@@ -200,15 +244,21 @@ int nameOrigin=0;
     self.tagFromPicker = COUNTRY_PICKER_TAG;
 }
 
+-(void)getAddressFromAddress
+{
+    if([[AccountManager sharedInstance] isLoggedInForSwitchArt]){
+        [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+    }
+}
+
 ///CS;====API CallBacks
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles;
 {
     NSLog(@" %@ ",NSStringFromSelector(_cmd));
     
     [SVProgressHUD dismiss];
-    NSDictionary *aPack = [purchasedBundles objectAtIndex:0];
-    NSString *addressID = [aPack objectForKeyNotNull:@"shippingAddressId"];
-    NSDictionary *addressDict = [[AccountManager sharedInstance] getAddressForAddressID:@"3d6abaa2e5554a10a85a8db6bc305186"];//]@"4996CC9B-41CB-4779-AED4-FE32E4DA9978"];
+    NSString *addressID = [[AccountManager sharedInstance] shippingAddressIdentifier];
+    NSDictionary *addressDict = [[AccountManager sharedInstance] getAddressForAddressID:addressID];
     
     if(addressDict){
         
@@ -222,13 +272,14 @@ int nameOrigin=0;
         self.addressLine2 = [addressDict objectForKeyNotNull:@"Address2"];
         self.city = [addressDict objectForKeyNotNull:@"City"];
         self.postalCode = [addressDict objectForKeyNotNull:@"ZipCode"];
-        self.emailAddress = [addressDict objectForKeyNotNull:@"emailAddress"];
+        self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
         self.selectedCountryCode = [addressDict objectForKeyNotNull:@"CountryIsoA2"];
-//        self.select = [addressDict objectForKeyNotNull:@"CountryIsoA2"];
-        
+        self.countryPickerValue = [addressDict objectForKeyNotNull:@"Country"];
+
         [self.shippingAddressTableView reloadData];
     }
 }
+ 
 
 -(void)bundlesLoadingFailed;
 {
@@ -323,47 +374,6 @@ int nameOrigin=0;
     //[PayPalMobile preconnectWithEnvironment:PayPalEnvironmentSandbox];
 
     //if SwitchArt AND you have a working Pack with an address, pre-populate the address
-    
-    if(AppLocationSwitchArt == currAppLoc){
-        
-        NSDictionary *workingPack = [AccountManager sharedInstance].purchasedWorkingPack;
-        
-        if(workingPack){
-            NSString *shippingAddressID = [workingPack objectForKey:@"shippingAddressId"];
-            
-            if(shippingAddressID){
-                
-                NSDictionary *shippingAddress = [[AccountManager sharedInstance]getAddressForAddressID:shippingAddressID];
-                
-                NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
-                NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
-                NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
-                NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
-                NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
-                NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
-                NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
-                NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
-                NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
-                NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
-                
-                self.name = firstNameSA;
-                self.lastName = lastNameSA;
-                self.company = companyNameSA;
-                self.phone = phoneSA;
-                self.addressLine1 = address1SA;
-                self.addressLine2 = address2SA;
-                self.city = citySA;
-                self.stateValue = stateSA;
-                self.postalCode = zipSA;
-                self.countryPickerValue = countrySA;
-                
-            }
-            
-        }
-        
-    }
-    
-    
     
 }
 

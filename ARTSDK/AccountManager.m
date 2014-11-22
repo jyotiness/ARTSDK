@@ -534,12 +534,23 @@
                          
                          self.userName = nameToUse;
                          NSLog(@"Set acccount name to %@", self.userName);
-                         
                          self.accountID = [ curatorInfoDict objectForKey:@"AccountId"];
                      }
 
                      
                      if(profileInfoDict){
+                         
+                         self.userEmailAddress = [ profileInfoDict objectForKeyNotNull:@"EmailAddress"];
+                         NSArray *userDefaultArray = [profileInfoDict objectForKeyNotNull:@"UserDefaults"];
+                         for(NSDictionary *dict in userDefaultArray)
+                         {
+                             if([@"DefaultShippingAddress" isEqualToString:[dict objectForKeyNotNull:@"PropertyName"]])
+                             {
+                                 self.shippingAddressIdentifier = [dict objectForKeyNotNull:@"PropertyValue"];
+                                 break;
+                             }
+                         }
+
                          NSArray *userPropertiesArray = [profileInfoDict objectForKeyNotNull:@"UserProperties"];
                          
                          if(userPropertiesArray){
