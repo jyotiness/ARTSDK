@@ -486,6 +486,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                              failure(request, response, error, JSON);
                                          }];
     
+    
     [operation start];
     
 }
@@ -2132,7 +2133,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                               usingEndpoint:kEndpointPaymentAPI
                                                  withParams:parameters
                                             requiresSession:YES
-                                            requiresAuthKey:YES];
+                                            requiresAuthKey:NO];
     
     NSLog(@"request.URL %@",request.URL);
     
@@ -2999,11 +3000,17 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     NSString * path = [NSString stringWithFormat:@"/%@.svc/jsonp/%@",endpoint, resource ];
     
-    if([resource isEqualToString:@"AccountUpdateProperty"]){
-        path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
-    }
+
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
+    
+    if([resource isEqualToString:kResourceAccountUpdateProperty]){
+        path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
+    }
+    if([resource isEqualToString:kResourceCartAddGiftCertificatePayment]){
+        httpClient.parameterEncoding = AFJSONParameterEncoding;
+    }
+    
     [httpClient defaultValueForHeader:@"Accept"];
     //NSLog(@"httpClient: %@ method: %@ path: %@ params: %@", httpClient, method, path, params);
     NSMutableURLRequest *request = [httpClient requestWithMethod:method path:path parameters:params];
