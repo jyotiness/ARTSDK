@@ -107,67 +107,16 @@ int nameOrigin=0;
     self.password = @"";
     self.confirmPassword = @"";
     
-
-    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
-    if(AppLocationSwitchArt == currAppLoc){
-        
-        NSDictionary *workingPack = [AccountManager sharedInstance].purchasedWorkingPack;
-        if(workingPack){
-            NSString *shippingAddressID = [workingPack objectForKey:@"shippingAddressId"];
-            
-            if(shippingAddressID){
-                
-                NSDictionary *shippingAddress = [[AccountManager sharedInstance]getAddressForAddressID:shippingAddressID];
-                
-                NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
-                NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
-                NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
-                NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
-                NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
-                NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
-                NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
-                NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
-                NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
-                NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
-                
-                self.name = firstNameSA;
-                self.lastName = lastNameSA;
-                self.company = companyNameSA;
-                self.phone = phoneSA;
-                self.addressLine1 = address1SA;
-                self.addressLine2 = address2SA;
-                self.city = citySA;
-                self.stateValue = stateSA;
-                self.postalCode = zipSA;
-                self.countryPickerValue = countrySA;
-                self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
-                self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
-                
-                [self.shippingAddressTableView reloadData];
-            }
-            else
-            {
-                [self getAddressFromAddress];
-            }
-        }
-        else{
-            [self getAddressFromAddress];
-        }
-    }
-
-//    self.emailLoginTextField.layer.sublayerTransform = CATransform3DMakeTranslation(100, -40, -40);
-
-    //NSLog(@"isDeviceConfigForUS: %d", [ArtAPI  isDeviceConfigForUS]);
     if([ArtAPI  isDeviceConfigForUS])
     {
         self.selectedCountryIndex = 0;
         self.countryPickerValue = @"United States";
     }
     else
-    { 
+    {
         self.selectedCountryIndex = -1;
         self.countryPickerValue = [ACConstants getLocalizedStringForKey:@"SELECT_COUNTRY"  withDefaultValue:@"Select Country"];
-    } 
+    }
     
     self.selectedStateIndex = -1;
     self.statePickerValue = [ACConstants getLocalizedStringForKey:@"SELECT_STATE" withDefaultValue:@"Select State"];
@@ -176,8 +125,6 @@ int nameOrigin=0;
     self.willShowCityAndState = NO;
     mCountryPickerInvoked = NO;
 
-    // Create Header View
-    
     // Create Info Button
     UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [infoButton setFrame:CGRectMake(4.0, 4.0f, 24.0f, 24.0f)];
@@ -243,6 +190,55 @@ int nameOrigin=0;
         [self prepareCountryList];
     }
     self.tagFromPicker = COUNTRY_PICKER_TAG;
+    
+    
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    if(AppLocationSwitchArt == currAppLoc){
+        
+        NSDictionary *workingPack = [AccountManager sharedInstance].purchasedWorkingPack;
+        if(workingPack){
+            NSString *shippingAddressID = [workingPack objectForKey:@"shippingAddressId"];
+            
+            if(shippingAddressID){
+                
+                NSDictionary *shippingAddress = [[AccountManager sharedInstance]getAddressForAddressID:shippingAddressID];
+                
+                NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
+                NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
+                NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
+                NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
+                NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+                NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+                NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
+                NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
+                NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
+                NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
+                
+                self.name = firstNameSA;
+                self.lastName = lastNameSA;
+                self.company = companyNameSA;
+                self.phone = phoneSA;
+                self.addressLine1 = address1SA;
+                self.addressLine2 = address2SA;
+                self.city = citySA;
+                self.stateValue = stateSA;
+                self.postalCode = zipSA;
+                self.countryPickerValue = countrySA;
+                self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
+                self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
+                self.willShowCityAndState = YES;
+                
+                [self.shippingAddressTableView reloadData];
+            }
+            else
+            {
+                [self getAddressFromAddress];
+            }
+        }
+        else{
+            [self getAddressFromAddress];
+        }
+    }
 }
 
 -(void)getAddressFromAddress
@@ -282,6 +278,7 @@ int nameOrigin=0;
         self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
         self.selectedCountryCode = [addressDict objectForKeyNotNull:@"CountryIsoA2"];
         self.countryPickerValue = [addressDict objectForKeyNotNull:@"Country"];
+        self.willShowCityAndState = YES;
 
         [self.shippingAddressTableView reloadData];
     }
