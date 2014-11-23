@@ -27,6 +27,8 @@
 @synthesize unpurchasedPackName;
 @synthesize packPurchaseMode;
 @synthesize shippingAddressUsedInCheckout;
+@synthesize lastPrintCountPurchased;
+@synthesize defaultP2AGallery;
 
 + (AccountManager*) sharedInstance {
     static AccountManager* _one = nil;
@@ -300,7 +302,144 @@
     return status;
 }
 
--(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber withAddressID:(NSString *)addressID
+-(NSInteger)getIndexOfPack:(NSMutableDictionary *)packDict{
+    
+    NSInteger index = -1;
+    
+    
+    NSDictionary *oDict = [packDict objectForKeyNotNull:@"orderInfo"];
+    
+    if(!oDict) return -1;
+    
+    NSString *orderId = [oDict objectForKeyNotNull:@"orderNumber"];
+    
+    if(!orderId) return -1;
+    
+    NSString *bundleId = [packDict objectForKeyNotNull:@"bundleId"];
+    
+    if(!bundleId) return -1;
+    
+    NSDictionary *oInfoDict;
+    NSString *oId;
+    NSString *bName;
+    NSString *bId;
+    
+    for(NSMutableDictionary *dict in [AccountManager sharedInstance].purchasedBundles)
+    {
+        bName = [dict objectForKeyNotNull:@"name"];
+        oInfoDict = [dict objectForKeyNotNull:@"orderInfo"];
+        oId = [oInfoDict objectForKeyNotNull:@"orderNumber"];
+        bId = [dict objectForKeyNotNull:@"bundleId"];
+        
+        if([oId isEqualToString:orderId] && [bId isEqualToString:bundleId])
+        {
+            index = [[AccountManager sharedInstance].purchasedBundles indexOfObject:dict];
+            break;
+        }
+    }
+
+    return index;
+    
+}
+
+-(void)subtractPrintCountOnPurchasedWorkingPack:(NSInteger)printCount{
+    
+    NSMutableArray *purchasedBundlesArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
+    
+    //just decrement the balance number on the bundle
+    NSMutableDictionary *packDict = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].purchasedWorkingPack];
+    
+    //find the index of the dict
+    NSInteger index = [self getIndexOfPack:packDict];
+    
+    if(index < 0) return;
+    
+    NSInteger currentBalance = 0;
+    NSDictionary *orderInfoDict = [packDict objectForKey:@"orderInfo"];
+    NSDictionary *balanceDict;
+    NSMutableDictionary *newBalanceDict;
+    NSMutableDictionary *newOrderInfoDict;
+    
+    if(orderInfoDict){
+        newOrderInfoDict = [NSMutableDictionary dictionaryWithDictionary:orderInfoDict];
+        balanceDict = [orderInfoDict objectForKey:@"balance"];
+        
+        if(balanceDict){
+            newBalanceDict = [NSMutableDictionary dictionaryWithDictionary:balanceDict];
+            NSString *countString = [balanceDict objectForKey:@"count"];
+            
+            if(!countString)countString = @"0";
+            
+            currentBalance = [countString integerValue];
+        }
+    }
+    
+    NSInteger newBalance = currentBalance - printCount;
+    
+    if(newBalance < 0) newBalance = 0;
+    NSString *newBalanceString = [NSString stringWithFormat:@"%i", (int)newBalance];
+    
+    //need to do the whole dictionary replacement process ensuring you have mutable dictionaries
+    [newBalanceDict setObject:newBalanceString forKey:@"count"];
+    [newOrderInfoDict setObject:newBalanceDict forKey:@"balance"];
+    [packDict setObject:newOrderInfoDict forKey:@"OrderInfo"];
+    
+    [purchasedBundlesArray replaceObjectAtIndex:index withObject:packDict];
+    [AccountManager sharedInstance].purchasedBundles = purchasedBundlesArray;
+    
+}
+
+-(void)setAddressIDOnPurchasedWorkingPack:(NSString *)addressID{
+    
+    NSMutableArray *purchasedBundlesArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
+    
+    //just decrement the balance number on the bundle
+    NSMutableDictionary *packDict = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].purchasedWorkingPack];
+    
+    //find the index of the dict
+    NSInteger index = [self getIndexOfPack:packDict];
+    
+    if(index < 0) return;
+    
+    [packDict setObject:addressID forKey:@"shippingAddressId"];
+    
+    [purchasedBundlesArray replaceObjectAtIndex:index withObject:packDict];
+    [AccountManager sharedInstance].purchasedBundles = purchasedBundlesArray;
+    
+}
+
+-(NSInteger)getBundleCountStringFromDict:(NSDictionary *)bundleDict{
+    
+    NSString *countString = @"";
+    NSInteger retInt = 0;
+    
+    if(!bundleDict) return 0;
+    
+    NSDictionary *termsDict = [bundleDict objectForKey:@"terms"];
+    
+    if(termsDict){
+        
+        countString = [termsDict objectForKey:@"count"];
+        if(!countString){
+            countString = @"";
+        }
+        
+        if([countString isEqualToString:@""]){
+            countString = @"0";
+        }
+        
+    }
+    
+    @try{
+        retInt = [countString integerValue];
+    }@catch(id exception){
+        retInt = 0;
+    }
+    
+    return retInt;
+}
+
+-(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber withAddressID:(NSString *)addressID subtractingPrintCount:(NSInteger)printCount
 {
     self.delegate = delegate;
     __block BOOL status = NO;
@@ -309,18 +448,45 @@
     
     //assume bundles are already compressed
     NSMutableArray *packArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
-    //NSMutableArray *packArray = [[NSMutableArray alloc] init];
+
+
+    if([AccountManager sharedInstance].purchasedWorkingPack){
     
-    NSMutableDictionary *newBundleUncompressed = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].unpurchasedWorkingPack];
+        [self subtractPrintCountOnPurchasedWorkingPack:printCount];
+        [self setAddressIDOnPurchasedWorkingPack:addressID];
+        
+    }else{
+        
+        //it is new
+        NSMutableDictionary *newBundleUncompressed = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].unpurchasedWorkingPack];
+        
+        //get bundle size
+        NSInteger bundleSize = [self getBundleCountStringFromDict:newBundleUncompressed];
+        
+        //set order id
+        NSMutableDictionary *orderDict = [newBundleUncompressed objectForKey:@"orderInfo"];
+        if(orderDict){
+            [orderDict setObject:orderNumber forKey:@"orderNumber"];
+            
+            //make a balance dict
+            NSMutableDictionary *balanceDict = [[NSMutableDictionary alloc] init];
+            [balanceDict setObject:@"" forKey:@"amount"];
+            
+            NSInteger balance = bundleSize - printCount;
+            if(balance < 0) balance = 0;
+            
+            NSString *balanceString = [NSString stringWithFormat:@"%i", (int)balance, nil];
+            [balanceDict setObject:balanceString forKey:@"count"];
+            [orderDict setObject:balanceDict forKey:@"balance"];
+        }
+        
+        [newBundleUncompressed setObject:addressID forKey:@"shippingAddressId"];
+        
+
+        
+        [packArray addObject:newBundleUncompressed];
     
-    //set order id
-    NSMutableDictionary *orderDict = [newBundleUncompressed objectForKey:@"orderInfo"];
-    if(orderDict){
-        [orderDict setObject:orderNumber forKey:@"orderNumber"];
     }
-    
-    [newBundleUncompressed setObject:addressID forKey:@"shippingAddressId"];
-    [packArray addObject:newBundleUncompressed];
     
     //need to make it into a Dictionary with one key
     NSMutableDictionary *bundlesDictionary = [[NSMutableDictionary alloc] init];

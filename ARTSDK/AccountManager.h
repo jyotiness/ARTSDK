@@ -57,6 +57,8 @@ typedef enum {
 @property(nonatomic,strong) NSString *shippingAddressIdentifier;
 @property(nonatomic,strong) NSString *userEmailAddress;
 @property(nonatomic,strong) NSMutableDictionary *shippingAddressUsedInCheckout;
+@property(nonatomic,assign) NSInteger lastPrintCountPurchased;
+@property(nonatomic,strong) NSString *defaultP2AGallery;
 
 //Method's
 +(AccountManager *) sharedInstance;
@@ -64,7 +66,7 @@ typedef enum {
 -(BOOL)isLoggedInForSwitchArt;
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate;
 -(BOOL)retrieveOrderHistoryArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate;
--(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber  withAddressID:(NSString *)addressID;
+-(BOOL)setBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber withAddressID:(NSString *)addressID subtractingPrintCount:(NSInteger)printCount;
 -(void)setBundlesArrayForLoggedInUser:(NSArray *)bundlesArray;
 -(void)addNewBundleToPurchasedBundles:(NSDictionary *)newBundle;
 -(BOOL)updateBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate;

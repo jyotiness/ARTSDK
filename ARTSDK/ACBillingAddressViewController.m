@@ -3004,8 +3004,10 @@
 
 -(void)addressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
     
+    NSInteger printCount = [AccountManager sharedInstance].lastPrintCountPurchased;
+    
     NSLog(@"SwitchArt App - needs to set the bundles on the account");
-    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:addressID];
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:addressID subtractingPrintCount:printCount];
     
 }
 
@@ -3024,7 +3026,7 @@
     
     //set bundles anyway but with blank address ID
     NSLog(@"SwitchArt App - needs to set the bundles on the account");
-    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@""];
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@"" subtractingPrintCount:0];
 }
 
 -(void)bundlesSetSuccess{

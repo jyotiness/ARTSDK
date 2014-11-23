@@ -4036,10 +4036,30 @@ int nameOrigin=0;
     
 }
 
+-(NSInteger)getCartItemCount{
+    
+    NSDictionary *cart = [ArtAPI cart];
+
+    NSInteger count = 0;
+    
+    NSArray *shipmentsArray = [cart objectForKeyNotNull:@"Shipments"];
+    NSDictionary *shipmentDict = [shipmentsArray objectAtIndex:0];
+    
+    NSArray *cartItemsArray = [shipmentDict objectForKeyNotNull:@"CartItems"];
+    if(cartItemsArray && (![cartItemsArray isKindOfClass:[NSNull class]]) && (cartItemsArray.count > 0)){
+        
+        count = [cartItemsArray count];
+    }
+    return count;
+}
+
+
 -(void)addressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
     
+    NSInteger printCount = [self getCartItemCount];
+    
     NSLog(@"SwitchArt App - needs to set the bundles on the account");
-    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:addressID];
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:addressID subtractingPrintCount:printCount];
     
 }
 
@@ -4058,7 +4078,7 @@ int nameOrigin=0;
     
     //set bundles anyway but with blank address ID
     NSLog(@"SwitchArt App - needs to set the bundles on the account");
-    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@""];
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@"" subtractingPrintCount:0];
 }
 
 -(void)bundlesSetSuccess{
