@@ -919,4 +919,10 @@
     //this will be done prior to setting it through the API call
 }
 
+-(void)updateFirstNameLastName:(NSString *)firstName lastName:(NSString *)lastName
+{
+    self.firstName = firstName;
+    self.lastName = lastName;
+}
+
 @end

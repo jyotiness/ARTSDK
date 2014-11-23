@@ -78,6 +78,8 @@ typedef enum {
 -(NSString *)getGiftCertificateForWorkingPack;
 -(BOOL)applyGiftCertificateToCart:(id<AccountManagerDelegate>)delegate usingGiftCertificate:(NSString *)giftCertificate;
 
+-(void)updateFirstNameLastName:(NSString *)firstName lastName:(NSString *)lastName;
+
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate;
 
 @end
