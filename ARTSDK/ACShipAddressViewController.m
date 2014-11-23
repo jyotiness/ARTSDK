@@ -2036,17 +2036,7 @@ int nameOrigin=0;
                  [[NSUserDefaults standardUserDefaults] synchronize];
                  
              }else{
-                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
-                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
-                 [ArtAPI setAuthenticationToken:authTok];
-                 self.shippingAddressTableView.tableHeaderView = nil;
-                 [self populateDataWithLoginResponse:responseDict];
-                 [SVProgressHUD dismiss];
-                 
-                 // Call Delegate
-                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
-                     [self.loginDelegate loginSuccess];
-                 }
+                 [self loginSuccess];
              }
              
              
@@ -3387,8 +3377,42 @@ int nameOrigin=0;
 
 - (void)loginSuccess
 {
-    [self.navigationController popViewControllerAnimated:YES];
-    NSLog(@"loginSuccess");
+    [SVProgressHUD showWithStatus:@"Merging Account"];
+    NSString *anonAuthToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ANONYMOUS_AUTH_TOKEN"];
+    if(anonAuthToken)
+    {
+        [ArtAPI requestForAccountMergeFromAuthToken:anonAuthToken toAuthToken:[ArtAPI authenticationToken] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            
+            //no longer anonymous
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
+            NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+            NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+            [ArtAPI setAuthenticationToken:authTok];
+            self.shippingAddressTableView.tableHeaderView = nil;
+            [self populateDataWithLoginResponse:responseDict];
+            [SVProgressHUD dismiss];
+            
+            // Call Delegate
+//             if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
+//                 [self.loginDelegate loginSuccess];
+//             }
+            
+            NSLog(@"loginSuccess");
+            
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            NSLog(@"Account Merge Failed");
+            NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+            NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+            [ArtAPI setAuthenticationToken:authTok];
+            self.shippingAddressTableView.tableHeaderView = nil;
+            [self populateDataWithLoginResponse:responseDict];
+            [SVProgressHUD dismiss];
+        }];
+    }
+    else
+    {
+        
+    }
 }
 
 - (void)loginFailure

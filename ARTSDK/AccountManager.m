@@ -102,6 +102,9 @@
     
     //for now just return logged in state
     
+    if([ArtAPI authenticationToken])
+        return YES;
+    
     BOOL isLoggedIn = [ArtAPI isLoggedIn];
     
     bool isAnonymousLogin = YES;

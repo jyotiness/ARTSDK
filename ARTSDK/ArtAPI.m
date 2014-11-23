@@ -43,6 +43,7 @@ NSString* const kResourceSearchResultInSimpleFormat = @"/wcf/SearchService.svc/a
 NSString* const kResourceAccountAuthenticate = @"AccountAuthenticate";
 NSString* const kResourceAccountCreate = @"AccountCreate";
 NSString* const kResourceAccountCreateExtented = @"AccountCreateExtented";
+NSString* const kResourceAccountMerge = @"AccountMerge";
 NSString* const kResourceAccountGet = @"AccountGet";
 NSString* const kResourceAccountUpdateProperty = @"AccountUpdateProperty";
 NSString* const kResourceAccountUpdateLocationByType = @"AccountUpdateLocationByType";
@@ -838,6 +839,53 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     }];
     [operation start];
 }
+
++ (void) requestForAccountMergeFromAuthToken:(NSString *) fromAuthToken
+                                            toAuthToken:(NSString *)toAuthToken
+                                             success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                             failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountMergeFromAuthToken:fromAuthToken toAuthToken:toAuthToken success:success
+                                                         failure:failure];
+}
+
+- (void) requestForAccountMergeFromAuthToken:(NSString *) fromAuthToken
+                                 toAuthToken:(NSString *)toAuthToken
+                                     success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                     failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                fromAuthToken, @"fromAuthToken",
+                                toAuthToken, @"toAuthToken",
+                                nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountMerge
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
+        NSString *authTok = [JSON objectForKeyNotNull:@"AuthenticationToken"];
+        [ArtAPI setAuthenticationToken:authTok];
+//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+      /*  NSError *error;
+        [SFHFKeychainUtils deleteItemForUsername:@"PERSISTENT_ID_KEY" andServiceName:[ACAPI sharedAPI].keyChainService error:&error];
+        [ACAPI sharedAPI].usePersistentIDForAuth = NO;
+        [self getDefaultGallery]; */
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
 
 + (void) accountRetrievePasswordWithEmailAddress:(NSString *) emailAddress
                                          success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
@@ -2644,7 +2692,6 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     //NSLog(@"saving to keychain authenticationToken: %@", authenticationToken );
     _authenticationToken = authenticationToken;
     if (authenticationToken) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
         [[NSUserDefaults standardUserDefaults] setObject:authenticationToken forKey:AUTH_TOKEN_KEY];
     }
     else {
