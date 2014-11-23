@@ -387,6 +387,8 @@
     if(orderInfoDict){
         NSString *orderNumber = [orderInfoDict objectForKey:@"orderNumber"];
         
+        NSLog(@"OrderNumber: %@", orderNumber);
+        
         NSDictionary *orderDict = [self getOrderDictForOID:orderNumber];
         
         if(orderDict){

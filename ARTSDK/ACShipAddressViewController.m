@@ -20,7 +20,7 @@
 #import "NSString+Additions.h"
 #import "AccountManager.h"
 #import <QuartzCore/QuartzCore.h>
-//#import "PayPalPaymentViewController.h"
+#import "ACOrderConfirmationViewController.h"
 
 #define  COUNTRY_PICKER_TAG 5
 #define  STATE_PICKER_TAG 8
@@ -2125,22 +2125,52 @@ int nameOrigin=0;
     
     [ alert show];
     alert = nil;
+    
+    [SVProgressHUD showWithStatus:@"Reloading Pack Info..." maskType:SVProgressHUDMaskTypeClear];
+    [[AccountManager sharedInstance] retrieveOrderHistoryArrayForLoggedInUser:self];
+    
 }
 
+
+-(void)orderHistoryLoadedSuccessfully{
+    NSLog(@"Loaded Order History");
+    
+    
+    //allow continue to be pressed again
+    isContinueButtonPressed = NO;
+    
+    [SVProgressHUD dismiss];
+    
+}
+
+
+-(void)orderHistoryLoadingFailed{
+    NSLog(@"Could not Load Order History");
+    
+    //allow continue to be pressed again
+    isContinueButtonPressed = NO;
+    
+    [SVProgressHUD dismiss];
+    
+}
 
 -(void)addGiftCertificateSuccess{
     
     NSLog(@"Added Gift Certificate");
     //now need to submit the order
-    
     [SVProgressHUD dismiss];
+    
+    [self callCartSubmitForOrder];
 }
 
 -(void)addGiftCertificateFailed{
     NSLog(@"Failed to add Gift Certificate");
     
+    isContinueButtonPressed = NO;
+    
     [SVProgressHUD dismiss];
     [self showGCAlert];
+    
     
     //remain on shipping address screen
     
@@ -3817,6 +3847,201 @@ int nameOrigin=0;
         
     }
 }
+
+//MKL ADDING CART SUBMIT FUNCTIONS HERE FOR SWITCHART
+-(void)callCartSubmitForOrder {
+    
+    [ArtAPI
+     cartSubmitForOrderWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+         NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         [self requestOrderSubmitDidFinish: JSON];
+     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+         NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
+         NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+         [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+         [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+         [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+         [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
+         
+         UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"ERROR" withDefaultValue:@"Error"]
+                                                          message: [JSON objectForKey:@"APIErrorMessage"]
+                                                         delegate:nil
+                                                cancelButtonTitle:[ACConstants getLocalizedStringForKey:@"OK" withDefaultValue:@"OK"]
+                                                otherButtonTitles:nil, nil];
+         
+         [ alert show];
+         alert = nil;
+         [SVProgressHUD dismiss];
+     }];
+    
+    
+    
+}
+
+
+
+-(void) requestOrderSubmitDidFinish:(id)JSON
+{
+    
+    
+    NSDictionary *orderAttributes = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"OrderAttributes"];
+    NSString *orderNumber = [orderAttributes objectForKeyNotNull:@"OrderNumber"];
+    //self.orderNumber = orderNumber;
+    [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction: ANALYTICS_EVENT_NAME_ORDER_CONFIRM_SHOWN withLabel:orderNumber];
+    
+    NSDictionary *cart = [ArtAPI cart];
+    NSDictionary *cartTotal = [cart objectForKeyNotNull:@"CartTotal"];
+    NSNumber *orderTotal = [cartTotal objectForKeyNotNull:@"Total"];
+    
+    //MKL need to do revenue tracking before order is submitted because cart gets blanked out
+    NSNumber *taxTotal = [cartTotal objectForKeyNotNull:@"TaxTotal"];
+    NSNumber *shippingTotal = [cartTotal objectForKeyNotNull:@"ShippingTotal"];
+    NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:@"Currency_Code_to_use"];
+    
+    [Analytics logGARevenueEvent:orderNumber withRevenue:orderTotal withTax:taxTotal withShipping:shippingTotal withCurrencyCode:currencyCode];
+    
+    NSArray *shipmentsArray = [cart objectForKeyNotNull:@"Shipments"];
+    if(shipmentsArray && (![shipmentsArray isKindOfClass:[NSNull class]]) && (shipmentsArray.count > 0)){
+        for(NSDictionary *shipment in shipmentsArray){
+            NSArray *cartItemsArray = [shipment objectForKeyNotNull:@"CartItems"];
+            if(cartItemsArray && (![cartItemsArray isKindOfClass:[NSNull class]]) && (cartItemsArray.count > 0)){
+                for(NSDictionary *cartItem in cartItemsArray){
+                    NSDictionary *currentItem = [cartItem objectForKeyNotNull:@"Item"];
+                    
+                    NSNumber *itemQuant = (NSNumber *)[cartItem objectForKeyNotNull:@"Quantity"];
+                    int quantity = 0;
+                    if(itemQuant && ![itemQuant isKindOfClass:[NSNull class]]){
+                        quantity = (int)[itemQuant integerValue];
+                    }
+                    
+                    if(currentItem && ![currentItem isKindOfClass:[NSNull class]]){
+                        
+                        NSString *itemSku = [currentItem objectForKeyNotNull:@"Sku"];
+                        
+                        NSNumber *itemPrice = nil;
+                        
+                        NSString *itemName = @"";
+                        NSString *itemCategory = @"";
+                        
+                        NSDictionary *itemAttributes = [currentItem objectForKeyNotNull:@"ItemAttributes"];
+                        
+                        if(itemAttributes && ![itemAttributes isKindOfClass:[NSNull class]]){
+                            NSString *type = [itemAttributes objectForKeyNotNull:@"Type"];
+                            NSString *title = [itemAttributes objectForKeyNotNull:@"Title"];
+                            
+                            if(type && ![type isKindOfClass:[NSNull class]]){
+                                itemName = type;
+                            }
+                            
+                            if(title && ![title isKindOfClass:[NSNull class]]){
+                                itemCategory = title;
+                            }
+                        }
+                        
+                        NSDictionary *itemPriceDictionary = [currentItem objectForKeyNotNull:@"ItemPrice"];
+                        if(itemPriceDictionary && ![itemPriceDictionary isKindOfClass:[NSNull class]]){
+                            NSNumber *price = (NSNumber *)[itemPriceDictionary objectForKeyNotNull:@"Price"];
+                            if(price && ![price isKindOfClass:[NSNull class]]){
+                                itemPrice = price;
+                            }
+                        }
+                        
+                        
+                        
+                        [Analytics logGACartItemEventWithTransactionID:orderNumber forName:itemName withSku:itemSku forCategory:itemCategory atPrice:itemPrice forQuantity:quantity havingCurrencyCode:currencyCode];
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    if([ACConstants getCurrentAppLocation] == AppLocationSwitchArt){
+        //need to set bundle if it is SwitchArt app
+        
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
+        
+        NSLog(@"SwitchArt App - needs to set the address on the account");
+        [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:orderNumber];
+        
+    }else{
+        
+        [SVProgressHUD dismiss];
+        
+        [ArtAPI setCart:nil];
+        [ArtAPI initilizeApp];
+        
+        ACOrderConfirmationViewController *controller = [[ACOrderConfirmationViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACOrderConfirmationViewController-iPad" :@"ACOrderConfirmationViewController"
+                                                                                                            bundle:ACBundle];
+        controller.orderNumber=orderNumber;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
+    
+}
+
+-(void)addressSetSuccess:(NSString *)orderNumber withAddressID:(NSString *)addressID{
+    
+    NSLog(@"SwitchArt App - needs to set the bundles on the account");
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:orderNumber withAddressID:addressID];
+    
+}
+
+-(void)addressSetFailed:(NSString *)orderNumber{
+    NSLog(@"Failed to set shipping address");
+    
+    //need to do the same thing though even though the UserProperties update failed
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message: @"There was an error updating account information."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
+    
+    [ alert show];
+    
+    //set bundles anyway but with blank address ID
+    NSLog(@"SwitchArt App - needs to set the bundles on the account");
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:orderNumber withAddressID:@""];
+}
+
+-(void)bundlesSetSuccess{
+    NSLog(@"Set bundles successfully");
+    
+    [ArtAPI setCart:nil];
+    [ArtAPI initilizeApp];
+    
+    //need to retrieve purchased bundles if SwitchArt
+    [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
+    [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+    
+}
+
+
+-(void)bundlesSetFailed{
+    NSLog(@"Failed to set bundles");
+    
+    //need to do the same thing though even though the UserProperties update failed
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message: @"There was an error updating the pack information on the account."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
+    
+    [ alert show];
+    
+    [ArtAPI setCart:nil];
+    [ArtAPI initilizeApp];
+    
+    //need to retrieve purchased bundles if SwitchArt
+    
+    [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+    
+}
+
+
 
 
 @end
