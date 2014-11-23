@@ -173,6 +173,19 @@ int nameOrigin=0;
     // Set Footer View
     self.shippingAddressTableView.tableFooterView = footerView;
     
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    if((![[AccountManager sharedInstance] isLoggedInForSwitchArt]) && AppLocationSwitchArt == currAppLoc)
+    {
+        self.shippingAddressTableView.tableHeaderView = self.loginHeaderView;
+        self.loginTitleLabel.font = [ACConstants getStandardBoldFontWithSize:26.0f];
+        self.loginView.hidden = self.needSignUp;
+        self.signupView.hidden = !self.needSignUp;
+    }
+    else
+    {
+        self.shippingAddressTableView.tableHeaderView = nil;
+    }
+
     [self.shippingAddressTableView setBackgroundColor:[UIColor clearColor]];
     isDoingValidation = NO;
     
@@ -192,7 +205,7 @@ int nameOrigin=0;
     self.tagFromPicker = COUNTRY_PICKER_TAG;
     
     
-    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+//    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
     if(AppLocationSwitchArt == currAppLoc){
         
         NSDictionary *workingPack = [AccountManager sharedInstance].purchasedWorkingPack;
@@ -304,28 +317,12 @@ int nameOrigin=0;
     
     UIButton *barBackButton = [ACConstants getBackButtonForTitle:[ACConstants getLocalizedStringForKey:@"BACK" withDefaultValue:@"Back"]];
     
-    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
-    if((![[AccountManager sharedInstance] isLoggedInForSwitchArt]) && AppLocationSwitchArt == currAppLoc)
-    {
-        self.shippingAddressTableView.tableHeaderView = self.loginHeaderView;
-        self.loginTitleLabel.font = [ACConstants getStandardBoldFontWithSize:26.0f];
-        self.loginView.hidden = self.needSignUp;
-        self.signupView.hidden = !self.needSignUp;
+//    NSString *anonAuthToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ANONYMOUS_AUTH_TOKEN"];
+//    
+//    BOOL isLoginEnabled = [[ArtAPI sharedInstance] isLoginEnabled];
+    
+//    if(isLoginEnabled && anonAuthToken && ![anonAuthToken isKindOfClass:[NSNull class]])
 
-/*        [self.loginFbButton setBackgroundColor:[ACConstants getPrimaryButtonColor]];
-        [self.loginFbButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.loginFbButton.titleLabel.font = [ACConstants getStandardBoldFontWithSize:32.0f];
-        
-        [self.loginEmailButton setBackgroundColor:[UIColor grayColor]];
-        [self.loginEmailButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.loginEmailButton.titleLabel.font = [ACConstants getStandardBoldFontWithSize:32.0f]; */
-    }
-    else
-    {
-        self.shippingAddressTableView.tableHeaderView = nil;
-    }
-    
-    
     // Allow the calling view controller to define the back button behavior
     if ([self.delegate respondsToSelector:@selector(didPressBackButton:)]){
         [barBackButton addTarget:self action:@selector(didPressBackButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -3383,8 +3380,8 @@ int nameOrigin=0;
             //no longer anonymous
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
-            NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
-            [ArtAPI setAuthenticationToken:authTok];
+//            NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+//            [ArtAPI setAuthenticationToken:authTok];
             self.shippingAddressTableView.tableHeaderView = nil;
             [self populateDataWithLoginResponse:responseDict];
             [SVProgressHUD dismiss];

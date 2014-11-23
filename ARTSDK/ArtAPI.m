@@ -871,7 +871,10 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
         
         NSString *authTok = [JSON objectForKeyNotNull:@"AuthenticationToken"];
-        [ArtAPI setAuthenticationToken:authTok];
+        NSLog(@"authTok = %@",authTok);
+        NSLog(@"JSON = %@",JSON);
+        
+//        [ArtAPI setAuthenticationToken:authTok];
 //        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
 //        [[NSUserDefaults standardUserDefaults] synchronize];
       /*  NSError *error;
