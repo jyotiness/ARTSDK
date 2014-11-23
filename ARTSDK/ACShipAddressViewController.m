@@ -68,6 +68,7 @@
 @synthesize isModal = _isModal;
 @synthesize isUSAddressInvalid;
 @synthesize didTapNext;
+@synthesize orderNumber;
 
 bool isContinueButtonPressed = NO;
 #define kOFFSET_FOR_KEYBOARD 80.0
@@ -246,12 +247,18 @@ int nameOrigin=0;
 
 -(void)getAddressFromAddress
 {
-    if([[AccountManager sharedInstance] isLoggedInForSwitchArt]){
-        [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
-    }
+    //need to do this differently
+    //because submit order process also calls get bundles
+    //and we need delegate for that
+    
+    //if([[AccountManager sharedInstance] isLoggedInForSwitchArt]){
+    //    [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+    //}
 }
 
 ///CS;====API CallBacks
+
+/*
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles;
 {
     NSLog(@" %@ ",NSStringFromSelector(_cmd));
@@ -287,6 +294,7 @@ int nameOrigin=0;
     
     [SVProgressHUD dismiss];
 }
+*/
 
 - (void)dismissModal {
     [[NSNotificationCenter defaultCenter] removeObserver:nil name:kACNotificationDismissModal object:nil];
@@ -3887,7 +3895,7 @@ int nameOrigin=0;
     
     NSDictionary *orderAttributes = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"OrderAttributes"];
     NSString *orderNumber = [orderAttributes objectForKeyNotNull:@"OrderNumber"];
-    //self.orderNumber = orderNumber;
+    self.orderNumber = orderNumber;
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction: ANALYTICS_EVENT_NAME_ORDER_CONFIRM_SHOWN withLabel:orderNumber];
     
     NSDictionary *cart = [ArtAPI cart];
@@ -4041,7 +4049,23 @@ int nameOrigin=0;
     
 }
 
+-(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles
+{
+    [[AccountManager sharedInstance] setBundlesArray:purchasedBundles];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
+    [[NSUserDefaults standardUserDefaults] setObject:self.orderNumber forKey:@"ORDER-NUMBER"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [SVProgressHUD dismiss];
+    [self.navigationController popToRootViewControllerAnimated:NO];
+}
 
+-(void)bundlesLoadingFailed
+{
+    [SVProgressHUD dismiss];
+    NSLog(@" requestForAccountGet failed ");
+}
 
 
 @end

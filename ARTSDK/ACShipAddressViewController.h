@@ -150,6 +150,8 @@ typedef enum ContactPickeMode {
 
 @property (retain, nonatomic) IBOutlet UIImageView *topNavBarImageView;
 
+@property (nonatomic,strong) NSString* orderNumber;
+
 -(void)configureThePicker;
 -(void)hidePicker;
 
