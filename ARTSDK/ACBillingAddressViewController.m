@@ -3002,14 +3002,14 @@
     
 }
 
--(void)addressSetSuccess:(NSString *)orderNumber withAddressID:(NSString *)addressID{
+-(void)addressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
     
     NSLog(@"SwitchArt App - needs to set the bundles on the account");
-    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:orderNumber withAddressID:addressID];
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:addressID];
     
 }
 
--(void)addressSetFailed:(NSString *)orderNumber{
+-(void)addressSetFailed:(NSString *)theOrderNumber{
     NSLog(@"Failed to set shipping address");
     
     //need to do the same thing though even though the UserProperties update failed
@@ -3024,7 +3024,7 @@
     
     //set bundles anyway but with blank address ID
     NSLog(@"SwitchArt App - needs to set the bundles on the account");
-    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:orderNumber withAddressID:@""];
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@""];
 }
 
 -(void)bundlesSetSuccess{
@@ -3068,6 +3068,7 @@
     [[AccountManager sharedInstance] setBundlesArray:purchasedBundles];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"IS-REORDER"];
     [[NSUserDefaults standardUserDefaults] setObject:self.orderNumber forKey:@"ORDER-NUMBER"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
