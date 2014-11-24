@@ -93,7 +93,6 @@ typedef enum ContactPickeMode {
 
 - (IBAction)loginWithFacebook:(id)sender;
 - (IBAction)loginWithEmail:(id)sender;
-- (IBAction)signupWithEmail:(id)sender;
 - (IBAction)forgotPassword:(id)sender;
 
 -(IBAction)textFieldFinished:(id)sender ;

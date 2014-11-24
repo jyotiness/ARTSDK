@@ -257,6 +257,8 @@ int nameOrigin=0;
         self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
         self.willShowCityAndState = YES;
         
+        [self.shippingAddressTableView reloadData];
+
         if ([self.selectedCountryCode isEqualToString:@"US"] && [stateSA isEqualToString:@""])
         {
             if(zipSA && 5 == zipSA.length)
@@ -264,11 +266,8 @@ int nameOrigin=0;
                 [ self cityAndStateSuggestionForZip:zipSA];
             }
         }
-
-        [self.shippingAddressTableView reloadData];
         
     }
-    
 }
 
 -(void)getAddressFromAddress
@@ -1766,12 +1765,16 @@ int nameOrigin=0;
                  [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
                  [[NSUserDefaults standardUserDefaults] synchronize];
                  
-             }else{
-                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
-                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
-                 [ArtAPI setAuthenticationToken:authTok];
+             }
+             else{
                  
-                 [self proceedToShippingOptions];
+                 [self loginSuccess];
+
+//                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+//                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+//                 [ArtAPI setAuthenticationToken:authTok];
+//                 
+//                 [self proceedToShippingOptions];
 
                  // Call Delegate
 //                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
@@ -2901,6 +2904,15 @@ int nameOrigin=0;
     NSString *streetAddress = [dict objectForKey:@"Address1"];
     self.addressLine1 = [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     
+    
+    if ([self.selectedCountryCode isEqualToString:@"US"] && [self.postalCode isEqualToString:@""])
+    {
+        if(self.postalCode && 5 == self.postalCode.length)
+        {
+            [ self cityAndStateSuggestionForZip:self.postalCode];
+        }
+    }
+
     [ self.shippingAddressTableView reloadData];
     
 #ifndef __clang_analyzer__
@@ -3580,111 +3592,6 @@ int nameOrigin=0;
     }
 }
 
-- (IBAction)signupWithEmail:(id)sender
-{
-    [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_CREATE_ACCOUNT];
-    [self.view endEditing:YES];
-    
-    self.error = nil;
-//    self.tableview.tableHeaderView = [self tableViewHeader]; jobin
-    
-    if ([self validateFormForSignUp] ){
-        //NSLog(@"passed validation");
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"SIGNING UP",@"SIGNING UP")];
-        
-        [ArtAPI
-         requestForAccountCreateWithEmailAddress:self.signupEmail
-         password:self.password
-         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-             
-             AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
-             if(currAppLoc==AppLocationNone){
-                 NSDictionary *accountDetails = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Account"];
-                 NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
-                 NSString *accountId = [[profileInfo objectForKeyNotNull:@"AccountId"] stringValue];
-                 
-                 [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
-                 [[NSUserDefaults standardUserDefaults] synchronize];
-                 
-             }else{
-                 [self loginSuccess];
-
-//                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
-//                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
-//                 [ArtAPI setAuthenticationToken:authTok];
-//                 
-//                 // Call Delegate
-//                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
-//                     [self.loginDelegate loginSuccess];
-//                 }
-             }
-             
-         }
-         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-             // Failure
-             [SVProgressHUD dismiss];
-             
-             self.error =  [JSON objectForKey:@"APIErrorMessage"];
-             
-             //try to get better error message from operation response
-             NSDictionary *dDict = [JSON objectForKey:@"d"];
-             
-             if(dDict){
-                 NSDictionary *operationResponseDict = [dDict objectForKey:@"OperationResponse"];
-                 if(operationResponseDict){
-                     NSArray *errorsArray = [operationResponseDict objectForKey:@"Errors"];
-                     if(errorsArray){
-                         
-                         NSDictionary *firstError = [errorsArray objectAtIndex:0];
-                         
-                         if(firstError){
-                             
-                             NSString *errorCode = [firstError objectForKey:@"ErrorCode"];
-                             NSString *errorMessage = [firstError objectForKey:@"ErrorMessage"];
-                             
-                             if(errorMessage){
-                                 if([errorMessage length] > 0){
-                                     self.error = errorMessage;
-                                 }
-                             }
-                         }
-                     }
-                     
-                 }
-             }
-             
-             self.password = self.confirmPassword = @"";
-             
-             [self.fieldErrors setObject:ACLocalizedString(@"Account Create Failed", @"Account Create Failed")
-                                  forKey:[NSNumber numberWithInt:0]];
-             
-             [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                                  forKey:[NSNumber numberWithInt:1]];
-             [self.fieldErrors setObject:ACLocalizedString(@"Please enter a password", @"Please enter a password")
-                                  forKey:[NSNumber numberWithInt:2]];
-             
-             NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
-             [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
-             [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
-             [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
-             [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:self.error withParams:analyticsParams];
-             
-             UIAlertView *accountCreateAlert = [[UIAlertView alloc] initWithTitle:self.error message:nil delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
-             [accountCreateAlert show];
-             
-             [self.shippingAddressTableView reloadData];
-             
-         }];
-        
-    } else {
-        //NSLog(@"failed validation");
-        // Reload and display error
-//        [self.tableview reloadData]; Jobin
-    }
-}
-
 - (IBAction)forgotPassword:(id)sender
 {
     UIAlertView *forgotPasswordAlert = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"ENTER_EMAIL_ACCOUNT", nil) message:nil delegate:self cancelButtonTitle:ACLocalizedString(@"CANCEL", nil) otherButtonTitles:ACLocalizedString(@"OK", nil), nil];
@@ -4107,7 +4014,7 @@ int nameOrigin=0;
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles
 {
     [[AccountManager sharedInstance] setBundlesArray:purchasedBundles];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
+//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"IS-REORDER"];
     [[NSUserDefaults standardUserDefaults] setObject:self.orderNumber forKey:@"ORDER-NUMBER"];
