@@ -45,6 +45,7 @@ NSString* const kResourceAccountCreate = @"AccountCreate";
 NSString* const kResourceAccountCreateExtented = @"AccountCreateExtented";
 NSString* const kResourceAccountMerge = @"AccountMerge";
 NSString* const kResourceAccountGet = @"AccountGet";
+NSString* const kResourceAccountUpdateProfile = @"AccountUpdateProfile";
 NSString* const kResourceAccountUpdateProperty = @"AccountUpdateProperty";
 NSString* const kResourceAccountUpdateLocationByType = @"AccountUpdateLocationByType";
 NSString* const kResourceAccountRetrievePassword = @"AccountRetrievePassword";
@@ -447,6 +448,46 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 #pragma mark -
 #pragma mark Authenticaion
 
+
++ (void) requestForAccountUpdateProfileWithFirstName:(NSString *) firstName lastName:(NSString *)lastName
+                                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountUpdateProfileWithFirstName:firstName lastName:lastName success:success failure:failure];
+}
+
+- (void) requestForAccountUpdateProfileWithFirstName:(NSString *) firstName lastName:(NSString *)lastName
+                                             success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                             failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:firstName, @"firstName", lastName, @"lastName",nil];
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountUpdateProfile
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    
+    NSLog(@"request.URL %@",request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+                                         {
+                                             
+                                             [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+                                             
+                                         }
+                                                                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                         {
+                                             failure(request, response, error, JSON);
+                                         }];
+    
+    
+    [operation start];
+    
+}
 
 
 
