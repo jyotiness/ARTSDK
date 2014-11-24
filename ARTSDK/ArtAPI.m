@@ -1103,7 +1103,6 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 
     [defaults setObject:nil forKey:@"LOGGED_OUT_GALLERY_PERSISTANCE_KEY"];
     [defaults setObject:nil forKey:@"CART_PERSISTANCE_KEY"];
-    [defaults setObject:nil forKey:@"CART_PERSISTANCE_KEY"];
     [defaults setObject:nil forKey:@"MOBILE_GALLERY_ID_PERSISTANCE_KEY"];
     [defaults setObject:nil forKey:@"WALL_GALLERY_ID_PERSISTANCE_KEY"];
     [defaults setObject:nil forKey:@"FB_ACCESS_TOKEN_KEY"];

@@ -74,7 +74,7 @@ typedef enum {
 -(BOOL)updateBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate;
 -(NSArray *)getBundlesArray;
 -(NSDictionary *)getBundleForOrderNumber:(NSString*)orderNumber;
--(NSDictionary *)getBundleForBundleID:(NSString*)bundleID;
+-(NSMutableDictionary *)getBundleForBundleID:(NSString*)bundleID;
 -(void)setBundlesArray:(NSArray *)bundleArray;
 -(BOOL)setShippingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber;
 -(NSDictionary *)getAddressForAddressID:(NSString*)addressID;
@@ -83,7 +83,7 @@ typedef enum {
 -(BOOL)applyGiftCertificateToCart:(id<AccountManagerDelegate>)delegate usingGiftCertificate:(NSString *)giftCertificate;
 -(BOOL)needsToLoadOrderHistory;
 -(void)updateFirstNameLastName:(NSString *)firstName lastName:(NSString *)lastName;
-
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate;
+-(BOOL)getIsCartEmpty;
 
 @end

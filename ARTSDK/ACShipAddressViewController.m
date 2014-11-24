@@ -1310,11 +1310,20 @@ int nameOrigin=0;
     if(1 <= addresses.count)
     {
         NSMutableArray *array = [ NSMutableArray array];
+        
+        //this is a fix because the city alert view will not add duplicates, causing a problem
+        //you get back same city different county sometimes, and then the index in the alert view or action sheet
+        //no longr matches
+        
+        NSMutableArray *addressesArrayDeduped = [NSMutableArray array];
+        
         for(NSDictionary *addrDict in addresses)
         {
             NSString *cityName = [ addrDict objectForKeyNotNull: @"City"];
-            if(![array containsObject:cityName])
+            if(![array containsObject:cityName]){
                 [array addObject:cityName];
+                [addressesArrayDeduped addObject:addrDict];
+            }
         }
         
         if(1< array.count)
@@ -1335,7 +1344,8 @@ int nameOrigin=0;
                     [actionSheet addButtonWithTitle:cName];
                 }
                 
-                self.cityArray = addresses;
+                //self.cityArray = addresses;
+                self.cityArray = addressesArrayDeduped;
                 actionSheet.tag = 777;
                 [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
             }
@@ -1348,7 +1358,8 @@ int nameOrigin=0;
                     [anAlert addButtonWithTitle:cityName];
                 }
                 
-                self.cityArray = addresses;
+                //self.cityArray = addresses;
+                self.cityArray = addressesArrayDeduped;
                 anAlert.tag = 777;
                 [anAlert show];
             }
@@ -3373,6 +3384,8 @@ int nameOrigin=0;
             
             //no longer anonymous
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
 //            NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
 //            [ArtAPI setAuthenticationToken:authTok];

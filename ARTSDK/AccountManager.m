@@ -132,6 +132,32 @@
     
 }
 
+-(BOOL)getIsCartEmpty{
+    
+    NSDictionary *theCart = [ArtAPI cart];
+    
+    NSArray *shipmentArray = [theCart objectForKeyNotNull:@"Shipments"];
+    NSDictionary *shipmentsDict = [shipmentArray objectAtIndex:0];
+    
+    if(!shipmentArray) return YES;
+    if([shipmentArray count] == 0) return YES;
+    
+    NSArray *cartItemsArray = [shipmentsDict objectForKey:@"CartItems"];
+    
+    if(!cartItemsArray) return YES;
+    if([cartItemsArray count] == 0) return YES;
+    
+    int itemCount = (int)cartItemsArray.count;
+    
+    if(itemCount==0){
+        
+        return YES;
+    }else{
+        return NO;
+    }
+    
+}
+
 -(void)setBundlesArray:(NSArray *)bundleArray{
     
     self.purchasedBundles = bundleArray;
@@ -165,10 +191,10 @@
     return bundleDict;
 }
 
--(NSDictionary *)getBundleForBundleID:(NSString*)bundleID
+-(NSMutableDictionary *)getBundleForBundleID:(NSString*)bundleID
 {
-    NSDictionary *bundleDict = nil;
-    for(NSDictionary *dict in self.purchasedBundles)
+    NSMutableDictionary *bundleDict = nil;
+    for(NSMutableDictionary *dict in self.purchasedBundles)
     {
         @try{
             
