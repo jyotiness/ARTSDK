@@ -257,16 +257,27 @@ int nameOrigin=0;
         self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
         self.willShowCityAndState = YES;
         
-        [self.shippingAddressTableView reloadData];
-
-        if ([self.selectedCountryCode isEqualToString:@"US"] && [stateSA isEqualToString:@""])
+        if ([self.selectedCountryCode isEqualToString:@"US"])
         {
-            if(zipSA && 5 == zipSA.length)
+            if([stateSA isEqualToString:@""])
             {
-                [ self cityAndStateSuggestionForZip:zipSA];
+                if(zipSA && 5 == zipSA.length)
+                {
+                    [ self cityAndStateSuggestionForZip:zipSA];
+                }
+            }
+            else{
+                NSDictionary *stateDict = [ self getStateForCode:self.stateValue];
+                NSString *stateName = [stateDict objectForKeyNotNull:@"Name"];
+                if(stateName)
+                {
+                    self.selectedStateIndex = [ self.states indexOfObject:stateDict];
+                    self.statePickerValue = [stateDict objectForKeyNotNull:@"Name"];
+                }
             }
         }
         
+        [self.shippingAddressTableView reloadData];
     }
 }
 
