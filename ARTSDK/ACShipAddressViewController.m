@@ -1774,7 +1774,6 @@ int nameOrigin=0;
 //                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
 //                 [ArtAPI setAuthenticationToken:authTok];
 //                 
-//                 [self proceedToShippingOptions];
 
                  // Call Delegate
 //                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
@@ -3410,6 +3409,8 @@ int nameOrigin=0;
             [self populateDataWithLoginResponse:responseDict];
             [SVProgressHUD dismiss];
             
+            [self proceedToShippingOptions];
+
             // Call Delegate
 //             if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
 //                 [self.loginDelegate loginSuccess];
