@@ -1746,7 +1746,10 @@ int nameOrigin=0;
 {
     if ([self validateFormForSignUp] ){
         //NSLog(@"passed validation");
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"SIGNING UP",@"SIGNING UP")];
+        
+        //this will need to go into localizable strings but for now, it is SwitchArt only
+        // so we need a sentence case string
+        [SVProgressHUD showWithStatus:@"Signing Up"];
         
         [ArtAPI
          requestForAccountCreateExtentedEmailAddress:self.signupEmail
