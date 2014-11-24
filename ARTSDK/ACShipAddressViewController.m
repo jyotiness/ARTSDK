@@ -3603,14 +3603,16 @@ int nameOrigin=0;
                  [[NSUserDefaults standardUserDefaults] synchronize];
                  
              }else{
-                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
-                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
-                 [ArtAPI setAuthenticationToken:authTok];
-                 
-                 // Call Delegate
-                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
-                     [self.loginDelegate loginSuccess];
-                 }
+                 [self loginSuccess];
+
+//                 NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+//                 NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+//                 [ArtAPI setAuthenticationToken:authTok];
+//                 
+//                 // Call Delegate
+//                 if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
+//                     [self.loginDelegate loginSuccess];
+//                 }
              }
              
          }
