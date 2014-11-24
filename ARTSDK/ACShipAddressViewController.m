@@ -230,40 +230,45 @@ int nameOrigin=0;
 
 -(void)prePopulateAddressFromDict:(NSDictionary*)shippingAddress
 {
-    NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
-    NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
-    NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
-    NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
-    NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
-    NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
-    NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
-    NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
-    NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
-    NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
-    
-    self.name = firstNameSA;
-    self.lastName = lastNameSA;
-    self.company = companyNameSA;
-    self.phone = phoneSA;
-    self.addressLine1 = address1SA;
-    self.addressLine2 = address2SA;
-    self.city = citySA;
-    self.stateValue = stateSA;
-    self.postalCode = zipSA;
-    self.countryPickerValue = countrySA;
-    self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
-    self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
-    self.willShowCityAndState = YES;
-    
-    [self.shippingAddressTableView reloadData];
-    
-    if ([self.selectedCountryCode isEqualToString:@"US"] && [stateSA isEqualToString:@""])
+    if(shippingAddress)
     {
-        if(zipSA && 5 == zipSA.length)
+        NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
+        NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
+        NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
+        NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
+        NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+        NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+        NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
+        NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
+        NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
+        NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
+        
+        self.name = firstNameSA;
+        self.lastName = lastNameSA;
+        self.company = companyNameSA;
+        self.phone = phoneSA;
+        self.addressLine1 = address1SA;
+        self.addressLine2 = address2SA;
+        self.city = citySA;
+        self.stateValue = stateSA;
+        self.postalCode = zipSA;
+        self.countryPickerValue = countrySA;
+        self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
+        self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
+        self.willShowCityAndState = YES;
+        
+        if ([self.selectedCountryCode isEqualToString:@"US"] && [stateSA isEqualToString:@""])
         {
-            [ self cityAndStateSuggestionForZip:zipSA];
+            if(zipSA && 5 == zipSA.length)
+            {
+                [ self cityAndStateSuggestionForZip:zipSA];
+            }
         }
+
+        [self.shippingAddressTableView reloadData];
+        
     }
+    
 }
 
 -(void)getAddressFromAddress
