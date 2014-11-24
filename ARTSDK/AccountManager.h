@@ -63,6 +63,7 @@ typedef enum {
 
 //Method's
 +(AccountManager *) sharedInstance;
+-(void)cancelOperations;
 -(void)loadUserDefaultGallery:(id<AccountManagerDelegate>)delegate;
 -(BOOL)isLoggedInForSwitchArt;
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate;

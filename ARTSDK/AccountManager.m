@@ -45,6 +45,11 @@
     return _one;
 }
 
+-(void)cancelOperations
+{
+    self.delegate = nil;
+}
+
 -(void)loadUserDefaultGallery:(id<AccountManagerDelegate>)delegate
 {
 

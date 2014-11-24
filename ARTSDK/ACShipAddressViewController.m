@@ -341,11 +341,8 @@ int nameOrigin=0;
             
             //this is a prepurchased pack - try to get the Order History
             [[AccountManager sharedInstance] retrieveOrderHistoryArrayForLoggedInUser:self];
-            
         }
     }
-    
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -357,6 +354,10 @@ int nameOrigin=0;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
+    
+    [[AccountManager sharedInstance] cancelOperations];
+    self.loginDelegate = nil;
+
     [ super viewWillDisappear:animated];
 }
 
@@ -882,7 +883,7 @@ int nameOrigin=0;
     
     // Make cell unselectable
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	int rownum=indexPath.row;
+	int rownum = (int)indexPath.row;
     cell.textField.delegate=self;
     cell.textField.hidden = NO;
     cell.textLabel.hidden = NO;
@@ -1582,17 +1583,17 @@ int nameOrigin=0;
 -(void)phoneBookContacts:(id)sender
 {
     UIButton *contactBtn = (UIButton*)sender;
-//    if([self.txtActiveField isFirstResponder])
-    //        [ self.txtActiveField resignFirstResponder];
     [self.view endEditing:YES];
+    contactBtn.enabled = NO;
     
     self.contactPickeMode = (int)contactBtn.tag;
     ABPeoplePickerNavigationController *peoplePicker = [[ABPeoplePickerNavigationController alloc] init];
     peoplePicker.peoplePickerDelegate = self;
     peoplePicker.navigationItem.title = (0 == contactBtn.tag)?[ACConstants getLocalizedStringForKey:@"CHOOSE_CONTACT" withDefaultValue:@"Choose Contact"]:[ACConstants getLocalizedStringForKey:@"CHOOSE_EMAIL" withDefaultValue:@"Choose Email"];
-    //[self presentModalViewController:peoplePicker animated:YES];
     peoplePicker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self presentViewController:peoplePicker animated:YES completion:nil];
+    [self presentViewController:peoplePicker animated:YES completion:^{
+        contactBtn.enabled = YES;
+    }];
 }
 
 -(IBAction)goBack:(id)sender

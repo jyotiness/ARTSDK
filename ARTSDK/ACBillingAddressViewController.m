@@ -2994,8 +2994,7 @@
         [ArtAPI setCart:nil];
         [ArtAPI initilizeApp];
         
-        ACOrderConfirmationViewController *controller = [[ACOrderConfirmationViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACOrderConfirmationViewController-iPad" :@"ACOrderConfirmationViewController"
-                                                                                                            bundle:ACBundle];
+        ACOrderConfirmationViewController *controller = [[ACOrderConfirmationViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACOrderConfirmationViewController-iPad" :@"ACOrderConfirmationViewController" bundle:ACBundle];
         controller.orderNumber=orderNumber;
         [self.navigationController pushViewController:controller animated:YES];
     }
