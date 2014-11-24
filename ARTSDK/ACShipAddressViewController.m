@@ -206,9 +206,7 @@ int nameOrigin=0;
     }
     self.tagFromPicker = COUNTRY_PICKER_TAG;
     
-    
-//    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
-    if(AppLocationSwitchArt == currAppLoc){
+    if(AppLocationSwitchArt == currAppLoc){ //Address Prepopulate
         
         NSDictionary *workingPack = [AccountManager sharedInstance].purchasedWorkingPack;
         if(workingPack){
@@ -217,33 +215,7 @@ int nameOrigin=0;
             if(shippingAddressID){
                 
                 NSDictionary *shippingAddress = [[AccountManager sharedInstance]getAddressForAddressID:shippingAddressID];
-                
-                NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
-                NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
-                NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
-                NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
-                NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
-                NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
-                NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
-                NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
-                NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
-                NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
-                
-                self.name = firstNameSA;
-                self.lastName = lastNameSA;
-                self.company = companyNameSA;
-                self.phone = phoneSA;
-                self.addressLine1 = address1SA;
-                self.addressLine2 = address2SA;
-                self.city = citySA;
-                self.stateValue = stateSA;
-                self.postalCode = zipSA;
-                self.countryPickerValue = countrySA;
-                self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
-                self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
-                self.willShowCityAndState = YES;
-                
-                [self.shippingAddressTableView reloadData];
+                [self prePopulateAddressFromDict:shippingAddress];
             }
             else
             {
@@ -256,75 +228,59 @@ int nameOrigin=0;
     }
 }
 
--(void)getAddressFromAddress
+-(void)prePopulateAddressFromDict:(NSDictionary*)shippingAddress
 {
-    //need to do this differently
-    //because submit order process also calls get bundles
-    //and we need delegate for that
+    NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
+    NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
+    NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
+    NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
+    NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+    NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+    NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
+    NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
+    NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
+    NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
     
-    //if([[AccountManager sharedInstance] isLoggedInForSwitchArt]){
-    //    [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
-    //}
-}
-
-///CS;====API CallBacks
-
-/*
--(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles;
-{
-    NSLog(@" %@ ",NSStringFromSelector(_cmd));
+    self.name = firstNameSA;
+    self.lastName = lastNameSA;
+    self.company = companyNameSA;
+    self.phone = phoneSA;
+    self.addressLine1 = address1SA;
+    self.addressLine2 = address2SA;
+    self.city = citySA;
+    self.stateValue = stateSA;
+    self.postalCode = zipSA;
+    self.countryPickerValue = countrySA;
+    self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
+    self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
+    self.willShowCityAndState = YES;
     
-    [SVProgressHUD dismiss];
-    NSString *addressID = [[AccountManager sharedInstance] shippingAddressIdentifier];
-    NSDictionary *addressDict = [[AccountManager sharedInstance] getAddressForAddressID:addressID];
+    [self.shippingAddressTableView reloadData];
     
-    if(addressDict){
-        
-        NSDictionary *nameDict = [addressDict objectForKeyNotNull:@"Name"];
-        NSDictionary *phoneDict = [addressDict objectForKeyNotNull:@"Phone"];
-        self.name = [nameDict objectForKeyNotNull:@"FirstName"] ;
-        self.lastName = [nameDict objectForKeyNotNull:@"LastName"];
-        self.company = [addressDict objectForKeyNotNull:@"CompanyName"] ;
-        self.phone = [phoneDict objectForKeyNotNull:@"Primary"] ;
-        self.addressLine1 = [addressDict objectForKeyNotNull:@"Address1"];
-        self.addressLine2 = [addressDict objectForKeyNotNull:@"Address2"];
-        self.city = [addressDict objectForKeyNotNull:@"City"];
-        self.postalCode = [addressDict objectForKeyNotNull:@"ZipCode"];
-        self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
-        self.selectedCountryCode = [addressDict objectForKeyNotNull:@"CountryIsoA2"];
-        self.countryPickerValue = [addressDict objectForKeyNotNull:@"Country"];
-        self.willShowCityAndState = YES;
-
-        [self.shippingAddressTableView reloadData];
+    if ([self.selectedCountryCode isEqualToString:@"US"] && [stateSA isEqualToString:@""])
+    {
+        if(zipSA && 5 == zipSA.length)
+        {
+            [ self cityAndStateSuggestionForZip:zipSA];
+        }
     }
 }
- 
 
--(void)bundlesLoadingFailed;
+-(void)getAddressFromAddress
 {
-    NSLog(@" %@ ",NSStringFromSelector(_cmd));
-    
-    [SVProgressHUD dismiss];
+    NSDictionary *sddressDict = [[AccountManager sharedInstance] getAddressForAddressID: [[AccountManager sharedInstance] shippingAddressIdentifier]];
+    [self prePopulateAddressFromDict:sddressDict];
 }
-*/
 
 - (void)dismissModal {
     [[NSNotificationCenter defaultCenter] removeObserver:nil name:kACNotificationDismissModal object:nil];
 }
 
-
 -(void)viewWillAppear:(BOOL)animated
 {
     self.navigationController.navigationBarHidden = NO;
-    
     UIButton *barBackButton = [ACConstants getBackButtonForTitle:[ACConstants getLocalizedStringForKey:@"BACK" withDefaultValue:@"Back"]];
     
-//    NSString *anonAuthToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ANONYMOUS_AUTH_TOKEN"];
-//    
-//    BOOL isLoginEnabled = [[ArtAPI sharedInstance] isLoginEnabled];
-    
-//    if(isLoginEnabled && anonAuthToken && ![anonAuthToken isKindOfClass:[NSNull class]])
-
     // Allow the calling view controller to define the back button behavior
     if ([self.delegate respondsToSelector:@selector(didPressBackButton:)]){
         [barBackButton addTarget:self action:@selector(didPressBackButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -1393,7 +1349,6 @@ int nameOrigin=0;
                 
                 self.cityArray = addresses;
                 anAlert.tag = 777;
-                
                 [anAlert show];
             }
             

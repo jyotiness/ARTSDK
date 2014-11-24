@@ -741,18 +741,11 @@
 
 - (IBAction)signupWithEmail:(id)sender
 {
-    
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_CREATE_ACCOUNT];
-    
-    //    if([self.txtActiveField isFirstResponder])
-    //    {
-    //        [ self.txtActiveField resignFirstResponder];
-    //    }
     [self.view endEditing:YES];
     
     self.error = nil;
     self.tableview.tableHeaderView = [self tableViewHeader];
-    //NSLog(@"signupWithEmail - FName:" + self.fName + " LName:" + self.lName );
     NSLog(@"emailAddress: %@ firstName: %@ lastName: %@",self.email, self.fName, self.lName);
     if ([self validateFormForSignUp] ){
         //NSLog(@"passed validation");
@@ -786,10 +779,8 @@
                      [self.delegate loginSuccess];
                  }
              }
-             
-             
-             
-         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+         }
+         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
              NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
              // Failure
              [SVProgressHUD dismiss];
