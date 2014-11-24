@@ -85,5 +85,6 @@ typedef enum {
 -(void)updateFirstNameLastName:(NSString *)firstName lastName:(NSString *)lastName;
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate;
 -(BOOL)getIsCartEmpty;
+-(void)reIndexAddressesAfterAddressUpdate:(NSArray *)addressArrayFromUpdate;
 
 @end

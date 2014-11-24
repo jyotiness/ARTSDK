@@ -776,6 +776,42 @@
     
 }
 
+-(void)reIndexAddressesAfterAddressUpdate:(NSArray *)addressArrayFromUpdate
+{
+
+    if(addressArrayFromUpdate){
+        
+        //clear address cache
+        self.addressesByAddressID = [[NSMutableDictionary alloc] init];
+        self.addressArray = [[NSMutableArray alloc] init];
+        
+        
+        
+        //index all addresses
+        NSString *tempAddressID;
+        
+        for(NSDictionary *tempAddress in addressArrayFromUpdate){
+            
+            NSLog(@"%@", tempAddress);
+            tempAddressID = [tempAddress objectForKey:@"AddressIdentifier"];
+            
+            if(tempAddressID){
+                if(![self.addressesByAddressID objectForKey:tempAddressID]){
+                    //only index one per address id, just in case
+                    [self.addressesByAddressID setObject:tempAddress forKey:tempAddressID];
+                    [self.addressArray addObject:tempAddress];
+                    
+                    NSLog(@"Indexed address with AddressID: %@", tempAddressID);
+                }
+            }
+            
+        }
+    }
+
+}
+
+
+
 
 -(BOOL)retrieveBundlesArrayForLoggedInUser:(id<AccountManagerDelegate>)delegate
 {
