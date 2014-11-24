@@ -85,6 +85,8 @@ int nameOrigin=0;
 {
     [super viewDidLoad];
     
+    isContinueButtonPressed = NO;
+    
     if([self canPerformAction:@selector(setEdgesForExtendedLayout:) withSender:self]){
         [self setEdgesForExtendedLayout:(UIRectEdgeBottom|UIRectEdgeLeft|UIRectEdgeRight)];
     }
@@ -376,6 +378,17 @@ int nameOrigin=0;
     //[PayPalMobile preconnectWithEnvironment:PayPalEnvironmentSandbox];
 
     //if SwitchArt AND you have a working Pack with an address, pre-populate the address
+    if([AccountManager sharedInstance].purchasedWorkingPack){
+        
+        if(![[AccountManager sharedInstance] needsToLoadOrderHistory]){
+            //no GC available
+            
+            //this is a prepurchased pack - try to get the Order History
+            [[AccountManager sharedInstance] retrieveOrderHistoryArrayForLoggedInUser:self];
+            
+        }
+    }
+    
     
 }
 

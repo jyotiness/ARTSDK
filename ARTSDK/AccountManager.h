@@ -59,6 +59,7 @@ typedef enum {
 @property(nonatomic,strong) NSMutableDictionary *shippingAddressUsedInCheckout;
 @property(nonatomic,assign) NSInteger lastPrintCountPurchased;
 @property(nonatomic,strong) NSString *defaultP2AGallery;
+@property(nonatomic,strong) NSMutableArray *requestArray;
 
 //Method's
 +(AccountManager *) sharedInstance;
@@ -79,7 +80,7 @@ typedef enum {
 -(NSString *)getNewPackName;
 -(NSString *)getGiftCertificateForWorkingPack;
 -(BOOL)applyGiftCertificateToCart:(id<AccountManagerDelegate>)delegate usingGiftCertificate:(NSString *)giftCertificate;
-
+-(BOOL)needsToLoadOrderHistory;
 -(void)updateFirstNameLastName:(NSString *)firstName lastName:(NSString *)lastName;
 
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate;

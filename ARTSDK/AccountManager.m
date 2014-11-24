@@ -29,6 +29,7 @@
 @synthesize shippingAddressUsedInCheckout;
 @synthesize lastPrintCountPurchased;
 @synthesize defaultP2AGallery;
+@synthesize requestArray;
 
 + (AccountManager*) sharedInstance {
     static AccountManager* _one = nil;
@@ -36,6 +37,8 @@
     @synchronized( self ) {
         if( _one == nil ) {
             _one = [[ AccountManager alloc ] init ];
+            
+            _one.requestArray = [[NSMutableArray alloc] init];
         }
     }
     
@@ -382,11 +385,11 @@
     //need to do the whole dictionary replacement process ensuring you have mutable dictionaries
     [newBalanceDict setObject:newBalanceString forKey:@"count"];
     [newOrderInfoDict setObject:newBalanceDict forKey:@"balance"];
-    [packDict setObject:newOrderInfoDict forKey:@"OrderInfo"];
+    [packDict setObject:newOrderInfoDict forKey:@"orderInfo"];
     
     [purchasedBundlesArray replaceObjectAtIndex:index withObject:packDict];
     [AccountManager sharedInstance].purchasedBundles = purchasedBundlesArray;
-    
+    [AccountManager sharedInstance].purchasedWorkingPack = packDict;
 }
 
 -(void)setAddressIDOnPurchasedWorkingPack:(NSString *)addressID{
@@ -405,7 +408,7 @@
     
     [purchasedBundlesArray replaceObjectAtIndex:index withObject:packDict];
     [AccountManager sharedInstance].purchasedBundles = purchasedBundlesArray;
-    
+    [AccountManager sharedInstance].purchasedWorkingPack = packDict;
 }
 
 -(NSInteger)getBundleCountStringFromDict:(NSDictionary *)bundleDict{
@@ -455,16 +458,18 @@
         [self subtractPrintCountOnPurchasedWorkingPack:printCount];
         [self setAddressIDOnPurchasedWorkingPack:addressID];
         
+        packArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
+        
     }else{
         
         //it is new
-        NSMutableDictionary *newBundleUncompressed = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].unpurchasedWorkingPack];
+        NSMutableDictionary *newUnpurchasedBundle = [NSMutableDictionary dictionaryWithDictionary:[AccountManager sharedInstance].unpurchasedWorkingPack];
         
         //get bundle size
-        NSInteger bundleSize = [self getBundleCountStringFromDict:newBundleUncompressed];
+        NSInteger bundleSize = [self getBundleCountStringFromDict:newUnpurchasedBundle];
         
         //set order id
-        NSMutableDictionary *orderDict = [newBundleUncompressed objectForKey:@"orderInfo"];
+        NSMutableDictionary *orderDict = [newUnpurchasedBundle objectForKey:@"orderInfo"];
         if(orderDict){
             [orderDict setObject:orderNumber forKey:@"orderNumber"];
             
@@ -480,12 +485,14 @@
             [orderDict setObject:balanceDict forKey:@"balance"];
         }
         
-        [newBundleUncompressed setObject:addressID forKey:@"shippingAddressId"];
+        [newUnpurchasedBundle setObject:addressID forKey:@"shippingAddressId"];
         
-
+        packArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
         
-        [packArray addObject:newBundleUncompressed];
+        [packArray addObject:newUnpurchasedBundle];
     
+        //set it with the new count, just for the Order Confirmation Screen
+        [AccountManager sharedInstance].unpurchasedWorkingPack = newUnpurchasedBundle;
     }
     
     //need to make it into a Dictionary with one key
@@ -1075,6 +1082,21 @@
     }];
 }
 
+-(BOOL)needsToLoadOrderHistory{
+    
+    if(!self.purchasedWorkingPack)return NO;
+    
+    NSString *GC = [self getGiftCertificateForWorkingPack];
+    
+    if(!GC)GC = @"";
+    if([GC isEqualToString:@""]) {
+        return NO;
+    }else{
+        return YES;
+    }
+       
+    
+}
 
 -(void)setBundlesArrayForLoggedInUser:(NSArray *)bundlesArray{
     
