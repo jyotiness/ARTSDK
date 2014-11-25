@@ -55,6 +55,7 @@ typedef enum {
 @property(nonatomic,strong) NSString *firstName;
 @property(nonatomic,strong) NSString *lastName;
 @property(nonatomic,strong) NSString *shippingAddressIdentifier;
+@property(nonatomic,strong) NSString *billingAddressIdentifier;
 @property(nonatomic,strong) NSString *userEmailAddress;
 @property(nonatomic,strong) NSMutableDictionary *shippingAddressUsedInCheckout;
 @property(nonatomic,strong) NSMutableDictionary *billingAddressUsedInCheckout;
@@ -78,6 +79,7 @@ typedef enum {
 -(NSMutableDictionary *)getBundleForBundleID:(NSString*)bundleID;
 -(void)setBundlesArray:(NSArray *)bundleArray;
 -(BOOL)setShippingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber;
+-(BOOL)setBillingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber;
 -(NSDictionary *)getAddressForAddressID:(NSString*)addressID;
 -(NSString *)getNewPackName;
 -(NSString *)getGiftCertificateForWorkingPack;

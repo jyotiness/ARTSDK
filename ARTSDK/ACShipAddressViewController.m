@@ -3619,8 +3619,6 @@ int nameOrigin=0;
                            firstName:(NSString *)firstName
                             lastName:(NSString *)lastName
                        facebookToken:(NSString *)facebookToken {
-    //NSLog(@"authenticateWithFacebookUID: %@, emailAddress: %@ firstName: %@ lastName: %@ facebookToken: %@",
-    //      facebookUID, emailAddress, firstName, lastName,facebookToken);
     
     [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
     
@@ -3640,15 +3638,16 @@ int nameOrigin=0;
          }else{
              
              self.shippingAddressTableView.tableHeaderView = nil;
-             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
-             NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
-             [ArtAPI setAuthenticationToken:authTok];
-             [self populateDataWithLoginResponse:responseDict];
-             
-             // Call Delegate
-             if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
-                 [self.loginDelegate loginSuccess];
-             }
+             [self loginSuccess];
+//             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+//             NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+//             [ArtAPI setAuthenticationToken:authTok];
+//             [self populateDataWithLoginResponse:responseDict];
+//             
+//             // Call Delegate
+//             if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
+//                 [self.loginDelegate loginSuccess];
+//             }
          }
          
          

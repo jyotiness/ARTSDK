@@ -2859,7 +2859,7 @@
         if(!primaryPhone4Dict) primaryPhone4Dict=@"";
         [phoneDict setObject:primaryPhone4Dict forKey:@"Primary"];
         [phoneDict setObject:secondaryPhone4Dict forKey:@"Secondary"];
-        [addressDict setObject:self.phone forKey:@"Phone"];
+        [addressDict setObject:phoneDict forKey:@"Phone"];
         
         //name
         NSString *firstName4Dict = self.firstName;
@@ -2876,7 +2876,7 @@
         NSString *address24Dict = self.addressLine2;
         if(!address24Dict) address24Dict = @"";
         NSString *addressIdentifier4Dict = @"";
-        NSString *addressType4Dict = @"3";  //3 is shipping
+        NSString *addressType4Dict = @"2";  //3 is shipping
         NSString *city4Dict = self.city;
         if(!city4Dict) city4Dict = @"";
         NSString *companyName4Dict = self.company;
@@ -3079,7 +3079,7 @@
         [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
         
         NSLog(@"SwitchArt App - needs to set the address on the account");
-        [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:orderNumber];
+        [[AccountManager sharedInstance] setBillingAddressForLastPurchase:self forOrderID:orderNumber];
         
     }else{
         
@@ -3094,6 +3094,8 @@
     }
     
 }
+
+
 
 -(void)addressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
     

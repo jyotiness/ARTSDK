@@ -640,6 +640,89 @@
     
 }
 
+-(BOOL)setBillingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber
+{
+    self.delegate = delegate;
+    __block BOOL status = NO;
+    
+    //need to make it into a Dictionary with one key
+    NSDictionary *addressDict = self.billingAddressUsedInCheckout;
+    
+    NSString *addresstype = [addressDict objectForKeyNotNull:@"AddressType"];
+    NSString *addressLine1 = [addressDict objectForKeyNotNull:@"Address1"];
+    NSString *addressLine2 = [addressDict objectForKeyNotNull:@"Address2"];
+    NSString *companyName = [addressDict objectForKeyNotNull:@"CompanyName"];
+    NSString *city = [addressDict objectForKeyNotNull:@"City"];
+    NSString *state = [addressDict objectForKeyNotNull:@"State"];
+    NSString *countryCode = [addressDict objectForKeyNotNull:@"CountryIsoA2"];
+    NSString *zipCode = [addressDict objectForKeyNotNull:@"ZipCode"];
+    NSString *primaryPhone = [[addressDict objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
+    NSString *firstName = [[addressDict objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
+    NSString *lastName = [[addressDict objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
+    
+    NSString *isDefault = @"true";
+    
+    NSDictionary *addressParameters = [NSDictionary dictionaryWithObjectsAndKeys:addresstype,@"addressType",firstName,@"firstName",lastName,@"lastName",addressLine1,@"addressLine1",addressLine2,@"addressLine2",companyName,@"companyName",city,@"city",state,@"state",countryCode,@"twoDigitIsoCountryCode",zipCode,@"zipCode",primaryPhone,@"primaryPhone",isDefault,@"isDefault", nil];
+    
+    
+    [ArtAPI requestForAccountUpdateLocationWithParameters:addressParameters success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+     {
+         
+         NSLog(@" requestForAccountUpdateProperty success \n JSON Account Update Property response %@ ", JSON);
+         status = YES;
+         
+         NSString *addressID = @"";
+         
+         if(JSON){
+             
+             NSDictionary *dDict = [JSON objectForKey:@"d"];
+             
+             if(dDict){
+                 
+                 NSDictionary *accountDict = [dDict objectForKey:@"Account"];
+                 
+                 if(accountDict){
+                     
+                     NSDictionary *profileInfoDict = [accountDict objectForKey:@"ProfileInfo"];
+                     
+                     if(profileInfoDict){
+                         NSArray *addresses = [profileInfoDict objectForKey:@"Addresses"];
+                         
+                         if(addresses){
+                             int lastIndex = (int)[addresses count];
+                             lastIndex = lastIndex - 1;
+                             if(lastIndex >= 0){
+                                 NSDictionary *theAddressWeJustSet = [addresses objectAtIndex:lastIndex];
+                                 addressID = [theAddressWeJustSet objectForKeyNotNull:@"AddressIdentifier"];
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(addressSetSuccess:withAddressID:)])
+         {
+             [self.delegate addressSetSuccess:orderNumber withAddressID:addressID];
+         }
+         
+         
+     }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+     {
+         status = NO;
+         
+         NSLog(@" requestForAccountUpdateLocation failed \n JSON Account Update Location response %@ ", JSON);
+         
+         if(self.delegate && [self.delegate respondsToSelector:@selector(addressSetFailed:)])
+         {
+             [self.delegate addressSetFailed:orderNumber];
+         }
+         
+     }];
+    
+    return status;
+}
+
 -(BOOL)setShippingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber
 {
     self.delegate = delegate;
@@ -921,6 +1004,12 @@
                                  self.shippingAddressIdentifier = [dict objectForKeyNotNull:@"PropertyValue"];
                                  break;
                              }
+                             else if([@"DefaultBillingAddress" isEqualToString:[dict objectForKeyNotNull:@"PropertyName"]])
+                             {
+                                 self.billingAddressIdentifier = [dict objectForKeyNotNull:@"PropertyValue"];
+                                 break;
+                             }
+
                          }
 
                          NSArray *userPropertiesArray = [profileInfoDict objectForKeyNotNull:@"UserProperties"];

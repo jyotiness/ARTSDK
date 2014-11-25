@@ -880,6 +880,8 @@
              NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
              [ArtAPI setAuthenticationToken:authTok];
              
+             [SVProgressHUD dismiss];
+             
              // Call Delegate
              if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
                  [self.delegate loginSuccess];
