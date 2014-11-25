@@ -29,7 +29,6 @@
 @synthesize shippingAddressUsedInCheckout;
 @synthesize lastPrintCountPurchased;
 @synthesize defaultP2AGallery;
-@synthesize requestArray;
 
 + (AccountManager*) sharedInstance {
     static AccountManager* _one = nil;
@@ -37,8 +36,6 @@
     @synchronized( self ) {
         if( _one == nil ) {
             _one = [[ AccountManager alloc ] init ];
-            
-            _one.requestArray = [[NSMutableArray alloc] init];
         }
     }
     

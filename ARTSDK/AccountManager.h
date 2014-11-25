@@ -60,7 +60,7 @@ typedef enum {
 @property(nonatomic,strong) NSMutableDictionary *billingAddressUsedInCheckout;
 @property(nonatomic,assign) NSInteger lastPrintCountPurchased;
 @property(nonatomic,strong) NSString *defaultP2AGallery;
-@property(nonatomic,strong) NSMutableArray *requestArray;
+@property(nonatomic,strong) NSMutableDictionary *requestsByDelegate;
 
 //Method's
 +(AccountManager *) sharedInstance;
