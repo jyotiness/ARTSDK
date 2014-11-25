@@ -3101,13 +3101,16 @@
     
     NSInteger printCount = [AccountManager sharedInstance].lastPrintCountPurchased;
     
-    NSLog(@"SwitchArt App - needs to set the bundles on the account");
-//    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:addressID subtractingPrintCount:printCount];
+    NSString *shipAddressID = [[AccountManager sharedInstance].shippingAddressUsedInCheckout objectForKey:@"AddressIdentifier"];
+    
+    NSLog(@"SwitchArt App - set billing address successfully");
+
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:shipAddressID subtractingPrintCount:printCount];
     
 }
 
 -(void)addressSetFailed:(NSString *)theOrderNumber{
-    NSLog(@"Failed to set shipping address");
+    NSLog(@"Failed to set billing address");
     
     //need to do the same thing though even though the UserProperties update failed
     
@@ -3119,9 +3122,8 @@
     
     [ alert show];
     
-    //set bundles anyway but with blank address ID
-    NSLog(@"SwitchArt App - needs to set the bundles on the account");
-//    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@"" subtractingPrintCount:0];
+
+    
 }
 
 -(void)bundlesSetSuccess{
