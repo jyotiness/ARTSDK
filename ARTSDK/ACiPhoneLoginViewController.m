@@ -605,10 +605,6 @@
 
 - (IBAction)loginWithEmail:(id)sender
 {
-    //    if([self.txtActiveField isFirstResponder])
-    //    {
-    //        [ self.txtActiveField resignFirstResponder];
-    //    }
     [self.view endEditing:YES];
     
     self.error = nil;

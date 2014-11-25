@@ -1971,9 +1971,7 @@ int nameOrigin=0;
                 [addressDict setObject:zip4Dict forKey:@"ZipCode"];
                 
                 [AccountManager sharedInstance].shippingAddressUsedInCheckout = addressDict;
-                
             }
-            
             
             [ArtAPI
              cartUpdateShippingAddressFirstName:self.name

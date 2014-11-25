@@ -19,6 +19,8 @@
 #import "Analytics.h"
 #import "ACKeyboardToolbarView.h"
 #import "NSString+Additions.h"
+#import "AccountManager.h"
+
 #ifdef SUPPORT_LILITAB_CARD_READER
 #import "LTMagTekReader.h"
 #endif
@@ -259,8 +261,6 @@
     self.shippingTitleLabel.text = [ACConstants getLocalizedStringForKey:@"SHIPPING" withDefaultValue:@"Shipping"];
     self.discountTitleLabel.text = [ACConstants getLocalizedStringForKey:@"DISCOUNT" withDefaultValue:@"Discount"];
     self.totalTitleLabel.text = [ACConstants getLocalizedStringForKey:@"TOTAL" withDefaultValue:@"Total"];
-
-//    [self loadData];
     
     self.billingAddressTableView.tableFooterView=self.footerBillingAddressVC;
     [self.billingAddressTableView setBackgroundColor:[UIColor clearColor]];
@@ -270,38 +270,96 @@
     
     self.countries = [ArtAPI getCountries];
     self.states = [ArtAPI getStates];
-
     self.tagFromPicker = COUNTRY_PICKER_TAG;
-    
     
     [ self prepareCountryList];
     
-    /*    [self.shippingAddressTableView reloadData];
-     self.tagFromPicker = STATE_PICKER_TAG;
-     
-     [self configureThePicker];
-     [self pickerView:countrypickerView didSelectRow:self.selectedStateIndex inComponent:0]; */
-
-    // Fetch a list of Countries
-/*    [ArtAPI
-     requestForCartGetActiveCountryListWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-         [self countryListDidFinishLoading: JSON];
-     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-         [SVProgressHUD dismiss];
-     }]; */
-    
     self.screenName = @"Billing Address Screen";
-    
-    //#ifdef SUPPORT_LILITAB_CARD_READER
-    // Set Default Credit Card Label String
     _creditCardString = [ACConstants getLocalizedStringForKey:@"CREDIT_CARD" withDefaultValue:@"CREDIT CARD"];
-    //#endif
     
     // Intitlize Masking of Credit Card to False
     _maskCreditCard = NO;
 
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    if(AppLocationSwitchArt == currAppLoc){ //Address Prepopulate
+        
+        NSDictionary *workingPack = [AccountManager sharedInstance].purchasedWorkingPack;
+        if(workingPack){
+            NSString *shippingAddressID = [workingPack objectForKey:@"shippingAddressId"];
+            
+            if(shippingAddressID){
+                
+                NSDictionary *shippingAddress = [[AccountManager sharedInstance]getAddressForAddressID:shippingAddressID];
+                [self prePopulateAddressFromDict:shippingAddress];
+            }
+            else
+            {
+                [self getAddressFromAddress];
+            }
+        }
+        else{
+            [self getAddressFromAddress];
+        }
+    }
+}
+
+-(void)getAddressFromAddress
+{
+    NSDictionary *sddressDict = [[AccountManager sharedInstance] getAddressForAddressID: [[AccountManager sharedInstance] shippingAddressIdentifier]];
+    [self prePopulateAddressFromDict:sddressDict];
+}
+
+-(void)prePopulateAddressFromDict:(NSDictionary*)shippingAddress
+{
+    if(shippingAddress)
+    {
+        NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
+        NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
+        NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
+        NSString *phoneSA = [[shippingAddress objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
+        NSString *address1SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+        NSString *address2SA = [shippingAddress objectForKeyNotNull:@"Address1"];
+        NSString *citySA = [shippingAddress objectForKeyNotNull:@"City"];
+        NSString *stateSA = [shippingAddress objectForKeyNotNull:@"State"];
+        NSString *zipSA = [shippingAddress objectForKeyNotNull:@"ZipCode"];
+        NSString *countrySA = [shippingAddress objectForKeyNotNull:@"Country"];
+        
+        self.firstName = firstNameSA;
+        self.lastName = lastNameSA;
+        self.company = companyNameSA;
+        self.phone = phoneSA;
+        self.addressLine1 = address1SA;
+        self.addressLine2 = address2SA;
+        self.city = citySA;
+        self.stateValue = stateSA;
+        self.postalCode = zipSA;
+        self.countryPickerValue = countrySA;
+        self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
+        self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
+        self.willShowCityAndState = YES;
+        
+        if ([self.selectedCountryCode isEqualToString:@"US"])
+        {
+            if([stateSA isEqualToString:@""])
+            {
+                if(zipSA && 5 == zipSA.length)
+                {
+                    [ self cityAndStateSuggestionForZip:zipSA];
+                }
+            }
+            else{
+                NSDictionary *stateDict = [ self getStateForCode:self.stateValue];
+                NSString *stateName = [stateDict objectForKeyNotNull:@"Name"];
+                if(stateName)
+                {
+                    self.selectedStateIndex = [ self.states indexOfObject:stateDict];
+                    self.statePickerValue = [stateDict objectForKeyNotNull:@"Name"];
+                }
+            }
+        }
+        
+        [self.billingAddressTableView reloadData];
+    }
 }
 
 +(int)getCCIndexFromCCTypeID:(NSString *)ccTypeID fromPaymentOptions:(NSArray *)paymentOptions{
@@ -2730,30 +2788,11 @@
 
 - (IBAction)proceedToOrderConfirmation:(id)sender
 {
-    //NSLog(@"proceedToOrderConfirmation()");
-//    if([self.txtActiveField isFirstResponder])
-//    {
-//        [ self.txtActiveField resignFirstResponder];
-    //    }
     isDoingValidation=YES;
     [self.view endEditing:YES];
     [self hidePickerWithAnimation:YES];
     if ([self validateForm])
     {
-        
-/*        for (NSDictionary *country in self.countries)
-        {
-            NSString *countryCode = @"US";
-            NSString *countryName=self.countryPickerValue;
-            if ([[[country objectForKeyNotNull:@"Name"] uppercaseString] isEqualToString:[countryName uppercaseString]])
-            {
-                countryCode = [country objectForKeyNotNull:@"IsoA2"];
-                self.countryCodeToBePassed=countryCode;
-                break;
-            }
-            self.countryCodeToBePassed=countryCode;
-        } */
-        
         self.isUSAddressInvalid = NO;
         
         if (!self.usesAddressFromShpping)
@@ -2783,8 +2822,6 @@
             self.stateValueToPassOrderConfirmationScreen=self.stateFieldValue;
         }
         
-        //MKL - get numeric card type from array
-        
         int cardIndex = self.selectedCardTypeIndex;
         
         NSDictionary *paymentType = [self.paymentOptions objectAtIndex:cardIndex];
@@ -2812,6 +2849,63 @@
         
         //[Analytics logGARevenueEvent:orderNumber withRevenue:orderTotal withTax:taxTotal withShipping:shippingTotal withCurrencyCode:currencyCode];
         
+        NSMutableDictionary *addressDict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *nameDict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *phoneDict = [[NSMutableDictionary alloc] init];
+
+        //phone
+        NSString *primaryPhone4Dict = self.phone;
+        NSString *secondaryPhone4Dict = @"";
+        if(!primaryPhone4Dict) primaryPhone4Dict=@"";
+        [phoneDict setObject:primaryPhone4Dict forKey:@"Primary"];
+        [phoneDict setObject:secondaryPhone4Dict forKey:@"Secondary"];
+        [addressDict setObject:self.phone forKey:@"Phone"];
+        
+        //name
+        NSString *firstName4Dict = self.firstName;
+        NSString *lastName4Dict = self.lastName;
+        if(!firstName4Dict) firstName4Dict=@"";
+        if(!lastName4Dict) lastName4Dict=@"";
+        [nameDict setObject:self.firstName forKey:@"FirstName"];
+        [nameDict setObject:self.lastName forKey:@"LastName"];
+        [addressDict setObject:nameDict forKey:@"Name"];
+        
+
+        NSString *address14Dict = self.addressLine1;
+        if(!address14Dict) address14Dict = @"";
+        NSString *address24Dict = self.addressLine2;
+        if(!address24Dict) address24Dict = @"";
+        NSString *addressIdentifier4Dict = @"";
+        NSString *addressType4Dict = @"3";  //3 is shipping
+        NSString *city4Dict = self.city;
+        if(!city4Dict) city4Dict = @"";
+        NSString *companyName4Dict = self.company;
+        if(!companyName4Dict) companyName4Dict = @"";
+        NSString *country4Dict = self.countryPickerValue;
+        if(!country4Dict) country4Dict = @"";
+        NSString *country2ISO4Dict = self.selectedCountryCode;
+        if(!country2ISO4Dict) country2ISO4Dict = @"";
+        NSString *country3ISO4Dict = @"";
+        NSString *county4Dict = @"";
+        NSString *state4Dict = self.stateValueToPassOrderConfirmationScreen;
+        if(!state4Dict) state4Dict = @"";
+        NSString *zip4Dict = self.postalCode;
+        if(!zip4Dict) zip4Dict = @"";
+        
+        [addressDict setObject:self.addressLine1 forKey:@"Address1"];
+        [addressDict setObject:self.addressLine2 forKey:@"Address2"];
+        [addressDict setObject:addressIdentifier4Dict forKey:@"AddressIdentifier"];
+        [addressDict setObject:addressType4Dict forKey:@"AddressType"];
+        [addressDict setObject:city4Dict forKey:@"City"];
+        [addressDict setObject:companyName4Dict forKey:@"CompanyName"];
+        [addressDict setObject:country4Dict forKey:@"Country"];
+        [addressDict setObject:country2ISO4Dict forKey:@"CountryIsoA2"];
+        [addressDict setObject:country3ISO4Dict forKey:@"CountryIsoA3"];
+        [addressDict setObject:county4Dict forKey:@"County"];
+        [addressDict setObject:state4Dict forKey:@"State"];
+        [addressDict setObject:zip4Dict forKey:@"ZipCode"];
+
+        [AccountManager sharedInstance].billingAddressUsedInCheckout = addressDict;
         
         [ArtAPI
          cartAddCreditCardNumber:self.cardNumber

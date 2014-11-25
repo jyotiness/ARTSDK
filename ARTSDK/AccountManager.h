@@ -57,6 +57,7 @@ typedef enum {
 @property(nonatomic,strong) NSString *shippingAddressIdentifier;
 @property(nonatomic,strong) NSString *userEmailAddress;
 @property(nonatomic,strong) NSMutableDictionary *shippingAddressUsedInCheckout;
+@property(nonatomic,strong) NSMutableDictionary *billingAddressUsedInCheckout;
 @property(nonatomic,assign) NSInteger lastPrintCountPurchased;
 @property(nonatomic,strong) NSString *defaultP2AGallery;
 @property(nonatomic,strong) NSMutableArray *requestArray;
