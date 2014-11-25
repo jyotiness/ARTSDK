@@ -77,7 +77,7 @@ typedef enum {
 -(void)addNewBundleToPurchasedBundles:(NSDictionary *)newBundle;
 -(BOOL)updateBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate;
 -(NSArray *)getBundlesArray;
--(NSDictionary *)getBundleForOrderNumber:(NSString*)orderNumber;
+-(NSMutableDictionary *)getBundleForOrderNumber:(NSString*)orderNumber;
 -(NSMutableDictionary *)getBundleForBundleID:(NSString*)bundleID;
 -(void)setBundlesArray:(NSArray *)bundleArray;
 -(BOOL)setShippingAddressForLastPurchase:(id<AccountManagerDelegate>)delegate forOrderID:(NSString *)orderNumber;

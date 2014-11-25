@@ -166,10 +166,10 @@
     return self.purchasedBundles;
 }
 
--(NSDictionary *)getBundleForOrderNumber:(NSString*)orderNumber
+-(NSMutableDictionary *)getBundleForOrderNumber:(NSString*)orderNumber
 {
-    NSDictionary *bundleDict = nil;
-    for(NSDictionary *dict in self.purchasedBundles)
+    NSMutableDictionary *bundleDict = nil;
+    for(NSMutableDictionary *dict in self.purchasedBundles)
     {
         @try{
             
