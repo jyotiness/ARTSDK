@@ -496,6 +496,17 @@
         //get bundle size
         NSInteger bundleSize = [self getBundleCountStringFromDict:newUnpurchasedBundle];
         
+        //try to set last bundle worked with
+        NSString *bundleID = [newUnpurchasedBundle objectForKey:@"bundleId"];
+        if(bundleID){
+            if([bundleID length] > 0){
+                
+                [[NSUserDefaults standardUserDefaults] setObject:bundleID forKey:@"LAST_SELECTED_PACK"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+            }
+        }
+        
         //set order id
         NSMutableDictionary *orderDict = [newUnpurchasedBundle objectForKey:@"orderInfo"];
         if(orderDict){
