@@ -1181,6 +1181,25 @@
 {
     self.firstName = firstName;
     self.lastName = lastName;
+    
+    if(firstName && ![firstName isKindOfClass:[NSNull class]])
+    {
+        self.firstName = (firstName.length > 0)?firstName:@"";
+    }
+    else
+    {
+        self.firstName = @"";
+    }
+    if(lastName && ![lastName isKindOfClass:[NSNull class]])
+    {
+        self.lastName = (lastName.length > 0)?lastName:@"";
+    }
+    else
+    {
+        self.lastName = @"";
+    }
+    
+    self.userName = [NSString stringWithFormat:@"%@ %@",self.firstName,self.lastName];
 }
 
 @end
