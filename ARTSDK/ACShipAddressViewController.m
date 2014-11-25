@@ -3404,7 +3404,7 @@ int nameOrigin=0;
 
 - (void)loginSuccess
 {
-    [SVProgressHUD showWithStatus:@"Merging Account"];
+    [SVProgressHUD showWithStatus:@"Updating Account..."];
     NSString *anonAuthToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ANONYMOUS_AUTH_TOKEN"];
     if(anonAuthToken)
     {
@@ -3849,8 +3849,8 @@ int nameOrigin=0;
     
     
     NSDictionary *orderAttributes = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"OrderAttributes"];
-    NSString *orderNumber = [orderAttributes objectForKeyNotNull:@"OrderNumber"];
-    self.orderNumber = orderNumber;
+    NSString *theOrderNumber = [orderAttributes objectForKeyNotNull:@"OrderNumber"];
+    self.orderNumber = theOrderNumber;
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction: ANALYTICS_EVENT_NAME_ORDER_CONFIRM_SHOWN withLabel:orderNumber];
     
     NSDictionary *cart = [ArtAPI cart];
@@ -3912,7 +3912,7 @@ int nameOrigin=0;
                         
                         
                         
-                        [Analytics logGACartItemEventWithTransactionID:orderNumber forName:itemName withSku:itemSku forCategory:itemCategory atPrice:itemPrice forQuantity:quantity havingCurrencyCode:currencyCode];
+                        [Analytics logGACartItemEventWithTransactionID:theOrderNumber forName:itemName withSku:itemSku forCategory:itemCategory atPrice:itemPrice forQuantity:quantity havingCurrencyCode:currencyCode];
                     }
                     
                 }
@@ -3927,7 +3927,7 @@ int nameOrigin=0;
         [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
         
         NSLog(@"SwitchArt App - needs to set the address on the account");
-        [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:orderNumber];
+        [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:theOrderNumber];
         
     }else{
         
@@ -3962,7 +3962,7 @@ int nameOrigin=0;
 }
 
 
--(void)addressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
+-(void)shippingAddressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
     
     NSInteger printCount = [self getCartItemCount];
     
@@ -3971,8 +3971,10 @@ int nameOrigin=0;
     
 }
 
--(void)addressSetFailed:(NSString *)theOrderNumber{
+-(void)shippingAddressSetFailed:(NSString *)theOrderNumber{
     NSLog(@"Failed to set shipping address");
+    
+    NSInteger printCount = [self getCartItemCount];
     
     //need to do the same thing though even though the UserProperties update failed
     
@@ -3986,7 +3988,7 @@ int nameOrigin=0;
     
     //set bundles anyway but with blank address ID
     NSLog(@"SwitchArt App - needs to set the bundles on the account");
-    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@"" subtractingPrintCount:0];
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@"" subtractingPrintCount:printCount];
 }
 
 -(void)bundlesSetSuccess{

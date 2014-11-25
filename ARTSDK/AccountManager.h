@@ -27,8 +27,10 @@ typedef enum {
 -(void)bundlesSetFailed;
 -(void)addGiftCertificateSuccess;
 -(void)addGiftCertificateFailed;
--(void)addressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID;
--(void)addressSetFailed:(NSString *)theOrderNumber;
+-(void)shippingAddressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID;
+-(void)shippingAddressSetFailed:(NSString *)theOrderNumber;
+-(void)billingAddressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID;
+-(void)billingAddressSetFailed:(NSString *)theOrderNumber;
 -(void)userGalleryLoadedSuccessfullyWithResponse:(id)jsonResponse withGalleryItems:(NSArray *)galleryItems withGalleryID:(NSString *)myPhotosDefaultGallery;
 -(void)userGalleryLoadingFailedWithResponse:(id)jsonResponse;
 @end

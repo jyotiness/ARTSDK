@@ -3078,7 +3078,7 @@
         [SVProgressHUD dismiss];
         [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
         
-        NSLog(@"SwitchArt App - needs to set the address on the account");
+        NSLog(@"SwitchArt App - needs to set the billing address on the account");
         [[AccountManager sharedInstance] setBillingAddressForLastPurchase:self forOrderID:orderNumber];
         
     }else{
@@ -3097,19 +3097,16 @@
 
 
 
--(void)addressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
-    
-    NSInteger printCount = [AccountManager sharedInstance].lastPrintCountPurchased;
-    
-    NSString *shipAddressID = [[AccountManager sharedInstance].shippingAddressUsedInCheckout objectForKey:@"AddressIdentifier"];
+-(void)billingAddressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
     
     NSLog(@"SwitchArt App - set billing address successfully");
 
-    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:shipAddressID subtractingPrintCount:printCount];
+    [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:theOrderNumber];
     
 }
 
--(void)addressSetFailed:(NSString *)theOrderNumber{
+-(void)billingAddressSetFailed:(NSString *)theOrderNumber{
+    
     NSLog(@"Failed to set billing address");
     
     //need to do the same thing though even though the UserProperties update failed
@@ -3122,7 +3119,38 @@
     
     [ alert show];
     
+    [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:theOrderNumber];
+    
+}
 
+-(void)shippingAddressSetSuccess:(NSString *)theOrderNumber withAddressID:(NSString *)addressID{
+    
+    NSInteger printCount = [AccountManager sharedInstance].lastPrintCountPurchased;
+    
+    
+    NSLog(@"SwitchArt App - set shipping address successfully");
+    
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:addressID subtractingPrintCount:printCount];
+    
+}
+
+-(void)shippingAddressSetFailed:(NSString *)theOrderNumber{
+    
+    NSLog(@"Failed to set shipping address");
+    
+    NSInteger printCount = [AccountManager sharedInstance].lastPrintCountPurchased;
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message: @"There was an error updating account information."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
+    
+    [ alert show];
+    
+    //need to do the same thing though even though the UserProperties update failed
+    
+    [[AccountManager sharedInstance] setBundlesForLoggedInUser:self forOrderID:theOrderNumber withAddressID:@"" subtractingPrintCount:printCount];
     
 }
 
@@ -3134,6 +3162,7 @@
     
     //need to retrieve purchased bundles if SwitchArt
     [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
+    
     [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
     
 }

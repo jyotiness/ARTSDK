@@ -524,7 +524,14 @@
             [orderDict setObject:balanceDict forKey:@"balance"];
         }
         
-        [newUnpurchasedBundle setObject:addressID forKey:@"shippingAddressId"];
+        if(addressID){
+            if(![addressID isEqual:@""]){
+                [newUnpurchasedBundle setObject:addressID forKey:@"shippingAddressId"];
+            }
+            
+        }else{
+            //leave address as is, because it is probably setting teh BILLING
+        }
         
         packArray = [NSMutableArray arrayWithArray:[AccountManager sharedInstance].purchasedBundles];
         
@@ -712,9 +719,9 @@
              }
          }
          
-         if(self.delegate && [self.delegate respondsToSelector:@selector(addressSetSuccess:withAddressID:)])
+         if(self.delegate && [self.delegate respondsToSelector:@selector(billingAddressSetSuccess:withAddressID:)])
          {
-             [self.delegate addressSetSuccess:orderNumber withAddressID:addressID];
+             [self.delegate billingAddressSetSuccess:orderNumber withAddressID:addressID];
          }
          
          
@@ -724,9 +731,9 @@
          
          NSLog(@" requestForAccountUpdateLocation failed \n JSON Account Update Location response %@ ", JSON);
          
-         if(self.delegate && [self.delegate respondsToSelector:@selector(addressSetFailed:)])
+         if(self.delegate && [self.delegate respondsToSelector:@selector(billingAddressSetFailed:)])
          {
-             [self.delegate addressSetFailed:orderNumber];
+             [self.delegate billingAddressSetFailed:orderNumber];
          }
          
      }];
@@ -797,9 +804,9 @@
              }
          }
          
-         if(self.delegate && [self.delegate respondsToSelector:@selector(addressSetSuccess:withAddressID:)])
+         if(self.delegate && [self.delegate respondsToSelector:@selector(shippingAddressSetSuccess:withAddressID:)])
          {
-             [self.delegate addressSetSuccess:orderNumber withAddressID:addressID];
+             [self.delegate shippingAddressSetSuccess:orderNumber withAddressID:addressID];
          }
          
          
@@ -810,9 +817,9 @@
          
          NSLog(@" requestForAccountUpdateLocation failed \n JSON Account Update Location response %@ ", JSON);
          
-         if(self.delegate && [self.delegate respondsToSelector:@selector(addressSetFailed:)])
+         if(self.delegate && [self.delegate respondsToSelector:@selector(shippingAddressSetFailed:)])
          {
-             [self.delegate addressSetFailed:orderNumber];
+             [self.delegate shippingAddressSetFailed:orderNumber];
          }
          
      }];
@@ -1166,7 +1173,7 @@
     [self setOrderHistoryByOrderID:nil];
     
     NSString *customerNumber = self.accountID;
-    NSString *emailAddress = @"USEACCOUNTID";
+    NSString *emailAddress = @"USEACCOUNTID@ART.COM";
     
     [ArtAPI requestForCartTrackOrderHistory:customerNumber withEmailAddress:emailAddress success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
