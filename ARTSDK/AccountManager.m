@@ -1020,12 +1020,10 @@
                              if([@"DefaultShippingAddress" isEqualToString:[dict objectForKeyNotNull:@"PropertyName"]])
                              {
                                  self.shippingAddressIdentifier = [dict objectForKeyNotNull:@"PropertyValue"];
-                                 break;
                              }
                              else if([@"DefaultBillingAddress" isEqualToString:[dict objectForKeyNotNull:@"PropertyName"]])
                              {
                                  self.billingAddressIdentifier = [dict objectForKeyNotNull:@"PropertyValue"];
-                                 break;
                              }
 
                          }
