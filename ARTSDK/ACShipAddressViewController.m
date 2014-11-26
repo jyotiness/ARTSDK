@@ -3036,7 +3036,9 @@ int nameOrigin=0;
                 self.selectedCountryIndex = -1;
                 self.willShowCityAndState = YES;
                 self.addressArray = addressesArray;
-                
+                NSString *email = [[AccountManager sharedInstance] userEmailAddress];
+                self.emailAddress = email?email:self.signupEmail;
+
                 int count = (int)addressesArray.count;
                 if(1 == count)
                 {
