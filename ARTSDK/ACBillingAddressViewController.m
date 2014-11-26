@@ -305,7 +305,7 @@
 
 -(void)getAddressFromAddress
 {
-    NSDictionary *sddressDict = [[AccountManager sharedInstance] getAddressForAddressID: [[AccountManager sharedInstance] shippingAddressIdentifier]];
+    NSDictionary *sddressDict = [[AccountManager sharedInstance] getAddressForAddressID: [[AccountManager sharedInstance] billingAddressIdentifier]];
     [self prePopulateAddressFromDict:sddressDict];
 }
 
