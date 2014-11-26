@@ -48,6 +48,8 @@
 "TERMS_OF_USE_URL_PHOTOSTOART" = "http://www.art.com/asp/customerservice/photostoart_termsofuse-asp/_/posters.htm";
 "TERMS_OF_USE_URL_MESPHOTOS" = "http://www.allposters.fr/help/mptermsofuse.html";
 "TERMS_OF_USE_URL_MYPHOTOS" = "http://www.allposters.de/help/mptermsofuse.html";
+"TERMS_OF_USE_URL_SWITCHART" = "http://www.art.com/~/switchart/app/terms.html";
+
 
 // Checkout
 "SELECT_COUNTRY" = "Select Country";
