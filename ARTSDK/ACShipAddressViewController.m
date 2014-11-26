@@ -69,6 +69,7 @@
 @synthesize isUSAddressInvalid;
 @synthesize didTapNext;
 @synthesize orderNumber;
+@synthesize isDoingAccountMerge;
 
 bool isContinueButtonPressed = NO;
 #define kOFFSET_FOR_KEYBOARD 80.0
@@ -3414,6 +3415,10 @@ int nameOrigin=0;
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
+            
+            self.isDoingAccountMerge = YES;
+            [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+            
             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
 //            NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
 //            [ArtAPI setAuthenticationToken:authTok];
@@ -4028,20 +4033,33 @@ int nameOrigin=0;
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles
 {
     [[AccountManager sharedInstance] setBundlesArray:purchasedBundles];
-//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"IS-REORDER"];
-    [[NSUserDefaults standardUserDefaults] setObject:self.orderNumber forKey:@"ORDER-NUMBER"];
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [SVProgressHUD dismiss];
-    [self.navigationController popToRootViewControllerAnimated:NO];
+    if(!self.isDoingAccountMerge){
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"IS-REORDER"];
+        [[NSUserDefaults standardUserDefaults] setObject:self.orderNumber forKey:@"ORDER-NUMBER"];
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [SVProgressHUD dismiss];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+        
+    }else{
+        
+        //this will default the bundle to the first one
+        //but we want to leave you on your working bundle in this case
+        [AccountManager sharedInstance].purchasedWorkingPack = nil;
+        self.isDoingAccountMerge = NO;
+    }
 }
 
 -(void)bundlesLoadingFailed
 {
     [SVProgressHUD dismiss];
     NSLog(@" requestForAccountGet failed ");
+    
+    self.isDoingAccountMerge = NO;
+    
 }
 
 

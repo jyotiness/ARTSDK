@@ -146,6 +146,7 @@ typedef enum ContactPickeMode {
 @property(nonatomic,assign) BOOL isModal;
 @property(nonatomic,assign) BOOL didTapNext;
 @property(nonatomic,assign) BOOL needSignUp;
+@property(nonatomic,assign) BOOL isDoingAccountMerge;
 
 @property (retain, nonatomic) IBOutlet UIImageView *topNavBarImageView;
 
