@@ -1755,7 +1755,7 @@ int nameOrigin=0;
 
 -(void)createAccount
 {
-    if ([self validateFormForSignUp] ){
+    if ([self validateFormForSignUp] && [self validateForm]){
         //NSLog(@"passed validation");
         
         //this will need to go into localizable strings but for now, it is SwitchArt only
@@ -1860,7 +1860,7 @@ int nameOrigin=0;
         //NSLog(@"failed validation");
         // Reload and display error
         UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"ERROR" withDefaultValue:@"Error"]
-                                                         message: @"Invalid email format. Please try again."
+                                                         message: @"Validation Failed. Please try again."
                                                         delegate:nil
                                                cancelButtonTitle:[ACConstants getLocalizedStringForKey:@"OK" withDefaultValue:@"OK"]
                                                otherButtonTitles:nil, nil];
