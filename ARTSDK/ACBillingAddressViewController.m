@@ -3082,7 +3082,7 @@
         [SVProgressHUD dismiss];
         
         [ArtAPI setCart:nil];
-        [ArtAPI initilizeApp];
+        //[ArtAPI initilizeApp];
         
         ACOrderConfirmationViewController *controller = [[ACOrderConfirmationViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACOrderConfirmationViewController-iPad" :@"ACOrderConfirmationViewController" bundle:ACBundle];
         controller.orderNumber=orderNumber;
@@ -3154,7 +3154,7 @@
     NSLog(@"Set bundles successfully");
     
     [ArtAPI setCart:nil];
-    [ArtAPI initilizeApp];
+    //[ArtAPI initilizeApp];
     
     //need to retrieve purchased bundles if SwitchArt
     [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
@@ -3178,7 +3178,7 @@
     [ alert show];
     
     [ArtAPI setCart:nil];
-    [ArtAPI initilizeApp];
+    //[ArtAPI initilizeApp];
     
     //need to retrieve purchased bundles if SwitchArt
     

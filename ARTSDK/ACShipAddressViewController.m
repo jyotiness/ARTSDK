@@ -1499,7 +1499,7 @@ int nameOrigin=0;
         //CLEAR CART AND GET NEW SESSION
         
         [ArtAPI setCart:nil];
-        [ArtAPI initilizeApp];
+        //[ArtAPI initilizeApp];
 
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"SHOW-ORDER"];
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"IS-REORDER"];
@@ -2198,7 +2198,7 @@ int nameOrigin=0;
     isContinueButtonPressed = NO;
     
     [ArtAPI setCart:nil];
-    [ArtAPI initilizeApp];
+    //[ArtAPI initilizeApp];
     
     [SVProgressHUD dismiss];
     [self showGCAlert];
@@ -3955,7 +3955,7 @@ int nameOrigin=0;
         [SVProgressHUD dismiss];
         
         [ArtAPI setCart:nil];
-        [ArtAPI initilizeApp];
+        //[ArtAPI initilizeApp];
         
         ACOrderConfirmationViewController *controller = [[ACOrderConfirmationViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACOrderConfirmationViewController-iPad" :@"ACOrderConfirmationViewController"
                                                                                                             bundle:ACBundle];
@@ -4016,7 +4016,7 @@ int nameOrigin=0;
     NSLog(@"Set bundles successfully");
     
     [ArtAPI setCart:nil];
-    [ArtAPI initilizeApp];
+    //[ArtAPI initilizeApp];
     
     //need to retrieve purchased bundles if SwitchArt
     [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
@@ -4039,7 +4039,7 @@ int nameOrigin=0;
     [ alert show];
     
     [ArtAPI setCart:nil];
-    [ArtAPI initilizeApp];
+    //[ArtAPI initilizeApp];
     
     //need to retrieve purchased bundles if SwitchArt
     [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
