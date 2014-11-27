@@ -1622,7 +1622,7 @@ int nameOrigin=0;
     peoplePicker.peoplePickerDelegate = self;
     peoplePicker.navigationItem.title = (0 == contactBtn.tag)?[ACConstants getLocalizedStringForKey:@"CHOOSE_CONTACT" withDefaultValue:@"Choose Contact"]:[ACConstants getLocalizedStringForKey:@"CHOOSE_EMAIL" withDefaultValue:@"Choose Email"];
     peoplePicker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self presentViewController:peoplePicker animated:YES completion:^{
+    [self.view.window.rootViewController presentViewController:peoplePicker animated:YES completion:^{
         contactBtn.enabled = YES;
     }];
 }

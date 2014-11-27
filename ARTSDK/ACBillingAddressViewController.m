@@ -822,17 +822,12 @@
 #pragma mark- Phone Book Contacts
 -(void)phoneBookContacts
 {
-//    if([self.txtActiveField isFirstResponder]) {
-//        [ self.txtActiveField resignFirstResponder];
-//    }
     [self.view endEditing:YES];
     
     ABPeoplePickerNavigationController *peoplePicker = [[ABPeoplePickerNavigationController alloc] init];
     peoplePicker.peoplePickerDelegate = self;
-    //[self presentViewController:peoplePicker animated:YES completion:nil];
     peoplePicker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self presentViewController:peoplePicker animated:YES completion:nil];
-    peoplePicker = nil;
+    [self.view.window.rootViewController presentViewController:peoplePicker animated:YES completion:nil];
 }
 
 #pragma mark- Scan Credit Card
@@ -2494,7 +2489,7 @@
     CardIOPaymentViewController *scanViewController = [[CardIOPaymentViewController alloc] initWithPaymentDelegate:self];
     scanViewController.useCardIOLogo = YES;
     scanViewController.appToken = [ACConstants getCardIOToken];
-    [self presentViewController:scanViewController animated:YES completion:nil];
+    [self.navigationController presentViewController:scanViewController animated:YES completion:nil];
 }
 
 #pragma mark -  CardIODelegate Methods
@@ -3722,9 +3717,6 @@
     }
 }
 
-// Called after a person has been selected by the user.
-// Return YES if you want the person to be displayed.
-// Return NO  to do nothing (the delegate is responsible for dismissing the peoplePicker).
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person
 {
     [self populateDataWithPerson:person];
@@ -3732,8 +3724,14 @@
     return NO;
 }
 
-- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier
+//!-- CS:iOS 8 new methods of ABPeopleNavigationController
+- (void)peoplePickerNavigationController:(ABPeoplePickerNavigationController*)peoplePicker didSelectPerson:(ABRecordRef)person
 {
+    [self populateDataWithPerson:person];
+    [peoplePicker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
     return NO;
 }
 
