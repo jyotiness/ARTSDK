@@ -288,7 +288,17 @@ int nameOrigin=0;
 -(void)getAddressFromAddress
 {
     NSDictionary *sddressDict = [[AccountManager sharedInstance] getAddressForAddressID: [[AccountManager sharedInstance] shippingAddressIdentifier]];
-    [self prePopulateAddressFromDict:sddressDict];
+    if(sddressDict)
+    {
+        [self prePopulateAddressFromDict:sddressDict];
+    }
+    else
+    {
+        AccountManager *accManager = [AccountManager sharedInstance];
+        self.name = accManager.firstName;
+        self.lastName = accManager.lastName;
+        self.emailAddress = accManager.userEmailAddress;
+    }
 }
 
 - (void)dismissModal {
