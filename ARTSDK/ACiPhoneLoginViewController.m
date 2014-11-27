@@ -1194,7 +1194,6 @@
         if(self.loginMode == LoginModeLogin)
         {
             self.selectedIndexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
-            //            [ self.txtActiveField resignFirstResponder];
             [self.view endEditing:YES];
         }
         else
@@ -1204,11 +1203,19 @@
     }
     else if( self.selectedIndexPath.row == 2 )
     {
-        self.selectedIndexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
-        //        [ self.txtActiveField resignFirstResponder];
+        self.selectedIndexPath = [NSIndexPath indexPathForRow:3 inSection:0];
         [self.view endEditing:YES];
     }
-    
+    else if( self.selectedIndexPath.row == 3 )
+    {
+        self.selectedIndexPath = [NSIndexPath indexPathForRow:4 inSection:0];
+        [self.view endEditing:YES];
+    }
+    else if( self.selectedIndexPath.row == 4 )
+    {
+        self.selectedIndexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
+        [self.view endEditing:YES];
+    }
     
     ACLoginCustomCell *cell = (ACLoginCustomCell*)[self.tableview cellForRowAtIndexPath:self.selectedIndexPath];
     [cell.textField becomeFirstResponder];
