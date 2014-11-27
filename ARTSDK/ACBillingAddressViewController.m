@@ -1084,6 +1084,7 @@
         
         cell = (ACCustomBillingCell *)[[ACBundle loadNibNamed:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACCustomBillingCell-iPad" :@"ACCustomBillingCell" owner:cell options:nil] objectAtIndex:0];
         cell.textField.delegate=self;
+        cell.textField.font = [UIFont systemFontOfSize:15.0f];
     }
     
     cell.textField.cellIndexPath = indexPath;

@@ -183,6 +183,9 @@ int nameOrigin=0;
         self.loginTitleLabel.font = [ACConstants getStandardBoldFontWithSize:26.0f];
         self.loginView.hidden = self.needSignUp;
         self.signupView.hidden = !self.needSignUp;
+        self.emailLoginTextField.font = [UIFont systemFontOfSize:15.0f];
+        self.passwordLoginTextField.font = [UIFont systemFontOfSize:15.0f];
+
     }
     else
     {
@@ -895,6 +898,7 @@ int nameOrigin=0;
         
         [cell.pickerButton addTarget:self action:@selector(countryPickerPressed:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contactPickerButton addTarget:self action:@selector(phoneBookContacts:) forControlEvents:UIControlEventTouchUpInside];
+        cell.textField.font = [UIFont systemFontOfSize:15.0f];
     }
     
     // Make cell unselectable
