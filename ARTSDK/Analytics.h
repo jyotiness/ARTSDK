@@ -102,6 +102,19 @@
 #define ANALYTICS_EVENT_NAME_BUNDLE_DRAWER_OPEN             @"Open Bundle Config Drawer"
 #define ANALYTICS_EVENT_NAME_BUNDLE_DRAWER_CLOSE             @"Close Bundle Config Drawer"
 
+#define ANALYTICS_EVENT_NAME_BUNDLE_HELP_BUTTON_PRESSED    @"Bundle Help Button Pressed"
+
+#define ANALYTICS_EVENT_NAME_ADD_BUNDLE_TO_CART_PRESSED    @"Add Bundle To Cart Pressed"
+#define ANALYTICS_EVENT_NAME_ADD_PRINT_ONLY_EXISTING_TO_CART_PRESSED    @"Add Print Only To Existing Pack To Cart Pressed"
+#define ANALYTICS_EVENT_NAME_ADD_PRINT_ONLY_NEW_TO_CART_PRESSED    @"Add Print Only To New Pack To Cart Pressed"
+
+#define ANALYTICS_EVENT_NAME_RENAME_PACK_ON_ORDER_CONFIRM    @"Rename Pack on Order Confirmation Pressed"
+#define ANALYTICS_EVENT_NAME_RENAME_PACK_ON_PACK_EDIT    @"Rename Pack on Order Confirmation Pressed"
+
+#define ANALYTICS_EVENT_NAME_CHANGE_ACCOUNT_NAME    @"Edit account name"
+#define ANALYTICS_EVENT_NAME_CHANGE_PACK_NAME    @"Edit pack name"
+#define ANALYTICS_EVENT_NAME_CHANGE_PACK_ADDRESS    @"Edit pack shipping address"
+
 #define ANALYTICS_EVENT_NAME_NOTIFICATION_RECIEVED      @"Notification recieved"
 #define ANALYTICS_EVENT_NAME_SIMPLE_NOTIFICATION               @"Simple Notification"
 #define ANALYTICS_EVENT_NAME_URLLINK_NOTIFICATION_RECIEVED     @"Link Notification"
