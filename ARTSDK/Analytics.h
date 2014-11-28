@@ -77,6 +77,18 @@
 #define ANALYTICS_EVENT_NAME_SIGNUP_BUTTON_PRESSED      @"SignUp button pressed"
 #define ANALYTICS_EVENT_NAME_PACKS_BUTTON_PRESSED       @"Packs button pressed"
 
+#define ANALYTICS_EVENT_NAME_HELP_SCREEN_1              @"Viewed Help Screen 1"
+#define ANALYTICS_EVENT_NAME_HELP_SCREEN_2              @"Viewed Help Screen 2"
+#define ANALYTICS_EVENT_NAME_HELP_SCREEN_3              @"Viewed Help Screen 3"
+#define ANALYTICS_EVENT_NAME_HELP_SCREEN_4              @"Viewed Help Screen 4"
+#define ANALYTICS_EVENT_NAME_SKIP_BUTTON_PRESSED        @"Skip button pressed"
+#define ANALYTICS_EVENT_NAME_GOTIT_BUTTON_PRESSED       @"GotIt button pressed"
+
+#define ANALYTICS_EVENT_NAME_TABBAR_HOME                @"Tapped Home Tab"
+#define ANALYTICS_EVENT_NAME_TABBAR_PACKS               @"Tapped Packs Tab"
+#define ANALYTICS_EVENT_NAME_TABBAR_HELP                @"Tapped Help Tab"
+#define ANALYTICS_EVENT_NAME_TABBAR_ACCOUNT             @"Tapped Account Tab"
+
 #define ANALYTICS_EVENT_NAME_NOTIFICATION_RECIEVED      @"Notification recieved"
 #define ANALYTICS_EVENT_NAME_SIMPLE_NOTIFICATION               @"Simple Notification"
 #define ANALYTICS_EVENT_NAME_URLLINK_NOTIFICATION_RECIEVED     @"Link Notification"
