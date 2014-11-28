@@ -67,6 +67,16 @@
 #define ANALYTICS_EVENT_NAME_APP_RETURN_FROM_BKGND      @"App return from background"
 #define ANALYTICS_EVENT_NAME_CACHE_REFRESH              @"Cache refreshed"
 
+//SA
+#define ANALYTICS_EVENT_NAME_CAMERA_ROLL_BUTTON_PRESSED @"CameraRoll button pressed"
+#define ANALYTICS_EVENT_NAME_TAKE_PHOTO_BUTTON_PRESSED  @"TakePhoto button pressed"
+#define ANALYTICS_EVENT_NAME_INSTAGRAM_BUTTON_PRESSED   @"Instagram button pressed"
+#define ANALYTICS_EVENT_NAME_FACEBOOK_BUTTON_PRESSED    @"Facebook button pressed"
+#define ANALYTICS_EVENT_NAME_CART_BUTTON_PRESSED        @"Cart button pressed"
+#define ANALYTICS_EVENT_NAME_LOGIN_BUTTON_PRESSED       @"Login button pressed"
+#define ANALYTICS_EVENT_NAME_SIGNUP_BUTTON_PRESSED      @"SignUp button pressed"
+#define ANALYTICS_EVENT_NAME_PACKS_BUTTON_PRESSED       @"Packs button pressed"
+
 #define ANALYTICS_EVENT_NAME_NOTIFICATION_RECIEVED      @"Notification recieved"
 #define ANALYTICS_EVENT_NAME_SIMPLE_NOTIFICATION               @"Simple Notification"
 #define ANALYTICS_EVENT_NAME_URLLINK_NOTIFICATION_RECIEVED     @"Link Notification"
