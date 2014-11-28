@@ -89,6 +89,19 @@
 #define ANALYTICS_EVENT_NAME_TABBAR_HELP                @"Tapped Help Tab"
 #define ANALYTICS_EVENT_NAME_TABBAR_ACCOUNT             @"Tapped Account Tab"
 
+#define ANALYTICS_EVENT_NAME_LANDSCAPE_BUTTON_PRESSED    @"Landscape button pressed"
+#define ANALYTICS_EVENT_NAME_PORTRAIT_BUTTON_PRESSED     @"Portrait button pressed"
+#define ANALYTICS_EVENT_NAME_SQUARE_BUTTON_PRESSED       @"Square button pressed"
+
+#define ANALYTICS_EVENT_NAME_EDIT_IMAGE_BUTTON_PRESSED   @"Edit image button pressed"
+#define ANALYTICS_EVENT_NAME_REVERT_IMAGE_BUTTON_PRESSED @"Revert image button pressed"
+
+#define ANALYTICS_EVENT_NAME_VIEW_TERMS_FROM_PACK             @"Viewed terms and conditions (pack)"
+#define ANALYTICS_EVENT_NAME_VIEW_TERMS_FROM_ACCOUNT             @"Viewed terms and conditions (account)"
+
+#define ANALYTICS_EVENT_NAME_BUNDLE_DRAWER_OPEN             @"Open Bundle Config Drawer"
+#define ANALYTICS_EVENT_NAME_BUNDLE_DRAWER_CLOSE             @"Close Bundle Config Drawer"
+
 #define ANALYTICS_EVENT_NAME_NOTIFICATION_RECIEVED      @"Notification recieved"
 #define ANALYTICS_EVENT_NAME_SIMPLE_NOTIFICATION               @"Simple Notification"
 #define ANALYTICS_EVENT_NAME_URLLINK_NOTIFICATION_RECIEVED     @"Link Notification"
