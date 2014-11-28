@@ -3071,8 +3071,8 @@
     if([ACConstants getCurrentAppLocation] == AppLocationSwitchArt){
         //need to set bundle if it is SwitchArt app
         
-        [SVProgressHUD dismiss];
-        [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
+        //[SVProgressHUD dismiss];
+        //[SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
         
         NSLog(@"SwitchArt App - needs to set the billing address on the account");
         [[AccountManager sharedInstance] setBillingAddressForLastPurchase:self forOrderID:orderNumber];
@@ -3157,7 +3157,7 @@
     //[ArtAPI initilizeApp];
     
     //need to retrieve purchased bundles if SwitchArt
-    [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
     
     [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
     

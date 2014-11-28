@@ -1777,7 +1777,7 @@ int nameOrigin=0;
         
         //this will need to go into localizable strings but for now, it is SwitchArt only
         // so we need a sentence case string
-        [SVProgressHUD showWithStatus:@"Signing Up"];
+        [SVProgressHUD showWithStatus:@"Signing up..."];
         
         [ArtAPI
          requestForAccountCreateExtentedEmailAddress:self.signupEmail
@@ -1924,11 +1924,23 @@ int nameOrigin=0;
                 stateValueToBePassedToCall=stateTextField.text;
             }
             
-            [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];
+            AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+            
+            if(currAppLoc==AppLocationSwitchArt){
+                if([AccountManager sharedInstance].purchasedWorkingPack){
+                    //submitting Order
+                    [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"SUBMITTING_ORDER" withDefaultValue:@"SUBMITTING_ORDER"]] maskType:SVProgressHUDMaskTypeClear];
+                }else{
+                    [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];
+                }
+            }else{
+                [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];
+            }
+        
             
             //SWITCHART - NEED TO KEEP THIS ADDRESS IN THE ACCOUNTMANAGER FOR LATER TO UPDATE
             //THE SHIPPING ADDRESS ON THE ACCOUNT.  THIS IS NOT OPTIMAL, BUT NECESSARY
-            AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+            
             if(currAppLoc==AppLocationSwitchArt){
                 
                 NSMutableDictionary *addressDict = [[NSMutableDictionary alloc] init];
@@ -2047,7 +2059,7 @@ int nameOrigin=0;
     
     if ([self validateFormForLogin] ){
         
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING_LOWER",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
         
         [ArtAPI
          requestForAccountAuthenticateWithEmailAddress:self.signupEmail
@@ -2189,7 +2201,7 @@ int nameOrigin=0;
     
     NSLog(@"Added Gift Certificate");
     //now need to submit the order
-    [SVProgressHUD dismiss];
+    //[SVProgressHUD dismiss];
     
     [self callCartSubmitForOrder];
 }
@@ -3423,10 +3435,12 @@ int nameOrigin=0;
 
 - (void)loginSuccess
 {
-    [SVProgressHUD showWithStatus:@"Updating Account..."];
+    //[SVProgressHUD showWithStatus:@"..."];
     NSString *anonAuthToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ANONYMOUS_AUTH_TOKEN"];
     if(anonAuthToken)
     {
+        [SVProgressHUD showWithStatus:@"Authenticating..." maskType:SVProgressHUDMaskTypeClear];
+        
         [ArtAPI requestForAccountMergeFromAuthToken:anonAuthToken toAuthToken:[ArtAPI authenticationToken] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             
             //no longer anonymous
@@ -3442,9 +3456,11 @@ int nameOrigin=0;
 //            [ArtAPI setAuthenticationToken:authTok];
             self.shippingAddressTableView.tableHeaderView = nil;
             [self populateDataWithLoginResponse:responseDict];
-            [SVProgressHUD dismiss];
+            //[SVProgressHUD dismiss];
             
-            [self proceedToShippingOptions];
+            [[AccountManager sharedInstance] loadUserDefaultGallery:self];
+            
+            
             NSLog(@"loginSuccess");
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -3461,6 +3477,37 @@ int nameOrigin=0;
     {
         
     }
+}
+
+-(void)userGalleryLoadedSuccessfullyWithResponse:(id)jsonResponse withGalleryItems:(NSArray *)galleryItems withGalleryID:myPhotosDefaultGallery
+{
+    NSLog(@"%@",NSStringFromSelector(_cmd));
+    
+    [[NSUserDefaults standardUserDefaults] setObject:myPhotosDefaultGallery forKey:@"MY_PHOTOS_GALLERY_ID_PERSISTANCE_KEY"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [AccountManager sharedInstance].defaultP2AGallery = myPhotosDefaultGallery;
+    
+    if(self.needSignUp){
+        //sign up go to next screen
+        [self proceedToShippingOptions];
+    }else{
+        //stop here if login only
+        [SVProgressHUD dismiss];
+    }
+}
+
+-(void)userGalleryLoadingFailedWithResponse:(id)jsonResponse
+{
+    NSLog(@"%@",NSStringFromSelector(_cmd));
+    
+    if(self.needSignUp){
+        //sign up go to next screen
+        [self proceedToShippingOptions];
+    }else{
+        //stop here if login only
+        [SVProgressHUD dismiss];
+    }
+    
 }
 
 - (void)loginFailure
@@ -3637,7 +3684,7 @@ int nameOrigin=0;
                             lastName:(NSString *)lastName
                        facebookToken:(NSString *)facebookToken {
     
-    [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING_LOWER",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
     
     [ArtAPI
      requestForAccountAuthenticateWithFacebookUID:facebookUID emailAddress:emailAddress firstName:firstName lastName:lastName facebookToken:facebookToken
@@ -3827,9 +3874,9 @@ int nameOrigin=0;
 //MKL ADDING CART SUBMIT FUNCTIONS HERE FOR SWITCHART
 -(void)callCartSubmitForOrder {
     
-    [SVProgressHUD dismiss];
+    //[SVProgressHUD dismiss];
     
-    [SVProgressHUD showWithStatus:@"Submitting Order..." maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:@"Submitting Order..." maskType:SVProgressHUDMaskTypeClear];
     
     [ArtAPI
      cartSubmitForOrderWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -3940,8 +3987,8 @@ int nameOrigin=0;
     if([ACConstants getCurrentAppLocation] == AppLocationSwitchArt){
         //need to set bundle if it is SwitchArt app
         
-        [SVProgressHUD dismiss];
-        [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
+        //[SVProgressHUD dismiss];
+        //[SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
         
         NSLog(@"SwitchArt App - needs to set the address on the account");
         [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:theOrderNumber];
@@ -4015,7 +4062,7 @@ int nameOrigin=0;
     //[ArtAPI initilizeApp];
     
     //need to retrieve purchased bundles if SwitchArt
-    [SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
     [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
     
 }
@@ -4045,6 +4092,8 @@ int nameOrigin=0;
 -(void)bundlesLoadedSuccessfully:(NSArray *)purchasedBundles
 {
     [[AccountManager sharedInstance] setBundlesArray:purchasedBundles];
+    
+    //[SVProgressHUD dismiss];
     
     if(!self.isDoingAccountMerge){
         

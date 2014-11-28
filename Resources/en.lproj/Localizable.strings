@@ -79,7 +79,7 @@
 "CHOOSE_AN_EMAIL" = "Choose an email";
 "ZIP" = "ZIP";
 "POSTAL_CODE" = "Postal Code";
-"FETCHING_DETAILS" = "Fetching details";
+"FETCHING_DETAILS" = "Loading...";
 "CHOOSE_YOUR_CITY" = "Choose your City";
 "SUBMITTING_ORDER" = "Submitting order...";
 "CARD_NUMBER" = "Card Number";
@@ -192,6 +192,7 @@
 "RETRIEVING PASSWORD" = "RETRIEVING PASSWORD";
 "SIGNING UP" = "SIGNING UP";
 "AUTHENTICATING" = "AUTHENTICATING";
+"AUTHENTICATING_LOWER" = "Authenticating...";
 "Terms of Service" = "Terms of Service";
 "com.facebook.error.code.2" = "To enable Facebook login, open Settings, select the Facebook menu, and set %@ to ON.";
 "NEW_PASSWORD_SENT" = "Your new password has been sent to your registered email address.";
