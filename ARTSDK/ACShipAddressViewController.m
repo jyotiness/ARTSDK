@@ -4060,6 +4060,7 @@ int nameOrigin=0;
         
         //this will default the bundle to the first one
         //but we want to leave you on your working bundle in this case
+        NSLog(@" [AccountManager sharedInstance].purchasedWorkingPack set to nil in shipping address ");
         [AccountManager sharedInstance].purchasedWorkingPack = nil;
         self.isDoingAccountMerge = NO;
     }

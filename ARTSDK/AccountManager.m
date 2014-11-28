@@ -196,7 +196,7 @@
         @try{
             
             //order dict might be nil
-            NSString *tempBundleID = [dict objectForKey:@"bundleId"];
+            NSString *tempBundleID = [dict objectForKeyNotNull:@"bundleId"];
             if([bundleID isEqualToString:tempBundleID])
             {
                 bundleDict = dict;
