@@ -1433,7 +1433,9 @@ int nameOrigin=0;
 {
     if(111 == alertView.tag)
     {
-        [ self chooseAdressForDict:[self.addressArray objectAtIndex:buttonIndex-1]];
+        if(0 != buttonIndex){
+            [ self chooseAdressForDict:[self.addressArray objectAtIndex:buttonIndex-1]];
+        }
     }
     else if(888 == alertView.tag)// Select Address Tag
     {
@@ -3443,12 +3445,6 @@ int nameOrigin=0;
             [SVProgressHUD dismiss];
             
             [self proceedToShippingOptions];
-
-            // Call Delegate
-//             if (self.loginDelegate && [self.loginDelegate respondsToSelector:@selector(loginSuccess)]) {
-//                 [self.loginDelegate loginSuccess];
-//             }
-            
             NSLog(@"loginSuccess");
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
