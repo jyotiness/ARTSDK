@@ -185,7 +185,9 @@ int nameOrigin=0;
         self.signupView.hidden = !self.needSignUp;
         self.emailLoginTextField.font = [UIFont systemFontOfSize:15.0f];
         self.passwordLoginTextField.font = [UIFont systemFontOfSize:15.0f];
-
+        [self.emailLoginTextField setKeyboardType:UIKeyboardTypeEmailAddress];
+        self.emailLoginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        self.passwordLoginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     }
     else
     {
@@ -695,8 +697,24 @@ int nameOrigin=0;
         UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 270, 0.0);
         self.shippingAddressTableView.contentInset = contentInsets;
         self.shippingAddressTableView.scrollIndicatorInsets = contentInsets;
-        [self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         
+        if(self.selectedIndexPath){
+            [self.shippingAddressTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }else{
+            //nil - must be the header fields for login or sign up
+            //this is a hack because the login sign up text fields are in teh header
+            
+            float startPos = 70.0f;
+            CGPoint scrollToPoint = CGPointMake(0, startPos);
+            
+            if(self.txtActiveField){
+                float yPos = self.txtActiveField.frame.origin.y + startPos;
+                scrollToPoint = CGPointMake(0, yPos);
+            }
+            
+            
+            [self.shippingAddressTableView setContentOffset:scrollToPoint animated:YES];
+        }
     }else{
         //NSLog(@"iPad");
         // Adjust table to fit keyboard       
@@ -909,6 +927,7 @@ int nameOrigin=0;
         [cell.pickerButton addTarget:self action:@selector(countryPickerPressed:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contactPickerButton addTarget:self action:@selector(phoneBookContacts:) forControlEvents:UIControlEventTouchUpInside];
         cell.textField.font = [UIFont systemFontOfSize:15.0f];
+        cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     }
     
     // Make cell unselectable
@@ -1545,8 +1564,10 @@ int nameOrigin=0;
 
     
     NSIndexPath *indexPath = ((ACCheckoutTextField*)textField).cellIndexPath;
-//    if(!indexPath)
-//        return;
+    if(!indexPath){
+        self.selectedIndexPath = nil;
+        return;
+    }
     
     NSInteger currentSelectedTextFieldTag = textField.tag;
     if(2 == indexPath.section)
@@ -2283,6 +2304,17 @@ int nameOrigin=0;
 #pragma mark ACKeyboardToolbarDelegate
 - (void)keyboardToolbar: (ACKeyboardToolbarView*) keyboardToolbar didSelectNext: (id) next
 {
+    
+    if(self.txtActiveField){
+        if([self.txtActiveField isEqual:self.emailLoginTextField]){
+            [self.passwordLoginTextField becomeFirstResponder];
+            return;
+        }else if([self.txtActiveField isEqual:self.passwordLoginTextField]){
+            [self.firstNameTextField becomeFirstResponder];
+            return;
+        }
+    }
+    
     if(!self.needSignUp && (1 == self.selectedIndexPath.section))
     {
         [self.view endEditing:YES];
@@ -2359,6 +2391,19 @@ int nameOrigin=0;
 }
 
 - (void)keyboardToolbar: (ACKeyboardToolbarView*) keyboardToolbar didSelectPrevious: (id) previous {
+    
+    
+    if(self.txtActiveField){
+        if([self.txtActiveField isEqual:self.firstNameTextField]){
+            [self.passwordLoginTextField becomeFirstResponder];
+            return;
+        }else if([self.txtActiveField isEqual:self.passwordLoginTextField]){
+            [self.emailLoginTextField becomeFirstResponder];
+            return;
+        }
+    }
+    
+    
     if(1 == self.selectedIndexPath.section)
     {
         self.selectedIndexPath = [NSIndexPath indexPathForRow:self.willShowCityAndState?9:7 inSection:0];

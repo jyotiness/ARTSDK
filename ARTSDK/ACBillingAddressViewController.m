@@ -1080,6 +1080,7 @@
         cell = (ACCustomBillingCell *)[[ACBundle loadNibNamed:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACCustomBillingCell-iPad" :@"ACCustomBillingCell" owner:cell options:nil] objectAtIndex:0];
         cell.textField.delegate=self;
         cell.textField.font = [UIFont systemFontOfSize:15.0f];
+        cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     }
     
     cell.textField.cellIndexPath = indexPath;
@@ -1935,7 +1936,6 @@
 - (void)keyboardToolbar: (ACKeyboardToolbarView*) keyboardToolbar didSelectNext: (id) next {
     int sectionToScroll = 0;
     BOOL scrollToNameField = NO;
-    
     
     
     switch (self.currentActiveTag) {
