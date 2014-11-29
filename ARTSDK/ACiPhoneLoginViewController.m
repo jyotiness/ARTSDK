@@ -180,6 +180,7 @@
     mDataSourceArray = [[NSArray alloc] initWithObjects:ACLocalizedString(@"First Name",nil),ACLocalizedString(@"Last Name",nil),ACLocalizedString(@"Email Address",nil),ACLocalizedString(@"Password",nil),ACLocalizedString(@"Confirm Password", nil), nil];
     
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"] style:UIBarButtonItemStylePlain target:self action:@selector(cancelLogin:)];
+    [cancelItem setTintColor:[ACConstants getPrimaryButtonColor]];
     self.navigationItem.rightBarButtonItem = cancelItem;
     self.navigationItem.hidesBackButton = YES;
     
