@@ -3486,6 +3486,9 @@ int nameOrigin=0;
     {
         [SVProgressHUD showWithStatus:@"Authenticating..." maskType:SVProgressHUDMaskTypeClear];
         
+        //MKL test for if account merge fails
+        //anonAuthToken = @"GARBAGE";
+        
         [ArtAPI requestForAccountMergeFromAuthToken:anonAuthToken toAuthToken:[ArtAPI authenticationToken] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             
             //no longer anonymous
@@ -3510,6 +3513,14 @@ int nameOrigin=0;
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             NSLog(@"Account Merge Failed");
+            
+            //no longer anonymous
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ANONYMOUS_AUTH_TOKEN"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            self.isDoingAccountMerge = YES;
+            [[AccountManager sharedInstance] retrieveBundlesArrayForLoggedInUser:self];
+            
             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
             NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
             [ArtAPI setAuthenticationToken:authTok];
