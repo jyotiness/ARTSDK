@@ -91,5 +91,6 @@ typedef enum {
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate;
 -(BOOL)getIsCartEmpty;
 -(void)reIndexAddressesAfterAddressUpdate:(NSArray *)addressArrayFromUpdate;
+-(void)updatePurchasedPack:(NSString *)bundleId withAddressId:(NSString *)newAddressId;
 
 @end

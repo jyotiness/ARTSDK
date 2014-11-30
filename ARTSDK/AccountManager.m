@@ -273,6 +273,37 @@
     
 }
 
+-(void)updatePurchasedPack:(NSString *)bundleId withAddressId:(NSString *)newAddressId{
+    
+    //this is in memory only
+    //have to call update bundles afterwards to get it to the server
+    if(!self.purchasedBundles) return;
+    
+    NSDictionary *packDict = [self getBundleForBundleID:bundleId];
+    
+    if(!packDict) return;
+    
+    NSInteger packCount = [self.purchasedBundles count];
+    
+    if(packCount == 0) return;
+    
+    NSInteger packIndex = [self.purchasedBundles indexOfObject:packDict];
+    
+    if(packIndex < 0) return;
+    if(packIndex > packCount - 1) return;
+    
+    NSMutableDictionary *mutablePackDict = [NSMutableDictionary dictionaryWithDictionary:packDict];
+    
+    [mutablePackDict setObject:newAddressId forKey:@"shippingAddressId"];
+    
+    NSMutableArray *mutablePurchasedBundles = [NSMutableArray arrayWithArray:self.purchasedBundles];
+    
+    [mutablePurchasedBundles replaceObjectAtIndex:packIndex withObject:mutablePackDict];
+    
+    self.purchasedBundles = mutablePurchasedBundles;
+    
+}
+
 -(BOOL)updateBundlesForLoggedInUser:(id<AccountManagerDelegate>)delegate
 {
     self.delegate = delegate;
@@ -773,6 +804,7 @@
          status = YES;
          
          NSString *addressID = @"";
+         NSString *defaultShippingAddressID = @"";;
          
          if(JSON){
              
@@ -797,10 +829,38 @@
                                  addressID = [theAddressWeJustSet objectForKeyNotNull:@"AddressIdentifier"];
                              }
                          }
+                         
+                         //user defaults
+                         NSArray *userDefaultArray = [profileInfoDict objectForKey:@"UserDefaults"];
+                         
+                         
+                         
+                         if(userDefaultArray){
+                             
+                             for(NSDictionary *dict in userDefaultArray)
+                             {
+                                 if([@"DefaultShippingAddress" isEqualToString:[dict objectForKeyNotNull:@"PropertyName"]])
+                                 {
+                                     defaultShippingAddressID = [dict objectForKeyNotNull:@"PropertyValue"];
+                                 }
+                             }
+                         }
+                         
                      }
                  }
                  
                  
+             }
+         }
+         
+         if(isDefault){
+             if(defaultShippingAddressID){
+                 if(![defaultShippingAddressID isEqualToString:@""]){
+                     
+                     //set this as the address id
+                     addressID = defaultShippingAddressID;
+                     
+                 }
              }
          }
          
