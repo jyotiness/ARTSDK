@@ -1798,7 +1798,7 @@ int nameOrigin=0;
         
         //this will need to go into localizable strings but for now, it is SwitchArt only
         // so we need a sentence case string
-        [SVProgressHUD showWithStatus:@"Signing up..."];
+        [SVProgressHUD showWithStatus:@"Signing Up..." maskType:SVProgressHUDMaskTypeClear];
         
         [ArtAPI
          requestForAccountCreateExtentedEmailAddress:self.signupEmail
