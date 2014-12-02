@@ -115,6 +115,11 @@
 #define ANALYTICS_EVENT_NAME_CHANGE_PACK_NAME    @"Edit pack name"
 #define ANALYTICS_EVENT_NAME_CHANGE_PACK_ADDRESS    @"Edit pack shipping address"
 
+#define ANALYTICS_EVENT_NAME_BUNDLE_SELECT_FRAME    @"Frame Selection Button Pressed"
+#define ANALYTICS_EVENT_NAME_BUNDLE_SELECT_SIZE    @"Pack Size Selection Button Pressed"
+#define ANALYTICS_EVENT_NAME_BUNDLE_SELECT_COUNT    @"Pack Count Selection Button Pressed"
+
+
 #define ANALYTICS_EVENT_NAME_NOTIFICATION_RECIEVED      @"Notification recieved"
 #define ANALYTICS_EVENT_NAME_SIMPLE_NOTIFICATION               @"Simple Notification"
 #define ANALYTICS_EVENT_NAME_URLLINK_NOTIFICATION_RECIEVED     @"Link Notification"
