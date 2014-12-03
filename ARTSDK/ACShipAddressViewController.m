@@ -1798,7 +1798,7 @@ int nameOrigin=0;
         
         //this will need to go into localizable strings but for now, it is SwitchArt only
         // so we need a sentence case string
-        [SVProgressHUD showWithStatus:@"Signing Up..." maskType:SVProgressHUDMaskTypeClear];
+        [SVProgressHUD showWithStatus:@"Updating..." maskType:SVProgressHUDMaskTypeClear];
         
         [ArtAPI
          requestForAccountCreateExtentedEmailAddress:self.signupEmail
@@ -1952,10 +1952,10 @@ int nameOrigin=0;
                     //submitting Order
                     [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"SUBMITTING_ORDER" withDefaultValue:@"SUBMITTING_ORDER"]] maskType:SVProgressHUDMaskTypeClear];
                 }else{
-                    [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];
+                    //[SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
                 }
             }else{
-                [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];
+                //[SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
             }
         
             
@@ -2080,7 +2080,8 @@ int nameOrigin=0;
     
     if ([self validateFormForLogin] ){
         
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING_LOWER",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
+        [SVProgressHUD showWithStatus:@"Updating..." maskType:SVProgressHUDMaskTypeClear];
+        //[SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING_LOWER",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
         
         [ArtAPI
          requestForAccountAuthenticateWithEmailAddress:self.signupEmail
@@ -2190,7 +2191,7 @@ int nameOrigin=0;
     [ alert show];
     alert = nil;
     
-    [SVProgressHUD showWithStatus:@"Reloading Pack Info..." maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:@"Reloading Pack Info..." maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
     [[AccountManager sharedInstance] retrieveOrderHistoryArrayForLoggedInUser:self];
     
 }
@@ -3484,7 +3485,7 @@ int nameOrigin=0;
     NSString *anonAuthToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ANONYMOUS_AUTH_TOKEN"];
     if(anonAuthToken)
     {
-        [SVProgressHUD showWithStatus:@"Authenticating..." maskType:SVProgressHUDMaskTypeClear];
+        //[SVProgressHUD showWithStatus:@"Authenticating..." maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
         
         //MKL test for if account merge fails
         //anonAuthToken = @"GARBAGE";
@@ -3690,7 +3691,7 @@ int nameOrigin=0;
     [self.view endEditing:YES];
     if(mail&&(![mail isKindOfClass:[NSNull class]])&&[mail validateAsEmail]){
         
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"RETRIEVING PASSWORD",@"RETRIEVING PASSWORD")];
+        //[SVProgressHUD showWithStatus:ACLocalizedString(@"RETRIEVING PASSWORD",@"RETRIEVING PASSWORD")];//CS; commenting as per Roberto's too many pop ups issue
         
         [ArtAPI
          accountRetrievePasswordWithEmailAddress:mail
@@ -3740,7 +3741,7 @@ int nameOrigin=0;
                             lastName:(NSString *)lastName
                        facebookToken:(NSString *)facebookToken {
     
-    [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING_LOWER",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING_LOWER",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
     
     [ArtAPI
      requestForAccountAuthenticateWithFacebookUID:facebookUID emailAddress:emailAddress firstName:firstName lastName:lastName facebookToken:facebookToken
@@ -3932,7 +3933,7 @@ int nameOrigin=0;
     
     //[SVProgressHUD dismiss];
     
-    //[SVProgressHUD showWithStatus:@"Submitting Order..." maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:@"Submitting Order..." maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
     
     [ArtAPI
      cartSubmitForOrderWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
