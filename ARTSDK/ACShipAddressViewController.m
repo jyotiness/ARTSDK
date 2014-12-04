@@ -1562,8 +1562,13 @@ int nameOrigin=0;
     toolbar.toolbarDelegate = self;
     [textField setInputAccessoryView:toolbar];
 
+    NSIndexPath *indexPath = nil;
+    ACCheckoutTextField *currentTextField = (ACCheckoutTextField*)textField;
+    if([currentTextField respondsToSelector:@selector(cellIndexPath)])
+    {
+        indexPath = currentTextField.cellIndexPath;
+    }
     
-    NSIndexPath *indexPath = ((ACCheckoutTextField*)textField).cellIndexPath;
     if(!indexPath){
         self.selectedIndexPath = nil;
         return;
