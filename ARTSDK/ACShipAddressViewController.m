@@ -1477,7 +1477,7 @@ int nameOrigin=0;
         NSString *email = [ self.emailArray objectAtIndex:buttonIndex-1];
         self.emailTextField.text = email;
         self.emailAddress = email;
-        if(self.needSignUp)
+//        if(self.needSignUp)
         {
             self.signupEmail = self.emailAddress;
             [self.shippingAddressTableView reloadData];
@@ -1600,7 +1600,7 @@ int nameOrigin=0;
 {
     if (10 == textField.tag) {
         self.emailAddress = textField.text;
-        if(self.needSignUp)
+//        if(self.needSignUp)
         {
             self.signupEmail = self.emailAddress;
             [self.shippingAddressTableView reloadData];
@@ -2873,7 +2873,7 @@ int nameOrigin=0;
         NSString *email  = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emails, 0);
         self.emailTextField.text = email;
         self.emailAddress = email;
-        if(self.needSignUp)
+//        if(self.needSignUp)
         {
             self.signupEmail = self.emailAddress;
             [self.shippingAddressTableView reloadData];
@@ -3249,7 +3249,7 @@ int nameOrigin=0;
         NSString *email  = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emails, 0);
         self.emailTextField.text = email;
         self.emailAddress = email;
-        if(self.needSignUp)
+//        if(self.needSignUp)
         {
             self.signupEmail = self.emailAddress;
             [self.shippingAddressTableView reloadData];
@@ -3663,9 +3663,9 @@ int nameOrigin=0;
     
     self.loginMode = !self.loginMode;
     self.error = nil;
-    self.signupEmail = @"";
-    self.password = @"";
-    self.confirmPassword = @"";
+//    self.signupEmail = @"";
+//    self.password = @"";
+//    self.confirmPassword = @"";
     [self.fieldErrors removeAllObjects];
     
     if(0 == self.segmentedButton.selectedSegmentIndex)
