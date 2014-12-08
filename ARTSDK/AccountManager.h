@@ -65,6 +65,10 @@ typedef enum {
 @property(nonatomic,strong) NSString *defaultP2AGallery;
 @property(nonatomic,strong) NSMutableDictionary *requestsByDelegate;
 
+//isJustFrameSelected related instance's
+@property(nonatomic,strong) NSMutableDictionary *justFrameSelectedDetailsDictionary;
+@property(nonatomic,assign) BOOL isJustFrameSelected;
+
 //Method's
 +(AccountManager *) sharedInstance;
 -(void)cancelOperations;
@@ -92,5 +96,9 @@ typedef enum {
 -(BOOL)getIsCartEmpty;
 -(void)reIndexAddressesAfterAddressUpdate:(NSArray *)addressArrayFromUpdate;
 -(void)updatePurchasedPack:(NSString *)bundleId withAddressId:(NSString *)newAddressId;
+
+//isJustFrameSelected related method's
+-(void)setJustFrameSelectedDetailsWithFrameName:(NSString *)frameName frameSize:(NSString *)frameSize selectedFrameUrl:(NSString *)selectedFrameImageUrl;
+-(NSDictionary *)getJustFrameSelectedDetails;
 
 @end

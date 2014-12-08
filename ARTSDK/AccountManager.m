@@ -1364,4 +1364,19 @@
     self.userName = [NSString stringWithFormat:@"%@ %@",self.firstName,self.lastName];
 }
 
+-(void)setJustFrameSelectedDetailsWithFrameName:(NSString *)frameName frameSize:(NSString *)frameSize selectedFrameUrl:(NSString *)selectedFrameImageUrl
+{
+    self.justFrameSelectedDetailsDictionary = [NSMutableDictionary dictionary];
+    [self.justFrameSelectedDetailsDictionary setObject:frameName forKey:@"frameName"];
+    [self.justFrameSelectedDetailsDictionary setObject:frameSize forKey:@"frameSize"];
+    [self.justFrameSelectedDetailsDictionary setObject:selectedFrameImageUrl forKey:@"frameImageUrl"];
+    
+    NSLog(@" justFrameSelectedDetailsDictionary %@ ", self.justFrameSelectedDetailsDictionary);
+}
+
+-(NSDictionary *)getJustFrameSelectedDetails
+{
+    return self.justFrameSelectedDetailsDictionary;
+}
+
 @end

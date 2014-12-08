@@ -3075,7 +3075,19 @@
         //[SVProgressHUD showWithStatus:@"Updating Account..." maskType:SVProgressHUDMaskTypeClear];
         
         NSLog(@"SwitchArt App - needs to set the billing address on the account");
-        [[AccountManager sharedInstance] setBillingAddressForLastPurchase:self forOrderID:orderNumber];
+        if(![AccountManager sharedInstance].isJustFrameSelected)////CS;== Added this method while fixing SWIT-131
+            [[AccountManager sharedInstance] setBillingAddressForLastPurchase:self forOrderID:orderNumber];
+        else//CS;== Added this method while fixing SWIT-131
+        {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-TABBAR"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SHOW-ORDER"];
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"IS-REORDER"];
+            [[NSUserDefaults standardUserDefaults] setObject:self.orderNumber forKey:@"ORDER-NUMBER"];
+            
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [SVProgressHUD dismiss];
+            [self.navigationController popToRootViewControllerAnimated:NO];
+        }
         
     }else{
         
@@ -3097,7 +3109,8 @@
     
     NSLog(@"SwitchArt App - set billing address successfully");
 
-    [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:theOrderNumber];
+    if(![AccountManager sharedInstance].isJustFrameSelected)//CS;== Added this method while fixing SWIT-131
+        [[AccountManager sharedInstance] setShippingAddressForLastPurchase:self forOrderID:theOrderNumber];
     
 }
 
