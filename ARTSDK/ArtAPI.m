@@ -3371,6 +3371,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 
 - (NSString *)aboutURL{
     
+    if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
+        return @"http://cache1.artprintimages.com/images/photostoart/mobile/index.html";
+    
     if (!_aboutURL){
         NSString *savedAboutURL = [ACConstants getLocalizedStringForKey:@"ABOUT_URL_&&" withDefaultValue:ABOUT_URL];
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
@@ -3396,6 +3399,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 
 - (NSString *)shippingURL{
     
+    if(AppLocationSwitchArt == [ACConstants getCurrentAppLocation])
+        return @"http://www.art.com/asp/customerservice/shipping-asp/_/posters.htm";
+
     if (!_shippingURL){
         NSString *savedShippingURL = [ACConstants getLocalizedStringForKey:@"SHIPPING_DETAILS_URL_&&" withDefaultValue:SHIPPING_DETAILS_URL];
         return  savedShippingURL;
