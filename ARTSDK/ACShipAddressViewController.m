@@ -1866,6 +1866,11 @@ int nameOrigin=0;
                              if(errorMessage){
                                  if([errorMessage length] > 0){
                                      self.error = errorMessage;
+                                     
+                                     if([@"3002" isEqualToString:errorCode]) // Existing account
+                                     {
+                                         self.signupEmail = @"";
+                                     }
                                  }
                              }
                          }
