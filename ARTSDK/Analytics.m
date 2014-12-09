@@ -7,7 +7,7 @@
 //
 
 #import "Analytics.h"
-//#import "Apsalar.h"
+#import "GAIFields.h"
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 
@@ -75,6 +75,8 @@
         // Initialize tracker.
         // id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:trackingID];
         [[GAI sharedInstance] trackerWithTrackingId:trackingID];
+        
+        [[GAI sharedInstance] defaultTracker].allowIDFACollection = NO;
         
     }@catch(id exception){
         NSLog(@"GA Exception");
@@ -149,6 +151,20 @@
     }@catch(id exception){
         NSLog(@"GA Exception");
     }
+}
+
++ (void)logScreenView:(NSString *)screenName{
+    
+    @try{
+            
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker set:kGAIScreenName value:screenName];
+        [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
+    }@catch(id exception){
+        NSLog(@"GA Exception");
+    }
+    
 }
 
 + (void)logGARevenueEvent:(NSString *)oid withRevenue:(NSNumber *)revenue withTax:(NSNumber *)tax withShipping:(NSNumber *)shipping withCurrencyCode:(NSString *)currencyCode {

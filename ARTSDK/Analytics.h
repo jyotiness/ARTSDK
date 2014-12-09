@@ -160,6 +160,7 @@
 + (void)logGAEvent:(NSString *)categoryName withAction:(NSString *)actionString withLabel:(NSString *)labelString;
 + (void)logGAEvent:(NSString *)categoryName withAction:(NSString *)actionString withParams:(id)params;
 + (void)logGAEvent:(NSString *)categoryName withAction:(NSString *)actionString withLabel:(NSString *)labelString withValue:(NSNumber *)numberValue;
++ (void)logScreenView:(NSString *)screenName;
 + (void)logGARevenueEvent:(NSString *)oid withRevenue:(NSNumber *)revenue withTax:(NSNumber *)tax withShipping:(NSNumber *)shipping withCurrencyCode:(NSString *)currencyCode;
 + (void)logGACartItemEventWithTransactionID:(NSString *)oid forName:(NSString *)name withSku:(NSString *)sku forCategory:(NSString *)category atPrice:(NSNumber *)price forQuantity:(NSInteger)quantity havingCurrencyCode:(NSString *)currencyCode;
 
