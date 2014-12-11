@@ -1469,6 +1469,14 @@ int nameOrigin=0;
         
         [ self chooseAdressAtIndex:(int)buttonIndex-1];
     }
+    else if(222 == alertView.tag)// Select Address Tag
+    {
+        if(buttonIndex == 1){
+            UITextField *thisField = [alertView textFieldAtIndex:0];
+            //NSLog(@"Text is %@",thisField.text);
+            [self forgotPasswordForEmail:thisField.text];
+        }
+    }
     else if(999 == alertView.tag)// Select Email Tag
     {
         if(0 == buttonIndex)
@@ -3741,7 +3749,8 @@ int nameOrigin=0;
     UIAlertView *forgotPasswordAlert = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"ENTER_EMAIL_ACCOUNT", nil) message:nil delegate:self cancelButtonTitle:ACLocalizedString(@"CANCEL", nil) otherButtonTitles:ACLocalizedString(@"OK", nil), nil];
     forgotPasswordAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[forgotPasswordAlert textFieldAtIndex:0] setDelegate:self];
-//    [forgotPasswordAlert textFieldAtIndex:0].tag = 100;
+    [forgotPasswordAlert textFieldAtIndex:0].tag = 100;
+    forgotPasswordAlert.tag = 222;
     [forgotPasswordAlert show];
 }
 
