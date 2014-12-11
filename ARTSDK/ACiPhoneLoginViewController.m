@@ -846,6 +846,7 @@
 
 - (IBAction)forgotPassword:(id)sender
 {
+    [self.view endEditing:YES];
     UIAlertView *forgotPasswordAlert = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"ENTER_EMAIL_ACCOUNT", nil) message:nil delegate:self cancelButtonTitle:ACLocalizedString(@"CANCEL", nil) otherButtonTitles:ACLocalizedString(@"OK", nil), nil];
     forgotPasswordAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[forgotPasswordAlert textFieldAtIndex:0] setDelegate:self];
