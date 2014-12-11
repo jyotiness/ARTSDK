@@ -1271,19 +1271,20 @@
                       tokenCacheStrategy:nil];
     }
     
+    
     if (allowLoginUI ||
         (session.state == FBSessionStateCreatedTokenLoaded)) {
+        
         [FBSession setActiveSession:session];
+        
         [session openWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent
                 completionHandler:
          ^(FBSession *session, FBSessionState state, NSError *error) {
+
              [self sessionStateChanged:session state:state error:error];
          }];
         result = session.isOpen;
     }
-    //    }else{
-    //        [self handleFacebookLogin];
-    //    }
     
     return result;
 }
@@ -1295,7 +1296,7 @@
                       state:(FBSessionState) state
                       error:(NSError *)error
 {
-    //NSLog(@"sessionStateChanged: %@ state: %d error: %@", session, state, error );
+    NSLog(@"sessionStateChanged: %@ state: %d error: %@", session, state, error );
     
     switch (state) {
         case FBSessionStateOpen:
@@ -1317,6 +1318,17 @@
     // postNotificationName:FBSessionStateChangedNotification
     //object:session];
     if (error) {
+        
+        //try to reauthorize because this might be an expired session
+        //or a case of deauthorizing the App on FB
+        
+        if(error.code == 5){
+            //pesky error code 5
+            //probably expired session or deauthorized App
+            [self openSessionWithAllowLoginUI:YES];
+            return;
+        }
+
         NSString* message = error.localizedDescription;
         
         if(error.code == 2){
@@ -1334,6 +1346,7 @@
                                   cancelButtonTitle:ACLocalizedString(@"OK", nil)
                                   otherButtonTitles:nil];
         [alertView show];
+
     }
 }
 
