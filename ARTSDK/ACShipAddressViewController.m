@@ -3709,7 +3709,7 @@ int nameOrigin=0;
     [self.view endEditing:YES];
     if(mail&&(![mail isKindOfClass:[NSNull class]])&&[mail validateAsEmail]){
         
-        //[SVProgressHUD showWithStatus:ACLocalizedString(@"RETRIEVING PASSWORD",@"RETRIEVING PASSWORD")];//CS; commenting as per Roberto's too many pop ups issue
+        [SVProgressHUD showWithStatus:ACLocalizedString(@"RETRIEVING PASSWORD",@"RETRIEVING PASSWORD")];//CS; commenting as per Roberto's too many pop ups issue
         
         [ArtAPI
          accountRetrievePasswordWithEmailAddress:mail
