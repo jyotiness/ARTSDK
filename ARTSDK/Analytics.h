@@ -109,7 +109,8 @@
 #define ANALYTICS_EVENT_NAME_ADD_PRINT_ONLY_NEW_TO_CART_PRESSED    @"Add Print Only To New Pack To Cart Pressed"
 
 #define ANALYTICS_EVENT_NAME_RENAME_PACK_ON_ORDER_CONFIRM    @"Rename Pack on Order Confirmation Pressed"
-#define ANALYTICS_EVENT_NAME_RENAME_PACK_ON_PACK_EDIT    @"Rename Pack on Order Confirmation Pressed"
+#define ANALYTICS_EVENT_NAME_RENAME_PACK_ON_PACK_EDIT    @"Rename Pack on Edit Pack Screen Pressed"
+#define ANALYTICS_EVENT_NAME_CHANGE_ADDRESS_ON_PACK_EDIT    @"Change Address on Edit Pack Screen Pressed"
 
 #define ANALYTICS_EVENT_NAME_CHANGE_ACCOUNT_NAME    @"Edit account name"
 #define ANALYTICS_EVENT_NAME_CHANGE_PACK_NAME    @"Edit pack name"
