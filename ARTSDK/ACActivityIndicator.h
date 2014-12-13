@@ -2,7 +2,7 @@
 //  ACActivityIndicator.h
 //  Art
 //
-//  Created by BradSmith on 4/24/11.
+//  Created on 4/24/11.
 
 
 #import <UIKit/UIKit.h>
