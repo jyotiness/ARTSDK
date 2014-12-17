@@ -2198,7 +2198,7 @@ int nameOrigin=0;
 
 -(void)showGCAlert{
     //there is no GC - need to show an alert here
-    UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:@"Error"
+    UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:@"Status"
                                                      message:@"Your recent SwitchArt™ pack purchase is still being processed.  It may take up to 30 minutes for the credit to appear on your account.  Please try again later."
                                                     delegate:nil
                                            cancelButtonTitle:@"OK"
