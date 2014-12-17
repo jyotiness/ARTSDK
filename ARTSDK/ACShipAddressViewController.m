@@ -1936,6 +1936,8 @@ int nameOrigin=0;
         
         if ([self validateForm])
         {
+            [SVProgressHUD showWithStatus:@"Updating..." maskType:SVProgressHUDMaskTypeClear];
+
             self.isUSAddressInvalid = NO;
             
             isContinueButtonPressed = YES;
@@ -2218,12 +2220,9 @@ int nameOrigin=0;
 -(void)orderHistoryLoadedSuccessfully{
     NSLog(@"Loaded Order History");
     
-    
     //allow continue to be pressed again
     isContinueButtonPressed = NO;
-    
     [SVProgressHUD dismiss];
-    
 }
 
 

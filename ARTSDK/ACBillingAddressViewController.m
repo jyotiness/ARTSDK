@@ -265,8 +265,8 @@
     self.billingAddressTableView.tableFooterView=self.footerBillingAddressVC;
     [self.billingAddressTableView setBackgroundColor:[UIColor clearColor]];
     
-    self.cityTextField = [[ ACCheckoutTextField alloc] init];
-    self.zipTextField = [[ ACCheckoutTextField alloc] init];
+//    self.cityTextField = [[ ACCheckoutTextField alloc] init];
+//    self.zipTextField = [[ ACCheckoutTextField alloc] init];
     
     self.countries = [ArtAPI getCountries];
     self.states = [ArtAPI getStates];
@@ -398,7 +398,6 @@
     }
     
     return retArray;
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -482,7 +481,6 @@
     [hardCodedPaymentOptions addObject:tempDict];
     
     self.paymentOptions = hardCodedPaymentOptions;
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -1701,10 +1699,8 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    //    if([@"" isEqualToString:string])
-    //        return YES;
-    
-    if(textField == self.zipTextField)
+//    if(textField == self.zipTextField)
+    if(26 == textField.tag)
     {
         if ([self.selectedCountryCode isEqualToString:@"US"])
         {
@@ -1718,7 +1714,6 @@
             {
                 self.zipUnderValidation = newStr;
                 self.zipTextField.text = newStr;
-//                [textField resignFirstResponder];
                 [self.view endEditing:YES];
                 
                 [ self cityAndStateSuggestionForZip:newStr];
