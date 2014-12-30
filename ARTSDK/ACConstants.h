@@ -28,6 +28,7 @@
 #define URL_TERMS_OF_SERVICE @"http://www.art.com/help/terms-of-use.html"
 #define Localized_Bundles [NSArray arrayWithObjects:@"com.art.photostoart",@"com.art.myphotos",@"com.art.mesphotos",nil]
 #define IS_IOS_7_ABOVE ([[UIDevice currentDevice].systemVersion floatValue] >=7.0f)?YES:NO
+#define IS_IOS_7_BELOW ([[UIDevice currentDevice].systemVersion floatValue] <8.0f)?YES:NO
 
 #define FACEBOOK_SHARE_CUSTOM_PARAMS @"?utm_medium=social&utm_source=facebook&utm_campaign=ACapp&rfid=220421"
 #define FACEBOOK_SHARE_CUSTOM_ADD_PARAMS @"&utm_medium=social&utm_source=facebook&utm_campaign=ACapp&rfid=220421"
