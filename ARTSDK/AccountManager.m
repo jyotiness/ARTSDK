@@ -1067,7 +1067,12 @@
                          
                          self.userName = nameToUse;
                          NSLog(@"Set acccount name to %@", self.userName);
-                         self.accountID = [ curatorInfoDict objectForKey:@"AccountId"];
+                         self.accountID = [ curatorInfoDict objectForKeyNotNull:@"AccountId"];
+                         
+                         NSDictionary *profileImageDict = [curatorInfoDict objectForKeyNotNull:@"ProfileImage"];
+                         NSDictionary *largeImageDict = [profileImageDict objectForKeyNotNull:@"LargeImage"];
+                         NSString *imageUrl = [NSString stringWithFormat:@"%@",[largeImageDict objectForKeyNotNull:@"HttpImageURL"]];
+                         self.profileImageUrl = imageUrl;
                      }
 
                      

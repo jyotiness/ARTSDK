@@ -65,6 +65,8 @@ typedef enum {
 @property(nonatomic,strong) NSString *defaultP2AGallery;
 @property(nonatomic,strong) NSMutableDictionary *requestsByDelegate;
 
+@property(nonatomic,strong) NSString *profileImageUrl;
+
 //isJustFrameSelected related instance's
 @property(nonatomic,strong) NSMutableDictionary *justFrameSelectedDetailsDictionary;
 @property(nonatomic,assign) BOOL isJustFrameSelected;
