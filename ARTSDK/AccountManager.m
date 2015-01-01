@@ -791,10 +791,11 @@
     NSString *primaryPhone = [[addressDict objectForKeyNotNull:@"Phone"] objectForKeyNotNull:@"Primary"];
     NSString *firstName = [[addressDict objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
     NSString *lastName = [[addressDict objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
+    NSString *email = [addressDict objectForKeyNotNull:@"Email"];
     
     NSString *isDefault = @"true";
     
-    NSDictionary *addressParameters = [NSDictionary dictionaryWithObjectsAndKeys:addresstype,@"addressType",firstName,@"firstName",lastName,@"lastName",addressLine1,@"addressLine1",addressLine2,@"addressLine2",companyName,@"companyName",city,@"city",state,@"state",countryCode,@"twoDigitIsoCountryCode",zipCode,@"zipCode",primaryPhone,@"primaryPhone",isDefault,@"isDefault", nil];
+    NSDictionary *addressParameters = [NSDictionary dictionaryWithObjectsAndKeys:addresstype,@"addressType",firstName,@"firstName",lastName,@"lastName",addressLine1,@"addressLine1",addressLine2,@"addressLine2",companyName,@"companyName",city,@"city",state,@"state",countryCode,@"twoDigitIsoCountryCode",zipCode,@"zipCode",primaryPhone,@"primaryPhone",email,@"Email",isDefault,@"isDefault", nil];
     
     
     [ArtAPI requestForAccountUpdateLocationWithParameters:addressParameters success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)

@@ -260,7 +260,8 @@ int nameOrigin=0;
         self.postalCode = zipSA;
         self.countryPickerValue = countrySA;
         self.selectedCountryCode = [shippingAddress objectForKeyNotNull:@"CountryIsoA2"];
-        self.emailAddress = [[AccountManager sharedInstance] userEmailAddress];
+        NSString *email = [shippingAddress objectForKeyNotNull:@"Email"];
+        self.emailAddress = (email)?email:[[AccountManager sharedInstance] userEmailAddress];
         self.willShowCityAndState = YES;
         
         if ([self.selectedCountryCode isEqualToString:@"US"])
@@ -2026,6 +2027,8 @@ int nameOrigin=0;
                 if(!state4Dict) state4Dict = @"";
                 NSString *zip4Dict = self.postalCode;
                 if(!zip4Dict) zip4Dict = @"";
+                NSString *emailDict = self.emailAddress;
+                if(!emailDict) emailDict = @"";
                 
                 [addressDict setObject:address14Dict forKey:@"Address1"];
                 [addressDict setObject:address24Dict forKey:@"Address2"];
@@ -2039,6 +2042,7 @@ int nameOrigin=0;
                 [addressDict setObject:county4Dict forKey:@"County"];
                 [addressDict setObject:state4Dict forKey:@"State"];
                 [addressDict setObject:zip4Dict forKey:@"ZipCode"];
+                [addressDict setObject:emailDict forKey:@"Email"];
                 
                 [AccountManager sharedInstance].shippingAddressUsedInCheckout = addressDict;
             }
@@ -3144,7 +3148,7 @@ int nameOrigin=0;
                     {
                         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
                                                                                  delegate:self
-                                                                        cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]
+                                                                        cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:/*[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]*/@"None of the Above"
                                                                    destructiveButtonTitle:nil
                                                                         otherButtonTitles:nil, nil];
                         
@@ -3166,7 +3170,7 @@ int nameOrigin=0;
                     }
                     else // For iOS 8
                     {
-                        UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:@"CANCEL" otherButtonTitles:nil];
+                        UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:/*@"CANCEL"*/@"None of the Above" otherButtonTitles:nil];
                         
                         for(NSDictionary* dict in addressesArray)
                         {
@@ -3378,7 +3382,7 @@ int nameOrigin=0;
         {
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
                                                                      delegate:self
-                                                            cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]
+                                                            cancelButtonTitle:UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad?nil:/*[ACConstants getLocalizedStringForKey:@"CANCEL" withDefaultValue:@"Cancel"]*/@"None of the Above"
                                                        destructiveButtonTitle:nil
                                                             otherButtonTitles:nil, nil];
             
@@ -3400,7 +3404,7 @@ int nameOrigin=0;
         }
         else // For iOS 8
         {
-            UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:@"CANCEL" otherButtonTitles:nil];
+            UIAlertView *anAlert = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:self cancelButtonTitle:/*@"CANCEL"*/@"None of the Above" otherButtonTitles:nil];
             
             for (CFIndex i = 0; i < ABMultiValueGetCount(self.contactAdresses); i++)
             {
