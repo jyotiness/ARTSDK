@@ -1139,7 +1139,12 @@
                     [self.loginHolderScrollView setContentOffset:CGPointMake(0, textField.frame.origin.y) animated:YES];
                 }
             }else {
-                [self.loginHolderScrollView setContentOffset:CGPointMake(0, textField.frame.origin.y) animated:YES];
+                
+                CGFloat extraOffset = 0.0;
+                if(screenHeight == 1136)
+                    extraOffset = 50.0;
+                    
+                [self.loginHolderScrollView setContentOffset:CGPointMake(0, textField.frame.origin.y+extraOffset) animated:YES];
             }
             
             
