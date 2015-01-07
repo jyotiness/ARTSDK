@@ -3076,7 +3076,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Add Auth Key
     //NSLog(@"setting apiKey: %@", [self apiKey] );
-    [params setObject:[self apiKey] forKey:@"apiKey"];
+    [params setObjectNotNull:[self apiKey] forKey:@"apiKey"];
     
     NSString *protocol = kProtocolDefault;
     if ([endpoint isEqualToString:kEndpointAccountAuthorizationAPI]) {
