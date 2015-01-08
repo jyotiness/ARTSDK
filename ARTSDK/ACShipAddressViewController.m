@@ -238,6 +238,10 @@ int nameOrigin=0;
 {
     if(shippingAddress)
     {
+        self.selectedStateIndex = -1;
+        self.selectedCountryIndex = -1;
+        self.willShowCityAndState = YES;
+
         NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
         NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
         NSString *companyNameSA = [shippingAddress objectForKeyNotNull:@"CompanyName"];
@@ -401,9 +405,6 @@ int nameOrigin=0;
 {
     NSArray *array = [[AccountManager sharedInstance] addressArray];
     self.addressArray = array;
-    self.selectedStateIndex = -1;
-    self.selectedCountryIndex = -1;
-    self.willShowCityAndState = YES;
     AccountManager *accManager = [AccountManager sharedInstance];
     self.name = accManager.firstName;
     self.lastName = accManager.lastName;
@@ -3134,8 +3135,7 @@ int nameOrigin=0;
     NSString *streetAddress = [dict objectForKey:@"Address1"];
     self.addressLine1 = [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     
-    
-    if ([self.selectedCountryCode isEqualToString:@"US"] && [self.postalCode isEqualToString:@""])
+    if ([self.selectedCountryCode isEqualToString:@"US"])// && [self.postalCode isEqualToString:@""])
     {
         if(self.postalCode && 5 == self.postalCode.length)
         {
