@@ -409,6 +409,7 @@ int nameOrigin=0;
     self.name = accManager.firstName;
     self.lastName = accManager.lastName;
     self.emailAddress = accManager.userEmailAddress;
+    self.autoAddressFillMode = YES;
     [self prePopulateAddressFromArray:array];
 }
 
@@ -3135,11 +3136,26 @@ int nameOrigin=0;
     NSString *streetAddress = [dict objectForKey:@"Address1"];
     self.addressLine1 = [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     
-    if ([self.selectedCountryCode isEqualToString:@"US"])// && [self.postalCode isEqualToString:@""])
+    if(self.autoAddressFillMode)
     {
-        if(self.postalCode && 5 == self.postalCode.length)
+        self.autoAddressFillMode = NO;
+        NSDictionary *stateDict = [ self getStateForCode:[dict objectForKey:@"State"]];
+        NSString *stateName = [stateDict objectForKeyNotNull:@"Name"];
+        if(stateName)
         {
-            [ self cityAndStateSuggestionForZip:self.postalCode];
+            self.selectedStateIndex = [ self.states indexOfObject:stateDict];
+            self.statePickerValue = [stateDict objectForKeyNotNull:@"Name"];
+            self.willShowCityAndState = YES;
+        }
+    }
+    else
+    {
+        if ([self.selectedCountryCode isEqualToString:@"US"])// && [self.postalCode isEqualToString:@""])
+        {
+            if(self.postalCode && 5 == self.postalCode.length)
+            {
+                [ self cityAndStateSuggestionForZip:self.postalCode];
+            }
         }
     }
 

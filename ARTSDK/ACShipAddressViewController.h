@@ -67,6 +67,7 @@ typedef enum ContactPickeMode {
 @property(nonatomic,retain) UITextField* cityField;
 @property(nonatomic,retain) UITextField* postalCodeField;
 @property(assign) BOOL isUSAddressInvalid;
+@property(assign) BOOL autoAddressFillMode;
 @property(readwrite) ACCheckoutType artCheckoutType;
 
 @property (nonatomic,strong) IBOutlet UISegmentedControl *segmentedButton;
