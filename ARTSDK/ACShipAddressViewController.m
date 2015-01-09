@@ -1330,7 +1330,7 @@ int nameOrigin=0;
                 cell.contactPickerButton.hidden=NO;
                 cell.cellTitleButton.hidden = NO;
                 cell.contactPickerButton.tag = indexPath.section;
-                cell.textField.tag=indexPath.row;
+                cell.textField.tag=390;
                 cell.textField.placeholder = @"Optional";
                 CGRect textFieldFrame = cell.textField.frame;
                 if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
@@ -1351,7 +1351,7 @@ int nameOrigin=0;
                 cell.textField.text = self.lastName;
                 cell.contactPickerButton.tag = indexPath.section;
                 cell.cellTitleButton.hidden = NO;
-                cell.textField.tag=indexPath.row;
+                cell.textField.tag=391;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"Optional";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
@@ -1365,7 +1365,7 @@ int nameOrigin=0;
                 cell.textField.text = self.signupEmail;
                 cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
-                cell.textField.tag=indexPath.row;
+                cell.textField.tag=392;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -1377,9 +1377,10 @@ int nameOrigin=0;
                 self.passwordSignupTextField = cell.textField;
                 cell.textLabel.text = @"Password";//[ACConstants getLocalizedStringForKey:@"PASSWORD" withDefaultValue:@"Password"];
                 cell.textField.text = self.password;
+                NSLog(@"Password value: %@", self.password);
                 cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
-                cell.textField.tag=indexPath.row;
+                cell.textField.tag=393;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
@@ -1393,7 +1394,7 @@ int nameOrigin=0;
                 cell.textField.text = self.confirmPassword;
                 cell.contactPickerButton.tag = -1;//indexPath.section;
                 cell.cellTitleButton.hidden = NO;
-                cell.textField.tag=indexPath.row;
+                cell.textField.tag=394;
                 [cell.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
                 cell.textField.placeholder = @"";
                 [cell.textField setKeyboardType:UIKeyboardTypeDefault];
@@ -1711,7 +1712,24 @@ int nameOrigin=0;
     NSInteger currentSelectedTextFieldTag = textField.tag;
     if(2 == indexPath.section)
     {
-        self.selectedIndexPath = [NSIndexPath indexPathForRow:textField.tag inSection:2];
+        switch(textField.tag){
+            case 390:
+                self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
+                break;
+            case 391:
+                self.selectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:2];
+                break;
+            case 392:
+                self.selectedIndexPath = [NSIndexPath indexPathForRow:2 inSection:2];
+                break;
+            case 393:
+                self.selectedIndexPath = [NSIndexPath indexPathForRow:3 inSection:2];
+                break;
+            case 394:
+                self.selectedIndexPath = [NSIndexPath indexPathForRow:4 inSection:2];
+                break;
+        }
+        
     }
     else if(currentSelectedTextFieldTag == 10)
     {
@@ -1734,19 +1752,18 @@ int nameOrigin=0;
 {
     if (10 == textField.tag) {
         self.emailAddress = textField.text;
-//        if(self.needSignUp)
         {
             self.signupEmail = self.emailAddress;
             [self.shippingAddressTableView reloadData];
         }
     }
-    else if ((textField == self.emailLoginTextField) || (textField == self.emailSignupTextField)) {
+    else if ((290 == textField.tag) || (288 == textField.tag) || (392 == textField.tag)) {
         self.signupEmail = textField.text;
     }
-    else if ((textField == self.passwordLoginTextField) || (textField == self.passwordSignupTextField)) {
+    else if ((291 == textField.tag) || (289 == textField.tag) || (393 == textField.tag)) {
         self.password=textField.text;
     }
-    else if (textField == self.confirmPasswordTextField)
+    else if (394 == textField.tag)
     {
         self.confirmPassword=textField.text;
     }
