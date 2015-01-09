@@ -1552,7 +1552,7 @@ int nameOrigin=0;
                 self.statePickerValue = [stateDict objectForKeyNotNull:@"Name"];
                 self.postalCode = [cityDict objectForKeyNotNull:@"ZipCode"];
                 self.city = [cityDict objectForKeyNotNull: @"City" ];
-                
+                self.isUSAddressInvalid = NO;
                 self.willShowCityAndState = YES;
                 
                 
@@ -3647,6 +3647,7 @@ int nameOrigin=0;
             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
 //            NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
 //            [ArtAPI setAuthenticationToken:authTok];
+            self.needSignUp = NO;
             self.shippingAddressTableView.tableHeaderView = nil;
             [self populateDataWithLoginResponse:responseDict];
             //[SVProgressHUD dismiss];
@@ -3688,13 +3689,14 @@ int nameOrigin=0;
     [[NSUserDefaults standardUserDefaults] synchronize];
     [AccountManager sharedInstance].defaultP2AGallery = myPhotosDefaultGallery;
     
-    if(self.needSignUp){
-        //sign up go to next screen
-        [self proceedToShippingOptions];
-    }else{
-        //stop here if login only
-        [SVProgressHUD dismiss];
-    }
+    [self proceedToShippingOptions];
+    [SVProgressHUD dismiss];
+
+//    if(self.needSignUp){
+//        //sign up go to next screen
+//    }else{
+//        //stop here if login only
+//    }
 }
 
 -(void)userGalleryLoadingFailedWithResponse:(id)jsonResponse
