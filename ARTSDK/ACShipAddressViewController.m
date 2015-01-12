@@ -238,9 +238,6 @@ int nameOrigin=0;
 {
     if(shippingAddress)
     {
-        self.selectedStateIndex = -1;
-        self.selectedCountryIndex = -1;
-        self.willShowCityAndState = YES;
 
         NSString *firstNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"FirstName"];
         NSString *lastNameSA = [[shippingAddress objectForKeyNotNull:@"Name"] objectForKeyNotNull:@"LastName"];
