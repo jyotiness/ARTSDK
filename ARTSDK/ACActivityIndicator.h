@@ -1,6 +1,5 @@
 //
 //  ACActivityIndicator.h
-//  Art
 //
 //  Created on 4/24/11.
 
