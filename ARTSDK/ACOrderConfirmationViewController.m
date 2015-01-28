@@ -222,14 +222,14 @@
 {
     if(0 == buttonIndex)
     {
-        //[Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_INFO_BUTTON_PRESSED];
+        [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_INFO_BUTTON_PRESSED];
         
         [self showAbout];
         
     }
     else if(1 == buttonIndex)
     {
-        //[[Helpshift sharedInstance] showSupport:self];
+       // [[Helpshift sharedInstance] showSupport:self];
     }
 }
 

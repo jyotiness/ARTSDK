@@ -15,7 +15,9 @@
 //specific project which is referencing the ArtAPI
 
 #define ANALYTICS_CATEGORY_UI_ACTION                    @"UI ACTION"
+#define ANALYTICS_CATEGORY_API_ACTION                   @"API ACTION"
 #define ANALYTICS_CATEGORY_ERROR_EVENT                  @"Error Event"
+#define ANALYTICS_CATEGORY_FAILURE                          @"API Failure"
 
 #define ANALYTICS_EVENT_NAME_LOGIN                      @"Log in"
 #define ANALYTICS_EVENT_NAME_LOGIN_EMAIL                @"Log in Email"
@@ -143,6 +145,13 @@
 #define ANALYTICS_APIURL                                     @"APIURL"
 #define ANALYTICS_APIERRORMESSAGE                            @"ErrorMessage"
 #define ANALYTICS_APIRESPONSETYPE                            @"APIResponseType"
+
+#define ANALYTICS_EVENT_NAME_UPLOAD_IMAGE_COMPLETED @"Image Upload Sucess"
+#define  ANALYTICS_EVENT_NAME_UPLOAD_IMAGE_FAILED_IMAGEGUID_PROBLEM  @"Image Upload Failed ImageUID Problem"
+#define ANALYTICS_EVENT_NAME_GALLERY_ADD_ITEM_CANCELLED @"Gallery Add Item Cancelled"
+#define ANALYTICS_EVENT_NAME_UPLOAD_IMAGE_CANCELLED @"Image Upload Cancelled"
+#define ANALYTICS_EVENT_NAME_UPLOAD_IMAGE_FAILED @"Image Upload Failed"
+#define ANALYTICS_EVENT_NAME_TERMS_BUTTON_PRESSED @"Terms button tapped"
 
 
 @interface Analytics : NSObject {

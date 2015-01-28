@@ -2949,7 +2949,7 @@ int nameOrigin=0;
     {
         if(0 == buttonIndex)
         {
-            //[Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_INFO_BUTTON_PRESSED];
+            [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_INFO_BUTTON_PRESSED];
             
             [self showAbout];
         }
