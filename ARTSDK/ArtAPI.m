@@ -80,6 +80,8 @@ NSString* const kResourceCartSubmitForOrder = @"CartSubmitForOrder";
 NSString* const kResourceCartGet = @"CartGet";
 NSString* const kResourceCartTrackOrderHistory = @"CartTrackOrderHistory";
 NSString* const kResourceCartAddGiftCertificatePayment = @"CartAddGiftCertificatePayment";
+NSString* const kResourceCartSubmitForPayPalRestOrder = @"CartSubmitForPayPalRestOrder";
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Art.com API Endpoints
@@ -1649,6 +1651,8 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                             requiresSession:YES
                                             requiresAuthKey:NO];
     
+    NSLog(@"%@", request.URL.absoluteString);
+    
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
@@ -2065,6 +2069,40 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                                  withParams:nil
                                             requiresSession:YES
                                             requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
++ (void) cartSubmitForPayPalRestOrderWithPaymentId:(NSString *)paymentId withOrderId:(NSString *) orderId success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] cartSubmitForPayPalRestOrderWithPaymentId:paymentId withOrderId:orderId success:success
+                                                   failure:failure];
+}
+
+- (void) cartSubmitForPayPalRestOrderWithPaymentId:(NSString *)paymentId withOrderId:(NSString *) orderId success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       paymentId, @"paymentId",
+                                       orderId, @"orderId",
+                                       nil];
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceCartSubmitForPayPalRestOrder
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    NSLog(@"%@", request.URL.absoluteString);
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
