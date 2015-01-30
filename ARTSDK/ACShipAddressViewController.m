@@ -216,6 +216,9 @@ int nameOrigin=0;
         
         NSDictionary *workingPack = [AccountManager sharedInstance].purchasedWorkingPack;
         if(workingPack){
+            
+            [_nextButton setTitle:[ACConstants getLocalizedStringForKey:@"PLACE_ORDER" withDefaultValue:@"PLACE ORDER"] forState:UIControlStateNormal];
+
             NSString *shippingAddressID = [workingPack objectForKey:@"shippingAddressId"];
             
             if(shippingAddressID){
