@@ -3091,6 +3091,13 @@ int nameOrigin=0;
 
 -(void)chooseAdressForDict:(NSDictionary*)dict
 {
+    
+    NSDictionary *nameDict = [dict objectForKeyNotNull:@"Name"];
+    NSString *firstNameSA = [nameDict objectForKeyNotNull:@"FirstName"];
+    NSString *lastNameSA = [nameDict objectForKeyNotNull:@"LastName"];
+
+    self.name = firstNameSA;
+    self.lastName = lastNameSA;
     self.postalCode = [dict objectForKey:@"ZipCode"];
     self.city = [dict objectForKey:@"City"];
     
