@@ -152,6 +152,11 @@
 #define ANALYTICS_EVENT_NAME_UPLOAD_IMAGE_CANCELLED @"Image Upload Cancelled"
 #define ANALYTICS_EVENT_NAME_UPLOAD_IMAGE_FAILED @"Image Upload Failed"
 #define ANALYTICS_EVENT_NAME_TERMS_BUTTON_PRESSED @"Terms button tapped"
+#define ANALYTICS_EVENT_NAME_UPLOAD_IMAGE_UPDATE_POD_FAILED @"Image UpdateForPOD Config Failed"
+#define ANALYTICS_EVENT_NAME_CART_ADD_FRAME_FAILED @"Cart Add Frame Failed"
+#define ANALYTICS_EVENT_NAME_CART_ADD_BUNDLE_FAILED @"Cart Add Bundle Failed"
+#define ANALYTICS_EVENT_NAME_CART_UPDATE_CANCELLED @"Gallery Add Update Failed"
+
 
 
 @interface Analytics : NSObject {
