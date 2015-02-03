@@ -158,6 +158,11 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 + (void) requestForAccountUpdateLocationByType:(NSString *)addresstype addressLine1:(NSString *)addressLine1 addressLine2:(NSString *)addressLine2 companyName:(NSString *)companyName city:(NSString *)city state:(NSString *)state countryCode:(NSString *)countryCode zipCode:(NSString *)zipCode primaryPhone:(NSString *)primaryPhone
                                        success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                        failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
++ (void) requestForAccountChangePasswordWithOldPassword:(NSString *) emailAddress
+                                            newPassword:(NSString *)password
+                                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 + (void)logoutAndReset;
 + (void)logoutArtCircles;
 + (void)logoutAndRestart;

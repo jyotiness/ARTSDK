@@ -41,6 +41,7 @@ NSString* const kResourceSearchResultInSimpleFormat = @"/wcf/SearchService.svc/a
 ////////////////////////////////////////////////////////////////////////////////
 // Art.com API Resources
 NSString* const kResourceAccountAuthenticate = @"AccountAuthenticate";
+NSString* const kResourceAccountChangePassword = @"AccountChangePassword";
 NSString* const kResourceAccountCreate = @"AccountCreate";
 NSString* const kResourceAccountCreateExtented = @"AccountCreateExtented";
 NSString* const kResourceAccountMerge = @"AccountMerge";
@@ -625,6 +626,43 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     [operation start];
 
+}
+
++ (void) requestForAccountChangePasswordWithOldPassword:(NSString *)oldPassword
+                                              newPassword:(NSString *)newPassword
+                                               success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountChangePasswordWithOldPassword:oldPassword newPassword:newPassword success:success failure:failure];
+}
+
+- (void) requestForAccountChangePasswordWithOldPassword:(NSString *) oldPassword
+                                              newPassword:(NSString *)newPassword
+                                               success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                oldPassword, @"currentPassword",
+                                newPassword, @"newPassword",
+                                nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountChangePassword
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    //NSLog(@"starting request url: %@ %@", request.HTTPMethod, request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
 }
 
 + (void) requestForAccountAuthenticateWithEmailAddress:(NSString *) emailAddress
