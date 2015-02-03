@@ -301,6 +301,9 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                    success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                    failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
++ (void) cartClear:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+           failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
 + (void) cartGetPaypalToken:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
 + (void) cartGetPaymentOptionsWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;

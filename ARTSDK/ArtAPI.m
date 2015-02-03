@@ -11,6 +11,7 @@
 #import "NSDictionary+Additions.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "NSMutableDictionary+SetNull.h"
+#import "SVProgressHUD.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // URLs
@@ -79,6 +80,7 @@ NSString* const kResourceCartRemoveCoupon = @"CartRemoveCoupon";
 NSString* const kResourceCartAddCreditCard = @"CartAddCreditCard";
 NSString* const kResourceCartSubmitForOrder = @"CartSubmitForOrder";
 NSString* const kResourceCartGet = @"CartGet";
+NSString* const kResourceCartClear = @"CartClear";
 NSString* const kResourceCartTrackOrderHistory = @"CartTrackOrderHistory";
 NSString* const kResourceCartAddGiftCertificatePayment = @"CartAddGiftCertificatePayment";
 NSString* const kResourceCartSubmitForPayPalRestOrder = @"CartSubmitForPayPalRestOrder";
@@ -1004,7 +1006,33 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [operation start];
 }
 
++ (void) cartClear:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] cartClear:success failure:failure];
+}
 
+- (void) cartClear:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceCartClear
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:nil
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    //NSLog(@"starting request url: %@ %@", request.HTTPMethod, request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
 
 + (BOOL)isLoggedIn {
     return [[ArtAPI sharedInstance] isLoggedIn];
@@ -2909,7 +2937,18 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 }
 
 + (void)setCart:(NSDictionary *)cartDictionary {
-    [[ArtAPI sharedInstance] setCart:cartDictionary];
+    
+    //[SVProgressHUD showWithStatus:ACLocalizedString(@"CLEARING CART",@"CLEARING CART")];
+    [ArtAPI cartClear:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        [[ArtAPI sharedInstance] setCart:cartDictionary];
+        //[SVProgressHUD dismiss];
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        
+        NSLog(@"Failure Json = %@",JSON);
+        //[SVProgressHUD dismiss];
+    }];
 }
 
 - (void)setCart:(NSDictionary *)cartDictionary
