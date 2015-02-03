@@ -2940,16 +2940,16 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     if(nil == cartDictionary)
     {
-        [SVProgressHUD showWithStatus:ACLocalizedString(@"CLEARING CART",@"CLEARING CART")];
+        //[SVProgressHUD showWithStatus:ACLocalizedString(@"CLEARING CART",@"CLEARING CART")];
         [ArtAPI cartClear:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             
             [[ArtAPI sharedInstance] setCart:cartDictionary];
-            [SVProgressHUD dismiss];
+            //[SVProgressHUD dismiss];
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             
-            NSLog(@"Failure Json = %@",JSON);
-            [SVProgressHUD dismiss];
+            NSLog(@"CartClear Failure Json = %@",JSON);
+            //[SVProgressHUD dismiss];
         }];
     }
     else
