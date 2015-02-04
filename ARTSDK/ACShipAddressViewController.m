@@ -3164,11 +3164,20 @@ int nameOrigin=0;
     {
         self.autoAddressFillMode = NO;
         NSDictionary *stateDict = [ self getStateForCode:[dict objectForKey:@"State"]];
-        NSString *stateName = [stateDict objectForKeyNotNull:@"Name"];
+        NSString *stateName = nil;
+        if(stateDict)
+        {
+            stateName = [stateDict objectForKeyNotNull:@"Name"];
+        }
+        else
+        {
+            stateName = [dict objectForKey:@"State"];
+        }
+        
         if(stateName)
         {
             self.selectedStateIndex = [ self.states indexOfObject:stateDict];
-            self.statePickerValue = [stateDict objectForKeyNotNull:@"Name"];
+            self.statePickerValue = stateDict?[stateDict objectForKeyNotNull:@"Name"]:stateName;
             self.willShowCityAndState = YES;
         }
     }
