@@ -15,6 +15,7 @@
 #import "ArtAPI.h"
 #import "Analytics.h"
 #import "NSString+Additions.h"
+#import "SFHFKeychainUtils.h"
 
 #define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
@@ -614,6 +615,9 @@
         
         [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
         
+        NSError *error;
+        [SFHFKeychainUtils storeUsername:self.email andPassword:self.password forServiceName:@"userpassword" updateExisting:YES error:&error];
+
         [ArtAPI
          requestForAccountAuthenticateWithEmailAddress:self.email
          password:self.password
@@ -747,6 +751,9 @@
     if ([self validateFormForSignUp] ){
         //NSLog(@"passed validation");
         [SVProgressHUD showWithStatus:ACLocalizedString(@"SIGNING UP",@"SIGNING UP")];
+        
+        NSError *error;
+        [SFHFKeychainUtils storeUsername:self.email andPassword:self.password forServiceName:@"userpassword" updateExisting:YES error:&error];
         
         [ArtAPI
          //requestForAccountCreateWithEmailAddress:self.email
