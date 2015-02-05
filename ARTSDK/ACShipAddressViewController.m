@@ -3169,15 +3169,11 @@ int nameOrigin=0;
         {
             stateName = [stateDict objectForKeyNotNull:@"Name"];
         }
-        else
-        {
-            stateName = [dict objectForKey:@"State"];
-        }
         
         if(stateName)
         {
             self.selectedStateIndex = [ self.states indexOfObject:stateDict];
-            self.statePickerValue = stateDict?[stateDict objectForKeyNotNull:@"Name"]:stateName;
+            self.statePickerValue = [stateDict objectForKeyNotNull:@"Name"];
             self.willShowCityAndState = YES;
         }
     }
