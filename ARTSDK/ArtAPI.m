@@ -653,7 +653,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
                                             requiresSession:YES
-                                            requiresAuthKey:NO];
+                                            requiresAuthKey:YES];// CS -- Requires Autotoken as per the SWIT-208
     //NSLog(@"starting request url: %@ %@", request.HTTPMethod, request.URL);
     
     // Execute Request
