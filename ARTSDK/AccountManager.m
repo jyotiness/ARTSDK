@@ -1137,6 +1137,10 @@
                              for(NSDictionary *tempAddress in addressesArray){
                              
                                  NSLog(@"%@", tempAddress);
+                                 
+                                 if(2 == [[tempAddress objectForKeyNotNull:@"AddressType"] intValue]) /* Skipping Billing addreses in AddressArray */
+                                     continue;
+                                 
                                  tempAddressID = [tempAddress objectForKey:@"AddressIdentifier"];
                                  
                                  if(tempAddressID){
