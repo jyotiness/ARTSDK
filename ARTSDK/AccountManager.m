@@ -1303,6 +1303,7 @@
 -(void)updateAccountLocationAddressWithParameters:(NSDictionary *)parameters delegate:(id<AccountManagerDelegate>)delegate
 {
     self.delegate = delegate;
+    self.editingAddressIdentifier = [parameters objectForKeyNotNull:@"AddressIdentifier"];
     
     [ArtAPI requestForAccountUpdateLocationWithParameters:parameters success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
     {

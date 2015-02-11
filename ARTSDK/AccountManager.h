@@ -64,6 +64,8 @@ typedef enum {
 @property(nonatomic,assign) NSInteger lastPrintCountPurchased;
 @property(nonatomic,strong) NSString *defaultP2AGallery;
 @property(nonatomic,strong) NSMutableDictionary *requestsByDelegate;
+@property(nonatomic,strong) NSString *editingAddressIdentifier;
+
 
 @property(nonatomic,strong) NSString *profileImageUrl;
 
