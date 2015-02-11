@@ -2938,24 +2938,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 
 + (void)setCart:(NSDictionary *)cartDictionary {
     
-    if(nil == cartDictionary)
-    {
-        //[SVProgressHUD showWithStatus:ACLocalizedString(@"CLEARING CART",@"CLEARING CART")];
-        [ArtAPI cartClear:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            
-            [[ArtAPI sharedInstance] setCart:cartDictionary];
-            //[SVProgressHUD dismiss];
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            
-            NSLog(@"CartClear Failure Json = %@",JSON);
-            //[SVProgressHUD dismiss];
-        }];
-    }
-    else
-    {
-        [[ArtAPI sharedInstance] setCart:cartDictionary];
-    }
+    [[ArtAPI sharedInstance] setCart:cartDictionary];
 }
 
 - (void)setCart:(NSDictionary *)cartDictionary
