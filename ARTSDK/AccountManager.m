@@ -24,6 +24,7 @@
 @synthesize purchasedWorkingPack;
 @synthesize addressesByAddressID;
 @synthesize addressArray;
+@synthesize shippingAddressArray;
 @synthesize unpurchasedPackName;
 @synthesize packPurchaseMode;
 @synthesize shippingAddressUsedInCheckout;
@@ -943,7 +944,7 @@
         //clear address cache
         self.addressesByAddressID = [[NSMutableDictionary alloc] init];
         self.addressArray = [[NSMutableArray alloc] init];
-        
+        self.shippingAddressArray = [[NSMutableArray alloc] init];
         
         
         //index all addresses
@@ -959,6 +960,7 @@
                     //only index one per address id, just in case
                     [self.addressesByAddressID setObject:tempAddress forKey:tempAddressID];
                     [self.addressArray addObject:tempAddress];
+                    [self.shippingAddressArray addObject:tempAddress];
                     
                     NSLog(@"Indexed address with AddressID: %@", tempAddressID);
                 }
@@ -1004,6 +1006,7 @@
     [self setPurchasedBundles:nil];
     self.addressesByAddressID = [[NSMutableDictionary alloc] init];
     self.addressArray = [[NSMutableArray alloc] init];
+    self.shippingAddressArray = [[NSMutableArray alloc] init];
     
     [ArtAPI requestForAccountGet:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
      {
@@ -1138,9 +1141,6 @@
                              
                                  NSLog(@"%@", tempAddress);
                                  
-                                 if(2 == [[tempAddress objectForKeyNotNull:@"AddressType"] intValue]) /* Skipping Billing addreses in AddressArray */
-                                     continue;
-                                 
                                  tempAddressID = [tempAddress objectForKey:@"AddressIdentifier"];
                                  
                                  if(tempAddressID){
@@ -1148,6 +1148,11 @@
                                          //only index one per address id, just in case
                                          [self.addressesByAddressID setObject:tempAddress forKey:tempAddressID];
                                          [self.addressArray addObject:tempAddress];
+                                         
+                                         if(3 == [[tempAddress objectForKeyNotNull:@"AddressType"] intValue]) /* AddressType 3 is Shipping address */
+                                         {
+                                             [self.shippingAddressArray addObject:tempAddress];
+                                         }
                                          
                                          NSLog(@"Indexed address with AddressID: %@", tempAddressID);
                                      }

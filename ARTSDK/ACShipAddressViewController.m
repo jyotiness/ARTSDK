@@ -403,7 +403,7 @@ int nameOrigin=0;
 
 -(void)showUserAddresses
 {
-    NSArray *array = [[AccountManager sharedInstance] addressArray];
+    NSArray *array = [[AccountManager sharedInstance] shippingAddressArray];
     self.addressArray = array;
     AccountManager *accManager = [AccountManager sharedInstance];
     self.name = accManager.firstName;

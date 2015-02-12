@@ -54,6 +54,7 @@ typedef enum {
 @property(nonatomic,strong) NSMutableDictionary *purchasedWorkingPack;
 @property(nonatomic,strong) NSMutableDictionary *addressesByAddressID;
 @property(nonatomic,strong) NSMutableArray *addressArray;
+@property(nonatomic,strong) NSMutableArray *shippingAddressArray;
 @property(nonatomic,strong) NSString *firstName;
 @property(nonatomic,strong) NSString *lastName;
 @property(nonatomic,strong) NSString *shippingAddressIdentifier;
