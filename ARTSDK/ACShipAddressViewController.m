@@ -2891,7 +2891,17 @@ int nameOrigin=0;
     
     if(111 == actionSheet.tag)
     {
-        [ self chooseAdressForDict:[self.addressArray objectAtIndex:buttonIndex-1]];
+        if(buttonIndex == actionSheet.cancelButtonIndex)
+            [actionSheet dismissWithClickedButtonIndex:actionSheet.cancelButtonIndex animated:YES];
+            
+        else if(buttonIndex > 0 && buttonIndex <= self.addressArray.count)//CS;-- buttonIndex <= since ther is a Cancel Button first.
+        {
+            [self chooseAdressForDict:[self.addressArray objectAtIndex:buttonIndex-1]];
+        }
+        else
+        {
+            NSLog(@" buttonIndex is %d ", buttonIndex);
+        }
     }
     else if(888 == actionSheet.tag)
     {
