@@ -78,6 +78,7 @@ NSString* const kResourceCartUpdateShipmentPriority = @"CartUpdateShipmentPriori
 NSString* const kResourceCartAddCoupon = @"CartAddCoupon";
 NSString* const kResourceCartRemoveCoupon = @"CartRemoveCoupon";
 NSString* const kResourceCartAddCreditCard = @"CartAddCreditCard";
+NSString* const kResourceCartAddPayment = @"CartAddPayment";
 NSString* const kResourceCartSubmitForOrder = @"CartSubmitForOrder";
 NSString* const kResourceCartGet = @"CartGet";
 NSString* const kResourceCartClear = @"CartClear";
@@ -2184,6 +2185,38 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark PaymentAPI
+
++ (void) cartAddPayment:(NSString *)paymentString
+                         success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] cartAddPayment: paymentString
+                                            success:success failure:failure];
+}
+
+- (void) cartAddPayment:(NSString *)paymentString
+                         success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                         failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       paymentString, @"paymentString",
+                                       nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceCartAddPayment
+                                              usingEndpoint:kEndpointPaymentAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
 
 + (void) cartAddCreditCardNumber:(NSString *)cardNumber
                         cardType:(ACCCardType)cardType

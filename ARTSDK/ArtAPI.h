@@ -324,6 +324,10 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 #pragma mark -
 #pragma mark PaymentAPI
 
++ (void) cartAddPayment:(NSString *)paymentString
+                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
 + (void) cartAddCreditCardNumber:(NSString *)cardNumber
                         cardType:(ACCCardType)cardType
                             cvv2:(NSString *)cvv2
