@@ -221,6 +221,13 @@
                  NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
                  NSString *accountId = [[profileInfo objectForKeyNotNull:@"AccountId"] stringValue];
                  
+               /*  NSString *authenticationToken = [JSON objectForKey:@"AuthenticationToken"];
+                 NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [JSON objectForKeyNotNull:@"DateExpires"]];
+                 [[ArtAPI sharedInstance] setAuthenticationTokenExpirationDate:authenticationTokenExpires];
+                 
+                 [[ArtAPI sharedInstance] persistAuthenticationToken:authenticationToken]; */
+
+                 
                  [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
                  [[NSUserDefaults standardUserDefaults] synchronize];
                  
