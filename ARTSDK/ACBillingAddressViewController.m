@@ -825,7 +825,7 @@
     ABPeoplePickerNavigationController *peoplePicker = [[ABPeoplePickerNavigationController alloc] init];
     peoplePicker.peoplePickerDelegate = self;
     peoplePicker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.view.window.rootViewController presentViewController:peoplePicker animated:YES completion:nil];
+    [self.navigationController presentViewController:peoplePicker animated:YES completion:nil];
 }
 
 #pragma mark- Scan Credit Card
