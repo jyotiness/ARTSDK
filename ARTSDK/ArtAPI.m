@@ -399,9 +399,15 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         
         // Save SessionID and Expiration Date
         self.sessionID = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"SessionId"];
-        NSString *dateExpires = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"DateExpires"];
-        NSDate *sessionExpirationDate = [ArtAPI extractDataFromAPIString:dateExpires];
-        [self setSessionExpirationDate:sessionExpirationDate];
+//        NSString *dateExpires = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"DateExpires"];
+//        NSDate *sessionExpirationDate = [ArtAPI extractDataFromAPIString:dateExpires];
+//        [self setSessionExpirationDate:sessionExpirationDate];
+        
+//        NSString *authenticationToken = [[JSON objectForKey:@"d"] objectForKey:@"AuthenticationToken"];
+        NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [[JSON objectForKey:@"d"] objectForKeyNotNull:@"DateExpires"]];
+        [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
+
+        
         self.persistentID = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"PersistentId"];
         
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
@@ -1045,6 +1051,11 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         return YES;
     }
     return NO;
+}
+
+-(void) setAuthenticationTokenExpirationDate:(NSDate *)date {
+    [[NSUserDefaults standardUserDefaults] setObject:date forKey:@"AUTH_TOKEN_EXPIRATION_KEY"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL) authTokenExpired {
@@ -3310,6 +3321,8 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
             // Extract Authentication Token
             if ([t isEqualToString:@"AuthorizationResponse"]) {
                 NSString *authenticationToken = [responseDictionary objectForKey:@"AuthenticationToken"];
+                NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [responseDictionary objectForKeyNotNull:@"DateExpires"]];
+                [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
                 [self persistAuthenticationToken:authenticationToken];
             }
             

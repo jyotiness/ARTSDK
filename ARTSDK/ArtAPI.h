@@ -95,6 +95,9 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 + (void) startAppWithAPIKey:(NSString *)apiKey
               applicationId:(NSString *)applicationId ;
 
+- (NSDate *) extractDataFromAPIString:(NSString *)originalString;
+-(void) setAuthenticationTokenExpirationDate:(NSDate *)date;
+- (void)persistAuthenticationToken:(NSString *)authToken;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
