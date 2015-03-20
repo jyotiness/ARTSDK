@@ -1103,6 +1103,11 @@
     }
     cell.textField.frame = textFrame;
     
+    if([ACConstants isSwitchArt]) /* SWIT-238 : SwicthArt is only for US */
+    {
+        [cell.pickerButton setBackgroundImage:nil forState:UIControlStateNormal];
+    }
+    
     if(0 == indexPath.section)
     {
         switch(rownum)
@@ -2980,17 +2985,11 @@
          alert = nil;
          [SVProgressHUD dismiss];
      }];
-    
-    
-    
 }
-
 
 
 -(void) requestOrderSubmitDidFinish:(id)JSON
 {
-    
-    
     NSDictionary *orderAttributes = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"OrderAttributes"];
     NSString *orderNumber = [orderAttributes objectForKeyNotNull:@"OrderNumber"];
     self.orderNumber = orderNumber;
@@ -3216,9 +3215,11 @@
 
 -(void)pickerPressed:(id)sender
 {
-//    if([ self.txtActiveField isFirstResponder]){
-//        [ self.txtActiveField resignFirstResponder];
-    //    }
+    if([ACConstants isSwitchArt] && COUNTRY_PICKER_TAG == self.tagFromPicker ) /* SWIT-238 : SwicthArt is only for US */
+    {
+        return;
+    }
+    
     [self.view endEditing:YES];
     
     ACCustomBillingCell *cell = (ACCustomBillingCell *)[[(UIButton*)sender superview] superview];
