@@ -585,12 +585,12 @@ int nameOrigin=0;
 
 -(void)countryPickerPressed:(id)sender
 {
-    //NSLog(@"countryPickerPressed");
+    if([ACConstants isSwitchArt]) /* SWIT-238 : SwicthArt is only for US */
+    {
+        return;
+    }
     
     [self configureThePicker];
-    
-//    if([ self.txtActiveField isFirstResponder])
-//        [ self.txtActiveField resignFirstResponder];
     [self.view endEditing:YES];
     
     self.tagFromPicker=[sender tag ];
@@ -1074,7 +1074,11 @@ int nameOrigin=0;
         textFieldFrame.origin.x = 115;
     }
     cell.textField.frame = textFieldFrame;
-    //cell.textField.backgroundColor = [UIColor redColor];
+
+    if([ACConstants isSwitchArt]) /* SWIT-238 : SwicthArt is only for US */
+    {
+        [cell.pickerButton setBackgroundImage:nil forState:UIControlStateNormal];
+    }
     
     if(0 == indexPath.section)
     {
