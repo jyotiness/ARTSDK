@@ -115,6 +115,14 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
++ (void) requestForAccountAuthenticateWithSocialUID:(NSString *)gigyaUID
+                                       emailAddress:(NSString *)emailAddress
+                                          firstName:(NSString *)firstName
+                                           lastName:(NSString *)lastName
+                                           regToken:(NSString*)regToken
+                                            success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                            failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
 + (void) requestForAccountAuthenticateWithFacebookUID:(NSString *)facebookUID
                                          emailAddress:(NSString *)emailAddress
                                             firstName:(NSString *)firstName

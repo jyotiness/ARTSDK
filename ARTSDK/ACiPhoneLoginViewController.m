@@ -16,6 +16,7 @@
 #import "Analytics.h"
 #import "NSString+Additions.h"
 #import "SFHFKeychainUtils.h"
+//#import <GigyaSDK/Gigya.h>
 
 #define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
@@ -860,21 +861,20 @@
     [forgotPasswordAlert textFieldAtIndex:0].tag = 100;
     [forgotPasswordAlert show];
 }
-
 - (void) authenticateWithFacebookUID:(NSString *)facebookUID
                         emailAddress:(NSString *)emailAddress
                            firstName:(NSString *)firstName
                             lastName:(NSString *)lastName
-                       facebookToken:(NSString *)facebookToken {
+                            regToken:(NSString *)regToken {
     //NSLog(@"authenticateWithFacebookUID: %@, emailAddress: %@ firstName: %@ lastName: %@ facebookToken: %@",
     //      facebookUID, emailAddress, firstName, lastName,facebookToken);
     
     [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
     
     [ArtAPI
-     requestForAccountAuthenticateWithFacebookUID:facebookUID emailAddress:emailAddress firstName:firstName lastName:lastName facebookToken:facebookToken
+     requestForAccountAuthenticateWithSocialUID:facebookUID emailAddress:emailAddress firstName:firstName lastName:lastName regToken:regToken
      success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-         NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
          
          AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
          if(currAppLoc==AppLocationNone){
@@ -889,8 +889,6 @@
              NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
              [ArtAPI setAuthenticationToken:authTok];
              
-             [SVProgressHUD dismiss];
-             
              // Call Delegate
              if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
                  [self.delegate loginSuccess];
@@ -904,9 +902,9 @@
          [SVProgressHUD dismiss];
          
          //NSLog(@"request failed for URL: %@", request.URL);
-         if(JSON && ACIsStringWithAnyText([JSON objectForKey:@"APIErrorMessage"])){
+         if(JSON && ACIsStringWithAnyText([JSON objectForKeyNotNull:@"APIErrorMessage"])){
              UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"Login Failed",@"Login Failed")
-                                                                 message:[JSON objectForKey:@"APIErrorMessage"]
+                                                                 message:[JSON objectForKeyNotNull:@"APIErrorMessage"]
                                                                 delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil)
                                                        otherButtonTitles:nil];
              [alertView show];
@@ -919,13 +917,6 @@
              [alertView show];
              
          }
-         
-         NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
-         NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
-         [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
-         [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
-         [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
-         [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
          
          // Call Delegate
          if (self.delegate && [self.delegate respondsToSelector:@selector(loginFailure)]) {
@@ -1363,45 +1354,49 @@
     }
 }
 
-- (void) handleFacebookLogin {
+
+- (void) handleFacebookLogin
+{
     FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
     //NSLog(@"handleFacebookLogin accessTokenData: %@", accessTokenData);
     
-    if (FBSession.activeSession.isOpen) {
-        [[FBRequest requestForMe] startWithCompletionHandler:
-         ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
-             if (!error) {
-                 //NSLog(@"ACLoginViewController.got user info: %@", user );
-                 
-                 if(user && accessTokenData){
-                     [self authenticateWithFacebookUID:[user objectForKey:@"id"]
-                                          emailAddress:[user objectForKey:@"email"]
-                                             firstName:[user objectForKey:@"first_name"]
-                                              lastName:[user objectForKey:@"last_name"]
-                                         facebookToken:accessTokenData.accessToken];
-                 }else{
-                     NSLog(@"Either no FB user or accesstokendata");
-                 }
-                 
-             } else {
-                 NSLog(@"error: %@", error);
-             }
-         }];
-        
-        //        [[FBRequest requestWithGraphPath:@"me?fields=picture.type(large)" parameters: nil HTTPMethod:@"GET"] startWithCompletionHandler:
-        //         ^(FBRequestConnection *connection, id result,NSError *error) {
-        //             if (!error) {
-        //                 //NSLog(@"ACLoginViewControllergot user result: %@", result );
-        //                 NSString * url = [[[result objectForKey:@"picture"] objectForKey: @"data"] objectForKey:@"url"];
-        //                 NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-        //                 UIImage *profilePicture = [UIImage imageWithData:data];
-        //                 [self saveToCache:profilePicture name:@"profilePicture"];
-        //             } else {
-        //                 NSLog(@"error: %@", error);
-        //             }
-        //         }];
-        
-    }
+    /* if (FBSession.activeSession.isOpen) {
+     [[FBRequest requestForMe] startWithCompletionHandler:
+     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
+     if (!error) {
+     //NSLog(@"ACLoginViewController.got user info: %@", user );
+     
+     if(user && accessTokenData){
+     [self authenticateWithFacebookUID:[user objectForKeyNotNull:@"id"]
+     emailAddress:[user objectForKeyNotNull:@"email"]
+     firstName:[user objectForKeyNotNull:@"first_name"]
+     lastName:[user objectForKeyNotNull:@"last_name"]
+     regToken:accessTokenData.accessToken];
+     }else{
+     NSLog(@"Either no FB user or accesstokendata");
+     }
+     
+     } else {
+     NSLog(@"error: %@", error);
+     }
+     }];
+     } */ // Jobin : Old implementation with Facebook SDK
+    
+//    [Gigya loginToProvider:@"facebook"
+//                parameters:nil
+//         completionHandler:^(GSUser *user, NSError *error) {
+//             if (!error) {
+//                 
+//                 [self authenticateWithFacebookUID:user[@"UID"]
+//                                      emailAddress:[user objectForKeyNotNull:@"email"]
+//                                         firstName:[user objectForKeyNotNull:@"firstName"]
+//                                          lastName:[user objectForKeyNotNull:@"lastName"]
+//                                          regToken:accessTokenData.accessToken];
+//             }
+//             else {
+//                 NSLog(@"error");
+//             }
+//         }];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

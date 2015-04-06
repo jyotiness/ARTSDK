@@ -714,6 +714,73 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [operation start];
 }
 
++ (void) requestForAccountAuthenticateWithSocialUID:(NSString *)gigyaUID
+                                       emailAddress:(NSString *)emailAddress
+                                          firstName:(NSString *)firstName
+                                           lastName:(NSString *)lastName
+                                           regToken:(NSString*)regToken
+                                            success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                            failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountAuthenticateWithSocialUID:gigyaUID emailAddress:emailAddress firstName:firstName lastName:lastName regToken:regToken success:success failure:failure];
+}
+
+- (void) requestForAccountAuthenticateWithSocialUID:(NSString *)gigyaUID
+                                       emailAddress:(NSString *)emailAddress
+                                          firstName:(NSString *)firstName
+                                           lastName:(NSString *)lastName
+                                           regToken:(NSString*)regToken
+                                            success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                            failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    //NSLog(@"requestForAccountAuthenticateWithFacebookUID: %@ emailAddress: %@ firstName: %@ lastName: %@ facebookToken: %@",
+    //      facebookUID, emailAddress, firstName, lastName,facebookToken);
+    // Required
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       gigyaUID, @"socialToken",
+                                       nil];
+    // Optional
+    if( regToken ){
+        [parameters setObject:regToken forKey:@"regToken"];
+    }
+    if( emailAddress ){
+        [parameters setObject:emailAddress forKey:@"emailAddress"];
+    }
+    //NSLog(@"requestForAccountAuthenticateWithFacebookUID parameters: %@",parameters);
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountAuthenticateWithFacebookUID
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // No SessionId, send to failure
+    if( !request){
+        NSMutableDictionary *errorDetail = [NSMutableDictionary dictionary];
+        [errorDetail setValue:@"SessionID required but not found" forKey:NSLocalizedDescriptionKey];
+        NSError *error = [NSError errorWithDomain:@"local" code:100 userInfo:errorDetail];
+        failure(request, nil, error, nil);
+    }
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
+        // Save Email Address, firstName, lastName
+        self.email = emailAddress;
+        self.firstName = firstName;
+        self.lastName = lastName;
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
+
 + (void) requestForAccountAuthenticateWithFacebookUID:(NSString *)facebookUID
                                          emailAddress:(NSString *)emailAddress
                                             firstName:(NSString *)firstName
