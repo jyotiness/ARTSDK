@@ -16,7 +16,7 @@
 #import "Analytics.h"
 #import "NSString+Additions.h"
 #import "SFHFKeychainUtils.h"
-//#import <GigyaSDK/Gigya.h>
+#import "Gigya.h"
 
 #define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
@@ -1382,21 +1382,21 @@
      }];
      } */ // Jobin : Old implementation with Facebook SDK
     
-//    [Gigya loginToProvider:@"facebook"
-//                parameters:nil
-//         completionHandler:^(GSUser *user, NSError *error) {
-//             if (!error) {
-//                 
-//                 [self authenticateWithFacebookUID:user[@"UID"]
-//                                      emailAddress:[user objectForKeyNotNull:@"email"]
-//                                         firstName:[user objectForKeyNotNull:@"firstName"]
-//                                          lastName:[user objectForKeyNotNull:@"lastName"]
-//                                          regToken:accessTokenData.accessToken];
-//             }
-//             else {
-//                 NSLog(@"error");
-//             }
-//         }];
+    [Gigya loginToProvider:@"facebook"
+                parameters:nil
+         completionHandler:^(GSUser *user, NSError *error) {
+             if (!error) {
+                 
+                 [self authenticateWithFacebookUID:user[@"UID"]
+                                      emailAddress:[user objectForKey:@"email"]
+                                         firstName:[user objectForKey:@"firstName"]
+                                          lastName:[user objectForKey:@"lastName"]
+                                          regToken:accessTokenData.accessToken];
+             }
+             else {
+                 NSLog(@"error");
+             }
+         }];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
