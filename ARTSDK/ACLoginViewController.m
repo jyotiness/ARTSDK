@@ -28,6 +28,7 @@
 #import "ACForgotPasswordViewController.h"
 #import "Analytics.h"
 #import "ACKeyboardToolbarView.h"
+#import "Gigya.h"
 
 @interface ACLoginViewController () <ACCreateAccountDelegate,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,ACKeyboardToolbarDelegate,ACForgotPasswordDelegate>
 @property(nonatomic, copy) NSString *email;
@@ -187,8 +188,97 @@
 }
 
 - (void) facebookButtonTapped: (id) sender {
-    //NSLog(@"facebookButtonTapped");
-    [self openSessionWithAllowLoginUI: YES];
+
+    [Gigya loginToProvider:@"facebook"
+                parameters:nil
+         completionHandler:^(GSUser *user, NSError *error) {
+             if (!error) {
+                 NSLog(@"works");
+                 NSLog(@"Name = %@",user[@"firstName"]);
+                 NSLog(@"UID = %@",user[@"UID"]);
+                 
+                 FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
+
+                 [self authenticateWithFacebookUID:user[@"UID"]
+                                      emailAddress:[user objectForKey:@"email"]
+                                         firstName:[user objectForKey:@"firstName"]
+                                          lastName:[user objectForKey:@"lastName"]
+                                          regToken:accessTokenData.accessToken];
+
+                 
+             }
+             else {
+                 NSLog(@"error Description %@",error.description);
+             }
+         }];
+
+  //  [self openSessionWithAllowLoginUI: YES];
+}
+
+
+- (void) authenticateWithFacebookUID:(NSString *)facebookUID
+                        emailAddress:(NSString *)emailAddress
+                           firstName:(NSString *)firstName
+                            lastName:(NSString *)lastName
+                            regToken:(NSString *)regToken {
+    //NSLog(@"authenticateWithFacebookUID: %@, emailAddress: %@ firstName: %@ lastName: %@ facebookToken: %@",
+    //      facebookUID, emailAddress, firstName, lastName,facebookToken);
+    
+    [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
+    
+    [ArtAPI
+     requestForAccountAuthenticateWithSocialUID:facebookUID emailAddress:emailAddress firstName:firstName lastName:lastName regToken:regToken
+     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         
+         AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+         if(currAppLoc==AppLocationNone){
+             NSDictionary *accountDetails = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Account"];
+             NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+             NSString *accountId = [[profileInfo objectForKeyNotNull:@"AccountId"] stringValue];
+             
+             [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
+             [[NSUserDefaults standardUserDefaults] synchronize];
+         }else{
+             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+             NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+             [ArtAPI setAuthenticationToken:authTok];
+             
+             // Call Delegate
+             if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
+                 [self.delegate loginSuccess];
+             }
+         }
+         
+         
+     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+         // Failure
+         [SVProgressHUD dismiss];
+         
+         //NSLog(@"request failed for URL: %@", request.URL);
+         if(JSON && ACIsStringWithAnyText([JSON objectForKeyNotNull:@"APIErrorMessage"])){
+             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"Login Failed",@"Login Failed")
+                                                                 message:[JSON objectForKeyNotNull:@"APIErrorMessage"]
+                                                                delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil)
+                                                       otherButtonTitles:nil];
+             [alertView show];
+         } else {
+             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"An error occurred. Please try again.",@"An error occurred. Please try again.")
+                                                                 message:nil
+                                                                delegate:nil
+                                                       cancelButtonTitle:ACLocalizedString(@"OK", nil)
+                                                       otherButtonTitles:nil];
+             [alertView show];
+             
+         }
+         
+         // Call Delegate
+         if (self.delegate && [self.delegate respondsToSelector:@selector(loginFailure)]) {
+             [self.delegate loginFailure];
+         }
+         
+     }];
 }
 
 - (void) login {

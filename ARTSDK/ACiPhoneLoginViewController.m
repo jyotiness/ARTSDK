@@ -1257,6 +1257,7 @@
 #pragma mark -
 #pragma mark Facebook
 - (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI {
+    
     BOOL result = NO;
     //    if(!FBSession.activeSession.isOpen){
     FBSession *session = nil;
