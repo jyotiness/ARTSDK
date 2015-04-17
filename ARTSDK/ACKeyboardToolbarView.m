@@ -52,7 +52,8 @@
     // Create Done Button
     UIButton * btnDone = [UIButton buttonWithType:UIButtonTypeSystem];
     btnDone.tintColor = APP_TINT_COLOR;
-    [btnDone setFrame:CGRectMake(self.bounds.size.width - 70, 0.0f, 70.0f, 40.0f)];
+    CGFloat xOrigin = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? [UIScreen mainScreen].bounds.size.width-70.0 : self.bounds.size.width - 70.0 ;
+    [btnDone setFrame:CGRectMake(xOrigin, 0.0f, 70.0f, 40.0f)];
     [btnDone setTitle:ACLocalizedString(@"DONE", @"DONE") forState:UIControlStateNormal];
     [btnDone addTarget:self action:@selector(doneButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btnDone];
