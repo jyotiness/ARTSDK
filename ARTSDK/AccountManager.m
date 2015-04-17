@@ -761,7 +761,7 @@
      {
          status = NO;
          
-         NSLog(@" requestForAccountUpdateLocation failed \n JSON Account Update Location response %@ ", JSON);
+         NSLog(@" requestForAccountUpdateLocation failed \n JSON Account Update Location Failed response %@ ", JSON);
          
          if(self.delegate && [self.delegate respondsToSelector:@selector(billingAddressSetFailed:)])
          {
