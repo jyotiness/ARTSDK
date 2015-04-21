@@ -52,6 +52,8 @@ NSString* const kResourceAccountUpdateProperty = @"AccountUpdateProperty";
 NSString* const kResourceAccountUpdateLocationByType = @"AccountUpdateLocationByType";
 NSString* const kResourceAccountRetrievePassword = @"AccountRetrievePassword";
 NSString* const kResourceAccountAuthenticateWithFacebookUID = @"AccountAuthenticateWithFacebookUID";
+NSString* const kResourceAccountAuthenticateWithSocial = @"AccountAuthenticateWithSocial";
+
 NSString* const kResourceInitializeAPI= @"InitializeAPI";
 NSString* const kResourceCatalogGetSession = @"CatalogGetSession";
 NSString* const kResourceGalleryGetUserDefaultMobileGallery = @"GalleryGetUserDefaultMobileGallery";
@@ -750,7 +752,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Create Request
     NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
-                                                   resource:kResourceAccountAuthenticateWithFacebookUID
+                                                   resource:kResourceAccountAuthenticateWithSocial
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
                                             requiresSession:YES

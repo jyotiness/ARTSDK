@@ -231,6 +231,8 @@
      success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
          //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
          
+         [SVProgressHUD dismiss];
+
          AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
          if(currAppLoc==AppLocationNone){
              NSDictionary *accountDetails = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Account"];
@@ -239,6 +241,12 @@
              
              [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
              [[NSUserDefaults standardUserDefaults] synchronize];
+             
+             // Call Delegate
+             if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
+                 [self.delegate loginSuccess];
+             }
+
          }else{
              NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
              NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
@@ -250,6 +258,7 @@
              }
          }
          
+         [self closeButtonAction:nil];
          
      }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
          NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
