@@ -1127,6 +1127,17 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+-(void) setGigyaApiKey:(NSString *)token {
+    [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"GIGYAAPIKEY"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(NSString*)gigyaApiKey
+{
+    NSString *gigyaKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"GIGYAAPIKEY"];
+    return gigyaKey;
+}
+
 - (BOOL) authTokenExpired {
     NSDate *authtokenExpirationDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"AUTH_TOKEN_EXPIRATION_KEY"];
     NSDate *now = [NSDate date];
@@ -1256,6 +1267,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [defaults setObject:nil forKey:@"WALL_GALLERY_ID_PERSISTANCE_KEY"];
     [defaults setObject:nil forKey:@"FB_ACCESS_TOKEN_KEY"];
     [defaults setObject:nil forKey:@"FB_EXPIRATION_DATE_KEY"];
+    [defaults setObject:nil forKey:@"GIGYAAPIKEY"];
     
     //[_facebook logout:nil];
     

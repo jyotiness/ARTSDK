@@ -62,6 +62,7 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 @property(nonatomic,strong) NSString *termsURL;
 @property(nonatomic,strong) NSString *shippingURL;
 @property(nonatomic,strong) NSString *shareURL;
+@property (nonatomic, copy) NSString *gigyaApiKey;
 
 @property (nonatomic, assign) BOOL isLoginEnabled;
 @property(nonatomic,assign) BOOL isInitFinished;

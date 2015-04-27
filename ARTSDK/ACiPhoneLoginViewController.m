@@ -147,6 +147,16 @@
     
     //self.loginMode = LoginModeLogin;
     
+    NSString *gigToken = [[ArtAPI sharedInstance] gigyaApiKey];
+    if(gigToken)
+    {
+        [Gigya initWithAPIKey:gigToken];
+    }
+    else
+    {
+        NSLog(@"************** GIGYA Token is nil");
+    }
+    
     if(self.loginMode == LoginModeSignup)
     {
         [self.segmentedButton setSelectedSegmentIndex:1];
@@ -603,7 +613,26 @@
 - (IBAction)loginWithFacebook:(id)sender
 {
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_LOGIN_FACEBOOK];
-    [self openSessionWithAllowLoginUI: YES];
+    
+    [Gigya loginToProvider:@"facebook"
+                parameters:nil
+         completionHandler:^(GSUser *user, NSError *error) {
+             if (!error) {
+                 
+                 FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
+
+                 [self authenticateWithFacebookUID:user[@"UID"]
+                                      emailAddress:[user objectForKey:@"email"]
+                                         firstName:[user objectForKey:@"firstName"]
+                                          lastName:[user objectForKey:@"lastName"]
+                                          regToken:accessTokenData.accessToken];
+             }
+             else {
+                 NSLog(@"error = %@",error);
+             }
+         }];
+
+   // [self openSessionWithAllowLoginUI: YES];
 }
 
 - (IBAction)loginWithEmail:(id)sender
@@ -1361,7 +1390,7 @@
     FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
     //NSLog(@"handleFacebookLogin accessTokenData: %@", accessTokenData);
     
-    /* if (FBSession.activeSession.isOpen) {
+     if (FBSession.activeSession.isOpen) {
      [[FBRequest requestForMe] startWithCompletionHandler:
      ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
      if (!error) {
@@ -1381,23 +1410,8 @@
      NSLog(@"error: %@", error);
      }
      }];
-     } */ // Jobin : Old implementation with Facebook SDK
+     }
     
-    [Gigya loginToProvider:@"facebook"
-                parameters:nil
-         completionHandler:^(GSUser *user, NSError *error) {
-             if (!error) {
-                 
-                 [self authenticateWithFacebookUID:user[@"UID"]
-                                      emailAddress:[user objectForKey:@"email"]
-                                         firstName:[user objectForKey:@"firstName"]
-                                          lastName:[user objectForKey:@"lastName"]
-                                          regToken:accessTokenData.accessToken];
-             }
-             else {
-                 NSLog(@"error");
-             }
-         }];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
