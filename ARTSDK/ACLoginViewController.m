@@ -59,6 +59,20 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
+    if(![Gigya APIKey])
+    {
+        NSString *gigToken = [[ArtAPI sharedInstance] gigyaApiKey];
+        if(gigToken)
+        {
+            [Gigya initWithAPIKey:gigToken];
+        }
+        else
+        {
+            NSLog(@"************** GIGYA Token is nil");
+        }
+    }
+
+    
     if((self.loginOptions & ACLoginOptionsAll) == ACLoginOptionsAll){
         //NSLog(@"ACLoginOptionsAll");
     }

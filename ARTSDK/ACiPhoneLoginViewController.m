@@ -142,19 +142,17 @@
 {
     [super viewDidLoad];
     
-    
-    //[self.loginHolderScrollView setBackgroundColor:[UIColor redColor]];
-    
-    //self.loginMode = LoginModeLogin;
-    
-    NSString *gigToken = [[ArtAPI sharedInstance] gigyaApiKey];
-    if(gigToken)
+    if(![Gigya APIKey])
     {
-        [Gigya initWithAPIKey:gigToken];
-    }
-    else
-    {
-        NSLog(@"************** GIGYA Token is nil");
+        NSString *gigToken = [[ArtAPI sharedInstance] gigyaApiKey];
+        if(gigToken)
+        {
+            [Gigya initWithAPIKey:gigToken];
+        }
+        else
+        {
+            NSLog(@"************** GIGYA Token is nil");
+        }
     }
     
     if(self.loginMode == LoginModeSignup)
