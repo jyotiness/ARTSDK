@@ -12,6 +12,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "NSMutableDictionary+SetNull.h"
 #import "SVProgressHUD.h"
+#import "XMLDictionary.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // URLs
@@ -201,6 +202,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
             // Refresh Mobile Gallery
             if( [self isLoggedIn] ){
                 [self requestForGalleryGetUserDefaultMobileGallerySuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                    
+                    NSLog(@"Success");
+
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                 }];
             }
@@ -2498,6 +2502,23 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         //NSLog(@"SUCCESS url: %@ %@ json: %@ ", request.HTTPMethod, request.URL, JSON);
+        
+        [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:@"_config" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            
+            NSLog(@"contentBlockDictionary = %@",JSON);
+            
+            NSString *contentBlockString = [JSON objectForKey:@"LargeTextBlock"];
+            NSDictionary *contentBlockDict = [[XMLDictionaryParser sharedInstance] dictionaryWithString:contentBlockString];
+            NSDictionary *switchArtDict = [contentBlockDict objectForKeyNotNull:@"mArtDial"];
+            NSDictionary *configDict = [[switchArtDict objectForKeyNotNull:@"APPLICATION"] objectForKeyNotNull:@"CONFIGURATION"];
+            NSDictionary *gigyaKeyDict = [configDict objectForKeyNotNull:@"GIGYAAPIKEY"];
+            NSString *gigyaKeyString = [gigyaKeyDict objectForKeyNotNull:@"text"];
+            [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            
+            NSLog(@"Content block call Failed");
+        }];
         
         // Process Mobile Gallery
         [self processMobileGalleryResponse:JSON];
