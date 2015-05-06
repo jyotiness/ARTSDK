@@ -242,6 +242,10 @@
     }
     else
     {
+        if([ArtAPI sharedInstance].gigyaApiKey)
+        {
+            [Gigya initWithAPIKey:[ArtAPI sharedInstance].gigyaApiKey];
+        }
         NSLog(@"Gigya is not Initialized");
     }
 
