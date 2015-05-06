@@ -199,6 +199,27 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         NSLog(@"start() Check Session ID");
         [self catalogGetSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             NSLog(@"Session Valid - Done");
+            
+            if(![ArtAPI sharedInstance].gigyaApiKey) // If Gigya token is available already
+            {
+                [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:@"_config" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                    
+                    NSLog(@"contentBlockDictionary = %@",JSON);
+                    
+                    NSDictionary *contentBlock  = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"ContentBlock"];
+                    
+                    NSString *contentBlockString = [contentBlock objectForKey:@"LargeTextBlock"];
+                    NSDictionary *contentBlockDict = [[XMLDictionaryParser sharedInstance] dictionaryWithString:contentBlockString];
+                    NSDictionary *configDict = [[contentBlockDict objectForKeyNotNull:@"APPLICATION"] objectForKeyNotNull:@"CONFIGURATION"];
+                    NSString *gigyaKeyString = [configDict objectForKeyNotNull:@"GIGYAAPIKEY"];
+                    [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                    
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                    
+                    NSLog(@"Content block call Failed");
+                }];
+            }
+
             // Refresh Mobile Gallery
             if( [self isLoggedIn] ){
                 [self requestForGalleryGetUserDefaultMobileGallerySuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -316,6 +337,24 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 
         // Process Request
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
+        [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:@"_config" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            
+            NSLog(@"contentBlockDictionary = %@",JSON);
+            
+            NSDictionary *contentBlock  = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"ContentBlock"];
+            
+            NSString *contentBlockString = [contentBlock objectForKey:@"LargeTextBlock"];
+            NSDictionary *contentBlockDict = [[XMLDictionaryParser sharedInstance] dictionaryWithString:contentBlockString];
+            NSDictionary *configDict = [[contentBlockDict objectForKeyNotNull:@"APPLICATION"] objectForKeyNotNull:@"CONFIGURATION"];
+            NSString *gigyaKeyString = [configDict objectForKeyNotNull:@"GIGYAAPIKEY"];
+            [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            
+            NSLog(@"Content block call Failed");
+        }];
+
         
         // Refresh Mobile Gallery
         if( [self isLoggedIn] ){
@@ -2502,23 +2541,6 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         //NSLog(@"SUCCESS url: %@ %@ json: %@ ", request.HTTPMethod, request.URL, JSON);
-        
-        [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:@"_config" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            
-            NSLog(@"contentBlockDictionary = %@",JSON);
-            
-            NSString *contentBlockString = [JSON objectForKey:@"LargeTextBlock"];
-            NSDictionary *contentBlockDict = [[XMLDictionaryParser sharedInstance] dictionaryWithString:contentBlockString];
-            NSDictionary *switchArtDict = [contentBlockDict objectForKeyNotNull:@"mArtDial"];
-            NSDictionary *configDict = [[switchArtDict objectForKeyNotNull:@"APPLICATION"] objectForKeyNotNull:@"CONFIGURATION"];
-            NSDictionary *gigyaKeyDict = [configDict objectForKeyNotNull:@"GIGYAAPIKEY"];
-            NSString *gigyaKeyString = [gigyaKeyDict objectForKeyNotNull:@"text"];
-            [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            
-            NSLog(@"Content block call Failed");
-        }];
         
         // Process Mobile Gallery
         [self processMobileGalleryResponse:JSON];

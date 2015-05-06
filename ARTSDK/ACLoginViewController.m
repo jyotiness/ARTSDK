@@ -71,6 +71,18 @@
             NSLog(@"************** GIGYA Token is nil");
         }
     }
+    else
+    {
+        if([ArtAPI sharedInstance].gigyaApiKey)
+        {
+            [Gigya initWithAPIKey:[ArtAPI sharedInstance].gigyaApiKey];
+        }
+        else
+        {
+            NSLog(@"Gigya token is nil");
+        }
+
+    }
 
     
     if((self.loginOptions & ACLoginOptionsAll) == ACLoginOptionsAll){
@@ -203,28 +215,35 @@
 
 - (void) facebookButtonTapped: (id) sender {
 
-    [Gigya loginToProvider:@"facebook"
-                parameters:nil
-         completionHandler:^(GSUser *user, NSError *error) {
-             if (!error) {
-                 NSLog(@"works");
-                 NSLog(@"Name = %@",user[@"firstName"]);
-                 NSLog(@"UID = %@",user[@"UID"]);
-                 
-                 FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
-
-                 [self authenticateWithFacebookUID:user[@"UID"]
-                                      emailAddress:[user objectForKey:@"email"]
-                                         firstName:[user objectForKey:@"firstName"]
-                                          lastName:[user objectForKey:@"lastName"]
-                                          regToken:accessTokenData.accessToken];
-
-                 
-             }
-             else {
-                 NSLog(@"error Description %@",error.description);
-             }
-         }];
+    if([Gigya APIKey])
+    {
+        [Gigya loginToProvider:@"facebook"
+                    parameters:nil
+             completionHandler:^(GSUser *user, NSError *error) {
+                 if (!error) {
+                     NSLog(@"works");
+                     NSLog(@"Name = %@",user[@"firstName"]);
+                     NSLog(@"UID = %@",user[@"UID"]);
+                     
+                     FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
+                     
+                     [self authenticateWithFacebookUID:user[@"UID"]
+                                          emailAddress:[user objectForKey:@"email"]
+                                             firstName:[user objectForKey:@"firstName"]
+                                              lastName:[user objectForKey:@"lastName"]
+                                              regToken:accessTokenData.accessToken];
+                     
+                     
+                 }
+                 else {
+                     NSLog(@"error Description %@",error.description);
+                 }
+             }];
+    }
+    else
+    {
+        NSLog(@"Gigya is not Initialized");
+    }
 
   //  [self openSessionWithAllowLoginUI: YES];
 }
