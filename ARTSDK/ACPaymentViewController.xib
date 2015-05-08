@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14C81f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <development version="5000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -21,6 +20,7 @@
                 <outlet property="headerPaymentView" destination="40" id="45"/>
                 <outlet property="orderButton" destination="39" id="78"/>
                 <outlet property="orderTotalLabel" destination="38" id="61"/>
+                <outlet property="payPalButton" destination="Ope-cS-vpa" id="DNT-aZ-pn0"/>
                 <outlet property="paymentShippingTableView" destination="9" id="19"/>
                 <outlet property="paymentTableViewHeader" destination="46" id="74"/>
                 <outlet property="removeCouponButton" destination="103" id="109"/>
@@ -261,12 +261,29 @@
                                 <action selector="proceedToBillingAddress:" destination="-1" eventType="touchUpInside" id="47"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ope-cS-vpa">
+                            <rect key="frame" x="47" y="171" width="218" height="53"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="218" id="44g-hN-9xT"/>
+                                <constraint firstAttribute="height" constant="53" id="ofW-HZ-h5f"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <state key="normal" title="Continue with Paypal">
+                                <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="payPalButtonTapped:" destination="-1" eventType="touchUpInside" id="h7e-AE-FR8"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="38" firstAttribute="leading" secondItem="35" secondAttribute="leading" id="AYD-py-COz"/>
                         <constraint firstItem="32" firstAttribute="leading" secondItem="36" secondAttribute="leading" constant="-1" id="BBW-bi-hvO"/>
                         <constraint firstItem="38" firstAttribute="trailing" secondItem="36" secondAttribute="trailing" constant="-4" id="DzE-MP-rhK"/>
+                        <constraint firstItem="Ope-cS-vpa" firstAttribute="top" secondItem="39" secondAttribute="bottom" constant="8" symbolic="YES" id="KXc-x0-BAh"/>
                         <constraint firstItem="35" firstAttribute="firstBaseline" secondItem="32" secondAttribute="firstBaseline" id="L2L-9P-s9G"/>
                         <constraint firstItem="34" firstAttribute="baseline" secondItem="31" secondAttribute="baseline" id="LMJ-oa-XcS"/>
                         <constraint firstAttribute="height" constant="300" id="LnQ-xx-ngj"/>
@@ -276,6 +293,7 @@
                         <constraint firstItem="36" firstAttribute="centerX" secondItem="75" secondAttribute="centerX" constant="0.5" id="SF9-jC-R3N"/>
                         <constraint firstItem="36" firstAttribute="leading" secondItem="75" secondAttribute="leading" constant="12" id="UXW-wj-FrF"/>
                         <constraint firstItem="32" firstAttribute="top" secondItem="31" secondAttribute="bottom" constant="3" id="Wxa-ib-0nx"/>
+                        <constraint firstItem="Ope-cS-vpa" firstAttribute="leading" secondItem="39" secondAttribute="leading" id="Xjg-W3-ZnK"/>
                         <constraint firstItem="35" firstAttribute="baseline" secondItem="32" secondAttribute="baseline" id="YIk-eL-8CV"/>
                         <constraint firstItem="37" firstAttribute="firstBaseline" secondItem="38" secondAttribute="firstBaseline" id="Z70-80-GlN"/>
                         <constraint firstItem="34" firstAttribute="firstBaseline" secondItem="31" secondAttribute="firstBaseline" id="arQ-Gk-GCr"/>
@@ -293,7 +311,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.0" green="1" blue="0.28730028200000002" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="33" firstAttribute="baseline" secondItem="30" secondAttribute="baseline" id="6uJ-cG-PZf"/>
                 <constraint firstAttribute="trailing" secondItem="75" secondAttribute="trailing" id="AAc-O9-kyG"/>

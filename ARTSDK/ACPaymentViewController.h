@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GAITrackedViewController.h"
+#import "PayPalMobile.h"
 
 /**
  * A view controller that collects a users payment information
@@ -18,7 +19,7 @@
  *
  */
 
-@interface ACPaymentViewController : GAITrackedViewController<UITextViewDelegate,UITextFieldDelegate,UIActionSheetDelegate>
+@interface ACPaymentViewController : GAITrackedViewController<UITextViewDelegate,UITextFieldDelegate,UIActionSheetDelegate,PayPalPaymentDelegate, PayPalFuturePaymentDelegate, PayPalProfileSharingDelegate>
 {
  
    // IBOutlet UIButton *applyCouponButton;
@@ -83,7 +84,13 @@
 @property (retain, nonatomic) IBOutlet UIImageView *topNavBarImageView;
 @property (retain, nonatomic) IBOutlet UIView *couponUnderLine;
 @property (retain, nonatomic) IBOutlet UIView *shippingUnderLine;
+@property (assign, nonatomic) BOOL isPayPalEnabled;
+@property (strong, nonatomic) IBOutlet UIButton *payPalButton;
 
+//PayPal's
+@property(nonatomic, strong, readwrite) PayPalConfiguration *payPalConfig;
+
+//Method Declaration's
 -(UITextField*) makeTextField: (NSString*)text	
                   placeholder: (NSString*)placeholder  ;
 - (IBAction)textFieldFinished:(id)sender ;
@@ -95,5 +102,6 @@
 - (IBAction)goBack:(id)sender;
 - (IBAction)showOrderConfirmation:(id)sender;
 - (IBAction)iButtonPressed:(UIButton *)sender;
+- (IBAction)payPalButtonTapped:(id)sender;
 
 @end

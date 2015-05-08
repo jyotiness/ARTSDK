@@ -1590,7 +1590,7 @@ int nameOrigin=0;
     else if(888 == alertView.tag)// Select Address Tag
     {
         if(0 == buttonIndex){
-#ifndef __clang_analyzer__alertView            if (self.contactAdresses)
+#ifndef __clang_analyzer__alertView            //if (self.contactAdresses)
             {
                 CFRelease(self.contactAdresses);
             }
@@ -2081,8 +2081,11 @@ int nameOrigin=0;
 {
     if(!isContinueButtonPressed){
         
+        
         if ([self validateForm])
-        {
+            [self requestForCartAddItem];
+        
+        /*{
             [SVProgressHUD showWithStatus:@"Updating..." maskType:SVProgressHUDMaskTypeClear];
 
             self.isUSAddressInvalid = NO;
@@ -2205,10 +2208,12 @@ int nameOrigin=0;
              zip:self.postalCode
              primaryPhone:(self.phone.length > 0)?self.phone:@""
              secondaryPhone:@""
-             emailAddress:self.emailAddress success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+             emailAddress:self.emailAddress success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+            {
                  //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
                  [self cartUpdateShippingDidFinishLoading: JSON];
-             }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+             }
+             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
                  NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
                  
                  NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
@@ -2238,8 +2243,197 @@ int nameOrigin=0;
                  alert = nil;
                  [self.shippingAddressTableView reloadData];
              }];
-        }
+        }*/
     }
+}
+
+#pragma mark Paypal flow chnages method --
+#pragma mark updateShippingAddress --
+-(void)updateShippingAddress
+{
+    //[SVProgressHUD showWithStatus:@"Updating..." maskType:SVProgressHUDMaskTypeClear];
+    
+    self.isUSAddressInvalid = NO;
+    
+    isContinueButtonPressed = YES;
+    
+    NSString *stateValueToBePassedToCall=nil;
+    if ([self.selectedCountryCode isEqualToString:@"US"])
+    {
+        NSString *stateCode = @"CO";
+        for (NSDictionary *state in self.states)
+        {
+            NSString *stateName=self.statePickerValue;
+            
+            //        NSUInteger indxOfState = [[state objectForKeyNotNull:@"Name"] indexOfObject: stateName];
+            
+            if ([[[state objectForKeyNotNull:@"Name"] uppercaseString] isEqualToString:[stateName uppercaseString]])
+            {
+                stateCode = [state objectForKeyNotNull:@"StateCode"];
+                break;
+            }
+        }
+        stateValueToBePassedToCall=stateCode;
+    }
+    else
+    {
+        stateValueToBePassedToCall=stateTextField.text;
+    }
+    
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    
+    if(currAppLoc==AppLocationSwitchArt){
+        if([AccountManager sharedInstance].purchasedWorkingPack){
+            //submitting Order
+            [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"SUBMITTING_ORDER" withDefaultValue:@"SUBMITTING_ORDER"]] maskType:SVProgressHUDMaskTypeClear];
+        }else{
+            //[SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
+        }
+    }else{
+        //[SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"UPDATING_SHIPPING_ADDRESS" withDefaultValue:@"UPDATING SHIPPING ADDRESS"]] maskType:SVProgressHUDMaskTypeClear];//CS; commenting as per Roberto's too many pop ups issue
+    }
+    
+    
+    //SWITCHART - NEED TO KEEP THIS ADDRESS IN THE ACCOUNTMANAGER FOR LATER TO UPDATE
+    //THE SHIPPING ADDRESS ON THE ACCOUNT.  THIS IS NOT OPTIMAL, BUT NECESSARY
+    
+    if(currAppLoc==AppLocationSwitchArt){
+        
+        NSMutableDictionary *addressDict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *nameDict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *phoneDict = [[NSMutableDictionary alloc] init];
+        
+        //phone
+        NSString *primaryPhone4Dict = self.phone;
+        NSString *secondaryPhone4Dict = @"";
+        if(!primaryPhone4Dict) primaryPhone4Dict=@"";
+        [phoneDict setObject:primaryPhone4Dict forKey:@"Primary"];
+        [phoneDict setObject:secondaryPhone4Dict forKey:@"Secondary"];
+        [addressDict setObject:phoneDict forKey:@"Phone"];
+        
+        //name
+        NSString *firstName4Dict = self.name;
+        NSString *lastName4Dict = self.lastName;
+        if(!firstName4Dict) firstName4Dict=@"";
+        if(!lastName4Dict) lastName4Dict=@"";
+        [nameDict setObject:firstName4Dict forKey:@"FirstName"];
+        [nameDict setObject:lastName4Dict forKey:@"LastName"];
+        [addressDict setObject:nameDict forKey:@"Name"];
+        
+        //the rest
+        NSString *address14Dict = self.addressLine1;
+        if(!address14Dict) address14Dict = @"";
+        NSString *address24Dict = self.addressLine2;
+        if(!address24Dict) address24Dict = @"";
+        NSString *addressIdentifier4Dict = @"";
+        NSString *addressType4Dict = @"3";  //3 is shipping
+        NSString *city4Dict = self.city;
+        if(!city4Dict) city4Dict = @"";
+        NSString *companyName4Dict = self.company;
+        if(!companyName4Dict) companyName4Dict = @"";
+        NSString *country4Dict = self.countryPickerValue;
+        if(!country4Dict) country4Dict = @"";
+        NSString *country2ISO4Dict = self.selectedCountryCode;
+        if(!country2ISO4Dict) country2ISO4Dict = @"";
+        NSString *country3ISO4Dict = @"";
+        NSString *county4Dict = @"";
+        NSString *state4Dict = stateValueToBePassedToCall;
+        if(!state4Dict) state4Dict = @"";
+        NSString *zip4Dict = self.postalCode;
+        if(!zip4Dict) zip4Dict = @"";
+        NSString *emailDict = self.emailAddress;
+        if(!emailDict) emailDict = @"";
+        
+        [addressDict setObject:address14Dict forKey:@"Address1"];
+        [addressDict setObject:address24Dict forKey:@"Address2"];
+        [addressDict setObject:addressIdentifier4Dict forKey:@"AddressIdentifier"];
+        [addressDict setObject:addressType4Dict forKey:@"AddressType"];
+        [addressDict setObject:city4Dict forKey:@"City"];
+        [addressDict setObject:companyName4Dict forKey:@"CompanyName"];
+        [addressDict setObject:country4Dict forKey:@"Country"];
+        [addressDict setObject:country2ISO4Dict forKey:@"CountryIsoA2"];
+        [addressDict setObject:country3ISO4Dict forKey:@"CountryIsoA3"];
+        [addressDict setObject:county4Dict forKey:@"County"];
+        [addressDict setObject:state4Dict forKey:@"State"];
+        [addressDict setObject:zip4Dict forKey:@"ZipCode"];
+        [addressDict setObject:emailDict forKey:@"Email"];
+        
+        [AccountManager sharedInstance].shippingAddressUsedInCheckout = addressDict;
+    }
+    
+    [ArtAPI
+     cartUpdateShippingAddressFirstName:self.name
+     lastName:self.lastName
+     addressLine1:self.addressLine1
+     addressLine2:self.addressLine2
+     companyName:self.company
+     city:self.city
+     state:(stateValueToBePassedToCall.length>0)?stateValueToBePassedToCall:@""
+     twoDigitIsoCountryCode:self.selectedCountryCode
+     zip:self.postalCode
+     primaryPhone:(self.phone.length > 0)?self.phone:@""
+     secondaryPhone:@""
+     emailAddress:self.emailAddress success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+     {
+         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         [self cartUpdateShippingDidFinishLoading: JSON];
+     }
+     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+         
+         NSString *errorMessagee = [JSON objectForKey:@"APIErrorMessage"];
+         
+         if([errorMessagee rangeOfString:@"combination"].location != NSNotFound){
+             self.isUSAddressInvalid = YES;
+         }
+         
+         
+         [SVProgressHUD dismiss];
+         isContinueButtonPressed = NO;
+         
+         NSMutableDictionary *analyticsParams = [[NSMutableDictionary alloc] initWithCapacity:3];
+         [analyticsParams setValue:[NSString stringWithFormat:@"%d",error.code] forKey:ANALYTICS_APIERRORCODE];
+         [analyticsParams setValue:error.localizedDescription forKey:ANALYTICS_APIERRORMESSAGE];
+         [analyticsParams setValue:[request.URL absoluteString] forKey:ANALYTICS_APIURL];
+         [Analytics logGAEvent:ANALYTICS_CATEGORY_ERROR_EVENT withAction:errorMessagee withParams:analyticsParams];
+         
+         // Display error message here: APIErrorMessage
+         UIAlertView *alert = [[ UIAlertView alloc] initWithTitle:[ACConstants getLocalizedStringForKey:@"ERROR" withDefaultValue:@"Error"]
+                                                          message: [JSON objectForKey:@"APIErrorMessage"]
+                                                         delegate:nil
+                                                cancelButtonTitle:[ACConstants getLocalizedStringForKey:@"OK" withDefaultValue:@"OK"]
+                                                otherButtonTitles:nil, nil];
+         
+         [ alert show];
+         alert = nil;
+         [self.shippingAddressTableView reloadData];
+     }];
+}
+
+#pragma mark addItemToCart --
+-(void)requestForCartAddItem{
+ 
+    [SVProgressHUD showWithStatus:@"Updating..." maskType:SVProgressHUDMaskTypeClear];
+    
+    NSString *apnum = @"4938412";
+    NSString *lookupType = @"ItemNumber";
+    int quantity = 1;
+    
+    [ArtAPI requestForCartAddItemForItemId:apnum lookupType:lookupType quantitiy:quantity success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+    {
+        NSLog(@"Success");
+        
+        //[ArtAPI setCart:JSON];
+
+        [self updateShippingAddress];
+    }
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+    {
+        
+        NSLog(@"Failure \n Failure JSON response data is %@ ",JSON);
+        
+    }];
+    
 }
 
 - (IBAction)loginWithEmail:(id)sender
@@ -2443,11 +2637,27 @@ int nameOrigin=0;
     
     ArtAPI.currentYear = currentYear;
     ArtAPI.currentMonth = currentMonth;
-    [self pushToPaymentScreen];
+    
+    [ArtAPI
+     cartGetPaymentOptionsWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         [self cartGetPaymentOptionsRequestDidFinish: JSON];
+         
+     }
+     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+         
+         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+         [SVProgressHUD dismiss];
+         
+         [self pushToPaymentScreen:NO];
+     }];
+
+    
     
 }
 
--(void)pushToPaymentScreen
+-(void)pushToPaymentScreen:(BOOL)payPalEnabled
 {
     self.needSignUp = NO;
     if(ACCheckoutTypePrintReciept == self.artCheckoutType)
@@ -2460,9 +2670,53 @@ int nameOrigin=0;
     {
         ACPaymentViewController *chackOutController = [[ACPaymentViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ?
                                                        @"ACPaymentViewController-iPad" : @"ACPaymentViewController" bundle:ACBundle];
-        chackOutController.dataShippingOptions=self.dataShippingOptions;
-        [ self.navigationController pushViewController:chackOutController animated:YES];
+        chackOutController.dataShippingOptions = self.dataShippingOptions;
+        chackOutController.isPayPalEnabled = payPalEnabled;
+        [self.navigationController pushViewController:chackOutController animated:YES];
     }
+}
+
+
+-(void) cartGetPaymentOptionsRequestDidFinish:(id)JSON
+{
+    [SVProgressHUD dismiss];
+    NSDictionary *response = [JSON objectForKey:@"d"];
+    
+    NSLog(@"response %@",response);
+    
+    NSArray *paymentTypeOptions = [response objectForKeyNotNull:@"PaymentTypeOptions"];
+
+    if(paymentTypeOptions.count > 0)
+    {
+        NSLog(@"checking whether paypal payment is enabled for this is user or not");
+        
+//        if([self isPayPalEnabled:paymentTypeOptions])
+//        {
+//            [self requestForCartAddItem];
+//        }
+        
+        [self pushToPaymentScreen:[self isPayPalEnabled:paymentTypeOptions]];
+    }
+    else
+        [self pushToPaymentScreen:NO];
+}
+
+#pragma mark --
+#pragma mark isPayPalEnabled --
+-(BOOL)isPayPalEnabled:(NSArray *)paymentTypeOptions
+{
+    BOOL isPayPalEnabled = NO;
+    for(NSString *paymentOptionType in paymentTypeOptions)
+    {
+        if([paymentOptionType isEqualToString:@"PAYPAL"])
+        {
+            NSLog(@"PayPal is Enabled");
+            isPayPalEnabled = YES;
+            break;
+        }
+    }
+
+    return isPayPalEnabled;
 }
 
 
@@ -2595,9 +2849,9 @@ int nameOrigin=0;
         }
         else
         {
-            NSLog(@"Row = %d",self.selectedIndexPath.row);
+            NSLog(@"Row = %ld",self.selectedIndexPath.row);
             self.selectedIndexPath = [NSIndexPath indexPathForRow:self.selectedIndexPath.row-1 inSection:2];
-            NSLog(@"New Row = %d",self.selectedIndexPath.row);
+            NSLog(@"New Row = %ld",self.selectedIndexPath.row);
             
             ACAddressBookCustomCell *cell = (ACAddressBookCustomCell*)[self.shippingAddressTableView cellForRowAtIndexPath:self.selectedIndexPath];
             [cell.textField becomeFirstResponder];
@@ -2650,7 +2904,7 @@ int nameOrigin=0;
         self.failedTextField = nil;
     }
 }
-
+//akosha
 - (void)keyboardToolbar: (ACKeyboardToolbarView*) keyboardToolbar didSelectDone: (id) done {
     //NSLog(@"didSelectDone tag: %d",  keyboardToolbar.tag);
     if( keyboardToolbar.tag == 1){

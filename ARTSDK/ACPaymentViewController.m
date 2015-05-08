@@ -19,6 +19,9 @@
 #import "ACKeyboardToolbarView.h"
 //#import "Helpshift.h"
 
+#define kPayPalEnvironment PayPalEnvironmentSandbox
+
+
 @interface ACPaymentViewController () <ACKeyboardToolbarDelegate>
 @property (nonatomic, retain) ACKeyboardToolbarView *inputAccView;
 @end
@@ -45,6 +48,9 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
+    self.payPalButton.hidden = !self.isPayPalEnabled;
     
     if([self canPerformAction:@selector(setEdgesForExtendedLayout:) withSender:self]){
         [self setEdgesForExtendedLayout:(UIRectEdgeBottom|UIRectEdgeLeft|UIRectEdgeRight)];
@@ -64,7 +70,6 @@
 
     //self.alwaysPriceView.backgroundColor = [UIColor redColor];
     
-    [super viewDidLoad];
     //[self createInputAccessoryView];
     
     _inputAccView = [[ACKeyboardToolbarView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([self.view getCurrentScreenBoundsDependOnOrientation]), 40) hideNextPrevButtons:YES];
@@ -97,7 +102,7 @@
     [self.paymentTableViewHeader setFont:[ACConstants getStandardBoldFontWithSize:26.0f]];
     [self.paymentShippingTableView setBackgroundColor:[UIColor clearColor]];
     [self.headerPaymentView setBackgroundColor: [UIColor clearColor]];
-    [self.footerView setBackgroundColor: [UIColor clearColor]];
+    [self.footerView setBackgroundColor: [UIColor greenColor]];
     self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     self.applyCouponBtton.enabled = NO;
     self.removeCouponButton.enabled = NO;
@@ -891,6 +896,48 @@
     [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"GETTING_PAYMENT_TYPES" withDefaultValue:@"GETTING PAYMENT TYPES"]] maskType:SVProgressHUDMaskTypeClear];
 
     /*
+     
+     response {
+     CreditCardOptions =     (
+     {
+     CreditCardType = 5;
+     DisplayName = Visa;
+     "__type" = "CreditCartOption:#Art.Data.Contract.API";
+     },
+     {
+     CreditCardType = 3;
+     DisplayName = MasterCard;
+     "__type" = "CreditCartOption:#Art.Data.Contract.API";
+     },
+     {
+     CreditCardType = 1;
+     DisplayName = Discover;
+     "__type" = "CreditCartOption:#Art.Data.Contract.API";
+     },
+     {
+     CreditCardType = 0;
+     DisplayName = "American Express";
+     "__type" = "CreditCartOption:#Art.Data.Contract.API";
+     }
+     );
+     OperationResponse =     {
+     Errors = "<null>";
+     OperationResponse = "<null>";
+     ResponseCode = 200;
+     ResponseMessage = Success;
+     "__type" = "OperationResponse:#Art.Data.Contract.API";
+     };
+     PayPalOption =     {
+     MerchantlAccount = "paypal@art.com";
+     "__type" = "PayPalOption:#Art.Data.Contract.API";
+     };
+     PaymentTypeOptions =     (
+     "CREDIT_CARD",
+     PAYPAL
+     );
+     "__type" = "PaymentOptionResponse:#Art.Data.Contract.API";
+     }
+
     [ArtAPI cartGetPaypalToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
     {
         [self cartGetPaymentOptionsRequestDidFinish: JSON];
@@ -1164,6 +1211,174 @@
      
      */
 }
+
+#pragma mark payPalButtonTapped --
+- (IBAction)payPalButtonTapped:(id)sender
+{
+    NSLog(@" payPalButtonTapped ");
+    
+     // Set up payPalConfig
+     PayPalConfiguration *payPalConfig = [[PayPalConfiguration alloc] init];
+     payPalConfig.acceptCreditCards = YES;
+     payPalConfig.languageOrLocale = [NSLocale preferredLanguages][0];
+     payPalConfig.merchantName = @"Art.com, Inc.";
+     payPalConfig.merchantPrivacyPolicyURL = [NSURL URLWithString:@"https://www.paypal.com/webapps/mpp/ua/privacy-full"];
+     payPalConfig.merchantUserAgreementURL = [NSURL URLWithString:@"https://www.paypal.com/webapps/mpp/ua/useragreement-full"];
+    
+    // Setting the payPalShippingAddressOption property is optional.
+    //
+    // See PayPalConfiguration.h for details.
+    
+    payPalConfig.payPalShippingAddressOption = PayPalShippingAddressOptionProvided;
+
+    NSLog(@" productsTotal  %f ",[self.productsTotal doubleValue]);
+    PayPalItem *item1 = [PayPalItem itemWithName:@"Dummy Art Product"
+                                    withQuantity:1
+                                       withPrice:[[NSDecimalNumber alloc] initWithString:[NSString stringWithFormat:@"%f",[self.productsTotal doubleValue]]]
+                                    withCurrency:@"USD"
+                                         withSku:@"ItemNumber"];
+
+    //[[NSDecimalNumber alloc] initWithString:[NSString formatedPriceFor: self.productsTotal]]
+    
+    NSArray *items = @[item1];//, item2, item3];
+     NSDecimalNumber *subtotal = [PayPalItem totalPriceForItems:items];
+     
+     // Optional: include payment details
+     NSDecimalNumber *shipping = [[NSDecimalNumber alloc] initWithString:@"0.00"];
+     NSDecimalNumber *tax = [[NSDecimalNumber alloc] initWithString:@"0.00"];
+     PayPalPaymentDetails *paymentDetails = [PayPalPaymentDetails paymentDetailsWithSubtotal:subtotal
+     withShipping:shipping
+     withTax:tax];
+     
+     NSDecimalNumber *total = [[subtotal decimalNumberByAdding:shipping] decimalNumberByAdding:tax];
+     
+     PayPalPayment *payment = [[PayPalPayment alloc] init];
+     payment.amount = total;
+     payment.currencyCode = @"USD";
+     payment.shortDescription = @"Art Circles";
+     payment.items = items;  // if not including multiple items, then leave payment.items as nil
+     payment.paymentDetails = paymentDetails; // if not including payment details, then leave payment.paymentDetails as nil
+     
+     if (!payment.processable) {
+     // This particular payment will always be processable. If, for
+     // example, the amount was negative or the shortDescription was
+     // empty, this payment wouldn't be processable, and you'd want
+     // to handle that here.
+     }
+     
+     // Update payPalConfig re accepting credit cards.
+     
+     PayPalPaymentViewController *paymentViewController = [[PayPalPaymentViewController alloc] initWithPayment:payment
+     configuration:payPalConfig
+     delegate:self];
+     [self presentViewController:paymentViewController animated:YES completion:nil];
+    
+}
+     
+#pragma mark PayPalPaymentDelegate methods
+
+- (void)payPalPaymentViewController:(PayPalPaymentViewController *)paymentViewController didCompletePayment:(PayPalPayment *)completedPayment {
+    NSLog(@"PayPal Payment Success!");
+    NSLog(@" completedPayment description %@ ", [completedPayment description]);
+    
+    
+    NSDictionary *confirmationDict = completedPayment.confirmation;
+    NSDictionary *responseDict = [confirmationDict objectForKey:@"response"];
+    NSString *paymentID = [responseDict objectForKey:@"id"];
+    NSString *orderID = [responseDict objectForKey:@"order_id"];
+    
+    NSString *paymentJson = [self getPaymentJSONWithPaymentID:paymentID orderID:orderID];
+    
+    [self addPaymentWithParam:paymentJson];
+    
+    //[self getShippingAddress:paymentID];
+    
+}
+
+-(void)addPaymentWithParam:(NSString *)paymentParam{
+    
+    [ArtAPI cartAddPayment:paymentParam success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSLog(@"Added Payment");
+        
+        NSLog(@"%@", JSON);
+        [ArtAPI setCart:JSON];
+        
+        [self sendCompletedPaymentToServer]; // Payment was processed successfully; send to server for verification and fulfillment
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        NSString *successString = @"PayPal Payment Success!\r\n\r\n";
+        //successString = [successString stringByAppendingString:self.resultText];
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        NSLog(@"Failed adding payment. failure JSON is %@ ",JSON);
+    }];
+    
+}
+
+-(NSString *)getPaymentJSONWithPaymentID:(NSString *)paymentID orderID:(NSString *)orderID{
+    
+    if(!paymentID)
+        paymentID = @"  ";
+
+    if(!orderID)
+        orderID = @"  ";
+        
+    NSString *retString;
+    
+    //MKL - should probably do this with a real JSON srializer and NSDictionary object
+    //rather than text
+    retString = @"{\"payments\": {\"payment\": {\"type\": \"PAYPAL\",\"paymentID\": \"";
+    retString = [retString stringByAppendingString:paymentID];
+    retString = [retString stringByAppendingString:@"\",\"orderID\": \""];
+    retString = [retString stringByAppendingString:orderID];
+    retString = [retString stringByAppendingString:@"\",\"platform\": \"REST\"}}}"];
+    
+    return retString;
+}
+
+- (void)payPalPaymentDidCancel:(PayPalPaymentViewController *)paymentViewController {
+    NSLog(@"PayPal Payment Canceled");
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+#pragma mark Proof of payment validation
+
+- (void)sendCompletedPaymentToServer {
+    
+    // TODO: Send completedPayment.confirmation to server
+    //NSLog(@"Here is your proof of payment:\n\n%@\n\nSend this to your server for confirmation and fulfillment.", completedPayment.confirmation);
+    
+    //NSString *paymentId = [[completedPayment.confirmation objectForKeyNotNull:@"response"] objectForKeyNotNull:@"id"];
+    //NSString *orderId = [[completedPayment.confirmation objectForKeyNotNull:@"response"] objectForKeyNotNull:@"order_id"];
+    
+    
+    [ArtAPI
+     cartSubmitForOrderWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+         
+          NSLog(@"Called cartSubmitForOrderWithSuccess");
+         NSLog(@"Success");
+         
+         NSLog(@"%@", JSON);
+         
+         NSString *OID = [[[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"OrderAttributes"] objectForKeyNotNull:@"OrderNumber"];
+         
+         NSLog(@" OID %@",OID);
+         
+         //[self requestOrderSubmitDidFinish: JSON];
+     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+         
+         NSLog(@"SubmitPayPalRestOrder failed");
+         NSLog(@"Failure: %@", JSON);
+         
+     }];
+    
+    
+}
+
+
 
 - (IBAction)showCouponSection:(id)sender
 {
