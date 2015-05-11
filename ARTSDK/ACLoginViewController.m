@@ -279,10 +279,7 @@
              [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
              [[NSUserDefaults standardUserDefaults] synchronize];
              
-             // Call Delegate
-             if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
-                 [self.delegate loginSuccess];
-             }
+             [self getDefaultMobileGallery];
 
          }else{
              NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
@@ -644,7 +641,16 @@
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:defaultGalleryResponse];
         [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"USER_DEFAULT_GALLERY_RESPONSE"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        
+        NSDictionary *responseGallery = [defaultGalleryResponse objectForKeyNotNull:@"Gallery"];
+//        NSArray *responseGalleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
+//        self.data = responseGalleryItems;
+        NSDictionary *galleryAttributes = [responseGallery objectForKeyNotNull:@"GalleryAttributes"];
+        NSString *defaultGalleryID = [galleryAttributes objectForKeyNotNull:@"GalleryId"];
+        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+        f.numberStyle = NSNumberFormatterDecimalStyle;
+        NSNumber *myNumber = [f numberFromString:defaultGalleryID];
+        [ArtAPI sharedInstance].mobileGalleryID = myNumber;
+
         // Call Delegate (Deprecate)
         if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
             [self.delegate loginSuccess];
