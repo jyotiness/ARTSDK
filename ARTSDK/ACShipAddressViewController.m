@@ -585,7 +585,9 @@ int nameOrigin=0;
 
 -(void)countryPickerPressed:(id)sender
 {
-    if([ACConstants isSwitchArt]) /* SWIT-238 : SwicthArt is only for US */
+    self.tagFromPicker=[sender tag ];
+
+    if([ACConstants isSwitchArt] && COUNTRY_PICKER_TAG == self.tagFromPicker ) /* SWIT-238 : SwicthArt is only for US */
     {
         return;
     }
@@ -593,7 +595,6 @@ int nameOrigin=0;
     [self configureThePicker];
     [self.view endEditing:YES];
     
-    self.tagFromPicker=[sender tag ];
     self.countrypickerView.delegate = self;
     self.countrypickerView.dataSource = self;
     
@@ -1075,7 +1076,7 @@ int nameOrigin=0;
     }
     cell.textField.frame = textFieldFrame;
 
-    if([ACConstants isSwitchArt]) /* SWIT-238 : SwicthArt is only for US */
+    if([ACConstants isSwitchArt] && COUNTRY_PICKER_TAG == indexPath.row) /* SWIT-238 : SwicthArt is only for US */
     {
         [cell.pickerButton setBackgroundImage:nil forState:UIControlStateNormal];
     }
