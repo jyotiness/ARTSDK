@@ -1085,7 +1085,7 @@
     
     // Make cell unselectable
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    int rownum=indexPath.row;
+    int rownum = indexPath.row;
     cell.textField.hidden = NO;
     cell.textLabel.hidden = NO;
     cell.textField.delegate=self;
@@ -1102,12 +1102,7 @@
         textFrame.origin.x = 135;
     }
     cell.textField.frame = textFrame;
-    
-    if([ACConstants isSwitchArt]) /* SWIT-238 : SwicthArt is only for US */
-    {
-        [cell.pickerButton setBackgroundImage:nil forState:UIControlStateNormal];
-    }
-    
+        
     if(0 == indexPath.section)
     {
         switch(rownum)
@@ -1301,6 +1296,7 @@
                 break ;
             case 5:
                 cell.pickerButton.tag = COUNTRY_PICKER_TAG;
+                [cell.pickerButton setBackgroundImage:nil forState:UIControlStateNormal];
                 cell.textField.hidden = YES;
                 cell.textLabel.hidden = YES;
                 cell.cellTitleButton.hidden = YES;
@@ -3215,6 +3211,10 @@
 
 -(void)pickerPressed:(id)sender
 {
+    if(sender){
+        self.tagFromPicker = (int)[sender tag];
+    }
+    
     if([ACConstants isSwitchArt] && COUNTRY_PICKER_TAG == self.tagFromPicker ) /* SWIT-238 : SwicthArt is only for US */
     {
         return;
@@ -3224,9 +3224,7 @@
     
     ACCustomBillingCell *cell = (ACCustomBillingCell *)[[(UIButton*)sender superview] superview];
     self.selectedIndexPath = [self.billingAddressTableView indexPathForCell:cell];
-    if(sender){
-        self.tagFromPicker=[sender tag ];
-    }
+
     
     self.currentActiveTag = self.tagFromPicker;
     
