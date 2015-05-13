@@ -2696,7 +2696,8 @@ int nameOrigin=0;
 //            [self requestForCartAddItem];
 //        }
         
-        [self pushToPaymentScreen:[self isPayPalEnabled:paymentTypeOptions]];
+        //[self pushToPaymentScreen:[self isPayPalEnabled:paymentTypeOptions]];//CS; Currently commenting it out as PayPal BackEnd implementation is not completed, once backend is ready will uncomment 
+          [self pushToPaymentScreen:NO];
     }
     else
         [self pushToPaymentScreen:NO];
