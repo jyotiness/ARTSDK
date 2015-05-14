@@ -50,7 +50,7 @@
 {
     [super viewDidLoad];
 
-    self.payPalButton.hidden = !self.isPayPalEnabled;
+    self.payPalButton.hidden = YES; //!self.isPayPalEnabled; 
     
     if([self canPerformAction:@selector(setEdgesForExtendedLayout:) withSender:self]){
         [self setEdgesForExtendedLayout:(UIRectEdgeBottom|UIRectEdgeLeft|UIRectEdgeRight)];
@@ -102,7 +102,7 @@
     [self.paymentTableViewHeader setFont:[ACConstants getStandardBoldFontWithSize:26.0f]];
     [self.paymentShippingTableView setBackgroundColor:[UIColor clearColor]];
     [self.headerPaymentView setBackgroundColor: [UIColor clearColor]];
-    [self.footerView setBackgroundColor: [UIColor greenColor]];
+    //[self.footerView setBackgroundColor: [UIColor greenColor]];
     self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     self.applyCouponBtton.enabled = NO;
     self.removeCouponButton.enabled = NO;

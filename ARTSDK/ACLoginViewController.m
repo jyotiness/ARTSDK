@@ -371,9 +371,9 @@
                  [ArtAPI setAuthenticationToken:authTok];
                  
                  // Call Delegate (Deprecate)
-                 if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
-                     [self.delegate loginSuccess];
-                 }
+//                 if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
+//                     [self.delegate loginSuccess];
+//                 }
                  
                  // Call Delegate
                  if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess:)]) {
@@ -652,9 +652,9 @@
         [ArtAPI sharedInstance].mobileGalleryID = myNumber;
 
         // Call Delegate (Deprecate)
-        if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
-            [self.delegate loginSuccess];
-        }
+//        if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
+//            [self.delegate loginSuccess];
+//        }
         
         // Call Delegate
         if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess:)]) {
