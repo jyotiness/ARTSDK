@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.dependency 'Facebook-iOS-SDK', '~> 3.16.0'
   s.dependency 'Pinterest-iOS', '~> 2.3'
   s.dependency 'PayPal-iOS-SDK', '~> 2.1'
-  s.dependency 'Gigya-iOS-SDK'
+  s.dependency 'Gigya-iOS-SDK', '~> 3.2.0'
   s.dependency 'XMLDictionary'
 
 end
