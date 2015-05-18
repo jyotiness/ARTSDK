@@ -20,6 +20,7 @@
 #import "ACKeyboardToolbarView.h"
 #import "NSString+Additions.h"
 #import "AccountManager.h"
+#import "CardIOPaymentViewController.h"
 
 #ifdef SUPPORT_LILITAB_CARD_READER
 #import "LTMagTekReader.h"
@@ -837,8 +838,11 @@
 
     [self.view endEditing:YES];
     
+
     [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"LOADING_CARD_SCANNER" withDefaultValue:@"Loading Card Scanner"]] maskType:SVProgressHUDMaskTypeClear];
     
+    __unused NSString *cardIOToken = [ACConstants getCardIOToken]; // CS;- not required now as we are using the latest CardIO classes from PayPal iOS SDK
+
     [[UINavigationBar appearance] setTintColor:[ACConstants getPrimaryLinkColor]];
     CardIOPaymentViewController *scanViewController = [[CardIOPaymentViewController alloc] initWithPaymentDelegate:self];
     scanViewController.useCardIOLogo = YES;
@@ -846,8 +850,8 @@
     scanViewController.modalPresentationStyle = UIModalPresentationFormSheet;
     //mkl - this doesnt seem to work to change the link button color in iPad version of card.io
     //scanViewController.navigationBar.tintColor = [ACConstants getPrimaryLinkColor];
-
-    scanViewController.appToken = [ACConstants getCardIOToken];
+    
+    //scanViewController.appToken = cardIOToken;// CS;- appToken is not required it has been removed in the latest PayPal SDK
     
     [self presentViewController:scanViewController animated:YES completion:^(void)
     {
@@ -2484,7 +2488,7 @@
     NSLog(@"scanCard");
     CardIOPaymentViewController *scanViewController = [[CardIOPaymentViewController alloc] initWithPaymentDelegate:self];
     scanViewController.useCardIOLogo = YES;
-    scanViewController.appToken = [ACConstants getCardIOToken];
+    //scanViewController.appToken = [ACConstants getCardIOToken];
     [self.navigationController presentViewController:scanViewController animated:YES completion:nil];
 }
 

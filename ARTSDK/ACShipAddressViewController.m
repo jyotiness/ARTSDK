@@ -2669,8 +2669,7 @@ int nameOrigin=0;
     }
     else
     {
-        ACPaymentViewController *chackOutController = [[ACPaymentViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ?
-                                                       @"ACPaymentViewController-iPad" : @"ACPaymentViewController" bundle:ACBundle];
+        ACPaymentViewController *chackOutController = [[ACPaymentViewController alloc] initWithNibName:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ACPaymentViewController-iPad" : @"ACPaymentViewController" bundle:ACBundle];
         chackOutController.dataShippingOptions = self.dataShippingOptions;
         chackOutController.isPayPalEnabled = payPalEnabled;
         [self.navigationController pushViewController:chackOutController animated:YES];
