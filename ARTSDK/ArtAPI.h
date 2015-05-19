@@ -121,6 +121,7 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                                           firstName:(NSString *)firstName
                                            lastName:(NSString *)lastName
                                            regToken:(NSString*)regToken
+                                       uidSignature:(NSString *)uidSignature signatureTimestamp:(NSString *)signatureTimestamp
                                             success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                             failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 

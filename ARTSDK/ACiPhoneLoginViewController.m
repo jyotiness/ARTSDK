@@ -616,6 +616,10 @@
                 parameters:nil
          completionHandler:^(GSUser *user, NSError *error) {
              if (!error) {
+                 NSLog(@" JSON Succes Response Gigya %@",user.JSONString);
+                 
+                 NSString *uidSignature = [user objectForKey:@"UIDSig"];
+                 NSString *signatureTimestamp = [user objectForKey:@"signatureTimestamp"];
                  
                  FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
 
@@ -623,7 +627,7 @@
                                       emailAddress:[user objectForKey:@"email"]
                                          firstName:[user objectForKey:@"firstName"]
                                           lastName:[user objectForKey:@"lastName"]
-                                          regToken:accessTokenData.accessToken];
+                                          regToken:accessTokenData.accessToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp];
              }
              else {
                  NSLog(@"error = %@",error);
@@ -892,7 +896,8 @@
                         emailAddress:(NSString *)emailAddress
                            firstName:(NSString *)firstName
                             lastName:(NSString *)lastName
-                            regToken:(NSString *)regToken {
+                            regToken:(NSString *)regToken  uidSignature:(NSString *)uidSignature signatureTimestamp:(NSString *)signatureTimestamp
+                            {
     //NSLog(@"authenticateWithFacebookUID: %@, emailAddress: %@ firstName: %@ lastName: %@ facebookToken: %@",
     //      facebookUID, emailAddress, firstName, lastName,facebookToken);
     
@@ -900,7 +905,7 @@
     
     [ArtAPI
      requestForAccountAuthenticateWithSocialUID:facebookUID emailAddress:emailAddress firstName:firstName lastName:lastName regToken:regToken
-     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+     uidSignature:uidSignature signatureTimestamp:signatureTimestamp success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
          //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
          
          AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
@@ -1399,7 +1404,7 @@
      emailAddress:[user objectForKeyNotNull:@"email"]
      firstName:[user objectForKeyNotNull:@"first_name"]
      lastName:[user objectForKeyNotNull:@"last_name"]
-     regToken:accessTokenData.accessToken];
+     regToken:accessTokenData.accessToken uidSignature:@"" signatureTimestamp:@""];
      }else{
      NSLog(@"Either no FB user or accesstokendata");
      }

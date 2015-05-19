@@ -764,10 +764,11 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                           firstName:(NSString *)firstName
                                            lastName:(NSString *)lastName
                                            regToken:(NSString*)regToken
+                                            uidSignature:(NSString *)uidSignature signatureTimestamp:(NSString *)signatureTimestamp
                                             success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                             failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
-    [[ArtAPI sharedInstance] requestForAccountAuthenticateWithSocialUID:gigyaUID emailAddress:emailAddress firstName:firstName lastName:lastName regToken:regToken success:success failure:failure];
+    [[ArtAPI sharedInstance] requestForAccountAuthenticateWithSocialUID:gigyaUID emailAddress:emailAddress firstName:firstName lastName:lastName regToken:regToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp success:success failure:failure];
 }
 
 - (void) requestForAccountAuthenticateWithSocialUID:(NSString *)gigyaUID
@@ -775,6 +776,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                           firstName:(NSString *)firstName
                                            lastName:(NSString *)lastName
                                            regToken:(NSString*)regToken
+                                            uidSignature:(NSString *)uidSignature signatureTimestamp:(NSString *)signatureTimestamp
                                             success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                             failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
@@ -782,7 +784,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     //      facebookUID, emailAddress, firstName, lastName,facebookToken);
     // Required
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       gigyaUID, @"socialToken",
+                                       gigyaUID, @"socialToken",uidSignature,@"uidsignature",signatureTimestamp,@"signaturetimestamp",
                                        nil];
     // Optional
     if( regToken ){
@@ -801,6 +803,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                             requiresSession:YES
                                             requiresAuthKey:NO];
     
+    NSLog(@"AccountAuthenticateWithSocial URL is  %@",[request.URL description]);
     // No SessionId, send to failure
     if( !request){
         NSMutableDictionary *errorDetail = [NSMutableDictionary dictionary];
