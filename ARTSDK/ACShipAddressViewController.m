@@ -2416,6 +2416,9 @@ int nameOrigin=0;
  
     [SVProgressHUD showWithStatus:@"Updating..." maskType:SVProgressHUDMaskTypeClear];
     
+    [self updateShippingAddress];// Calling this API here as we need to fix SWIT-261 and SWIT-258
+    
+    /*
     NSString *apnum = @"4938412";
     NSString *lookupType = @"ItemNumber";
     int quantity = 1;
@@ -2425,8 +2428,8 @@ int nameOrigin=0;
         NSLog(@"Success");
         
         //[ArtAPI setCart:JSON];
-
-        [self updateShippingAddress];
+        //[self updateShippingAddress];// Once Success we need to call this as per the PayPal flow
+        
     }
     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
     {
@@ -2434,7 +2437,7 @@ int nameOrigin=0;
         NSLog(@"Failure \n Failure JSON response data is %@ ",JSON);
         
     }];
-    
+    */
 }
 
 - (IBAction)loginWithEmail:(id)sender
