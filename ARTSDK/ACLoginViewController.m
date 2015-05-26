@@ -217,32 +217,35 @@
 
     if([Gigya APIKey])
     {
-        [Gigya loginToProvider:@"facebook"
-                    parameters:nil
-             completionHandler:^(GSUser *user, NSError *error) {
-                 if (!error) {
-                     NSLog(@" JSON Succes Response Gigya %@",user.JSONString);
-                     NSLog(@"works");
-                     NSLog(@"Name = %@",user[@"firstName"]);
-                     NSLog(@"UID = %@",user[@"UID"]);
-                     
-                     NSString *uidSignature = [user objectForKey:@"UIDSig"];
-                     NSString *signatureTimestamp = [user objectForKey:@"signatureTimestamp"];
-
-                     FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
-                     
-                     [self authenticateWithFacebookUID:user[@"UID"]
-                                          emailAddress:[user objectForKey:@"email"]
-                                             firstName:[user objectForKey:@"firstName"]
-                                              lastName:[user objectForKey:@"lastName"]
-                                              regToken:accessTokenData.accessToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp];
-                     
-                     
-                 }
-                 else {
-                     NSLog(@"error Description %@",error.description);
-                 }
-             }];
+        [Gigya logoutWithCompletionHandler:^(GSResponse *response, NSError *error) {
+           
+            [Gigya loginToProvider:@"facebook"
+                        parameters:nil
+                 completionHandler:^(GSUser *user, NSError *error) {
+                     if (!error) {
+                         /*NSLog(@" JSON Succes Response Gigya %@",user.JSONString);
+                         NSLog(@"works");
+                         NSLog(@"Name = %@",user[@"firstName"]);
+                         NSLog(@"UID = %@",user[@"UID"]); */
+                         
+                         NSString *uidSignature = [user objectForKey:@"UIDSig"];
+                         NSString *signatureTimestamp = [user objectForKey:@"signatureTimestamp"];
+                         
+                         FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
+                         
+                         [self authenticateWithFacebookUID:user[@"UID"]
+                                              emailAddress:[user objectForKey:@"email"]
+                                                 firstName:[user objectForKey:@"firstName"]
+                                                  lastName:[user objectForKey:@"lastName"]
+                                                  regToken:accessTokenData.accessToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp];
+                         
+                         
+                     }
+                     else {
+                         NSLog(@"error Description %@",error.description);
+                     }
+                 }];
+        }];
     }
     else
     {
