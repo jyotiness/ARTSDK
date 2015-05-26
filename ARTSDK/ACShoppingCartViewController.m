@@ -517,7 +517,7 @@
         [tblView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self updateNavigationBarButtons];
         
-        [SVProgressHUD showWithStatus:@"Removing Item"];
+        [SVProgressHUD showWithStatus:@"Removing Item" maskType:SVProgressHUDMaskTypeClear];
         
         [ArtAPI requestForCartUpdateCartItemQuantityForCartItemId:cartItemID quantity:0 success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
