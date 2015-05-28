@@ -612,27 +612,31 @@
 {
     [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_LOGIN_FACEBOOK];
     
-    [Gigya loginToProvider:@"facebook"
-                parameters:nil
-         completionHandler:^(GSUser *user, NSError *error) {
-             if (!error) {
-                 NSLog(@" JSON Succes Response Gigya %@",user.JSONString);
-                 
-                 NSString *uidSignature = [user objectForKey:@"UIDSig"];
-                 NSString *signatureTimestamp = [user objectForKey:@"signatureTimestamp"];
-                 
-                 FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
-
-                 [self authenticateWithFacebookUID:user[@"UID"]
-                                      emailAddress:[user objectForKey:@"email"]
-                                         firstName:[user objectForKey:@"firstName"]
-                                          lastName:[user objectForKey:@"lastName"]
-                                          regToken:accessTokenData.accessToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp];
-             }
-             else {
-                 NSLog(@"error = %@",error);
-             }
-         }];
+    [Gigya logoutWithCompletionHandler:^(GSResponse *response, NSError *error) {
+        [Gigya loginToProvider:@"facebook"
+                    parameters:nil
+             completionHandler:^(GSUser *user, NSError *error) {
+                 if (!error) {
+                     NSLog(@" JSON Succes Response Gigya %@",user.JSONString);
+                     
+                     NSString *uidSignature = [user objectForKey:@"UIDSig"];
+                     NSString *signatureTimestamp = [user objectForKey:@"signatureTimestamp"];
+                     
+                     FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
+                     
+                     [self authenticateWithFacebookUID:user[@"UID"]
+                                          emailAddress:[user objectForKey:@"email"]
+                                             firstName:[user objectForKey:@"firstName"]
+                                              lastName:[user objectForKey:@"lastName"]
+                                              regToken:accessTokenData.accessToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp];
+                 }
+                 else {
+                     NSLog(@"error = %@",error);
+                 }
+             }];
+    }];
+    
+    
 
    // [self openSessionWithAllowLoginUI: YES];
 }
