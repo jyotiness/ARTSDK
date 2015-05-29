@@ -243,6 +243,19 @@
                      }
                      else {
                          NSLog(@"error Description %@",error.description);
+                         if(403043 == error.code)
+                         {
+                             NSString *uidSignature = @"";
+                             NSString *signatureTimestamp = @"";
+                             
+                             FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
+                             
+                             [self authenticateWithFacebookUID:@""
+                                                  emailAddress:[user objectForKey:@"email"]
+                                                     firstName:[user objectForKey:@"firstName"]
+                                                      lastName:[user objectForKey:@"lastName"]
+                                                      regToken:accessTokenData.accessToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp];
+                         }
                      }
                  }];
         }];
