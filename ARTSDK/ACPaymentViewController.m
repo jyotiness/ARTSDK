@@ -511,7 +511,7 @@
                 }
                
                 self.couponCodeField.textAlignment = NSTextAlignmentRight;
-                CGFloat cellWidth = 145;
+                CGFloat cellWidth = [UIScreen mainScreen].bounds.size.width - 175;
                 if(UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad){ cellWidth = 370;}
                 self.couponCodeField.frame = CGRectMake(150, cell.frame.size.height/2 - 9, cellWidth, 18);
                 [self.couponCodeField setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f]];
