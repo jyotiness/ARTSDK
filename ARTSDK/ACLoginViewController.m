@@ -228,7 +228,7 @@
                          NSLog(@"Name = %@",user[@"firstName"]);
                          NSLog(@"UID = %@",user[@"UID"]); */
                          
-                         NSString *uidSignature = [user objectForKey:@"UIDSig"];
+                         NSString *uidSignature = [[user objectForKey:@"UIDSig"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                          NSString *signatureTimestamp = [user objectForKey:@"signatureTimestamp"];
                          
                          FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;

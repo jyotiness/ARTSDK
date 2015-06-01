@@ -619,7 +619,7 @@
                  if (!error) {
                      NSLog(@" JSON Succes Response Gigya %@",user.JSONString);
                      
-                     NSString *uidSignature = [user objectForKey:@"UIDSig"];
+                     NSString *uidSignature = [[user objectForKey:@"UIDSig"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                      NSString *signatureTimestamp = [user objectForKey:@"signatureTimestamp"];
                      
                      FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
