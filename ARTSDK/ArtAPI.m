@@ -21,8 +21,8 @@
 
 
 // Art.com API
-NSString* const kArtAPIUrl = @"developer-api.art.com";
-NSString* const kProtocolSecure = @"http://";
+NSString* const kArtAPIUrl = @"api.art.com";
+NSString* const kProtocolSecure = @"https://";
 NSString* const kProtocolDefault = @"http://";
 
 // Judy
