@@ -13,14 +13,16 @@
 #import "NSMutableDictionary+SetNull.h"
 #import "SVProgressHUD.h"
 #import "XMLDictionary.h"
+#include <netdb.h>
+#include <arpa/inet.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // URLs
 
 
 // Art.com API
-NSString* const kArtAPIUrl = @"api.art.com";
-NSString* const kProtocolSecure = @"https://";
+NSString* const kArtAPIUrl = @"developer-api.art.com";
+NSString* const kProtocolSecure = @"http://";
 NSString* const kProtocolDefault = @"http://";
 
 // Judy
@@ -50,6 +52,7 @@ NSString* const kResourceAccountMerge = @"AccountMerge";
 NSString* const kResourceAccountGet = @"AccountGet";
 NSString* const kResourceAccountUpdateProfile = @"AccountUpdateProfile";
 NSString* const kResourceAccountUpdateProperty = @"AccountUpdateProperty";
+NSString* const kResourceAccountSubscribe = @"AccountSubscribe";
 NSString* const kResourceAccountUpdateLocationByType = @"AccountUpdateLocationByType";
 NSString* const kResourceAccountRetrievePassword = @"AccountRetrievePassword";
 NSString* const kResourceAccountAuthenticateWithFacebookUID = @"AccountAuthenticateWithFacebookUID";
@@ -1128,6 +1131,49 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [operation start];
 }
 
++ (void) requestForAccountSubscribe:(NSDictionary *) subscriptionInfo
+                            success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                            failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure{
+    
+    [[ArtAPI sharedInstance] requestForAccountSubscribe:subscriptionInfo success:success failure:failure];
+    
+}
+
+- (void) requestForAccountSubscribe:(NSDictionary *) subscriptionInfo
+                            success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                            failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure{
+    
+    //NSString *hardCodedString = @"{\"apiKey\":\"A555B7EF46B941C3A13B21537E03427D\",\"sessionId\":\"D7B62F5E9891452B894B7172C6A58512\",\"subscriptionType\":\"PushNotification\",\"subscriptionData\":\"{\"eMailAddress\":\"\",\"phoneNo\":\"\",\"pushNotification\":{\"deviceType\":\"iPhone7,2\",\"deviceToken\":\"f4c82bd1dad5618893d7ea77abeda2e282f7bde43626834bb26ac52505cfe5a5\"}}\"}";
+    
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+                                                   resource:kResourceAccountSubscribe
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:subscriptionInfo
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    NSLog(@"request.URL %@",request.URL);
+    NSLog(@"subscriptionInfo %@",subscriptionInfo);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)
+                                         {
+                                             
+                                             [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+                                             
+                                         }
+                                                                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON)
+                                         {
+                                             failure(request, response, error, JSON);
+                                         }];
+    
+    
+    [operation start];
+    
+}
+
+
 + (void) cartClear:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                          failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
@@ -1213,6 +1259,60 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         return NO;
     } else {
         self.cart = nil;
+        return YES;
+    }
+}
+
+- (NSDictionary *)getSubscriptionInfo:(NSString *)subscriptionType
+                             forEmail:(NSString *)emailAddress
+                             forPhone:(NSString *)phoneNumber
+                        forDeviceType:(NSString *)deviceType
+                       forDeviceToken:(NSString *)deviceToken
+                             forAppId:(NSString *)appId{
+    
+    NSMutableDictionary *retDict = [[NSMutableDictionary alloc] initWithCapacity:4];
+    //NSMutableDictionary *subscriptionDataDict = [[NSMutableDictionary alloc] initWithCapacity:3];
+    //NSMutableDictionary *pushNotificationDict = [[NSMutableDictionary alloc] initWithCapacity:2];
+    
+    //[pushNotificationDict setObject:deviceType forKey:@"deviceType"];
+    //[pushNotificationDict setObject:deviceToken forKey:@"deviceToken"];
+    //[pushNotificationDict setObject:appId forKey:@"appId"];
+    
+    //[subscriptionDataDict setObject:emailAddress forKey:@"eMailAddress"];
+    //[subscriptionDataDict setObject:phoneNumber forKey:@"phoneNo"];
+    //[subscriptionDataDict setObject:pushNotificationDict forKey:@"pushNotification"];
+    
+    NSString *subscriptionDataString = @"{\"eMailAddress\":\"";
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:emailAddress];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:@"\",\"phoneNo\":\""];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:phoneNumber];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:@"\",\"pushNotification\":{\"deviceType\":\""];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:deviceType];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:@"\",\"deviceToken\":\""];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:deviceToken];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:@"\",\"appId\":\""];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:appId];
+    subscriptionDataString = [subscriptionDataString stringByAppendingString:@"\"}}"];
+        
+    
+    [retDict setObject:_apiKey forKey:@"apiKey"];
+    [retDict setObject:_sessionID forKey:@"sessionId"];
+    [retDict setObject:subscriptionType forKey:@"subscriptionType"];
+    [retDict setObject:subscriptionDataString forKey:@"subscriptionData"];
+    
+    return retDict;
+}
+
++ (BOOL)isInternalArtNetwork{
+    
+    //DNS RESOLUTION CHECK - THIS SHOULD STAY DEV-API.ART.COM
+    struct hostent *host_entry = gethostbyname("dev-api.art.com");
+    //char *buff;
+    //buff = inet_ntoa(*((struct in_addr *)host_entry->h_addr_list[0]));
+    
+    if(host_entry == nil){
+        return NO;
+    }else{
         return YES;
     }
 }
@@ -3327,6 +3427,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                  withParams:(NSDictionary *)parameters
                             requiresSession:(BOOL)requiresSession
                             requiresAuthKey:(BOOL)requiresAuthKey {
+    
     NSMutableDictionary * params = [NSMutableDictionary dictionaryWithDictionary:parameters];
     
     // Add API Key
@@ -3366,13 +3467,20 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     NSString * path = [NSString stringWithFormat:@"/%@.svc/jsonp/%@",endpoint, resource ];
     
-
+    if([resource isEqualToString:kResourceAccountSubscribe]){
+        //host = [host stringByReplacingOccurrencesOfString:@"developer-api.art.com" withString:@"10.130.117.67"];
+    }
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     
-    if([resource isEqualToString:kResourceAccountUpdateProperty]){
+    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe]){
         path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
     }
+    
+    if([resource isEqualToString:kResourceAccountSubscribe]){
+        httpClient.parameterEncoding = AFJSONParameterEncoding;
+    }
+    
     if([resource isEqualToString:kResourceCartAddGiftCertificatePayment]){
         httpClient.parameterEncoding = AFJSONParameterEncoding;
     }

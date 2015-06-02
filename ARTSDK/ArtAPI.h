@@ -176,12 +176,24 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                                             newPassword:(NSString *)password
                                                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                                 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
++ (void) requestForAccountSubscribe:(NSDictionary *) subscriptionInfo
+                                 success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
 + (void)logoutAndReset;
 + (void)logoutArtCircles;
 + (void)logoutAndRestart;
 + (BOOL)isLoggedIn;
 + (BOOL)sessionIDExpired;
-- (BOOL) authTokenExpired;
+- (BOOL)authTokenExpired;
++ (BOOL)isInternalArtNetwork;
+- (NSDictionary *)getSubscriptionInfo:(NSString *)subscriptionType
+                             forEmail:(NSString *)emailAddress
+                             forPhone:(NSString *)phoneNumber
+                        forDeviceType:(NSString *)deviceType
+                       forDeviceToken:(NSString *)deviceToken
+                             forAppId:(NSString *)appId;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
