@@ -1271,16 +1271,20 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                              forAppId:(NSString *)appId{
     
     NSMutableDictionary *retDict = [[NSMutableDictionary alloc] initWithCapacity:4];
-    //NSMutableDictionary *subscriptionDataDict = [[NSMutableDictionary alloc] initWithCapacity:3];
-    //NSMutableDictionary *pushNotificationDict = [[NSMutableDictionary alloc] initWithCapacity:2];
     
-    //[pushNotificationDict setObject:deviceType forKey:@"deviceType"];
-    //[pushNotificationDict setObject:deviceToken forKey:@"deviceToken"];
-    //[pushNotificationDict setObject:appId forKey:@"appId"];
+    if(subscriptionType==nil) subscriptionType = @"PushNotification";
+    if(emailAddress==nil) emailAddress = @"";
+    if(phoneNumber==nil) phoneNumber = @"";
+    if(deviceType==nil) deviceType = @"";
+    if(deviceToken==nil) deviceToken = @"";
+    if(appId==nil) appId = @"";
     
-    //[subscriptionDataDict setObject:emailAddress forKey:@"eMailAddress"];
-    //[subscriptionDataDict setObject:phoneNumber forKey:@"phoneNo"];
-    //[subscriptionDataDict setObject:pushNotificationDict forKey:@"pushNotification"];
+    NSString *apiKeyToPass = _apiKey;
+    if(apiKeyToPass==nil) apiKeyToPass = @"";
+    
+    NSString *sessionIDToPass = _sessionID;
+    if(sessionIDToPass==nil) sessionIDToPass = @"";
+    
     
     NSString *subscriptionDataString = @"{\"eMailAddress\":\"";
     subscriptionDataString = [subscriptionDataString stringByAppendingString:emailAddress];
@@ -1295,8 +1299,8 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     subscriptionDataString = [subscriptionDataString stringByAppendingString:@"\"}}"];
         
     
-    [retDict setObject:_apiKey forKey:@"apiKey"];
-    [retDict setObject:_sessionID forKey:@"sessionId"];
+    [retDict setObject:apiKeyToPass forKey:@"apiKey"];
+    [retDict setObject:sessionIDToPass forKey:@"sessionId"];
     [retDict setObject:subscriptionType forKey:@"subscriptionType"];
     [retDict setObject:subscriptionDataString forKey:@"subscriptionData"];
     
