@@ -18,6 +18,7 @@
 #import "ACWebViewController.h"
 #import "ACKeyboardToolbarView.h"
 #import "Analytics.h"
+#import "Gigya.h"
 
 @interface ACCreateAccountViewController() <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,ACKeyboardToolbarDelegate>
 @property(nonatomic, copy) NSString *email;
@@ -245,9 +246,136 @@
     [self.navigationController presentViewController:navigationController animated: YES completion:nil];
 }
 
-- (void) facebookButtonTapped: (id) sender {
+
+- (void) authenticateWithFacebookUID:(NSString *)facebookUID
+                        emailAddress:(NSString *)emailAddress
+                           firstName:(NSString *)firstName
+                            lastName:(NSString *)lastName
+                            regToken:(NSString *)regToken  uidSignature:(NSString *)uidSignature signatureTimestamp:(NSString *)signatureTimestamp
+{
+    //NSLog(@"authenticateWithFacebookUID: %@, emailAddress: %@ firstName: %@ lastName: %@ facebookToken: %@",
+    //      facebookUID, emailAddress, firstName, lastName,facebookToken);
+    NSLog(@"self.delegate = %@",self.delegate);
+
+    [SVProgressHUD showWithStatus:ACLocalizedString(@"AUTHENTICATING",@"AUTHENTICATING") maskType:SVProgressHUDMaskTypeClear];
+    
+    [ArtAPI
+     requestForAccountAuthenticateWithSocialUID:facebookUID emailAddress:emailAddress firstName:firstName lastName:lastName regToken:regToken
+     uidSignature:uidSignature signatureTimestamp:signatureTimestamp   success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+         //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         
+         
+         AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+         if(currAppLoc==AppLocationNone){
+             NSDictionary *accountDetails = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"Account"];
+             NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+             NSString *accountId = [[profileInfo objectForKeyNotNull:@"AccountId"] stringValue];
+             
+             [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
+             [[NSUserDefaults standardUserDefaults] synchronize];
+             //NSLog(@"self.delegate = %@",self.delegate);
+             [self getDefaultMobileGallery];
+             
+         }else{
+             NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
+             NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
+             [ArtAPI setAuthenticationToken:authTok];
+             
+             // Call Delegate
+             if (self.delegate && [self.delegate respondsToSelector:@selector(createAccountSuccess)]) {
+                 [self.delegate createAccountSuccess];
+             }
+             
+             [self closeButtonAction:nil];
+         }
+         
+     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+         // Failure
+         [SVProgressHUD dismiss];
+         
+         //NSLog(@"request failed for URL: %@", request.URL);
+         if(JSON && ACIsStringWithAnyText([JSON objectForKeyNotNull:@"APIErrorMessage"])){
+             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"Login Failed",@"Login Failed")
+                                                                 message:[JSON objectForKeyNotNull:@"APIErrorMessage"]
+                                                                delegate:nil cancelButtonTitle:ACLocalizedString(@"OK", nil)
+                                                       otherButtonTitles:nil];
+             [alertView show];
+         } else {
+             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ACLocalizedString(@"An error occurred. Please try again.",@"An error occurred. Please try again.")
+                                                                 message:nil
+                                                                delegate:nil
+                                                       cancelButtonTitle:ACLocalizedString(@"OK", nil)
+                                                       otherButtonTitles:nil];
+             [alertView show];
+             
+         }
+         
+         // Call Delegate
+         if (self.delegate && [self.delegate respondsToSelector:@selector(createAccountFailure)]) {
+             [self.delegate createAccountFailure];
+         }
+         
+     }];
+}
+
+- (void) facebookButtonTapped: (id) sender
+{
+    if([Gigya APIKey])
+    {
+        [Gigya logoutWithCompletionHandler:^(GSResponse *response, NSError *error) {
+            
+            [Gigya loginToProvider:@"facebook"
+                        parameters:nil
+                 completionHandler:^(GSUser *user, NSError *error) {
+                     if (!error) {
+                         /*NSLog(@" JSON Succes Response Gigya %@",user.JSONString);
+                          NSLog(@"works");
+                          NSLog(@"Name = %@",user[@"firstName"]);
+                          NSLog(@"UID = %@",user[@"UID"]); */
+                         
+                         NSString *uidSignature = [[user objectForKey:@"UIDSig"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                         NSString *signatureTimestamp = [user objectForKey:@"signatureTimestamp"];
+                         
+                         FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
+                         
+                         [self authenticateWithFacebookUID:user[@"UID"]
+                                              emailAddress:[user objectForKey:@"email"]
+                                                 firstName:[user objectForKey:@"firstName"]
+                                                  lastName:[user objectForKey:@"lastName"]
+                                                  regToken:accessTokenData.accessToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp];
+                         
+                         
+                     }
+                     else {
+                         NSLog(@"error Description %@",error.description);
+                         if(403043 == error.code)
+                         {
+                             NSString *uidSignature = @"";
+                             NSString *signatureTimestamp = @"";
+                             
+                             FBAccessTokenData * accessTokenData = [FBSession activeSession].accessTokenData;
+                             
+                             [self authenticateWithFacebookUID:@""
+                                                  emailAddress:[user objectForKey:@"email"]
+                                                     firstName:[user objectForKey:@"firstName"]
+                                                      lastName:[user objectForKey:@"lastName"]
+                                                      regToken:accessTokenData.accessToken uidSignature:uidSignature signatureTimestamp:signatureTimestamp];
+                         }
+                     }
+                 }];
+        }];
+    }
+    else
+    {
+        if([ArtAPI sharedInstance].gigyaApiKey)
+        {
+            [Gigya initWithAPIKey:[ArtAPI sharedInstance].gigyaApiKey];
+        }
+        NSLog(@"Gigya is not Initialized");
+    }
     //NSLog(@"facebookButtonTapped");
-    [self openSessionWithAllowLoginUI: YES];
+    //[self openSessionWithAllowLoginUI: YES];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -451,11 +579,17 @@
         if (self.delegate && [self.delegate respondsToSelector:@selector(createAccountSuccess)]) {
             [self.delegate createAccountSuccess];
         }
+        
+        [self closeButtonAction:nil];
+        [SVProgressHUD dismiss];
+
     }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
         if (self.delegate && [self.delegate respondsToSelector:@selector(createAccountFailure)]) {
             [self.delegate createAccountFailure];
         }
+        [self closeButtonAction:nil];
+        [SVProgressHUD dismiss];
     }];
 }
 
