@@ -385,12 +385,17 @@
                  [[NSUserDefaults standardUserDefaults] setObject:accountId forKey:@"USER_ACCOUNT_ID"];
                  [[NSUserDefaults standardUserDefaults] synchronize];
                  
+                 [self closeButtonAction:nil];
+                 [SVProgressHUD dismiss];
                  [self getDefaultMobileGallery];
              }else{
                  NSDictionary *responseDict = [JSON objectForKeyNotNull:@"d"];
                  NSString *authTok = [responseDict objectForKeyNotNull:@"AuthenticationToken"];
                  [ArtAPI setAuthenticationToken:authTok];
                  
+                 [SVProgressHUD dismiss];
+                 [self closeButtonAction:nil];
+
                  // Call Delegate (Deprecate)
 //                 if (self.delegate && [self.delegate respondsToSelector:@selector(loginSuccess)]) {
 //                     [self.delegate loginSuccess];
