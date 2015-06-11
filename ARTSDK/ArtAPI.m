@@ -476,7 +476,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 -(void) requestForGalleryGetUserDefaultGallery:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                      failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
-    NSDictionary *parameters = [NSDictionary dictionaryWithObject:@"DefaultMyPhotosGallery" forKey:@"defaultGalleryType"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObject:@"DefaultMobileGallery"/*@"DefaultMyPhotosGallery"*/ forKey:@"defaultGalleryType"];
     
     // Create Request
     NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
