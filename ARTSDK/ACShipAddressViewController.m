@@ -1816,10 +1816,21 @@ int nameOrigin=0;
     peoplePicker.peoplePickerDelegate = self;
     peoplePicker.navigationItem.title = (0 == contactBtn.tag)?[ACConstants getLocalizedStringForKey:@"CHOOSE_CONTACT" withDefaultValue:@"Choose Contact"]:[ACConstants getLocalizedStringForKey:@"CHOOSE_EMAIL" withDefaultValue:@"Choose Email"];
     peoplePicker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self.view.window.rootViewController presentViewController:peoplePicker animated:YES completion:^{//CS;- as presenting peopleNavigationController on self is not supported, we will present this navController on rootNavController where the reference of peopleNavigationController will be there and we can avoid the exception
-        contactBtn.enabled = YES;
-        
-    }];
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    if(currAppLoc == AppLocationNone) //ArtCircles 
+    {
+        [self.navigationController presentViewController:peoplePicker animated:YES completion:^{//CS;- as presenting peopleNavigationController on self is not supported, we will present this navController on rootNavController where the reference of peopleNavigationController will be there and we can avoid the exception
+            contactBtn.enabled = YES;
+            
+        }];
+    }
+    else
+    {
+        [self.view.window.rootViewController presentViewController:peoplePicker animated:YES completion:^{//CS;- as presenting peopleNavigationController on self is not supported, we will present this navController on rootNavController where the reference of peopleNavigationController will be there and we can avoid the exception
+            contactBtn.enabled = YES;
+            
+        }];
+    }
 }
 
 -(IBAction)goBack:(id)sender
