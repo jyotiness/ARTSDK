@@ -191,37 +191,22 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         NSLog(@"start() sessionID == nil or is expired, get new sessionID");
         // Initialize a new session
         [self initilizeApplicationId:self.applicationId apiKey:self.apiKey twoDigitISOLanguageCode:self.twoDigitISOLanguageCode twoDigitISOCountryCode:self.twoDigitISOCountryCode success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            
             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            [self fetchGigyaToken];
+
             //NSLog(@"start() Check Session ID");
             
-        }
-                             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
                                  NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
                              }];
-    } else {
+    }
+    else
+    {
         NSLog(@"start() Check Session ID");
         [self catalogGetSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            NSLog(@"Session Valid - Done");
             
-            if(![ArtAPI sharedInstance].gigyaApiKey) // If Gigya token is available already
-            {
-                [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:@"_config" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                    
-                    NSLog(@"contentBlockDictionary = %@",JSON);
-                    
-                    NSDictionary *contentBlock  = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"ContentBlock"];
-                    
-                    NSString *contentBlockString = [contentBlock objectForKey:@"LargeTextBlock"];
-                    NSDictionary *contentBlockDict = [[XMLDictionaryParser sharedInstance] dictionaryWithString:contentBlockString];
-                    NSDictionary *configDict = [[contentBlockDict objectForKeyNotNull:@"APPLICATION"] objectForKeyNotNull:@"CONFIGURATION"];
-                    NSString *gigyaKeyString = [configDict objectForKeyNotNull:@"GIGYAAPIKEY"];
-                    [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                    
-                    NSLog(@"Content block call Failed");
-                }];
-            }
+            [self fetchGigyaToken];
 
             // Refresh Mobile Gallery
             if( [self isLoggedIn] ){
@@ -246,6 +231,29 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     }
     
     
+}
+
+- (void)fetchGigyaToken
+{
+    if(![ArtAPI sharedInstance].gigyaApiKey) // If Gigya token is available already
+    {
+        [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:@"_config" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            
+            NSLog(@"contentBlockDictionary = %@",JSON);
+            
+            NSDictionary *contentBlock  = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"ContentBlock"];
+            
+            NSString *contentBlockString = [contentBlock objectForKey:@"LargeTextBlock"];
+            NSDictionary *contentBlockDict = [[XMLDictionaryParser sharedInstance] dictionaryWithString:contentBlockString];
+            NSDictionary *configDict = [[contentBlockDict objectForKeyNotNull:@"APPLICATION"] objectForKeyNotNull:@"CONFIGURATION"];
+            NSString *gigyaKeyString = [configDict objectForKeyNotNull:@"GIGYAAPIKEY"];
+            [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            
+            NSLog(@"Content block call Failed");
+        }];
+    }
 }
 
 + (void) initilizeApp {
@@ -703,7 +711,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 newPassword, @"newPassword",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountChangePassword
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -740,7 +748,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 password, @"password",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountAuthenticate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -754,6 +762,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         
         // Save Email Address
         self.email = emailAddress;
+        
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -927,7 +936,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 password, @"password",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountCreate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -977,7 +986,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 lastName, @"lastname",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountCreate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -1027,7 +1036,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 lastName, @"lastname",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountCreateExtented
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -1113,7 +1122,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 emailAddress, @"emailAddress",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountRetrievePassword
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -2527,7 +2536,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                        emailAddress, @"emailAddress",
                                        nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceCartAddCreditCard
                                               usingEndpoint:kEndpointPaymentAPI
                                                  withParams:parameters
@@ -3477,7 +3486,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     
-    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe]){
+    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || [resource isEqualToString:kResourceAccountAuthenticate]){
         path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
     }
     
@@ -3486,6 +3495,11 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     }
     
     if([resource isEqualToString:kResourceCartAddGiftCertificatePayment]){
+        httpClient.parameterEncoding = AFJSONParameterEncoding;
+    }
+    
+    if([resource isEqualToString:kResourceAccountAuthenticate])
+    {
         httpClient.parameterEncoding = AFJSONParameterEncoding;
     }
     
