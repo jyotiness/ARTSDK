@@ -575,7 +575,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:propertyKey, @"propertyKey", propertyValue, @"propertyValue",nil];
     
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceAccountUpdateProperty
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -711,7 +711,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 newPassword, @"newPassword",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceAccountChangePassword
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -748,7 +748,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 password, @"password",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceAccountAuthenticate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -936,7 +936,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 password, @"password",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceAccountCreate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -986,7 +986,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 lastName, @"lastname",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceAccountCreate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -1036,7 +1036,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 lastName, @"lastname",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceAccountCreateExtented
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -1122,7 +1122,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 emailAddress, @"emailAddress",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceAccountRetrievePassword
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -2536,7 +2536,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                        emailAddress, @"emailAddress",
                                        nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceCartAddCreditCard
                                               usingEndpoint:kEndpointPaymentAPI
                                                  withParams:parameters
@@ -3486,7 +3486,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     
-    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || [resource isEqualToString:kResourceAccountAuthenticate]){
+    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] /*|| [resource isEqualToString:kResourceAccountAuthenticate]*/){
         path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
     }
     
