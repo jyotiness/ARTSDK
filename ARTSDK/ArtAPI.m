@@ -484,7 +484,17 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 -(void) requestForGalleryGetUserDefaultGallery:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                      failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
-    NSDictionary *parameters = [NSDictionary dictionaryWithObject:@"DefaultMobileGallery"/*@"DefaultMyPhotosGallery"*/ forKey:@"defaultGalleryType"];
+    NSDictionary *parameters = nil;
+    AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
+    if(currAppLoc == AppLocationDefault) // ArtCircles
+    {
+        parameters = [NSDictionary dictionaryWithObject:@"DefaultMobileGallery" forKey:@"defaultGalleryType"];
+    }
+    else
+    {
+        parameters = [NSDictionary dictionaryWithObject:@"DefaultMyPhotosGallery" forKey:@"defaultGalleryType"];
+    }
+       
     
     // Create Request
     NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
