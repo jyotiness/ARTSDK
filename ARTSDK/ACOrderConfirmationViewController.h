@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *customerSupportLabel;
 @property (weak, nonatomic) IBOutlet UIButton *emailLabel;
 @property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
+@property (weak, nonatomic) IBOutlet UIView *detailsHolderView;
 
 - (IBAction)confirmIButtonTapped:(UIButton *)sender;
 - (IBAction)emailButtonTapped:(UIButton *)sender;

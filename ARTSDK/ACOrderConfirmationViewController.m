@@ -128,6 +128,15 @@
     self.screenName = @"Order Confirmation Screen";
 }
 
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    CGRect frame = self.detailsHolderView.frame;
+    frame.origin.y = CGRectGetMidY(self.view.frame) + 85;
+    self.detailsHolderView.frame = frame;
+}
+
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO];
