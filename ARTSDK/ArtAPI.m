@@ -585,7 +585,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:propertyKey, @"propertyKey", propertyValue, @"propertyValue",nil];
     
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountUpdateProperty
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
