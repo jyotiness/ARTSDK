@@ -486,7 +486,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 {
     NSDictionary *parameters = nil;
     AppLocation currAppLoc = [ACConstants getCurrentAppLocation];
-    if(currAppLoc == AppLocationDefault) // ArtCircles
+    if((currAppLoc == AppLocationDefault) || (currAppLoc == AppLocationNone)) // ArtCircles or ArtDials
     {
         parameters = [NSDictionary dictionaryWithObject:@"DefaultMobileGallery" forKey:@"defaultGalleryType"];
     }
