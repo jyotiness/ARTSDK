@@ -670,6 +670,14 @@
         NSDictionary *responseGallery = [defaultGalleryResponse objectForKeyNotNull:@"Gallery"];
 //        NSArray *responseGalleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
 //        self.data = responseGalleryItems;
+        
+        NSArray * galleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
+        if(galleryItems){
+            //NSLog(@"setMobileGalleryItems: %@", galleryItems);
+            [[ArtAPI sharedInstance] setMobileGalleryItems: galleryItems];
+            //NSLog(@"MobileGalleryItems: %@", [ArtAPI mobileGalleryItems]);
+        }
+
         NSDictionary *galleryAttributes = [responseGallery objectForKeyNotNull:@"GalleryAttributes"];
         NSString *defaultGalleryID = [galleryAttributes objectForKeyNotNull:@"GalleryId"];
         NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
