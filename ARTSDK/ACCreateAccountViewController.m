@@ -576,6 +576,20 @@
         [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"USER_DEFAULT_GALLERY_RESPONSE"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
+        NSDictionary *responseGallery = [defaultGalleryResponse objectForKeyNotNull:@"Gallery"];
+        NSArray * galleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
+        if([galleryItems count]){
+            //NSLog(@"setMobileGalleryItems: %@", galleryItems);
+            [[ArtAPI sharedInstance] setMobileGalleryItems: galleryItems];
+        }
+        
+        NSDictionary *galleryAttributes = [responseGallery objectForKeyNotNull:@"GalleryAttributes"];
+        NSString *defaultGalleryID = [galleryAttributes objectForKeyNotNull:@"GalleryId"];
+        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+        f.numberStyle = NSNumberFormatterDecimalStyle;
+        NSNumber *myNumber = [f numberFromString:defaultGalleryID];
+        [ArtAPI sharedInstance].mobileGalleryID = myNumber;
+        
         if (self.delegate && [self.delegate respondsToSelector:@selector(createAccountSuccess)]) {
             [self.delegate createAccountSuccess];
         }

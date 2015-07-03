@@ -672,10 +672,9 @@
 //        self.data = responseGalleryItems;
         
         NSArray * galleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
-        if(galleryItems){
+        if([galleryItems count]){
             //NSLog(@"setMobileGalleryItems: %@", galleryItems);
             [[ArtAPI sharedInstance] setMobileGalleryItems: galleryItems];
-            //NSLog(@"MobileGalleryItems: %@", [ArtAPI mobileGalleryItems]);
         }
 
         NSDictionary *galleryAttributes = [responseGallery objectForKeyNotNull:@"GalleryAttributes"];
