@@ -768,11 +768,31 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
-        
-        // Save Email Address
-        self.email = emailAddress;
-        
+
+        NSDictionary *responseDictionary = [JSON objectForKey:@"d"];
+        NSString *authenticationToken = [responseDictionary objectForKey:@"AuthenticationToken"];
+        if(!authenticationToken || [authenticationToken isKindOfClass:[NSNull class]])
+        {
+            NSDictionary *operationResponseDict = [responseDictionary objectForKey:@"OperationResponse"];
+            NSArray *errosArray = [ operationResponseDict objectForKeyNotNull:@"Errors"];
+            if([errosArray count])
+            {
+                NSDictionary *errorDict = [errosArray objectAtIndex:0];
+                NSString *msg = [errorDict objectForKeyNotNull:@"ErrorMessage"];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+        }
+        else
+        {
+            NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [responseDictionary objectForKeyNotNull:@"DateExpires"]];
+            [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
+            [self persistAuthenticationToken:authenticationToken];
+            // Save Email Address
+            self.email = emailAddress;
+        }
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -836,12 +856,20 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSDictionary *responseDictionary = [JSON objectForKey:@"d"];
+        NSString *authenticationToken = [responseDictionary objectForKey:@"AuthenticationToken"];
+        NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [responseDictionary objectForKeyNotNull:@"DateExpires"]];
+        [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
+        [self persistAuthenticationToken:authenticationToken];
+
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
         
         // Save Email Address, firstName, lastName
         self.email = emailAddress;
         self.firstName = firstName;
         self.lastName = lastName;
+        
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -912,13 +940,20 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSDictionary *responseDictionary = [JSON objectForKey:@"d"];
+        NSString *authenticationToken = [responseDictionary objectForKey:@"AuthenticationToken"];
+        NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [responseDictionary objectForKeyNotNull:@"DateExpires"]];
+        [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
+        [self persistAuthenticationToken:authenticationToken];
+
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
         
         // Save Email Address, firstName, lastName
         self.email = emailAddress;
         self.firstName = firstName;
         self.lastName = lastName;
-        
+
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
         failure(request, response, error, JSON);
@@ -955,6 +990,13 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSDictionary *responseDictionary = [JSON objectForKey:@"d"];
+        NSString *authenticationToken = [responseDictionary objectForKey:@"AuthenticationToken"];
+        NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [responseDictionary objectForKeyNotNull:@"DateExpires"]];
+        [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
+        [self persistAuthenticationToken:authenticationToken];
+
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
         
         // Save email addresss
@@ -1005,6 +1047,13 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSDictionary *responseDictionary = [JSON objectForKey:@"d"];
+        NSString *authenticationToken = [responseDictionary objectForKey:@"AuthenticationToken"];
+        NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [responseDictionary objectForKeyNotNull:@"DateExpires"]];
+        [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
+        [self persistAuthenticationToken:authenticationToken];
+
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
         
         // Save email addresss
@@ -1055,10 +1104,31 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
         
-        // Save email addresss
-        self.email = emailAddress;
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+
+        NSDictionary *responseDictionary = [JSON objectForKey:@"d"];
+        NSString *authenticationToken = [responseDictionary objectForKey:@"AuthenticationToken"];
+        if(!authenticationToken || [authenticationToken isKindOfClass:[NSNull class]])
+        {
+            NSDictionary *operationResponse = [responseDictionary objectForKey:@"OperationResponse"];
+            NSArray *errosArray = [ operationResponse objectForKeyNotNull:@"Errors"];
+            if([errosArray count])
+            {
+                NSDictionary *errorDict = [errosArray objectAtIndex:0];
+                NSString *msg = [errorDict objectForKeyNotNull:@"ErrorMessage"];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+        }
+        else
+        {
+            NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [responseDictionary objectForKeyNotNull:@"DateExpires"]];
+            [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
+            [self persistAuthenticationToken:authenticationToken];
+            // Save email addresss
+            self.email = emailAddress;
+        }
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -2546,7 +2616,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                        emailAddress, @"emailAddress",
                                        nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceCartAddCreditCard
                                               usingEndpoint:kEndpointPaymentAPI
                                                  withParams:parameters
@@ -3496,7 +3566,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     
-    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] /*|| [resource isEqualToString:kResourceAccountAuthenticate]*/){
+    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || [resource isEqualToString:kResourceAccountAuthenticate] || [resource isEqualToString:kResourceCartAddCreditCard] ){
         path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
     }
     
@@ -3576,7 +3646,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
             [json setObjectNotNull:t forKey:@"APIResponseType"];
             
             // Extract Session Token
-            if ([t isEqualToString:@"SessionResponse"]) {
+         /*   if ([t isEqualToString:@"SessionResponse"]) {
                 NSString *sessionID = [responseDictionary objectForKey:@"SessionId"];
                 [self persistSessionID:sessionID];
             }
@@ -3587,7 +3657,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                 NSDate *authenticationTokenExpires = [ArtAPI extractDataFromAPIString: [responseDictionary objectForKeyNotNull:@"DateExpires"]];
                 [self setAuthenticationTokenExpirationDate:authenticationTokenExpires];
                 [self persistAuthenticationToken:authenticationToken];
-            }
+            } */ //Jobin: Supporting POST calls
             
         }
         else {
