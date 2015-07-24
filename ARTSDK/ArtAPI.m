@@ -2616,7 +2616,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                        emailAddress, @"emailAddress",
                                        nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
                                                    resource:kResourceCartAddCreditCard
                                               usingEndpoint:kEndpointPaymentAPI
                                                  withParams:parameters
@@ -3566,7 +3566,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     
-    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || [resource isEqualToString:kResourceAccountAuthenticate] || [resource isEqualToString:kResourceCartAddCreditCard] ){
+    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || [resource isEqualToString:kResourceAccountAuthenticate] /*|| [resource isEqualToString:kResourceCartAddCreditCard] */){
         path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
     }
     
