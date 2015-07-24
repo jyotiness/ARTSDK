@@ -3484,11 +3484,8 @@ int nameOrigin=0;
 
 -(void)chooseAdressAtIndex:(int)index
 {
-    
     NSDictionary *address      = (__bridge_transfer NSDictionary *)ABMultiValueCopyValueAtIndex(self.contactAdresses, index);
-    self.postalCode = [address objectForKey:@"ZIP"];
-    self.city = [address objectForKey:@"City"];
-    
+
     NSString *countryFromAddress = [[[address objectForKey:@"Country"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] uppercaseString];
     
     NSString *countryCodeFromAddress = [[[address objectForKeyNotNull:@"CountryCode"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] uppercaseString];
@@ -3499,6 +3496,16 @@ int nameOrigin=0;
     if([[countryCodeFromAddress uppercaseString] isEqualToString:@"USA"])
         countryCodeFromAddress = @"US";
     
+    if(([ACConstants getCurrentAppLocation] == AppLocationSwitchArt) && !([@"US" isEqualToString:countryCodeFromAddress])) // For SwitchArt, Shipping only to US - SWIT-238
+    {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Address" message:@"Select a Valid US Address" delegate:nil  cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    
+    self.postalCode = [address objectForKey:@"ZIP"];
+    self.city = [address objectForKey:@"City"];
     NSLog(@"%@",address);
     
     for(NSDictionary *country in self.countries)
