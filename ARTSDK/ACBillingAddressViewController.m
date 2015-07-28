@@ -3349,6 +3349,16 @@
     if([[countryCodeFromAddress uppercaseString] isEqualToString:@"USA"])
         countryCodeFromAddress = @"US";
     
+    if(([ACConstants getCurrentAppLocation] == AppLocationSwitchArt) && !([@"US" isEqualToString:countryCodeFromAddress])) // For SwitchArt, Shipping only to US - SWIT-238
+    {
+        countryCodeFromAddress = @"US";
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Address" message:@"At the moment, we are shipping to US address only" delegate:nil  cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+        
+        // return;
+    }
+    
     for(NSDictionary *country in self.countries)
     {
         NSString *loopCountryName = [[[country objectForKeyNotNull:@"Name"]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] uppercaseString];

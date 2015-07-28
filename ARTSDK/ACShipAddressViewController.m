@@ -3498,10 +3498,12 @@ int nameOrigin=0;
     
     if(([ACConstants getCurrentAppLocation] == AppLocationSwitchArt) && !([@"US" isEqualToString:countryCodeFromAddress])) // For SwitchArt, Shipping only to US - SWIT-238
     {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Address" message:@"Select a Valid US Address" delegate:nil  cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        countryCodeFromAddress = @"US";
+
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Address" message:@"At the moment, we are shipping to US address only" delegate:nil  cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
-        return;
+
+       // return;
     }
     
     self.postalCode = [address objectForKey:@"ZIP"];
