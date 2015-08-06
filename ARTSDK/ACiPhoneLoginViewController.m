@@ -17,6 +17,7 @@
 #import "NSString+Additions.h"
 #import "SFHFKeychainUtils.h"
 #import "Gigya.h"
+#import "NSArray+Addition.h"
 
 #define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
@@ -304,7 +305,7 @@
                                                     dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
     if (cell==nil)
     {
-        cell = (ACLoginCustomCell *)[[ACBundle loadNibNamed:@"ACLoginCustomCell" owner:self options:nil] objectAtIndex:0];
+        cell = (ACLoginCustomCell *)[[ACBundle loadNibNamed:@"ACLoginCustomCell" owner:self options:nil] objectAtValidIndex:0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
@@ -334,10 +335,10 @@
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     if(self.loginMode == LoginModeSignup)
     {
-        cell.textLabel.text = [ mDataSourceArray objectAtIndex:indexPath.row];
+        cell.textLabel.text = [ mDataSourceArray objectAtValidIndex:indexPath.row];
     }
     else{
-        cell.textLabel.text = [ mDataSourceArray objectAtIndex:indexPath.row + 2];
+        cell.textLabel.text = [ mDataSourceArray objectAtValidIndex:indexPath.row + 2];
     }
     
     cell.textField.text = @"";
@@ -849,7 +850,7 @@
                      NSArray *errorsArray = [operationResponseDict objectForKey:@"Errors"];
                      if(errorsArray){
                          
-                         NSDictionary *firstError = [errorsArray objectAtIndex:0];
+                         NSDictionary *firstError = [errorsArray objectAtValidIndex:0];
                          
                          if(firstError){
                              
@@ -978,7 +979,7 @@
 - (void)saveToCache:(UIImage *)image name:(NSString *)name {
     NSString *path;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    path = [paths objectAtIndex:0];
+    path = [paths objectAtValidIndex:0];
     path = [path stringByAppendingPathComponent:name];
     
     [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
