@@ -98,6 +98,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 
 @interface ACConstants : NSObject
 
+@property (nonatomic,strong) NSString *pushToken;
+@property (nonatomic,strong) NSString *environmentString;
+
 +(AppLocation)getCurrentAppLocation;
 
 +(NSString *)getLocalizedStringForKey:(NSString *)key withDefaultValue:(NSString *)defaultValue;
@@ -121,6 +124,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 +(NSString *)getCardIOToken;
 +(NSString *)getUpperCaseStringIfNeededForString:(NSString *)normalString;
 +(NSString *)getCutomizedUrlForUrl:(NSString *)urlString forType:(ACCustomSharingType)type;
++(void)setPushToken:(NSString *)newToken;
++(NSString*)getPushToken;
++(void)setEnvironment:(NSString *)environment;
++(NSString*)getEnvironment;
 
 @end
 

@@ -90,6 +90,8 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 + (void)start;
 
++ (void) startAPI;
+
 + (void) cancelRequest;
 
 // Use this method when starting your application all by itself (Not in conjunction with ACAPI)

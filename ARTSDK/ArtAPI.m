@@ -21,7 +21,7 @@
 
 
 // Art.com API
-NSString* const kArtAPIUrl = @"api.art.com";
+//NSString* const kArtAPIUrl = @"api.art.com";
 NSString* const kProtocolSecure = @"https://";
 NSString* const kProtocolDefault = @"http://";
 
@@ -174,6 +174,14 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 + (void) startAppWithAPIKey:(NSString *)apiKey
                   applicationId:(NSString *)applicationId {
     [[ArtAPI sharedInstance] startAppWithAPIKey:apiKey applicationId:applicationId];
+}
+
++ (void) startAPI {
+    
+    NSString *apiKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIKey"];
+    NSString *applicationID = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ApplicationID"];
+    
+    [[ArtAPI sharedInstance] startAppWithAPIKey:apiKey applicationId:applicationID];
 }
 
 - (void) startAppWithAPIKey:(NSString *)apiKey
@@ -721,7 +729,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 newPassword, @"newPassword",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountChangePassword
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -758,7 +766,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 password, @"password",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountAuthenticate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -981,7 +989,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 password, @"password",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountCreate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -1038,7 +1046,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 lastName, @"lastname",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
                                                    resource:kResourceAccountCreate
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
@@ -3556,7 +3564,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         protocol = kProtocolSecure;
     }
     
-    NSString * host = [NSString stringWithFormat:@"%@%@", protocol,kArtAPIUrl];
+    NSString * host = [NSString stringWithFormat:@"%@%@", protocol,[ACConstants getEnvironment]/*kArtAPIUrl*/];
     
     NSString * path = [NSString stringWithFormat:@"/%@.svc/jsonp/%@",endpoint, resource ];
     
@@ -3566,7 +3574,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     
-    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || [resource isEqualToString:kResourceAccountAuthenticate] /*|| [resource isEqualToString:kResourceCartAddCreditCard] */){
+    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || [resource isEqualToString:kResourceAccountAuthenticate] /* || [resource isEqualToString:kResourceAccountCreateExtented]*/){
         path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
     }
     
@@ -3586,7 +3594,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [httpClient defaultValueForHeader:@"Accept"];
     //NSLog(@"httpClient: %@ method: %@ path: %@ params: %@", httpClient, method, path, params);
     NSMutableURLRequest *request = [httpClient requestWithMethod:method path:path parameters:params];
-    //NSLog(@"request: %@", request);
+    NSLog(@"request: %@", request);
     return request;
 }
 

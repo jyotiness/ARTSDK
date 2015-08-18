@@ -15,6 +15,44 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
 
 @implementation ACConstants
 
++(void)initialize
+{
+    NSString *environment = [[NSUserDefaults standardUserDefaults] objectForKey:@"ENVIRONMENT-HOST"];
+    if(!environment)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:@"api.art.com" forKey:@"ENVIRONMENT-HOST"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
++(void)setPushToken:(NSString *)newToken
+{
+    if(newToken)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:newToken forKey:@"PUSH-TOKEN"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
++(NSString*)getPushToken
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"PUSH-TOKEN"];
+}
+
++(void)setEnvironment:(NSString *)environment
+{
+    if(environment)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:environment forKey:@"ENVIRONMENT-HOST"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
++(NSString*)getEnvironment
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"ENVIRONMENT-HOST"];
+}
+
 
 +(AppLocation)getCurrentAppLocation
 {
