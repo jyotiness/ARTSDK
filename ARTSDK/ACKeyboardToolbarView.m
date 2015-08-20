@@ -52,11 +52,40 @@
     // Create Done Button
     UIButton * btnDone = [UIButton buttonWithType:UIButtonTypeSystem];
     btnDone.tintColor = APP_TINT_COLOR;
-    CGFloat xOrigin = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? [UIScreen mainScreen].bounds.size.width-70.0 : self.bounds.size.width - 70.0 ;
+    btnDone.tag = 999;
+    
+    CGFloat xOrigin = 0;
+    
+    if(self.isModalKeyboard)
+    {
+        xOrigin = self.bounds.size.width - 70;
+    }
+    else
+    {
+       xOrigin = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? [UIScreen mainScreen].bounds.size.width-70.0 : self.bounds.size.width - 70.0 ;
+    }
+    
     [btnDone setFrame:CGRectMake(xOrigin, 0.0f, 70.0f, 40.0f)];
     [btnDone setTitle:ACLocalizedString(@"DONE", @"DONE") forState:UIControlStateNormal];
     [btnDone addTarget:self action:@selector(doneButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btnDone];
+}
+
+-(void)layoutDoneButton
+{
+    UIButton *doneButton = [self viewWithTag:999];
+    CGFloat xOrigin = 0;
+    
+    if(self.isModalKeyboard)
+    {
+        xOrigin = self.bounds.size.width - 70;
+    }
+    else
+    {
+        xOrigin = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? [UIScreen mainScreen].bounds.size.width-70.0 : self.bounds.size.width - 70.0 ;
+    }
+    
+    [doneButton setFrame:CGRectMake(xOrigin, 0.0f, 70.0f, 40.0f)];
 }
 
 -(void) nextPrevButtonPressed: (id) sender {
@@ -81,7 +110,7 @@
 
 -(void) doneButtonPressed: (id) sender {
     // Call Delegate
-    if (self.toolbarDelegate && [self.toolbarDelegate respondsToSelector:@selector(keyboardToolbar:didSelectDone:)]) {
+    if (self.toolbarDelegate && [self.toolbarDelegate respondsToSelector:@selector(keyboardToolbar: didSelectDone:)]) {
         [self.toolbarDelegate keyboardToolbar:self didSelectDone:sender];
     }
 }

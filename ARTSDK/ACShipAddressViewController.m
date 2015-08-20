@@ -576,6 +576,8 @@ int nameOrigin=0;
         ACKeyboardToolbarView * toolbar = [[ACKeyboardToolbarView alloc] initWithFrame:CGRectMake(0, 0,screenWidth, 44)];
         toolbar.toolbarDelegate = self;
         toolbar.tag = 2;
+        toolbar.isModalKeyboard = YES;
+        [toolbar layoutDoneButton];
         
         [pickerHolderView addSubview:toolbar];
         [pickerHolderView addSubview:self.countrypickerView];

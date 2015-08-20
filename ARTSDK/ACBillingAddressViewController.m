@@ -3305,7 +3305,9 @@
     self.inputAccView = [[ACKeyboardToolbarView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 40)];
     self.inputAccView.toolbarDelegate = self;
 
-    
+    self.inputAccView.isModalKeyboard = YES;
+    [self.inputAccView layoutDoneButton];
+
     UIView *pickerHeadView = inputAccView;
     pickerHeadView.alpha = 1.0f;
     CGRect pickerHeadFrame = pickerHeadView.frame;

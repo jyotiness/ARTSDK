@@ -13,9 +13,13 @@
 
 @interface ACKeyboardToolbarView : UIToolbar
 @property (assign, nonatomic) id <ACKeyboardToolbarDelegate> toolbarDelegate;
+@property (assign, nonatomic)BOOL isModalKeyboard;
+
 //@property (nonatomic, assign) NSIndexPath *cellIndexPath;
 
 - (id)initWithFrame:(CGRect)frame hideNextPrevButtons: (BOOL) hideNextPrevButtons;
+- (void)layoutDoneButton;
+
 @end
 
 @protocol ACKeyboardToolbarDelegate<NSObject>

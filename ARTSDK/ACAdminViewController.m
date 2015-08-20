@@ -10,9 +10,6 @@
 #import "ACConstants.h"
 #import "ArtAPI.h"
 
-NSString* const kAPIKey = @"AAB349013DDE43D29585BAD7C272CA36";
-NSString* const kApplicationId = @"2B72A930C4B24CD19AF168CA75EAFB71";
-
 @interface ACAdminViewController ()
 
 @property(nonatomic,strong) UITableView *tableView;
@@ -28,7 +25,7 @@ NSString* const kApplicationId = @"2B72A930C4B24CD19AF168CA75EAFB71";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.environmentsArray = @[@"api.art.com",@"developer-api.art.com",@"qa-api.art.com",@"qa1-api.art.com",@"rel1-api.art.com",/*@"rel2-api.art.com",*/@"dev-api.art.com"];
+    self.environmentsArray = @[@"api.art.com",@"developer-api.art.com",@"qa1-api.art.com",@"rel1-api.art.com",/*@"rel2-api.art.com",*/@"dev-api.art.com"];
     
     self.title = @"Environment Settings";
     
