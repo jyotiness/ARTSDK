@@ -989,8 +989,8 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                 password, @"password",
                                 nil];
     // Create Request
-    NSMutableURLRequest *request  = [self requestWithMethod:@"POST"
-                                                   resource:kResourceAccountCreate
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountCreateExtented
                                               usingEndpoint:kEndpointAccountAuthorizationAPI
                                                  withParams:parameters
                                             requiresSession:YES
@@ -3574,7 +3574,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:host]];
     
-    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || [resource isEqualToString:kResourceAccountAuthenticate] /* || [resource isEqualToString:kResourceAccountCreateExtented]*/){
+    if([resource isEqualToString:kResourceAccountUpdateProperty] || [resource isEqualToString:kResourceAccountSubscribe] || /*[resource isEqualToString:kResourceAccountCreate] ||*/ [resource isEqualToString:kResourceAccountAuthenticate] /*|| [resource isEqualToString:kResourceAccountCreateExtented]*/){
         path = [NSString stringWithFormat:@"/%@.svc/V2/jsonp/%@",endpoint, resource ];
     }
     
