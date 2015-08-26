@@ -449,7 +449,16 @@
     _cardReader = [[LTMagTekReader alloc] initWithDelegate:self andProtocolString:@"com.lilitab.p1"];
     #endif
     
+    
+    //PHOTOIOS-1333 edited by jyoti
+    if([self.pickerHolderView isDescendantOfView:self.view])
+    {
+        [self.pickerHolderView removeFromSuperview];
+    }
+    
     [self configureThePicker];
+    
+   
 }
 
 -(void)setHardCodedCreditCardTypes{
@@ -2490,6 +2499,8 @@
     scanViewController.useCardIOLogo = YES;
     //scanViewController.appToken = [ACConstants getCardIOToken];
     [self.navigationController presentViewController:scanViewController animated:YES completion:nil];
+   
+    
 }
 
 #pragma mark -  CardIODelegate Methods
