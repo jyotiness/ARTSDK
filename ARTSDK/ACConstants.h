@@ -128,6 +128,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 +(NSString*)getPushToken;
 +(void)setEnvironment:(NSString *)environment;
 +(NSString*)getEnvironment;
++(NSString*)getUploadURL;
++(NSString *)getKeyChainServiceName;
 
 @end
 

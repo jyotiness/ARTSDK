@@ -86,7 +86,8 @@
 
 - (void)loadView
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    CGRect frame = [UIScreen mainScreen].bounds;
+    UIView *view = [[UIView alloc] initWithFrame:frame];
     UITableView *tableView = [[UITableView alloc] initWithFrame:view.bounds];
     [view addSubview:tableView];
     tableView.delegate = self;

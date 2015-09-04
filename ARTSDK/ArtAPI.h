@@ -55,6 +55,8 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 @property (nonatomic, assign) CGFloat currentAspectRatio;
 @property (nonatomic, retain) NSNumber *uploadJPGQuality;
 @property (nonatomic, retain) NSString *galleryItemsCount;
+@property (nonatomic, assign) NSString *keyChainService;
+@property (nonatomic, assign) BOOL usePersistentIDForAuth;
 
 @property (nonatomic, assign) BOOL isDeviceConfigForUS;
 
@@ -86,8 +88,8 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                               apiKey:(NSString*)apiKey
              twoDigitISOLanguageCode:(NSString *)twoDigitISOLanguageCode
               twoDigitISOCountryCode:(NSString * )twoDigitISOCountryCode;
-+ (void) catalogGetSessionWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
-                              failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
++ (void) applicationGetForSessionWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success :(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
++ (void) catalogGetSessionWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success :(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 + (void)start;
 
 + (void) startAPI;
