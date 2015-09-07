@@ -603,7 +603,7 @@
 //    }
 }
 
-//code added by jyoti PHOTOIOS-1250
+//added by jyoti PHOTOIOS-1250
 
 -(void)keyboardWillShow:(NSNotification *)notiFication
 {
@@ -679,7 +679,7 @@
 }
 
 
-//Comment by jyoti PHOTOIOS-1250
+//Commented by jyoti PHOTOIOS-1250
 /*
 
 
