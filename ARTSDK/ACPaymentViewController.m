@@ -603,10 +603,92 @@
 //    }
 }
 
+//code added by jyoti PHOTOIOS-1250
+
 -(void)keyboardWillShow:(NSNotification *)notiFication
 {
+    //NSLog(@"keyboardWillShow");
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 270, 0.0);
+        self.paymentShippingTableView.contentInset = contentInsets;
+        self.paymentShippingTableView.scrollIndicatorInsets = contentInsets;
+        
+        if(self.selectedIndexPath){
+            [self.paymentShippingTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }else{
+            //nil - must be the header fields for login or sign up
+            //this is a hack because the login sign up text fields are in teh header
+            
+            float startPos = 70.0f;
+            CGPoint scrollToPoint = CGPointMake(0, startPos);
+            
+            if(self.couponCodeField){
+                float yPos = self.couponCodeField.frame.origin.y + startPos;
+                scrollToPoint = CGPointMake(0, yPos);
+            }
+            
+            
+            [self.paymentShippingTableView setContentOffset:scrollToPoint animated:YES];
+        }
+    }else{
+        //NSLog(@"iPad");
+        // Adjust table to fit keyboard
+        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 245, 0.0);
+        
+        if (self.selectedIndexPath.section > 0){
+            contentInsets = UIEdgeInsetsMake(0, 0, 320, 0);
+        }
+        
+        self.paymentShippingTableView.contentInset = contentInsets;
+        self.paymentShippingTableView.scrollIndicatorInsets = contentInsets;
+        [self.paymentShippingTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        
+       // self.didTapNext = NO;
+        
+    }
+}
+
+-(void)keyboardWillHide:(NSNotification *)notiFication
+{
+    //NSLog(@"keyboardWillHide");
+    //    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+    //        CGRect rect = self.shippingAddressTableView.frame;
+    //
+    //        //iPhone5 compatibility
+    //        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
+    //        if(screenHeight == 480){
+    //            //iphone no retina
+    //            rect.size.height = 416;
+    //        }else if(screenHeight == 960){
+    //            //iphone with retina
+    //            rect.size.height = 416;
+    //        }else{
+    //            //iphone5
+    //            rect.size.height = 504;
+    //        }
+    //        self.shippingAddressTableView.frame = rect;
+    //
+    //        //NSLog(@"Rect at Hide: %@", NSStringFromCGRect(rect));
+    //
+    //    } else {
+    // Adjust table to fit keyboard
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.paymentShippingTableView.contentInset = contentInsets;
+    self.paymentShippingTableView.scrollIndicatorInsets = contentInsets;
+    //    }
+}
+
+
+//Comment by jyoti PHOTOIOS-1250
+/*
+
+
+-(void)keyboardWillShow:(NSNotification *)notiFication
+{
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
+    {
         CGRect rect = self.paymentShippingTableView.frame;
+        
         
         //iPhone5 compatibility
         CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height*[UIScreen mainScreen].scale;
@@ -647,6 +729,7 @@
         self.paymentShippingTableView.frame = rect;
     }
 }
+ */
 
 -(void) processCartData
 {
@@ -817,6 +900,8 @@
 {
     if (textField == self.couponCodeField)
     {
+        
+
         UITableViewCell *cell = (UITableViewCell *)[textField superview];
         if([ cell isKindOfClass:[UITableViewCell class]])
             self.selectedIndexPath = [self.paymentShippingTableView indexPathForCell:cell];
