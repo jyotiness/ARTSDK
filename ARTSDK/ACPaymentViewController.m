@@ -604,7 +604,6 @@
 }
 
 //added by jyoti PHOTOIOS-1250
-
 -(void)keyboardWillShow:(NSNotification *)notiFication
 {
     //NSLog(@"keyboardWillShow");
@@ -647,7 +646,6 @@
         
     }
 }
-
 -(void)keyboardWillHide:(NSNotification *)notiFication
 {
     //NSLog(@"keyboardWillHide");
