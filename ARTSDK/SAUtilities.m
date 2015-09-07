@@ -10,9 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AccountManager.h"
 
-NSString *kVersion = @"photosToArtCurrentVersion";
-NSString *kgalleryQuantNotification = @"GALLERY_QUANTITY_NOTIFICATION";
-
 @implementation SAUtilities
 @synthesize dataArray,responseDictionary,galleryAddDictionary,errorMessageSent,currentGalleryItemIndex,mouldingIDArray,frameNamesArray,frameID,currentItemDictionary;
 

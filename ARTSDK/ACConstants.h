@@ -49,6 +49,9 @@
 
 //#define SUPPORT_LILITAB_CARD_READER
 
+extern NSString *kVersion;
+extern NSString *kgalleryQuantNotification;
+
 // TODO: this is specific to photos to art.  Need to 
 typedef enum
 {

@@ -58,8 +58,6 @@ typedef enum {
     OrientationSquare = 2
 } SAImageOrientation;
 
-extern NSString *kVersion;
-extern NSString *kgalleryQuantNotification;
 
 @interface SAUtilities : NSObject
 

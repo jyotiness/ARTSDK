@@ -12,6 +12,8 @@
 NSString *kACStandardFont = @"GiorgioSans-Bold";
 
 NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
+NSString *kVersion = @"photosToArtCurrentVersion";
+NSString *kgalleryQuantNotification = @"GALLERY_QUANTITY_NOTIFICATION";
 
 @implementation ACConstants
 
