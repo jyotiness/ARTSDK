@@ -13,8 +13,10 @@
 #import "NSMutableDictionary+SetNull.h"
 #import "SVProgressHUD.h"
 #import "XMLDictionary.h"
+#import "BundleManager.h"
 #include <netdb.h>
 #include <arpa/inet.h>
+#import "SFHFKeychainUtils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // URLs
@@ -44,7 +46,10 @@ NSString* const kResourceSearchResultInSimpleFormat = @"/wcf/SearchService.svc/a
 
 ////////////////////////////////////////////////////////////////////////////////
 // Art.com API Resources
+
+
 NSString* const kResourceAccountAuthenticate = @"AccountAuthenticate";
+NSString* const kResourceAccountCreateAnonymous = @"AccountCreateAnonymous";
 NSString* const kResourceAccountChangePassword = @"AccountChangePassword";
 NSString* const kResourceAccountCreate = @"AccountCreate";
 NSString* const kResourceAccountCreateExtented = @"AccountCreateExtented";
@@ -60,6 +65,7 @@ NSString* const kResourceAccountAuthenticateWithSocial = @"AccountAuthenticateWi
 
 NSString* const kResourceInitializeAPI= @"InitializeAPI";
 NSString* const kResourceCatalogGetSession = @"CatalogGetSession";
+NSString* const kResourceApplicationGetForSession = @"ApplicationGetForSession";
 NSString* const kResourceGalleryGetUserDefaultMobileGallery = @"GalleryGetUserDefaultMobileGallery";
 NSString* const kResourceGalleryAddItem = @"GalleryAddItem";
 NSString* const kResourceBookmarkAddGallery = @"ProfileAddGalleryBookmark";
@@ -147,17 +153,30 @@ static NSString *SESSION_ID_KEY = @"SESSION_ID_KEY";
 static NSString *AUTH_TOKEN_KEY = @"AUTH_TOKEN_KEY";
 static NSString *PERSISTENT_ID_KEY = @"PERSISTENT_ID_KEY";
 static NSString *EMAIL_KEY = @"EMAIL_KEY";
+static NSString * PASSWORD_KEY = @"PASSWORD_KEY";
 static NSString *FIRST_NAME_KEY = @"FIRST_NAME_KEY";
 static NSString *LAST_NAME_KEY = @"LAST_NAME_KEY";
 //static NSString *PASSWORD_KEY = @"PASSWORD_KEY";
 //static NSString *ART_SERICE_KEY = @"ART_SERICE_KEY";
 static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
+#define ANONYMOUS_AUTH_TOKEN @"ANONYMOUS_AUTH_TOKEN"
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Init
+
+-(id) init {
+    if ((self = [super init])) {
+        
+        self.usePersistentIDForAuth = NO;
+        self.keyChainService = [ACConstants getKeyChainServiceName];
+    }
+    return self;
+
+}
+
 
 + (ArtAPI*) sharedInstance {
     static ArtAPI* _one = nil;
@@ -194,14 +213,72 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     self.twoDigitISOCountryCode = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
     
     //NSLog(@"ArtAPI.start() sessionID: %@ sessionIDExpired: %d", self.sessionID, [self sessionIDExpired] );
+    self.isInitFinished = NO;
+    
+    NSError *error = nil;
+    
+    NSString *savedPersistentID = [SFHFKeychainUtils getPasswordForUsername:PERSISTENT_ID_KEY andServiceName:self.keyChainService error:&error];
+    
+    if(savedPersistentID&&![savedPersistentID isKindOfClass:[NSNull class]]){
+        
+        NSError *error;
+        
+        [SFHFKeychainUtils deleteItemForUsername:EMAIL_KEY andServiceName:self.keyChainService error:&error];
+        [SFHFKeychainUtils deleteItemForUsername:PASSWORD_KEY andServiceName:self.keyChainService error:&error];
+        
+        [ArtAPI setPersistentID:savedPersistentID];
+        self.usePersistentIDForAuth = YES;
+        
+        [SFHFKeychainUtils deleteItemForUsername:EMAIL_KEY andServiceName:self.keyChainService error:&error];
+        [SFHFKeychainUtils deleteItemForUsername:PASSWORD_KEY andServiceName:self.keyChainService error:&error];
+        
+        NSString *savedSessionID = [SFHFKeychainUtils getPasswordForUsername:SESSION_ID_KEY andServiceName:self.keyChainService error:&error];
+        NSString *savedAuthToken = [SFHFKeychainUtils getPasswordForUsername:AUTH_TOKEN_KEY andServiceName:self.keyChainService error:&error];
+        if(![ArtAPI sessionID]){
+            [ArtAPI setSessionID:savedSessionID];
+        }
+        if(![ArtAPI authenticationToken]){
+            [ArtAPI setAuthenticationToken:savedAuthToken];
+        }
+        [[NSUserDefaults standardUserDefaults] setObject:savedAuthToken forKey:ANONYMOUS_AUTH_TOKEN];
+    }else{
+        self.usePersistentIDForAuth = NO;
+        NSError *error;
+        NSString *emailAddress = [SFHFKeychainUtils getPasswordForUsername:EMAIL_KEY andServiceName:self.keyChainService error:&error];
+        NSString *passwordForAuth = [SFHFKeychainUtils getPasswordForUsername:PASSWORD_KEY andServiceName:self.keyChainService error:&error];
+        if(emailAddress&&passwordForAuth&&(![emailAddress isKindOfClass:[NSNull class]])&&(![passwordForAuth isKindOfClass:[NSNull class]])){
+            //it's not an anonymous account
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:ANONYMOUS_AUTH_TOKEN];
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     
     if (self.sessionID == nil || [self sessionIDExpired]) {
+        
+        Reachability *internetReachabilityTest = [Reachability reachabilityForInternetConnection];
+        NetworkStatus networkStatus = [internetReachabilityTest currentReachabilityStatus];
+        if (networkStatus == NotReachable) // NETWORK Reachability
+        {
+            //[ AppDel setApiInitFailed:YES];
+            //[ AppDel showReachabilityAlert];
+            return;
+        }
+
         NSLog(@"start() sessionID == nil or is expired, get new sessionID");
         // Initialize a new session
-        [self initilizeApplicationId:self.applicationId apiKey:self.apiKey twoDigitISOLanguageCode:self.twoDigitISOLanguageCode twoDigitISOCountryCode:self.twoDigitISOCountryCode success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        BOOL isSitwchArt = (AppLocationSwitchArt == [ACConstants getCurrentAppLocation]);
+        
+        //Jobin :  SWIT-235
+        NSString *languageCode = isSitwchArt ? @"EN": [self getISOLanguageCode];
+        NSString *countryCode = isSitwchArt ? @"US": [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
+        
+        [self initilizeApplicationId:self.applicationId apiKey:self.apiKey twoDigitISOLanguageCode:languageCode twoDigitISOCountryCode:countryCode success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             
             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-            [self fetchGigyaToken];
+            [self getContentBlockSetup];
 
             //NSLog(@"start() Check Session ID");
             
@@ -214,7 +291,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         NSLog(@"start() Check Session ID");
         [self catalogGetSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             
-            [self fetchGigyaToken];
+            [self getContentBlockSetup];
 
             // Refresh Mobile Gallery
             if( [self isLoggedIn] ){
@@ -237,13 +314,11 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
                                  }];
         }];
     }
-    
-    
 }
 
-- (void)fetchGigyaToken
+- (void)getContentBlockSetup
 {
-    if(![ArtAPI sharedInstance].gigyaApiKey) // If Gigya token is available already
+    //if(![ArtAPI sharedInstance].gigyaApiKey) // If Gigya token is available already
     {
         [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:@"_config" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             
@@ -257,12 +332,15 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
             NSString *gigyaKeyString = [configDict objectForKeyNotNull:@"GIGYAAPIKEY"];
             [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
+            [[BundleManager sharedInstance] setBundleConfigurations:contentBlock];
+
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             
             NSLog(@"Content block call Failed");
         }];
     }
 }
+
 
 + (void) initilizeApp {
     //NSLog(@"+initilizeApp() apiKey: %@ applicationId: %@", [[ArtAPI sharedInstance] apiKey],[[ArtAPI sharedInstance] applicationId] );
@@ -357,30 +435,21 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         // Process Request
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
         
-        [[ArtAPI sharedInstance] catalogGetContentBlockForBlockName:@"_config" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            
-            NSLog(@"contentBlockDictionary = %@",JSON);
-            
-            NSDictionary *contentBlock  = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"ContentBlock"];
-            
-            NSString *contentBlockString = [contentBlock objectForKey:@"LargeTextBlock"];
-            NSDictionary *contentBlockDict = [[XMLDictionaryParser sharedInstance] dictionaryWithString:contentBlockString];
-            NSDictionary *configDict = [[contentBlockDict objectForKeyNotNull:@"APPLICATION"] objectForKeyNotNull:@"CONFIGURATION"];
-            NSString *gigyaKeyString = [configDict objectForKeyNotNull:@"GIGYAAPIKEY"];
-            [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            
-            NSLog(@"Content block call Failed");
-        }];
-
-        
-        // Refresh Mobile Gallery
-        if( [self isLoggedIn] ){
-            [self requestForGalleryGetUserDefaultMobileGallerySuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            }];
+        NSString * isoCurrencyCode = [[JSON objectForKeyNotNull:@"d"] objectForKeyNotNull:@"IsoCurrencyCode"];
+        if(!isoCurrencyCode){
+            isoCurrencyCode = @"USD";
         }
+        //NSLog(@"isoCurrencyCode: %@", isoCurrencyCode);
+        [self setIsoCountryCode:isoCurrencyCode];
+        
+        // Save SessionID and Expiration Date
+        self.sessionID = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"SessionId"];
+        [ArtAPI
+         catalogGetSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+         }];
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -421,6 +490,173 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
      }];
 }
 
+
+
++ (void) applicationGetForSessionWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure {
+    [[ArtAPI sharedInstance] applicationGetForSessionWithSuccess:success failure:failure];
+}
+
+- (void) applicationGetForSessionWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceApplicationGetForSession
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:nil
+                                            requiresSession:NO
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        //NSLog(@"JSON: %@", JSON);
+        
+        Reachability *internetReachabilityTest = [Reachability reachabilityForInternetConnection];
+        NetworkStatus networkStatus = [internetReachabilityTest currentReachabilityStatus];
+        if (networkStatus == NotReachable) /* NETWORK Reachability*/
+        {
+//            [ AppDel setApiInitFailed:YES];
+//            [ AppDel showReachabilityAlert];
+            return;
+        }
+        if(DO_LOG) NSLog(@"Application retrieval succeeded");
+        [self checkForAuthentication];
+        
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
+- (void) checkForAuthentication
+{
+    Reachability *internetReachabilityTest = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [internetReachabilityTest currentReachabilityStatus];
+    if (networkStatus == NotReachable) /* NETWORK Reachability*/
+    {
+//        [ AppDel setApiInitFailed:YES];
+//        [ AppDel showReachabilityAlert];
+        return;
+    }
+    if(![ArtAPI authenticationToken])
+    {
+        if(self.isInitAborted){
+            self.isInitAborted = NO;
+            return;
+        }else
+        {
+            
+            NSLog(@"Reached");
+            NSString *emailAddress = nil;
+            if(self.usePersistentIDForAuth){
+                emailAddress = [[ArtAPI persistentID] stringByAppendingString:@"@art.com"];
+                [ArtAPI requestForAccountAuthenticateWithEmailAddress:emailAddress password:[ArtAPI persistentID] success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                    NSDictionary *apiRespons = JSON;
+                    [ArtAPI setAuthenticationToken: [apiRespons objectForKeyNotNull:@"AuthenticationToken"]];
+                    NSDictionary *accountDetails = [apiRespons objectForKeyNotNull:@"Account"];
+                    NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+                    int accountType = [[profileInfo objectForKeyNotNull:@"AccountType"] intValue];
+                    
+                    if((accountType==1)||self.usePersistentIDForAuth){
+                        [[NSUserDefaults standardUserDefaults] setObject:[apiRespons objectForKeyNotNull:@"AuthenticationToken"] forKey:ANONYMOUS_AUTH_TOKEN];
+                    }else{
+                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ANONYMOUS_AUTH_TOKEN];
+                    }
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [self defaultInitiationMethods];
+
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                    
+                }];
+            }else{
+                NSError *error;
+                emailAddress = [SFHFKeychainUtils getPasswordForUsername:EMAIL_KEY andServiceName:self.keyChainService error:&error];
+                NSString *passwordForAuth = [SFHFKeychainUtils getPasswordForUsername:PASSWORD_KEY andServiceName:self.keyChainService error:&error];
+                if(emailAddress&&passwordForAuth&&(![emailAddress isKindOfClass:[NSNull class]])&&(![passwordForAuth isKindOfClass:[NSNull class]])){
+                    [ArtAPI requestForAccountAuthenticateWithEmailAddress:emailAddress password:passwordForAuth success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                        NSDictionary *apiRespons = JSON;
+                        [ArtAPI setAuthenticationToken: [apiRespons objectForKeyNotNull:@"AuthenticationToken"]];
+                        NSDictionary *accountDetails = [apiRespons objectForKeyNotNull:@"Account"];
+                        NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+                        int accountType = [[profileInfo objectForKeyNotNull:@"AccountType"] intValue];
+                        
+                        if((accountType==1)||self.usePersistentIDForAuth){
+                            [[NSUserDefaults standardUserDefaults] setObject:[apiRespons objectForKeyNotNull:@"AuthenticationToken"] forKey:ANONYMOUS_AUTH_TOKEN];
+                        }else{
+                            [[NSUserDefaults standardUserDefaults] removeObjectForKey:ANONYMOUS_AUTH_TOKEN];
+                        }
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                        [self defaultInitiationMethods];
+                        
+                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                        
+                    }];
+                }else
+                {
+                    [ArtAPI requestForAccountCreateAnonymousSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                        
+                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                        
+                    }];
+                }
+            }
+        }
+    }else {
+        if(self.isInitAborted){
+            self.isInitAborted = NO;
+            return;
+        }else{
+                        
+            [ArtAPI requestForAccountGet:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                
+                NSDictionary *apiRespons = [JSON objectForKeyNotNull:@"d"];
+                [ArtAPI setAuthenticationToken: [apiRespons objectForKeyNotNull:@"AuthenticationToken"]];
+                NSDictionary *accountDetails = [apiRespons objectForKeyNotNull:@"Account"];
+                NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+                int accountType = [[profileInfo objectForKeyNotNull:@"AccountType"] intValue];
+                
+                if((accountType==1)||self.usePersistentIDForAuth){
+                    [[NSUserDefaults standardUserDefaults] setObject:[apiRespons objectForKeyNotNull:@"AuthenticationToken"] forKey:ANONYMOUS_AUTH_TOKEN];
+                }else{
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ANONYMOUS_AUTH_TOKEN];
+                }
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self defaultInitiationMethods];
+
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                
+            }];
+
+           /* ACJSONAPIRequest *accountGetRequest = [self requestForAccountGetWithDelegate:self];
+            if(!accountGetRequest){
+                self.isInitFinished = NO;
+                self.isInitAborted = YES;
+                [self.initialRequestArray removeAllObjects];
+                if(![ArtAPI authenticationToken]){
+                    [self checkForAuthentication];
+                    return;
+                }else{
+                    //                    NSLog(@"??");
+                    [self start];
+                    return;
+                }
+            }
+            [accountGetRequest setDidFinishSelector:@selector(accountAuthenticateSucceeded:)];
+            [accountGetRequest setDidFailSelector:@selector(accountGetFailed:)];
+            if(accountGetRequest && ![accountGetRequest isKindOfClass:[NSNull class]]){
+                [self.initialRequestArray addObject:accountGetRequest];
+                [accountGetRequest startAsynchronous];
+            }else{
+                self.isInitFinished = NO;
+                self.isInitAborted = YES;
+                [self.initialRequestArray removeAllObjects];
+                //                NSLog(@"??");
+                return;
+            } */
+        }
+    }
+}
 
 + (void) catalogGetSessionWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                               failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure {
@@ -475,6 +711,24 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         self.persistentID = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"PersistentId"];
         
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
+        if([[geoIPCountryCode uppercaseString] isEqualToString:@"US"]){
+            [ArtAPI sharedInstance].isDeviceConfigForUS = YES;
+        }else{
+            [ArtAPI sharedInstance].isDeviceConfigForUS = NO;
+        }
+        if(self.isInitAborted){
+            self.isInitAborted = NO;
+            return;
+        }else{
+            [ArtAPI applicationGetForSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                NSLog(@"YES");
+                [self checkForAuthentication];
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                NSLog(@"NO");
+            }];
+        }
+        
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
         failure(request, response, error, JSON);
@@ -746,6 +1000,86 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         failure(request, response, error, JSON);
     }];
     [operation start];
+}
+
+
+
++ (void) requestForAccountCreateAnonymousSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForAccountCreateAnonymousSuccess:success failure:failure];
+}
+
+- (void) requestForAccountCreateAnonymousSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceAccountCreateAnonymous
+                                              usingEndpoint:kEndpointAccountAuthorizationAPI
+                                                 withParams:nil
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    //NSLog(@"starting request url: %@ %@", request.HTTPMethod, request.URL);
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        NSDictionary *responseDict = [ JSON objectForKeyNotNull:@"d"];
+        [ArtAPI setAuthenticationToken: [responseDict objectForKeyNotNull:@"AuthenticationToken"]];
+        NSDictionary *accountDetails = [responseDict objectForKeyNotNull:@"Account"];
+        NSDictionary *profileInfo = [accountDetails objectForKeyNotNull:@"ProfileInfo"];
+        int accountType = [[profileInfo objectForKeyNotNull:@"AccountType"] intValue];
+        
+        if((accountType==1)||self.usePersistentIDForAuth){
+            [[NSUserDefaults standardUserDefaults] setObject:[JSON objectForKeyNotNull:@"AuthenticationToken"] forKey:ANONYMOUS_AUTH_TOKEN];
+        }else{
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:ANONYMOUS_AUTH_TOKEN];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self defaultInitiationMethods];
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
+-(void)defaultInitiationMethods
+{
+    [ArtAPI requestForGalleryGetUserDefaultGallery:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        [SVProgressHUD dismiss];
+
+        NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+        
+        // Save Gallery Response
+        NSDictionary *defaultGalleryResponse = [JSON objectForKeyNotNull:@"d"];
+        
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:defaultGalleryResponse];
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"USER_DEFAULT_GALLERY_RESPONSE"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSDictionary *responseGallery = [defaultGalleryResponse objectForKeyNotNull:@"Gallery"];
+        //        NSArray *responseGalleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
+        //        self.data = responseGalleryItems;
+        
+        NSArray * galleryItems = [responseGallery objectForKeyNotNull:@"GalleryItems"];
+        if([galleryItems count]){
+            //NSLog(@"setMobileGalleryItems: %@", galleryItems);
+            [[ArtAPI sharedInstance] setMobileGalleryItems: galleryItems];
+        }
+        
+        NSDictionary *galleryAttributes = [responseGallery objectForKeyNotNull:@"GalleryAttributes"];
+        NSString *defaultGalleryID = [galleryAttributes objectForKeyNotNull:@"GalleryId"];
+        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+        f.numberStyle = NSNumberFormatterDecimalStyle;
+        NSNumber *myNumber = [f numberFromString:defaultGalleryID];
+        [ArtAPI sharedInstance].mobileGalleryID = myNumber;
+        
+    }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        [SVProgressHUD dismiss];
+    }];
 }
 
 + (void) requestForAccountAuthenticateWithEmailAddress:(NSString *) emailAddress
@@ -1504,6 +1838,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     self.cart = nil;
     self.authenticationToken = nil;
     self.sessionID = nil;
+    self.persistentID = nil;
     
     [defaults removeObjectForKey:AUTH_TOKEN_KEY];
     [defaults removeObjectForKey:SESSION_ID_KEY];
@@ -3516,6 +3851,38 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+/*
+- (void) refreshAuthenticationTokenUsingStoredCredentials {
+    [ArtAPI setAuthenticationToken:nil];
+    NSError *error;
+    NSString *email = [SFHFKeychainUtils getPasswordForUsername:EMAIL_KEY andServiceName:self.keyChainService error:&error];
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:PASSWORD_KEY andServiceName:self.keyChainService error:&error];
+    
+    NSString *facebookUID = [SFHFKeychainUtils getPasswordForUsername:FACEBOOK_UID_KEY andServiceName:self.keyChainService error:&error];
+    NSString *firstName = [[NSUserDefaults standardUserDefaults] stringForKey:@"FIRST_NAME"];
+    
+    NSString *lastName = [[NSUserDefaults standardUserDefaults] stringForKey:@"LAST_NAME"];
+    
+    if (error) {
+        if (SERVICE_LOGGING) NSLog(@"Error retrieving email and password from keychain");
+        return;
+    }
+    if (email && password) {
+        [[ASIHTTPRequest sharedQueue] cancelAllOperations];
+        [[ASIHTTPRequest sharedQueue] setMaxConcurrentOperationCount:1];
+        ACJSONAPIRequest *request = [[ACAPI sharedAPI] requestForAccountAuthenticateWithDelegate:self emailAddress:email password:self.password];
+        [request setDidFinishSelector:@selector(refreshAuthenticationTokenUsingStoredCredentialsDidFinish:)];
+        [request startAsynchronous];
+    }
+    else if (facebookUID) {
+        [[ASIHTTPRequest sharedQueue] cancelAllOperations];
+        [[ASIHTTPRequest sharedQueue] setMaxConcurrentOperationCount:1];
+        ACJSONAPIRequest *request = [[ACAPI sharedAPI] requestForAccountAuthenticateWithFacebookUIDwithDelegate:self facebookUID:facebookUID emailAddress:email firstName:firstName lastName:lastName];
+        [request setDidFinishSelector:@selector(refreshAuthenticationTokenUsingStoredCredentialsDidFinish:)];
+        [request startAsynchronous];
+        
+    }
+} */
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

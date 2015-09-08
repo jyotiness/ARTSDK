@@ -12,6 +12,8 @@
 NSString *kACStandardFont = @"GiorgioSans-Bold";
 
 NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
+NSString *kVersion = @"photosToArtCurrentVersion";
+NSString *kgalleryQuantNotification = @"GALLERY_QUANTITY_NOTIFICATION";
 
 @implementation ACConstants
 
@@ -21,6 +23,13 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     if(!environment)
     {
         [[NSUserDefaults standardUserDefaults] setObject:@"api.art.com" forKey:@"ENVIRONMENT-HOST"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    NSString *uploadUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"UPLOAD-URL"];
+    if(!uploadUrl)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:@"http://imageapps.art.com/imageupload/default.aspx" forKey:@"UPLOAD-URL"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
@@ -45,12 +54,24 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
     {
         [[NSUserDefaults standardUserDefaults] setObject:environment forKey:@"ENVIRONMENT-HOST"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        NSRange range = [environment rangeOfString:@"developer"];
+        if(range.length)
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:@"http://qa-imageapps.art.com/imageupload/default.aspx" forKey:@"UPLOAD-URL"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
     }
 }
 
 +(NSString*)getEnvironment
 {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"ENVIRONMENT-HOST"];
+}
+
++(NSString*)getUploadURL
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"UPLOAD-URL"];
 }
 
 
@@ -164,6 +185,33 @@ NSString *kACNotificationDismissModal = @"NOTIFICATION_DISMISS_MODAL";
         return nil;
     }
 }
+
+
++(NSString *)getKeyChainServiceName
+{
+    AppLocation currAppLoc = [self getCurrentAppLocation];
+    NSString *serviceName = nil;
+    switch (currAppLoc) {
+        case AppLocationDefault:{
+            serviceName = @"ART_SERICE_KEY";
+            break;
+        }
+        case AppLocationFrench:{
+            serviceName = @"MESPHOTOS_SERVICE_KEY";
+            break;
+        }
+        case AppLocationGerman:{
+            serviceName = @"MYPHOTOS_SERVICE_KEY";
+            break;
+        }
+        default:{
+            serviceName = @"ART_SERICE_KEY";
+            break;
+        }
+    }
+    return serviceName;
+}
+
 
 +(NSString *)getLocalizedStringForKey:(NSString *)key withDefaultValue:(NSString *)defaultValue
 {

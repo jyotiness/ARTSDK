@@ -49,6 +49,9 @@
 
 //#define SUPPORT_LILITAB_CARD_READER
 
+extern NSString *kVersion;
+extern NSString *kgalleryQuantNotification;
+
 // TODO: this is specific to photos to art.  Need to 
 typedef enum
 {
@@ -128,6 +131,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 +(NSString*)getPushToken;
 +(void)setEnvironment:(NSString *)environment;
 +(NSString*)getEnvironment;
++(NSString*)getUploadURL;
++(NSString *)getKeyChainServiceName;
 
 @end
 
