@@ -848,7 +848,8 @@
     [self.view endEditing:YES];
     
 
-    [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"LOADING_CARD_SCANNER" withDefaultValue:@"Loading Card Scanner"]] maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"LOADING_CARD_SCANNER" withDefaultValue:@"Loading Card Scanner"]] maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:[ACConstants getLocalizedStringForKey:@"LOADING_CARD_SCANNER" withDefaultValue:@"Loading Card Scanner"] maskType:SVProgressHUDMaskTypeClear];
     
     __unused NSString *cardIOToken = [ACConstants getCardIOToken]; // CS;- not required now as we are using the latest CardIO classes from PayPal iOS SDK
 
