@@ -2738,7 +2738,9 @@
             }
         }
         
-        NSDictionary *cart = [ArtAPI cart];
+        //commented by jyoti PHOTOIOS -1325
+        
+      /*  NSDictionary *cart = [ArtAPI cart];
         NSArray *shipments = [cart objectForKeyNotNull:@"Shipments"];
         
         NSDictionary *aShipment = [shipments objectAtIndex:0];
@@ -2773,8 +2775,40 @@
         }
         self.postalCode = [address objectForKeyNotNull:@"ZipCode"];
         
+        [ self.billingAddressTableView reloadData];*/
+        
+        //added by jyoti PHOTOIOS -1325
+        
+        self.firstNameTextField.text = @"";
+        self.firstName = @"";
+        
+        self.lastNameTextField.text = @"";
+        self.lastName = @"";
+        
+        self.addressLine1 = @"";
+        self.address1TextField.text = @"";
+        
+        self.addressLine2 = @"";
+        self.address2TextField.text = @"";
+        
+        self.company = @"";
+        self.companyTextField.text = @"";
+        
+        self.city= @"";
+        self.cityTextField.text = @"";
+        
+        self.selectedCountryCode = [ArtAPI getShippingCountryCode];
+        
+        self.stateValueToPassOrderConfirmationScreen=@"";;
+        if (![self.selectedCountryCode isEqualToString:@"US"])
+        {
+            self.stateFieldValue=self.stateValueToPassOrderConfirmationScreen;
+        }
+        self.postalCode = @"";
+        
         [ self.billingAddressTableView reloadData];
-    }
+
+        }
     
 }
 
