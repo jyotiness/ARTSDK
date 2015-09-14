@@ -848,7 +848,8 @@
     [self.view endEditing:YES];
     
 
-    [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"LOADING_CARD_SCANNER" withDefaultValue:@"Loading Card Scanner"]] maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"LOADING_CARD_SCANNER" withDefaultValue:@"Loading Card Scanner"]] maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:[ACConstants getLocalizedStringForKey:@"LOADING_CARD_SCANNER" withDefaultValue:@"Loading Card Scanner"] maskType:SVProgressHUDMaskTypeClear];
     
     __unused NSString *cardIOToken = [ACConstants getCardIOToken]; // CS;- not required now as we are using the latest CardIO classes from PayPal iOS SDK
 
@@ -1740,7 +1741,8 @@
 
 -(void)cityAndStateSuggestionForZip:(NSString*)newStr
 {
-    [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"FETCHING_DETAILS" withDefaultValue:@"FETCHING DETAILS"]] maskType:SVProgressHUDMaskTypeClear];
+    //[SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"FETCHING_DETAILS" withDefaultValue:@"FETCHING DETAILS"]] maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:[ACConstants getLocalizedStringForKey:@"FETCHING_DETAILS" withDefaultValue:@"FETCHING DETAILS"] maskType:SVProgressHUDMaskTypeClear];
     
     [ArtAPI
      cartGetCityStateSuggestionsCountryCode:@"US" zipCode:newStr success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -2876,7 +2878,8 @@
         //    cardTypesForPayment = ACLocalizedString(@"AMERICAN_EXPRESS", @"American_Express");;
         //}
         
-        [SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"SUBMITTING_ORDER" withDefaultValue:@"SUBMITTING ORDER..."]] maskType:SVProgressHUDMaskTypeClear];
+        //[SVProgressHUD showWithStatus:[ACConstants getUpperCaseStringIfNeededForString:[ACConstants getLocalizedStringForKey:@"SUBMITTING_ORDER" withDefaultValue:@"SUBMITTING ORDER..."]] maskType:SVProgressHUDMaskTypeClear];
+        [SVProgressHUD showWithStatus:[ACConstants getLocalizedStringForKey:@"SUBMITTING_ORDER" withDefaultValue:@"SUBMITTING ORDER..."] maskType:SVProgressHUDMaskTypeClear];
         
         [Analytics logGAEvent:ANALYTICS_CATEGORY_UI_ACTION withAction:ANALYTICS_EVENT_NAME_PLACE_ORDER];
         
