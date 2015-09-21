@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   s.dependency 'SVProgressHUD'
   s.dependency 'Facebook-iOS-SDK', '~> 3.16.0'
   s.dependency 'Pinterest-iOS', '~> 2.3'
-  s.dependency 'PayPal-iOS-SDK', '~> 2.1'
+  s.dependency 'PayPal-iOS-SDK', '~> 2.11.3'
   s.dependency 'Gigya-iOS-SDK', '~> 3.2.0'
   s.dependency 'XMLDictionary'
   s.dependency 'Reachability', '~> 3.2'
