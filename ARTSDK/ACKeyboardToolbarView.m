@@ -67,7 +67,7 @@
     
     [btnDone setFrame:CGRectMake(xOrigin, 0.0f, 70.0f, 40.0f)];
     [btnDone setTitle:ACLocalizedString(@"DONE", @"DONE") forState:UIControlStateNormal];
-    [btnDone addTarget:self action:@selector(doneButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [btnDone addTarget:self action:@selector(doneButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btnDone];
 }
 
@@ -108,10 +108,11 @@
     segmentedControl.selectedSegmentIndex = -1;
 }
 
--(void) doneButtonPressed: (id) sender {
+-(void) doneButtonPressed
+{
     // Call Delegate
     if (self.toolbarDelegate && [self.toolbarDelegate respondsToSelector:@selector(keyboardToolbar: didSelectDone:)]) {
-        [self.toolbarDelegate keyboardToolbar:self didSelectDone:sender];
+        [self.toolbarDelegate keyboardToolbar:self didSelectDone:nil];
     }
 }
 

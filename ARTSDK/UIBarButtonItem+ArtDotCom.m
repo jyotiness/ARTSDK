@@ -24,7 +24,8 @@
     return button;
 }
 
-+ (UIBarButtonItem *)customButtonWithStyle:(ACBarButtonItemStyle)style target:(id)target action:(SEL)action {
++ (UIBarButtonItem *)customButtonWithStyle:(ACBarButtonItemStyle)style target:(id)target action:(SEL)action
+{
     UIButton *button = [self customButton];
 
     NSString *baseImageName = nil;
