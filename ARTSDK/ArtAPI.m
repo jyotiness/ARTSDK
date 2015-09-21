@@ -444,12 +444,16 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         
         // Save SessionID and Expiration Date
         self.sessionID = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"SessionId"];
-        [ArtAPI
-         catalogGetSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-             //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
-         }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-             NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
-         }];
+        
+        if((AppLocationSwitchArt == [ACConstants getCurrentAppLocation]) || (AppLocationDefault == [ACConstants getCurrentAppLocation])) /* SA or P2A */
+        {
+            [ArtAPI
+             catalogGetSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                 //NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+             }  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+                 NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+             }];
+        }
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
@@ -720,13 +724,17 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         if(self.isInitAborted){
             self.isInitAborted = NO;
             return;
-        }else{
-            [ArtAPI applicationGetForSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                NSLog(@"YES");
-                [self checkForAuthentication];
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                NSLog(@"NO");
-            }];
+        }else
+        {
+            if((AppLocationSwitchArt == [ACConstants getCurrentAppLocation]) || (AppLocationDefault == [ACConstants getCurrentAppLocation])) /* SA or P2A */
+            {
+                [ArtAPI applicationGetForSessionWithSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                    NSLog(@"YES");
+                    [self checkForAuthentication];
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                    NSLog(@"NO");
+                }];
+            }
         }
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
