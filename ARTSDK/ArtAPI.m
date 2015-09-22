@@ -75,6 +75,7 @@ NSString* const kResourceGalleryRemoveItem = @"GalleryRemoveItem";
 NSString* const kResourceGalleryGetUserDefaultGallery = @"GalleryGetUserDefaultGallery";
 NSString* const kResourceCatalogItemGetFrameRecommendations = @"CatalogItemGetFrameRecommendations";
 NSString* const kResourceCatalogItemGet = @"CatalogItemGet";
+NSString* const kResourceImageGetMasterVariations = @"ImageGetMasterVariations";
 NSString* const kResourceCatalogGetContentBlock = @"CatalogGetContentBlock";
 NSString* const kResourceCatalogGetFeaturedCategories = @"CatalogGetFeaturedCategories";
 NSString* const kResourceCatalogItemSearch = @"CatalogItemSearch";
@@ -333,14 +334,139 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
             [ArtAPI sharedInstance].gigyaApiKey = [gigyaKeyString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
             [[BundleManager sharedInstance] setBundleConfigurations:contentBlock];
+            
+            if(AppLocationDefault == [ACConstants getCurrentAppLocation]) /*Top Banner images only for P2A */
+            {
+                NSArray *banners = [contentBlock objectForKeyNotNull:@"Banners"];
+                self.bannersArray = banners;
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:GET_BANNERS_SUCCEEDED object:nil];
+            }
+            
 
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             
             NSLog(@"Content block call Failed");
         }];
     }
+    
+    [ArtAPI requestForImageGetMasterVariationsWithLookupType:@"Sku" success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        
+        NSDictionary *responseDict = [[ JSON objectForKey:@"d"] objectForKeyNotNull:@"AvailableSizes" ];
+        NSArray *keyArray = [ responseDict allKeys];
+        
+        NSArray *supportedServicesArray = [ NSArray arrayWithObjects:@"PrintOnly",@"Framing",@"Mounting",@"CanvasMuseum", nil];
+        for(NSString *keyName in keyArray)
+        {
+            if([ supportedServicesArray containsObject: keyName])
+            {
+                NSArray *servicesArray = [ responseDict objectForKeyNotNull:keyName ];
+                [ self processMasterVariations:servicesArray forService:keyName];
+            }
+        }
+        self.isInitFinished = YES;
+        self.isInitAborted = NO;
+        self.isRestartInProgress = NO;
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        
+    }];
 }
 
+-(void)processMasterVariations:(NSArray*)masterVariationsArray forService:(NSString*)serviceName
+{
+    NSString *filePath = [[ NSBundle mainBundle] pathForResource:@"SupportedDims" ofType:@"plist"];
+    NSArray *paramArray = [[ NSArray alloc] initWithContentsOfFile:filePath];
+    
+    NSMutableArray *array = [[ NSMutableArray alloc] init];
+    for(NSDictionary *dict in masterVariationsArray)
+    {
+        PAAMasterVariations *masterVariation = [[ PAAMasterVariations alloc] init];
+        masterVariation.podConfigId = [ dict objectForKeyNotNull:@"PodConfigId"];
+        masterVariation.timeToShipText = [ dict objectForKeyNotNull:@"TimeToShipText"];
+        float large = [[dict objectForKeyNotNull:@"Large"] integerValue];
+        float small = [[dict objectForKeyNotNull:@"Small"] integerValue];
+        int unitOfMeasure = [[dict objectForKeyNotNull:@"UnitOfMeasure"] intValue];
+        //        if(small==8){
+        //            if([serviceName isEqualToString:@"CanvasMuseum"]){
+        //                [self.minPODArray replaceobjectAtValidIndex:0 withObject:masterVariation.podConfigId];
+        //            }else if([serviceName isEqualToString:@"Mounting"]){
+        //                [self.minPODArray replaceobjectAtValidIndex:1 withObject:masterVariation.podConfigId];
+        //            }else if([serviceName isEqualToString:@"PrintOnly"]){
+        //                [self.minPODArray replaceobjectAtValidIndex:2 withObject:masterVariation.podConfigId];
+        //            }else{
+        //                [self.minPODArray replaceobjectAtValidIndex:3 withObject:masterVariation.podConfigId];
+        //            }
+        //        }
+        
+        //        float aspectRatio = [[dict objectForKeyNotNull:@"AspectRatioTarget"] floatValue];
+        
+        if(unitOfMeasure==2){ // UnitOfMeasure=2 means that the dimensions are coming in cm
+            large = large/2.54;
+            small = small/2.54;
+            int largeRounded = large;
+            int smallRounded = small;
+            if((large-(CGFloat)largeRounded)>=0.50f){
+                largeRounded++;
+            }
+            if((small-(CGFloat)smallRounded)>=0.50f){
+                smallRounded++;
+            }
+            large = largeRounded;
+            small = smallRounded;
+        }
+        int largeDimension = large;
+        int smallDimension = small;
+        
+        if(smallDimension>largeDimension){
+            int tempDimension = smallDimension;
+            smallDimension = largeDimension;
+            largeDimension = tempDimension;
+        }
+        
+        //        if(aspectRatio>1.0f){
+        //            masterVariation.dimensions = [NSString stringWithFormat:@"%dx%d",largeDimension,smallDimension];
+        //        }else{
+        masterVariation.dimensions = [NSString stringWithFormat:@"%dx%d",smallDimension,largeDimension];
+        masterVariation.small = smallDimension;
+        //        }
+        masterVariation.size = large*small;
+        if(mFilteredConfigArray.count>0){
+            if([mFilteredConfigArray containsObject:masterVariation.podConfigId]){
+                [array addObject: masterVariation];
+            }
+        }else{
+            if([paramArray containsObject:masterVariation.dimensions]){
+                [array addObject: masterVariation];
+            }
+        }
+        
+        [ masterVariation release];
+        masterVariation = nil;
+    }
+    
+    
+    /*    for(int j=0;j<array.count;j++){
+     PAAMasterVariations *vaaar = [array objectAtValidIndex:j];
+     NSLog(@"%d . Size=%f  ID=%@  Dimen=%@\n",j,vaaar.size,vaaar.podConfigId,vaaar.dimensions);
+     }
+     
+     NSLog(@"\n\n"); */
+    
+    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"size" ascending:YES];
+    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"small" ascending:YES];
+    
+    [array sortUsingDescriptors:[NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
+    
+    /*    for(int j=0;j<array.count;j++){
+     PAAMasterVariations *vaaar = [array objectAtValidIndex:j];
+     NSLog(@"%d . Size=%f  ID=%@  Dimen=%@\n",j,vaaar.size,vaaar.podConfigId,vaaar.dimensions);
+     } */
+    
+    [ mMasterVariationsDict setObject:array forKey:[serviceName isEqualToString:@"CanvasMuseum"]?@"canvasmw":serviceName];
+    [ paramArray release];
+    [ array release];
+}
 
 + (void) initilizeApp {
     //NSLog(@"+initilizeApp() apiKey: %@ applicationId: %@", [[ArtAPI sharedInstance] apiKey],[[ArtAPI sharedInstance] applicationId] );
@@ -2118,6 +2244,40 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     // Execute Request
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
+
++ (void) requestForImageGetMasterVariationsWithLookupType:(NSString *)lookupType
+                                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForImageGetMasterVariationsWithLookupType:lookupType success:success failure:failure];
+}
+
+- (void) requestForImageGetMasterVariationsWithLookupType:(NSString *)lookupType
+                                                success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSDictionary *params=[NSDictionary dictionaryWithObjectsAndKeys:
+                          lookupType,@"lookupType",
+                          nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kResourceImageGetMasterVariations
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:params
+                                            requiresSession:YES
+                                            requiresAuthKey:YES];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+        
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
         //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
         failure(request, response, error, JSON);
