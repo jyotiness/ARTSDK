@@ -543,6 +543,11 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 - (NSString *)termsURL;
 - (NSString *)shareURL;
 
+-(NSDictionary *)getCurrentVariationsDict;
+-(NSDictionary*)getMasterVariationsDict;
+- (void)setCurrentVariationsDict:(NSMutableDictionary *)dictt;
+-(NSArray *)getFilteredMouldArray;
+
 -(NSURL *) URLWithRawFrameURLString:(NSString *)imageURLString maxWidth:(NSUInteger)maxWidth maxHeight:(NSUInteger)maxHeight;
 
 @end
