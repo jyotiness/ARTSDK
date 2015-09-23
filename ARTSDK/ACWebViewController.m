@@ -230,6 +230,7 @@
     
     self.background =  [[UIView alloc] initWithFrame:CGRectZero];
     self.background.backgroundColor = UIColor.whiteColor;
+     //[self.background setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.background];
     
     CGFloat toolbarHeight = NIToolbarHeightForOrientation(NIInterfaceOrientation());
@@ -250,6 +251,7 @@
     
     
     self.activitySpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+     //[self.activitySpinner setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.activitySpinner];
     [self.activitySpinner startAnimating];
     
@@ -297,6 +299,7 @@
                           flexibleSpace,
                           self.actionButton,
                           nil];
+     //[self.toolbar setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.toolbar];
     
     self.webView = [[UIWebView alloc] initWithFrame:CGRectZero];
@@ -309,7 +312,7 @@
     if ([UIColor respondsToSelector:@selector(underPageBackgroundColor)]) {
         self.webView.backgroundColor = [UIColor underPageBackgroundColor];
     }
-    
+    //[self.webView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.webView];
     
 

@@ -249,12 +249,14 @@
 
 - (void)segmentedControlDidChange:(UIButton *)sender {
     if (sender.tag == 1) {
+        //[self.scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self.view addSubview:self.scrollView];
         [self.frameInfoView removeFromSuperview];
         [(UIButton *) [sender.superview viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"btn_segment_l_n"] forState:UIControlStateNormal];
         [(UIButton *) [sender.superview viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"btn_segment_r_h"] forState:UIControlStateNormal];
     }
     else if (sender.tag == 2) {
+        //[self.frameInfoView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self.view addSubview:self.frameInfoView];
         [self.scrollView removeFromSuperview];
         [self configureFrameInfo];

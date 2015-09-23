@@ -643,6 +643,7 @@
     if (!activityIndicator) {
         activityIndicator = [[ACActivityIndicator alloc] initWithActivityIndicatorType:type];
         activityIndicator.center = self.view.center;
+         //[activityIndicator setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self.view addSubview:activityIndicator];
     }
 }

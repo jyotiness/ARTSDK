@@ -60,24 +60,28 @@
 // Create a view that fills its superview's bounds.
 UIView* contentView = [[UIView alloc] initWithFrame:self.view.bounds];
 contentView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
+[contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
 [self.view addSubview:contentView];
 
 // Create a view that is always centered in the superview's bounds.
 UIView* centeredView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
 centeredView.autoresizingMask = UIViewAutoresizingFlexibleMargins;
 // Center the view within the superview however you choose.
+
 [self.view addSubview:centeredView];
 
 // Create a navigation bar that stays fixed to the top.
 UINavigationBar* navBar = [[UINavigationBar alloc] initWithFrame:CGRectZero];
 [navBar sizeToFit];
 navBar.autoresizingMask = UIViewAutoresizingNavigationBar;
+
 [self.view addSubview:navBar];
 
 // Create a toolbar that stays fixed to the bottom.
 UIToolbar* toolBar = [[UIToolbar alloc] initWithFrame:CGRectZero];
 [toolBar sizeToFit];
 toolBar.autoresizingMask = UIViewAutoresizingToolbarBar;
+ 
 [self.view addSubview:toolBar];
 @endcode
  * 

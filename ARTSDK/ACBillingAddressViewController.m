@@ -3365,6 +3365,7 @@
     
     [pickerHolderView addSubview:pickerHeadView];
     [pickerHolderView addSubview:CommonpickerView];
+    //[pickerHolderView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:pickerHolderView];
 }
 

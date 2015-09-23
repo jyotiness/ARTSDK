@@ -581,6 +581,7 @@ int nameOrigin=0;
         
         [pickerHolderView addSubview:toolbar];
         [pickerHolderView addSubview:self.countrypickerView];
+         //[pickerHolderView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self.view addSubview:pickerHolderView];
     }
 }
