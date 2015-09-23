@@ -57,6 +57,7 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 @property (nonatomic, retain) NSString *galleryItemsCount;
 @property (nonatomic, assign) NSString *keyChainService;
 @property (nonatomic, assign) BOOL usePersistentIDForAuth;
+@property (nonatomic, strong) NSArray *bannersArray;
 
 @property (nonatomic, assign) BOOL isDeviceConfigForUS;
 
@@ -290,7 +291,9 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 
 + (void) requestForCartGetActiveCountryListWithSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                                failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
-
++ (void) requestForImageGetMasterVariationsWithLookupType:(NSString *)lookupType
+                                                  success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                                  failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 + (void) requestForCartGetActiveStateListByTwoDigitIsoCountryCode:(NSString *)twoDigitIsoCountryCode
                                                           success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                                           failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
@@ -539,6 +542,11 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 - (NSString *)aboutURL;
 - (NSString *)termsURL;
 - (NSString *)shareURL;
+
+-(NSDictionary *)getCurrentVariationsDict;
+-(NSDictionary*)getMasterVariationsDict;
+- (void)setCurrentVariationsDict:(NSMutableDictionary *)dictt;
+-(NSArray *)getFilteredMouldArray;
 
 -(NSURL *) URLWithRawFrameURLString:(NSString *)imageURLString maxWidth:(NSUInteger)maxWidth maxHeight:(NSUInteger)maxHeight;
 
