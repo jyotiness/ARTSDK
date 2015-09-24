@@ -182,6 +182,12 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         
         self.usePersistentIDForAuth = NO;
         self.keyChainService = [ACConstants getKeyChainServiceName];
+        
+        mMasterVariationsDict = [[ NSMutableDictionary alloc] init];
+        mCurrentVariationsDict = [[ NSMutableDictionary alloc] init];
+        mFilteredMouldingArray = [[NSMutableArray alloc] init];
+        mFilteredConfigArray = [[NSMutableArray alloc] init];
+
     }
     return self;
 
