@@ -55,11 +55,32 @@ NSString *kgalleryQuantNotification = @"GALLERY_QUANTITY_NOTIFICATION";
         [[NSUserDefaults standardUserDefaults] setObject:environment forKey:@"ENVIRONMENT-HOST"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        NSRange range = [environment rangeOfString:@"developer"];
-        if(range.length)
+        if([@"api.art.com" isEqualToString:environment])
         {
-            [[NSUserDefaults standardUserDefaults] setObject:@"http://qa-imageapps.art.com/imageupload/default.aspx" forKey:@"UPLOAD-URL"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"http://imageapps.art.com/imageupload/default.aspx" forKey:@"UPLOAD-URL"];
             [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        else
+        {
+            NSRange devRange = [environment rangeOfString:@"dev-"];
+            if(devRange.length)
+            {
+                [[NSUserDefaults standardUserDefaults] setObject:@"http://dev-imageapps.art.com/imageupload/default.aspx" forKey:@"UPLOAD-URL"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            NSRange developerRange = [environment rangeOfString:@"developer"];
+            NSRange qaRange = [environment rangeOfString:@"qa1-"];
+            if(developerRange.length || qaRange.length)
+            {
+                [[NSUserDefaults standardUserDefaults] setObject:@"http://qa1-imageapps.art.com/imageupload/default.aspx" forKey:@"UPLOAD-URL"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            NSRange relRange = [environment rangeOfString:@"rel1-"];
+            if(relRange.length)
+            {
+                [[NSUserDefaults standardUserDefaults] setObject:@"http://rel1-imageapps.art.com/imageupload/default.aspx" forKey:@"UPLOAD-URL"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
         }
     }
 }
