@@ -26,7 +26,8 @@
 
 - (BOOL)setValidObject:(id)anObject forValidKey:(id)aKey {
     
-    if(anObject!=nil && ![anObject isKindOfClass:[NSNull class]] && aKey !=nil && ![aKey isKindOfClass:[NSNull class]]) {
+    if(anObject!=[NSNull null] && ![anObject isKindOfClass:[NSNull class]] && aKey !=[NSNull null] && ![aKey isKindOfClass:[NSNull class]]) //Change nil to Null class for avoid leaks MWA-786
+    {
         [self setObject:anObject forKey:aKey];
         return YES;
     }
