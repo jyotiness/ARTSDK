@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
     'Doug Diego' => 'ddiego@art.com'
   }
   s.homepage = 'https://github.com/artcode/ARTSDK'
-  s.source       = { :git => "https://github.com/artcode/ARTSDK.git", :tag => "0.0.4" }
+  s.source       = { :git => "https://github.com/jyotiness/artsdk,git", :tag => "0.0.4" }
   s.source_files = ['ARTSDK','thirdparty/nimbus/src/core/src', 'thirdparty/nimbus/src/networkimage/src','ARTSDK/CardIO']
   s.resource_bundles = { 'ArtAPI' => ['Resources/*.png', 'ARTSDK/*.xib','Resources/*.lproj','Resources/Fonts']}
   s.license		   = {
