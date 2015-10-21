@@ -32,6 +32,10 @@
 NSString* const kProtocolSecure = @"https://";
 NSString* const kProtocolDefault = @"http://";
 
+
+  NSString *apiKey = @"519BAAC8E607413CA1FC043C92D08AAD";
+NSString *applicationID = @"EE363FE53CAD46249C724FB2680F799F";
+
 // Judy
 NSString* const kArtcomJudyServerAPIUrl = @"http://ws-decor.art.com";
 
@@ -81,6 +85,9 @@ NSString* const kResourceGalleryGetUserDefaultGallery = @"GalleryGetUserDefaultG
 NSString* const kResourceCatalogItemGetFrameRecommendations = @"CatalogItemGetFrameRecommendations";
 NSString* const kResourceCatalogItemGet = @"CatalogItemGet";
 NSString* const kResourceImageGetMasterVariations = @"ImageGetMasterVariations";
+
+NSString* const kCatalogItemGetVariations = @"CatalogItemGetVariations";
+
 NSString* const kResourceCatalogGetContentBlock = @"CatalogGetContentBlock";
 NSString* const kResourceCatalogGetFeaturedCategories = @"CatalogGetFeaturedCategories";
 NSString* const kResourceCatalogItemSearch = @"CatalogItemSearch";
@@ -148,12 +155,18 @@ NSString* const kEndpointIPaymentAPI = @"IPaymentAPI";
 @synthesize shippingCountryCode = _shippingCountryCode;
 @synthesize currentYear = _currentYear;
 @synthesize currentMonth = _currentMonth;
+@synthesize CustomerAssetPaperID = _CustomerAssetPaperID;
+@synthesize CustomerAssetCanvasID = _CustomerAssetCanvasID;
 
 @synthesize aboutURL = _aboutURL;
 @synthesize termsURL = _termsURL;
 @synthesize shippingURL = _shippingURL;
 @synthesize shareURL = _shareURL;
 @synthesize isLoginEnabled;
+
+//FrmaeyourArt variable
+
+@synthesize ApplicationVariale = _ApplicationVariale;
 
 // @synthesize mobileGalleryItems = _mobileGalleryItems;
 
@@ -213,10 +226,22 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
 
 + (void) startAPI {
     
-    NSString *apiKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIKey"];
-    NSString *applicationID = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ApplicationID"];
+   // NSString *apiKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIKey"];
+   // NSString *apiKey = @"519BAAC8E607413CA1FC043C92D08AAD";
+    //NSString *applicationID = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ApplicationID"];
+    //NSString *applicationID = @"EE363FE53CAD46249C724FB2680F799F";
     
     [[ArtAPI sharedInstance] startAppWithAPIKey:apiKey applicationId:applicationID];
+}
+
++(NSDictionary *)GetDictApplicationVarriable
+{
+    return [[ArtAPI sharedInstance] getDictApplicationVarriable];
+}
+
+-(NSDictionary *)getDictApplicationVarriable
+{
+    return self.ApplicationVariale ;
 }
 
 - (void) startAppWithAPIKey:(NSString *)apiKey
@@ -294,6 +319,7 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         [self initilizeApplicationId:self.applicationId apiKey:self.apiKey twoDigitISOLanguageCode:languageCode twoDigitISOCountryCode:countryCode success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             
             NSLog(@"SUCCESS url: %@ %@ json: %@", request.HTTPMethod, request.URL, JSON);
+            
             [self getContentBlockSetup];
 
             //NSLog(@"start() Check Session ID");
@@ -663,6 +689,8 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
         NSString *dateExpires = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"DateExpires"];
         NSDate *sessionExpirationDate = [ArtAPI extractDataFromAPIString:dateExpires];
         [self setSessionExpirationDate:sessionExpirationDate];
+        //apl=[[NSDictionary alloc]init];
+        self.ApplicationVariale = [[JSON objectForKey:@"d"] objectForKeyNotNull:@"Application"];
 
         // Process Request
         [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
@@ -2534,6 +2562,42 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     [operation start];
 }
 
+
++ (void) requestForCatalogItemGetVariations: (NSString *) itemId
+                                lookupType:(NSString *)lookupType
+                                   success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                   failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    [[ArtAPI sharedInstance] requestForCatalogItemGetVariations:itemId lookupType:lookupType success:success failure:failure];
+}
+
+- (void) requestForCatalogItemGetVariations:(NSString *)itemId
+                                lookupType:(NSString *)lookupType
+                                   success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                   failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       itemId, @"itemId",
+                                       lookupType, @"lookupType",
+                                       nil];
+    // Create Request
+    NSMutableURLRequest *request  = [self requestWithMethod:@"GET"
+                                                   resource:kCatalogItemGetVariations
+                                              usingEndpoint:kEndpointECommerceAPI
+                                                 withParams:parameters
+                                            requiresSession:YES
+                                            requiresAuthKey:NO];
+    
+    // Execute Request
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [self processResultsForRequest: request response:response results:JSON success:success failure:failure];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+        //NSLog(@"FAILURE url: %@ %@ json: %@ error: %@", request.HTTPMethod, request.URL, JSON, error);
+        failure(request, response, error, JSON);
+    }];
+    [operation start];
+}
+
 + (void) catalogItemSearchForCategoryIdList:(NSString *)categoryIdList
                             numberOfRecords:(NSNumber *)numberOfRecords
                                  pageNumber:(NSNumber *)pageNumber
@@ -3871,6 +3935,9 @@ static NSString *SESSION_EXPIRATION_KEY = @"SESSION_EXPIRATION_KEY";
     //NSLog(@"sessionID: %@", _sessionID);
     return _sessionID;
 }
+
+//FrameyouArt
+
 
 + (void)setSessionID:(NSString *)sessionID {
     [[ArtAPI sharedInstance] setSessionID:sessionID];

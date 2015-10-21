@@ -59,6 +59,20 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
 @property (nonatomic, assign) BOOL usePersistentIDForAuth;
 @property (nonatomic, strong) NSArray *bannersArray;
 
+//FrmaeyourArt variable
+
+@property(nonatomic, strong) NSDictionary *ApplicationVariale;
+//
++(NSDictionary *)GetDictApplicationVarriable;
+//+ (NSString *)SetDictApplicationVarriable:(NSDictionary *)ApplicationVariale;
+
+
+
+//FrameYourArt close
+
+@property (readwrite, nonatomic, copy) NSString *CustomerAssetPaperID;
+@property (readwrite, nonatomic, copy) NSString *CustomerAssetCanvasID;
+
 @property (nonatomic, assign) BOOL isDeviceConfigForUS;
 
 @property(nonatomic,strong) NSString *aboutURL;
@@ -259,6 +273,13 @@ static ACCCardType ACCCardTypeVISA __attribute__((unused)) = @"VISA";
                      failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 
 + (void) requestForCatalogItemGetForItemId:(NSString *) itemId
+                                lookupType:(NSString*) lookupType
+                                   success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                   failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+
+
+
++ (void) requestForCatalogItemGetVariations:(NSString *) itemId
                                 lookupType:(NSString*) lookupType
                                    success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
                                    failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;

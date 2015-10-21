@@ -93,7 +93,7 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorInset = UIEdgeInsetsZero;
-    tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    //tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [tableView setLayoutMargins:UIEdgeInsetsZero];
 
     self.tableView = tableView;
